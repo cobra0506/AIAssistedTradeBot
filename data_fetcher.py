@@ -55,14 +55,14 @@ class FastDataFetcher:
                     data = response.json()
                     if data.get('retCode') == 0:
                         items = data['result']['list']
-                        # Filter symbols (like RedoneTradeBot)
+                        # Filter symbols with correct field values
                         symbols = [
                             item['symbol'] for item in items
                             if not any(excl in item['symbol'] for excl in excluded_symbols)
                             and "-" not in item['symbol']
-                            and not item['symbol'].endswith("PERP")
                             and item['symbol'].endswith('USDT')
-                            and item.get('contractType') == 'PERPETUAL'
+                            and item.get('contractType') == 'LinearPerpetual'
+                            and item.get('status') == 'Trading'
                         ]
                         all_symbols.extend(symbols)
                         cursor = data['result'].get('nextPageCursor')
@@ -79,6 +79,10 @@ class FastDataFetcher:
                 print(f"Exception fetching symbols: {e}")
                 break
         print(f"Fetched {len(all_symbols)} perpetual symbols")
+        # Show first 10 symbols as examples
+        if all_symbols:
+            print(f"Examples: {', '.join(all_symbols[:10])}...")
+        
         return sorted(all_symbols)
 
     def _validate_existing_file(self, symbol: str, timeframe: str, required_start: datetime, required_end: datetime) -> Tuple[bool, str]:

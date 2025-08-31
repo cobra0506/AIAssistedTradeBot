@@ -7,7 +7,7 @@ class DataCollectionConfig:
     API_BASE_URL = 'https://api.bybit.com'
     
     # Data settings
-    SYMBOLS = ['BTCUSDT']  # Add more symbols as needed
+    SYMBOLS = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']  # Add more symbols as needed
     TIMEFRAMES = ['1', '5', '15']  # Add more timeframes as needed
     DATA_DIR = 'data'
     
@@ -19,7 +19,7 @@ class DataCollectionConfig:
     # Fetch all symbols from Bybit
     # True = Get all available symbols from Bybit
     # False = Use only symbols in SYMBOLS list
-    FETCH_ALL_SYMBOLS = False
+    FETCH_ALL_SYMBOLS = True
     
     # WebSocket settings
     # True = Start WebSocket and continue collecting live data
@@ -33,7 +33,7 @@ class DataCollectionConfig:
     RUN_GAP_FILLING = True
     
     # Fetch settings
-    DAYS_TO_FETCH = 10
+    DAYS_TO_FETCH = 2
     MAX_WORKERS = 10  # For parallel processing
     REQUEST_TIMEOUT = 10  # seconds
     RATE_LIMIT_DELAY = 0.1  # seconds between requests

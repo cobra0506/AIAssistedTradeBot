@@ -24,11 +24,14 @@ async def update_csv_file(symbol: str, timeframe: str, new_candle: Dict):
                 reader = csv.DictReader(f)
                 existing_data = list(reader)
         
+        # Remove 'confirm' field from candle before saving to CSV
+        candle_for_csv = {k: v for k, v in new_candle.items() if k != 'confirm'}
+        
         # Check if candle already exists (avoid duplicates)
         existing_timestamps = {c['timestamp'] for c in existing_data}
-        if new_candle['timestamp'] not in existing_timestamps:
+        if candle_for_csv['timestamp'] not in existing_timestamps:
             # Add new candle
-            existing_data.append(new_candle)
+            existing_data.append(candle_for_csv)
             
             # Maintain 50-entry limit if configured
             if config.LIMIT_TO_50_ENTRIES and len(existing_data) > 50:
@@ -53,7 +56,8 @@ def process_real_time_candle(symbol: str, timeframe: str, candle: Dict):
 def merge_historical_realtime(historical_data: List[Dict], realtime_data: List[Dict]) -> List[Dict]:
     """Merge historical and real-time data, avoiding duplicates"""
     if not historical_data:
-        return realtime_data
+        # Remove 'confirm' field from real-time data
+        return [{k: v for k, v in candle.items() if k != 'confirm'} for candle in realtime_data]
     
     if not realtime_data:
         return historical_data
@@ -67,7 +71,10 @@ def merge_historical_realtime(historical_data: List[Dict], realtime_data: List[D
         if candle['timestamp'] > last_historical_ts
     ]
     
-    return historical_data + new_data
+    # Remove 'confirm' field from new data
+    new_data_clean = [{k: v for k, v in candle.items() if k != 'confirm'} for candle in new_data]
+    
+    return historical_data + new_data_clean
 
 async def test_websocket_functionality():
     """Test WebSocket functionality to verify live data collection"""
@@ -185,7 +192,8 @@ async def run_data_collection():
     # Start WebSocket if enabled
     if config.ENABLE_WEBSOCKET:
         print("Starting WebSocket connection...")
-        ws_handler = WebSocketHandler(config)
+        # Pass the symbols_to_use to the WebSocketHandler
+        ws_handler = WebSocketHandler(config, symbols_to_use)
         ws_handler.add_callback(process_real_time_candle)
         
         # Run WebSocket in background
@@ -198,9 +206,19 @@ async def run_data_collection():
     print("Fetching historical data...")
     fetcher = FastDataFetcher(config)
     
+    # Determine which symbols to use
+    if config.FETCH_ALL_SYMBOLS:
+        # Get all symbols from the fetcher
+        symbols_to_use = fetcher.all_symbols
+        print(f"Using all {len(symbols_to_use)} symbols from Bybit")
+    else:
+        # Use manually specified symbols
+        symbols_to_use = config.SYMBOLS
+        print(f"Using {len(symbols_to_use)} manually specified symbols")
+    
     # Create tasks for parallel data fetching
     tasks = []
-    for symbol in config.SYMBOLS:
+    for symbol in symbols_to_use:
         for timeframe in config.TIMEFRAMES:
             # Calculate date range
             end_time = datetime.now()
@@ -215,13 +233,14 @@ async def run_data_collection():
     
     # Wait for all historical data fetching to complete
     if tasks:
+        print(f"Fetching data for {len(tasks)} symbol/timeframe combinations...")
         await asyncio.gather(*tasks)
     print("Historical data fetching completed.")
     
     # Merge historical and real-time data if WebSocket is enabled
     if config.ENABLE_WEBSOCKET and ws_handler:
         print("Merging historical and real-time data...")
-        for symbol in config.SYMBOLS:
+        for symbol in symbols_to_use:
             for timeframe in config.TIMEFRAMES:
                 # Get historical data
                 filename = os.path.join(config.DATA_DIR, f"{symbol}_{timeframe}.csv")
@@ -276,7 +295,7 @@ async def run_data_collection():
         print("\n" + "="*60)
         print("LIVE DATA COLLECTION MODE")
         print("="*60)
-        print("WebSocket is running and collecting live data...")
+        print(f"WebSocket is running and collecting live data for {len(symbols_to_use)} symbols...")
         print("Watch for '🔥 Processing confirmed candle' and '✓ LIVE UPDATE' messages as new candles arrive.")
         print("Press Ctrl+C to stop...")
         

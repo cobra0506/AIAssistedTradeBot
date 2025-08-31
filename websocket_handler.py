@@ -7,7 +7,7 @@ from typing import Dict, List, Any, Callable
 from config import DataCollectionConfig
 
 class WebSocketHandler:
-    def __init__(self, config: DataCollectionConfig):
+    def __init__(self, config: DataCollectionConfig, symbols: List[str] = None):
         self.config = config
         self.ws_url = "wss://stream.bybit.com/v5/public/linear"
         self.running = False
@@ -16,6 +16,9 @@ class WebSocketHandler:
         self.debug_callbacks = []  # Debug callbacks for all messages
         self.lock = asyncio.Lock()  # For thread-safe operations
         self.connection = None  # Store the connection object
+        
+        # Use provided symbols or fall back to config symbols
+        self.symbols = symbols if symbols else config.SYMBOLS
         
     async def connect(self):
         """Connect to WebSocket and start listening"""
@@ -95,7 +98,7 @@ class WebSocketHandler:
     
     async def _subscribe_to_symbols(self, websocket):
         """Subscribe to symbols and timeframes"""
-        for symbol in self.config.SYMBOLS:
+        for symbol in self.symbols:  # Use self.symbols instead of config.SYMBOLS
             for timeframe in self.config.TIMEFRAMES:
                 # Bybit uses different interval names
                 interval_map = {'1': '1', '5': '5', '15': '15', '60': '60', '240': '240', '1440': 'D'}
