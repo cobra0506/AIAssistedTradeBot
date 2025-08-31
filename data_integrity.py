@@ -9,7 +9,8 @@ class DataIntegrityChecker:
     def __init__(self, config: DataCollectionConfig):
         self.config = config
         # Use logs directory instead of data/integrity_reports
-        self.reports_dir = os.path.join(config.DATA_DIR, 'logs', 'integrity_reports')
+        # Fixed code (line 120):
+        self.reports_dir = os.path.join('logs', 'integrity_reports')
         os.makedirs(self.reports_dir, exist_ok=True)
     
     def check_all_files(self) -> Dict[str, Any]:
