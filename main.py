@@ -174,56 +174,56 @@ async def test_websocket_functionality():
         print("❌ TEST FAILED: No messages received!")
         return False
 
-    async def run_data_collection():
-        """Main data collection workflow"""
-        global config
-        
-        print("="*60)
-        print("FAST DATA COLLECTOR v3.0")
-        print("="*60)
-        
-        # Create data directory if it doesn't exist
-        os.makedirs(config.DATA_DIR, exist_ok=True)
-        
-        # Run WebSocket test if enabled
-        if config.TEST_WEBSOCKET:
-            test_passed = await test_websocket_functionality()
-            if not test_passed:
-                print("WebSocket test failed. Please check your connection and settings.")
-                return
-            print("\nContinuing with normal operation...\n")
-        
-        # Initialize variables
-        ws_handler = None
-        ws_task = None
-        
-        # Create fetcher instance
-        fetcher = FastDataFetcher(config)
-        
-        # First, determine which symbols to use
-        print("Determining symbols to use...")
-        if config.FETCH_ALL_SYMBOLS:
-            print("Fetching all symbols from Bybit...")
-            # Initialize the fetcher asynchronously
-            await fetcher.initialize()
-            
-            # Check if symbols were fetched successfully
-            if not fetcher.all_symbols:
-                print("Error: No symbols were fetched from Bybit. Using default symbols instead.")
-                symbols_to_use = config.SYMBOLS
-            else:
-                symbols_to_use = fetcher.all_symbols
-                print(f"Successfully fetched {len(symbols_to_use)} symbols from Bybit")
-        else:
-            symbols_to_use = config.SYMBOLS
-            print(f"Using {len(symbols_to_use)} configured symbols")
-            # Still need to initialize the fetcher
-            await fetcher.initialize()
-        
-        # Verify we have symbols to work with
-        if not symbols_to_use:
-            print("Error: No symbols available for data collection!")
+async def run_data_collection():
+    """Main data collection workflow"""
+    global config
+    
+    print("="*60)
+    print("FAST DATA COLLECTOR v3.0")
+    print("="*60)
+    
+    # Create data directory if it doesn't exist
+    os.makedirs(config.DATA_DIR, exist_ok=True)
+    
+    # Run WebSocket test if enabled
+    if config.TEST_WEBSOCKET:
+        test_passed = await test_websocket_functionality()
+        if not test_passed:
+            print("WebSocket test failed. Please check your connection and settings.")
             return
+        print("\nContinuing with normal operation...\n")
+    
+    # Initialize variables
+    ws_handler = None
+    ws_task = None
+    
+    # Create fetcher instance
+    fetcher = FastDataFetcher(config)
+    
+    # First, determine which symbols to use
+    print("Determining symbols to use...")
+    if config.FETCH_ALL_SYMBOLS:
+        print("Fetching all symbols from Bybit...")
+        # Initialize the fetcher asynchronously
+        await fetcher.initialize()
+        
+        # Check if symbols were fetched successfully
+        if not fetcher.all_symbols:
+            print("Error: No symbols were fetched from Bybit. Using default symbols instead.")
+            symbols_to_use = config.SYMBOLS
+        else:
+            symbols_to_use = fetcher.all_symbols
+            print(f"Successfully fetched {len(symbols_to_use)} symbols from Bybit")
+    else:
+        symbols_to_use = config.SYMBOLS
+        print(f"Using {len(symbols_to_use)} configured symbols")
+        # Still need to initialize the fetcher
+        await fetcher.initialize()
+    
+    # Verify we have symbols to work with
+    if not symbols_to_use:
+        print("Error: No symbols available for data collection!")
+        return
     
     # Now create and start WebSocket if enabled (after we know which symbols to use)
     if config.ENABLE_WEBSOCKET:
@@ -260,10 +260,9 @@ async def test_websocket_functionality():
                     break
         
         print("WebSocket setup completed.")
-    
+
     # Fetch historical data
     print("Fetching historical data...")
-    fetcher = FastDataFetcher(config)
     
     # Create tasks for parallel data fetching
     tasks = []
@@ -284,16 +283,24 @@ async def test_websocket_functionality():
     if tasks:
         print(f"Fetching data for {len(tasks)} symbol/timeframe combinations...")
         # Use a semaphore to limit concurrent requests and avoid rate limiting
-        semaphore = asyncio.Semaphore(50)  # Adjust based on API limits
+        semaphore = asyncio.Semaphore(5)  # Reduced from 50 to 5 to avoid rate limiting
         
         async def fetch_with_semaphore(task):
             async with semaphore:
+                # Add a small delay between requests to further avoid rate limiting
+                await asyncio.sleep(0.2)
                 return await task
         
         # Process tasks with semaphore
         results = await asyncio.gather(*[fetch_with_semaphore(task) for task in tasks])
-        print(f"Completed {sum(results)} successful fetches out of {len(results)}")
-    print("Historical data fetching completed.")
+        
+        # Print summary
+        successful = sum(results)
+        failed = len(results) - successful
+        print(f"Historical data fetching completed.")
+        print(f"Results: {successful} successful, {failed} failed")
+        if failed > 0:
+            print(f"Success rate: {successful / len(results) * 100:.1f}%")
     
     # Merge historical and real-time data if WebSocket is enabled
     if config.ENABLE_WEBSOCKET and ws_handler:

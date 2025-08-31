@@ -46,3 +46,9 @@ class DataCollectionConfig:
     # True = Run WebSocket test to verify live data collection
     # False = Normal operation
     TEST_WEBSOCKET = False
+
+    # Rate limiting settings
+    MAX_CONCURRENT_REQUESTS = 5  # Reduced from 50
+    REQUEST_DELAY = 0.2  # Delay between requests in seconds
+    MAX_RETRIES = 3  # Maximum number of retries for failed requests
+    RETRY_DELAY = 1  # Initial retry delay in seconds

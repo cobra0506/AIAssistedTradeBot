@@ -266,57 +266,75 @@ class FastDataFetcher:
             "limit": 1000  # Max limit per request
         }
         
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url, params=params, timeout=self.config.REQUEST_TIMEOUT) as response:
-                    if response.status == 200:
-                        data = await response.json()
-                        if data.get('retCode') == 0:
-                            # Process the data
-                            candles = data['result']['list']
-                            if not candles:
-                                print(f"No data returned for {symbol} {timeframe}")
+        max_retries = 3
+        retry_delay = 1  # Initial delay in seconds
+        
+        for attempt in range(max_retries):
+            try:
+                # Add a delay before each request to avoid rate limiting
+                if attempt > 0:
+                    await asyncio.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url, params=params, timeout=self.config.REQUEST_TIMEOUT) as response:
+                        if response.status == 200:
+                            data = await response.json()
+                            if data.get('retCode') == 0:
+                                # Process the data
+                                candles = data['result']['list']
+                                if not candles:
+                                    print(f"No data returned for {symbol} {timeframe}")
+                                    return False
+                                
+                                # Convert to our format
+                                processed_data = []
+                                for candle in candles:
+                                    processed_candle = {
+                                        'timestamp': datetime.fromtimestamp(int(candle[0])/1000).isoformat(),
+                                        'open': candle[1],
+                                        'high': candle[2],
+                                        'low': candle[3],
+                                        'close': candle[4],
+                                        'volume': candle[5],
+                                        'turnover': candle[6]
+                                    }
+                                    processed_data.append(processed_candle)
+                                
+                                # Sort by timestamp (newest first)
+                                processed_data.sort(key=lambda x: x['timestamp'], reverse=True)
+                                
+                                # Limit to 50 entries if configured
+                                if self.config.LIMIT_TO_50_ENTRIES and len(processed_data) > 50:
+                                    processed_data = processed_data[:50]
+                                
+                                # Save to CSV
+                                filename = os.path.join(self.config.DATA_DIR, f"{symbol}_{timeframe}.csv")
+                                fieldnames = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover']
+                                
+                                # Use async file writing
+                                await self._write_csv_async(filename, fieldnames, processed_data)
+                                
+                                self.fetch_stats['total_candles_fetched'] += len(processed_data)
+                                return True
+                            else:
+                                print(f"API Error for {symbol} {timeframe}: {data.get('retMsg')}")
                                 return False
-                            
-                            # Convert to our format
-                            processed_data = []
-                            for candle in candles:
-                                processed_candle = {
-                                    'timestamp': datetime.fromtimestamp(int(candle[0])/1000).isoformat(),
-                                    'open': candle[1],
-                                    'high': candle[2],
-                                    'low': candle[3],
-                                    'close': candle[4],
-                                    'volume': candle[5],
-                                    'turnover': candle[6]
-                                }
-                                processed_data.append(processed_candle)
-                            
-                            # Sort by timestamp (newest first)
-                            processed_data.sort(key=lambda x: x['timestamp'], reverse=True)
-                            
-                            # Limit to 50 entries if configured
-                            if self.config.LIMIT_TO_50_ENTRIES and len(processed_data) > 50:
-                                processed_data = processed_data[:50]
-                            
-                            # Save to CSV
-                            filename = os.path.join(self.config.DATA_DIR, f"{symbol}_{timeframe}.csv")
-                            fieldnames = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover']
-                            
-                            # Use async file writing
-                            await self._write_csv_async(filename, fieldnames, processed_data)
-                            
-                            self.fetch_stats['total_candles_fetched'] += len(processed_data)
-                            return True
+                        elif response.status == 403:
+                            print(f"Rate limited or forbidden for {symbol} {timeframe} (attempt {attempt + 1}/{max_retries})")
+                            if attempt == max_retries - 1:
+                                print(f"Max retries reached for {symbol} {timeframe}, skipping...")
+                                return False
+                            # Continue to next retry
                         else:
-                            print(f"API Error for {symbol} {timeframe}: {data.get('retMsg')}")
+                            print(f"HTTP Error {response.status} for {symbol} {timeframe}")
                             return False
-                    else:
-                        print(f"HTTP Error {response.status} for {symbol} {timeframe}")
-                        return False
-        except Exception as e:
-            print(f"Exception fetching {symbol} {timeframe}: {e}")
-            return False
+            except Exception as e:
+                print(f"Exception fetching {symbol} {timeframe} (attempt {attempt + 1}/{max_retries}): {e}")
+                if attempt == max_retries - 1:
+                    return False
+        
+        return False
 
     async def _write_csv_async(self, filename: str, fieldnames: List[str], data: List[Dict]):
         """Write data to CSV file asynchronously"""
