@@ -32,7 +32,7 @@ class DataCollectionConfig:
     RUN_GAP_FILLING = True
     
     # Fetch settings
-    DAYS_TO_FETCH =365
+    DAYS_TO_FETCH =30
     MAX_WORKERS = 10  # For parallel processing
     REQUEST_TIMEOUT = 10  # seconds
     RATE_LIMIT_DELAY = 0.1  # seconds between requests

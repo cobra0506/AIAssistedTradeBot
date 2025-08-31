@@ -9,7 +9,6 @@ class DataIntegrityChecker:
     def __init__(self, config: DataCollectionConfig):
         self.config = config
         # Use logs directory instead of data/integrity_reports
-        # Fixed code (line 120):
         self.reports_dir = os.path.join('logs', 'integrity_reports')
         os.makedirs(self.reports_dir, exist_ok=True)
     
@@ -347,3 +346,42 @@ class DataIntegrityChecker:
                     files_filled += 1
         
         print(f"Filled gaps in {files_filled} files")
+
+    def save_integrity_report(self, results: Dict[str, Any]) -> str:
+        """Save integrity check results to a report file"""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"integrity_report_{timestamp}.txt"
+        filepath = os.path.join(self.reports_dir, filename)
+        
+        with open(filepath, 'w') as f:
+            f.write("="*60 + "\n")
+            f.write("INTEGRITY CHECK REPORT\n")
+            f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write("="*60 + "\n\n")
+            
+            f.write("SUMMARY:\n")
+            f.write(f"Files checked: {results['files_checked']}\n")
+            f.write(f"Files with issues: {results['files_with_issues']}\n")
+            f.write(f"Total gaps: {results['total_gaps']}\n")
+            f.write(f"Total duplicates: {results['total_duplicates']}\n")
+            f.write(f"Total invalid candles: {results['total_invalid_candles']}\n\n")
+            
+            if results['files_with_issues'] > 0:
+                f.write("DETAILED ISSUES:\n")
+                f.write("-"*40 + "\n")
+                for filename, issues in results['issues'].items():
+                    f.write(f"\nFile: {filename}\n")
+                    f.write(f"  Total candles: {issues['total_candles']}\n")
+                    f.write(f"  Invalid candles: {issues['invalid_candles']}\n")
+                    f.write(f"  Duplicates: {issues['duplicate_count']}\n")
+                    f.write(f"  Gaps: {len(issues['gaps'])}\n")
+                    if issues['gaps']:
+                        f.write("  Gap details:\n")
+                        for gap in issues['gaps'][:5]:  # Show first 5 gaps
+                            f.write(f"    - {gap}\n")
+                        if len(issues['gaps']) > 5:
+                            f.write(f"    ... and {len(issues['gaps']) - 5} more gaps\n")
+            else:
+                f.write("No issues found!\n")
+        
+        return filepath
