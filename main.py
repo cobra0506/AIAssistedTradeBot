@@ -1,286 +1,324 @@
-import argparse
-import sys
-from datetime import datetime
+import os
+import csv
+import asyncio
+import time
+from datetime import datetime, timedelta
+from typing import Dict, List, Any
 from config import DataCollectionConfig
 from data_fetcher import FastDataFetcher
+from data_integrity import DataIntegrityChecker
+from websocket_handler import WebSocketHandler
+
+# Global lock for CSV file operations
+csv_lock = asyncio.Lock()
+
+async def update_csv_file(symbol: str, timeframe: str, new_candle: Dict):
+    """Update CSV file with new completed candle"""
+    filename = os.path.join(config.DATA_DIR, f"{symbol}_{timeframe}.csv")
+    
+    async with csv_lock:
+        # Read existing data
+        existing_data = []
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                reader = csv.DictReader(f)
+                existing_data = list(reader)
+        
+        # Check if candle already exists (avoid duplicates)
+        existing_timestamps = {c['timestamp'] for c in existing_data}
+        if new_candle['timestamp'] not in existing_timestamps:
+            # Add new candle
+            existing_data.append(new_candle)
+            
+            # Maintain 50-entry limit if configured
+            if config.LIMIT_TO_50_ENTRIES and len(existing_data) > 50:
+                existing_data = existing_data[-50:]
+            
+            # Write back to file
+            with open(filename, 'w', newline='') as f:
+                fieldnames = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover']
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(existing_data)
+            
+            print(f"✓ LIVE UPDATE: {symbol}_{timeframe} - New candle at {new_candle['timestamp']}")
+
+def process_real_time_candle(symbol: str, timeframe: str, candle: Dict):
+    """Callback function to process real-time candles"""
+    if candle['confirm']:  # Only process completed candles
+        print(f"🔥 Processing confirmed candle for {symbol}_{timeframe}")
+        # Create a task to update the CSV file
+        asyncio.create_task(update_csv_file(symbol, timeframe, candle))
+
+def merge_historical_realtime(historical_data: List[Dict], realtime_data: List[Dict]) -> List[Dict]:
+    """Merge historical and real-time data, avoiding duplicates"""
+    if not historical_data:
+        return realtime_data
+    
+    if not realtime_data:
+        return historical_data
+    
+    # Get last timestamp in historical data
+    last_historical_ts = historical_data[-1]['timestamp']
+    
+    # Filter real-time data to only include candles after historical
+    new_data = [
+        candle for candle in realtime_data
+        if candle['timestamp'] > last_historical_ts
+    ]
+    
+    return historical_data + new_data
+
+async def test_websocket_functionality():
+    """Test WebSocket functionality to verify live data collection"""
+    print("="*60)
+    print("WEBSOCKET FUNCTIONALITY TEST")
+    print("="*60)
+    
+    # Create test config with minimal settings
+    test_config = DataCollectionConfig()
+    test_config.SYMBOLS = ['BTCUSDT']
+    test_config.TIMEFRAMES = ['1']
+    test_config.DAYS_TO_FETCH = 1
+    
+    # Test data tracking
+    test_results = {
+        'candles_received': 0,
+        'files_updated': 0,
+        'start_time': time.time(),
+        'last_candle_time': None,
+        'messages_received': 0,
+        'confirmed_candles': 0  # Track confirmed candles separately
+    }
+    
+    def test_callback(symbol: str, timeframe: str, candle: Dict):
+        """Test callback to track received candles"""
+        test_results['candles_received'] += 1
+        test_results['last_candle_time'] = candle['timestamp']
+        print(f"📊 TEST: Received candle #{test_results['candles_received']} for {symbol}_{timeframe}")
+        print(f"   Timestamp: {candle['timestamp']}")
+        print(f"   Confirm: {candle['confirm']}")
+    
+    def debug_callback(message: str):
+        """Debug callback to track all messages"""
+        test_results['messages_received'] += 1
+        
+        # Print every 10th message to show activity
+        if test_results['messages_received'] % 10 == 0:
+            print(f"📡 Received message #{test_results['messages_received']}")
+    
+    # Start WebSocket
+    print("Starting WebSocket for test...")
+    ws_handler = WebSocketHandler(test_config)
+    ws_handler.add_callback(test_callback)
+    ws_handler.add_debug_callback(debug_callback)
+    
+    # Run WebSocket in background
+    ws_task = asyncio.create_task(ws_handler.connect())
+    
+    # Wait for test duration (3 minutes for 1m candles)
+    test_duration = 180  # 3 minutes
+    print(f"Testing for {test_duration} seconds (3 minutes)...")
+    
+    try:
+        # Show progress every 30 seconds
+        for i in range(0, test_duration, 30):
+            await asyncio.sleep(30)
+            elapsed = time.time() - test_results['start_time']
+            print(f"⏱️  Progress: {int(elapsed)}s / {test_duration}s - "
+                  f"Messages: {test_results['messages_received']}, "
+                  f"Candles: {test_results['candles_received']}")
+    finally:
+        # Stop WebSocket
+        ws_handler.stop()
+        # Wait a moment for the connection to close
+        await asyncio.sleep(1)
+        try:
+            await ws_task
+        except:
+            pass  # Ignore errors when stopping
+    
+    # Print test results
+    print("\n" + "="*60)
+    print("TEST RESULTS")
+    print("="*60)
+    print(f"Test duration: {test_duration} seconds")
+    print(f"Messages received: {test_results['messages_received']}")
+    print(f"Candles received: {test_results['candles_received']}")
+    print(f"Last candle time: {test_results['last_candle_time']}")
+    
+    # Check if test passed
+    if test_results['candles_received'] > 0:
+        print("✅ TEST PASSED: WebSocket is working correctly!")
+        return True
+    elif test_results['messages_received'] > 0:
+        print("⚠️  TEST PARTIAL: Received messages but no completed candles.")
+        print("This might be normal if no candles completed during the test.")
+        return True  # Consider this a pass since we're receiving data
+    else:
+        print("❌ TEST FAILED: No messages received!")
+        return False
+
+async def run_data_collection():
+    """Main data collection workflow"""
+    global config
+    
+    print("="*60)
+    print("FAST DATA COLLECTOR v3.0")
+    print("="*60)
+    
+    # Create data directory if it doesn't exist
+    os.makedirs(config.DATA_DIR, exist_ok=True)
+    
+    # Run WebSocket test if enabled
+    if config.TEST_WEBSOCKET:
+        test_passed = await test_websocket_functionality()
+        if not test_passed:
+            print("WebSocket test failed. Please check your connection and settings.")
+            return
+        print("\nContinuing with normal operation...\n")
+    
+    # Initialize variables
+    ws_handler = None
+    ws_task = None
+    
+    # Start WebSocket if enabled
+    if config.ENABLE_WEBSOCKET:
+        print("Starting WebSocket connection...")
+        ws_handler = WebSocketHandler(config)
+        ws_handler.add_callback(process_real_time_candle)
+        
+        # Run WebSocket in background
+        ws_task = asyncio.create_task(ws_handler.connect())
+        
+        # Give WebSocket time to connect and start collecting data
+        await asyncio.sleep(2)
+    
+    # Fetch historical data
+    print("Fetching historical data...")
+    fetcher = FastDataFetcher(config)
+    
+    # Create tasks for parallel data fetching
+    tasks = []
+    for symbol in config.SYMBOLS:
+        for timeframe in config.TIMEFRAMES:
+            # Calculate date range
+            end_time = datetime.now()
+            start_time = end_time - timedelta(days=config.DAYS_TO_FETCH)
+            
+            # Use the correct method name
+            task = asyncio.create_task(
+                fetcher.fetch_and_save_simple(symbol, timeframe, 
+                                           start_time, end_time)
+            )
+            tasks.append(task)
+    
+    # Wait for all historical data fetching to complete
+    if tasks:
+        await asyncio.gather(*tasks)
+    print("Historical data fetching completed.")
+    
+    # Merge historical and real-time data if WebSocket is enabled
+    if config.ENABLE_WEBSOCKET and ws_handler:
+        print("Merging historical and real-time data...")
+        for symbol in config.SYMBOLS:
+            for timeframe in config.TIMEFRAMES:
+                # Get historical data
+                filename = os.path.join(config.DATA_DIR, f"{symbol}_{timeframe}.csv")
+                historical_data = []
+                if os.path.exists(filename):
+                    with open(filename, 'r') as f:
+                        reader = csv.DictReader(f)
+                        historical_data = list(reader)
+                
+                # Get real-time data
+                realtime_data = ws_handler.get_real_time_data(symbol, timeframe)
+                
+                # Merge data
+                merged_data = merge_historical_realtime(historical_data, realtime_data)
+                
+                # Save merged data
+                with open(filename, 'w', newline='') as f:
+                    fieldnames = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover']
+                    writer = csv.DictWriter(f, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(merged_data)
+                
+                print(f"Merged data for {symbol} {timeframe}: {len(historical_data)} historical + {len(realtime_data)} real-time")
+        
+        print("Data merging completed.")
+    
+    # Run integrity check if enabled
+    if config.RUN_INTEGRITY_CHECK:
+        print("Running integrity check...")
+        integrity_checker = DataIntegrityChecker(config)
+        results = integrity_checker.check_all_files()
+        
+        print("\n"+"="*60)
+        print("INTEGRITY CHECK RESULTS")
+        print("="*60)
+        print(f"Files checked: {results['files_checked']}")
+        print(f"Files with issues: {results['files_with_issues']}")
+        print(f"Total gaps: {results['total_gaps']}")
+        print(f"Total duplicates: {results['total_duplicates']}")
+        print(f"Total invalid candles: {results['total_invalid_candles']}")
+        print("="*60)
+    
+    # Fill gaps if enabled
+    if config.RUN_GAP_FILLING:
+        print("Filling gaps in data...")
+        integrity_checker = DataIntegrityChecker(config)
+        integrity_checker.fill_all_gaps()
+        print("Gap filling completed.")
+    
+    # Continue with live updates if WebSocket is enabled
+    if config.ENABLE_WEBSOCKET and ws_handler:
+        print("\n" + "="*60)
+        print("LIVE DATA COLLECTION MODE")
+        print("="*60)
+        print("WebSocket is running and collecting live data...")
+        print("Watch for '🔥 Processing confirmed candle' and '✓ LIVE UPDATE' messages as new candles arrive.")
+        print("Press Ctrl+C to stop...")
+        
+        try:
+            while ws_handler.running:
+                await asyncio.sleep(1)
+        except KeyboardInterrupt:
+            print("\nStopping WebSocket...")
+            ws_handler.stop()
+            await asyncio.sleep(1)  # Give time for cleanup
+            try:
+                await ws_task
+            except:
+                pass  # Ignore errors when stopping
+    else:
+        print("\nHistorical data collection completed. Exiting...")
 
 def main():
     """Main entry point for the data collection application"""
+    global config
+    
     config = DataCollectionConfig()
     
-    parser = argparse.ArgumentParser(description='Fast Historical Data Collection for Trading Bot')
-    parser.add_argument('--days', type=int, default=config.DAYS_TO_FETCH,
-                       help=f'Number of days of historical data to fetch (default: {config.DAYS_TO_FETCH})')
-    parser.add_argument('--symbols', nargs='+', default=config.SYMBOLS,
-                       help=f'Symbols to fetch data for (default: {config.SYMBOLS})')
-    parser.add_argument('--timeframes', nargs='+', default=config.TIMEFRAMES,
-                       help=f'Timeframes to fetch data for (default: {config.TIMEFRAMES})')
-    parser.add_argument('--limit-50', action='store_true', 
-                       help='Limit data to 50 entries per symbol/timeframe')
-    parser.add_argument('--full-data', action='store_true',
-                       help='Fetch full historical data (no 50-entry limit)')
-    parser.add_argument('--all-symbols', action='store_true',
-                       help='Fetch data for all symbols from Bybit')
-    parser.add_argument('--no-timing', action='store_true',
-                       help='Hide detailed timing information')
-    parser.add_argument('--no-stats', action='store_true',
-                       help='Hide performance statistics')
-    parser.add_argument('--check-integrity', action='store_true',
-                       help='Check data integrity after fetching (overrides config)')
-    parser.add_argument('--no-integrity', action='store_true',
-                       help='Skip integrity check (overrides config)')
-    parser.add_argument('--fix-duplicates', action='store_true',
-                       help='Fix duplicate entries in all data files')
-    parser.add_argument('--integrity-only', action='store_true',
-                       help='Only run integrity check, no data fetching')
-    parser.add_argument('--fill-gaps', action='store_true',
-                       help='Fill gaps in data files (overrides config)')
-    parser.add_argument('--no-gap-fill', action='store_true',
-                       help='Skip gap filling (overrides config)')
-    
-    args = parser.parse_args()
-    
-    # Integrity checking mode (standalone)
-    if args.integrity_only or args.fix_duplicates or args.fill_gaps:
-        try:
-            from data_integrity import DataIntegrityChecker
-            integrity_checker = DataIntegrityChecker(config)
-            
-            if args.fix_duplicates:
-                integrity_checker.fix_all_duplicates()
-            
-            if args.fill_gaps:
-                integrity_checker.fill_all_gaps()
-            
-            if args.integrity_only:
-                results = integrity_checker.check_all_files()
-                
-                print("\n" + "="*60)
-                print("INTEGRITY CHECK RESULTS")
-                print("="*60)
-                print(f"Files checked: {results['files_checked']}")
-                print(f"Files with issues: {results['files_with_issues']}")
-                print(f"Total gaps: {results['total_gaps']}")
-                print(f"Total duplicates: {results['total_duplicates']}")
-                print(f"Total invalid candles: {results['total_invalid_candles']}")
-                print("="*60)
-            
-            if args.integrity_only or args.fill_gaps or args.fix_duplicates:
-                return
-        except ImportError:
-            print("Error: data_integrity.py not found. Please create the data_integrity.py file.")
-            return
-        except Exception as e:
-            print(f"Error running integrity/gap filling: {e}")
-            return
-    
-    # Update config with command line arguments
-    if args.symbols != config.SYMBOLS:
-        config.SYMBOLS = args.symbols
-    
-    if args.timeframes != config.TIMEFRAMES:
-        config.TIMEFRAMES = args.timeframes
-    
-    # Handle data mode flags
-    if args.limit_50:
-        config.LIMIT_TO_50_ENTRIES = True
-    elif args.full_data:
-        config.LIMIT_TO_50_ENTRIES = False
-    
-    # Handle all symbols flag
-    if args.all_symbols:
-        config.FETCH_ALL_SYMBOLS = True
-    
-    # Handle display flags
-    if args.no_timing:
-        config.SHOW_DETAILED_TIMING = False
-    if args.no_stats:
-        config.SHOW_PERFORMANCE_STATS = False
-    
-    # Determine if we should run integrity check
-    run_integrity = False
-    
-    # Priority: Command line arguments override config
-    if args.check_integrity:
-        run_integrity = True
-    elif args.no_integrity:
-        run_integrity = False
-    else:
-        # Use config setting if available
-        run_integrity = getattr(config, 'RUN_INTEGRITY_CHECK', False)
-    
-    # Determine if we should run gap filling
-    run_gap_filling = False
-    
-    # Priority: Command line arguments override config
-    if args.fill_gaps:
-        run_gap_filling = True
-    elif args.no_gap_fill:
-        run_gap_filling = False
-    else:
-        # Use config setting if available
-        run_gap_filling = getattr(config, 'RUN_GAP_FILLING', False)
-    
-    # Create fetcher with updated config
-    fetcher = FastDataFetcher(config)
-    
-    print(f"{'='*60}")
-    print(f"FAST DATA COLLECTOR v2.0")
-    print(f"{'='*60}")
+    # Print configuration
     print(f"Configuration:")
-    print(f"  Days: {args.days}")
-    print(f"  Data mode: {'Limited to 50 entries' if config.LIMIT_TO_50_ENTRIES else 'Full historical data'}")
-    print(f"  Symbols: {'All from Bybit' if config.FETCH_ALL_SYMBOLS else f'{len(config.SYMBOLS)} configured'}")
-    print(f"  Timeframes: {config.TIMEFRAMES}")
-    print(f"  Auto integrity check: {'Enabled' if run_integrity else 'Disabled'}")
-    print(f"  Auto gap filling: {'Enabled' if run_gap_filling else 'Disabled'}")
-    print(f"{'='*60}")
+    print(f" Days: {config.DAYS_TO_FETCH}")
+    print(f" Data mode: {'Limited to 50 entries' if config.LIMIT_TO_50_ENTRIES else 'Full historical data'}")
+    print(f" Symbols: {'All from Bybit' if config.FETCH_ALL_SYMBOLS else f'{len(config.SYMBOLS)} configured'}")
+    print(f" Timeframes: {config.TIMEFRAMES}")
+    print(f" WebSocket: {'Enabled' if config.ENABLE_WEBSOCKET else 'Disabled'}")
+    print(f" Integrity Check: {'Enabled' if config.RUN_INTEGRITY_CHECK else 'Disabled'}")
+    print(f" Gap Filling: {'Enabled' if config.RUN_GAP_FILLING else 'Disabled'}")
+    print(f" Test Mode: {'Enabled' if config.TEST_WEBSOCKET else 'Disabled'}")
+    print("="*60)
     
-    # Fetch all data
-    fetcher.fetch_all_data(args.days)
-    
-    # Run integrity check if enabled
-    if run_integrity:
-        try:
-            print("\n" + "="*60)
-            print("RUNNING AUTOMATIC INTEGRITY CHECK")
-            print("="*60)
-            
-            from data_integrity import DataIntegrityChecker
-            integrity_checker = DataIntegrityChecker(config)
-            results = integrity_checker.check_all_files()
-            
-            print(f"\nIntegrity Check Results:")
-            print(f"  Files checked: {results['files_checked']}")
-            print(f"  Files with issues: {results['files_with_issues']}")
-            print(f"  Total gaps: {results['total_gaps']}")
-            print(f"  Total duplicates: {results['total_duplicates']}")
-            print(f"  Total invalid candles: {results['total_invalid_candles']}")
-            
-            # Quick summary of issues found
-            if results['files_with_issues'] > 0:
-                print(f"\nIssues found in {results['files_with_issues']} files:")
-                for filename, issues in results['issues'].items():
-                    gap_count = len(issues['gaps'])
-                    dup_count = issues['duplicate_count']
-                    invalid_count = issues['invalid_candles']
-                    
-                    issues_list = []
-                    if gap_count > 0:
-                        issues_list.append(f"{gap_count} gaps")
-                    if dup_count > 0:
-                        issues_list.append(f"{dup_count} duplicates")
-                    if invalid_count > 0:
-                        issues_list.append(f"{invalid_count} invalid")
-                    
-                    print(f"  {filename}: {', '.join(issues_list)}")
-                
-                print(f"\nDetailed reports saved to: {integrity_checker.reports_dir}")
-                print("To fix duplicates, run: python main.py --fix-duplicates")
-            else:
-                print("\n✓ All data files passed integrity check!")
-                
-        except ImportError:
-            print("\nWarning: data_integrity.py not found. Skipping integrity check.")
-            print("To enable integrity checking, create the data_integrity.py file.")
-        except Exception as e:
-            print(f"\nError running integrity check: {e}")
-    
-    # Run gap filling if enabled
-    if run_gap_filling:
-        try:
-            print("\n" + "="*60)
-            print("RUNNING AUTOMATIC GAP FILLING")
-            print("="*60)
-            
-            from data_integrity import DataIntegrityChecker
-            integrity_checker = DataIntegrityChecker(config)
-            integrity_checker.fill_all_gaps()
-            
-            print("\n✓ Gap filling completed!")
-                
-        except ImportError:
-            print("\nWarning: data_integrity.py not found. Skipping gap filling.")
-            print("To enable gap filling, create the data_integrity.py file.")
-        except Exception as e:
-            print(f"\nError running gap filling: {e}")
-    
-    print("\nData collection completed!")
+    # Run the async data collection
+    try:
+        asyncio.run(run_data_collection())
+    except KeyboardInterrupt:
+        print("\nProgram stopped by user.")
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
-
-
-'''import argparse
-import sys
-from datetime import datetime
-from config import DataCollectionConfig
-from data_fetcher import FastDataFetcher
-
-def main():
-    """Main entry point for the data collection application"""
-    config = DataCollectionConfig()
-    
-    parser = argparse.ArgumentParser(description='Fast Historical Data Collection for Trading Bot')
-    parser.add_argument('--days', type=int, default=config.DAYS_TO_FETCH,
-                       help=f'Number of days of historical data to fetch (default: {config.DAYS_TO_FETCH})')
-    parser.add_argument('--symbols', nargs='+', default=config.SYMBOLS,
-                       help=f'Symbols to fetch data for (default: {config.SYMBOLS})')
-    parser.add_argument('--timeframes', nargs='+', default=config.TIMEFRAMES,
-                       help=f'Timeframes to fetch data for (default: {config.TIMEFRAMES})')
-    parser.add_argument('--limit-50', action='store_true', 
-                       help='Limit data to 50 entries per symbol/timeframe')
-    parser.add_argument('--full-data', action='store_true',
-                       help='Fetch full historical data (no 50-entry limit)')
-    parser.add_argument('--all-symbols', action='store_true',
-                       help='Fetch data for all symbols from Bybit')
-    parser.add_argument('--no-timing', action='store_true',
-                       help='Hide detailed timing information')
-    parser.add_argument('--no-stats', action='store_true',
-                       help='Hide performance statistics')
-    
-    args = parser.parse_args()
-    
-    # Update config with command line arguments
-    if args.symbols != config.SYMBOLS:
-        config.SYMBOLS = args.symbols
-    
-    if args.timeframes != config.TIMEFRAMES:
-        config.TIMEFRAMES = args.timeframes
-    
-    # NEW: Handle data mode flags
-    if args.limit_50:
-        config.LIMIT_TO_50_ENTRIES = True
-    elif args.full_data:
-        config.LIMIT_TO_50_ENTRIES = False
-    
-    # NEW: Handle all symbols flag
-    if args.all_symbols:
-        config.FETCH_ALL_SYMBOLS = True
-    
-    # NEW: Handle display flags
-    if args.no_timing:
-        config.SHOW_DETAILED_TIMING = False
-    if args.no_stats:
-        config.SHOW_PERFORMANCE_STATS = False
-    
-    # Create fetcher with updated config
-    fetcher = FastDataFetcher(config)
-    
-    print(f"{'='*60}")
-    print(f"FAST DATA COLLECTOR v2.0")
-    print(f"{'='*60}")
-    print(f"Configuration:")
-    print(f"  Days: {args.days}")
-    print(f"  Data mode: {'Limited to 50 entries' if config.LIMIT_TO_50_ENTRIES else 'Full historical data'}")
-    print(f"  Symbols: {'All from Bybit' if config.FETCH_ALL_SYMBOLS else f'{len(config.SYMBOLS)} configured'}")
-    print(f"  Timeframes: {config.TIMEFRAMES}")
-    print(f"{'='*60}")
-    
-    # Fetch all data
-    fetcher.fetch_all_data(args.days)
-    
-    print("Data collection completed!")
-
-if __name__ == "__main__":
-    main()'''

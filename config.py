@@ -2,37 +2,38 @@ import os
 
 class DataCollectionConfig:
     # API settings
-    BYBIT_API_KEY = os.getenv('BYBIT_API_KEY', '')
-    BYBIT_API_SECRET = os.getenv('BYBIT_API_SECRET', '')
+    BYBIT_API_KEY = os.getenv('kKnXjxCtTGjt5z6ZCW', '')
+    BYBIT_API_SECRET = os.getenv('lAQrC1lhVO3LlcdJjgql2DVULwDU8vrPLhsW', '')
     API_BASE_URL = 'https://api.bybit.com'
     
     # Data settings
-    SYMBOLS = ['BTCUSDT']#, 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT']
-    TIMEFRAMES = ['1', '5', '15']  # Bybit uses numbers for timeframes
+    SYMBOLS = ['BTCUSDT']  # Add more symbols as needed
+    TIMEFRAMES = ['1', '5', '15']  # Add more timeframes as needed
     DATA_DIR = 'data'
     
     # Data collection mode
     # True = Keep only last 50 entries (for simple strategy testing)
     # False = Get full historical data (for AI training)
-    LIMIT_TO_50_ENTRIES = False
+    LIMIT_TO_50_ENTRIES = True
     
     # Fetch all symbols from Bybit
     # True = Get all available symbols from Bybit
     # False = Use only symbols in SYMBOLS list
     FETCH_ALL_SYMBOLS = False
     
+    # WebSocket settings
+    # True = Start WebSocket and continue collecting live data
+    # False = Only fetch historical data and exit (for AI training)
+    ENABLE_WEBSOCKET = True
+    
     # Automatic integrity check after data collection
-    # True = Always run integrity check after fetching data
-    # False = Skip integrity check (unless manually requested)
     RUN_INTEGRITY_CHECK = True
     
-    # NEW: Automatic gap filling after data collection
-    # True = Automatically fill gaps in data after fetching
-    # False = Skip gap filling (unless manually requested)
+    # Automatic gap filling after data collection
     RUN_GAP_FILLING = True
     
     # Fetch settings
-    DAYS_TO_FETCH =30
+    DAYS_TO_FETCH = 10
     MAX_WORKERS = 10  # For parallel processing
     REQUEST_TIMEOUT = 10  # seconds
     RATE_LIMIT_DELAY = 0.1  # seconds between requests
@@ -40,3 +41,8 @@ class DataCollectionConfig:
     # Performance settings
     SHOW_DETAILED_TIMING = True
     SHOW_PERFORMANCE_STATS = True
+    
+    # Testing settings
+    # True = Run WebSocket test to verify live data collection
+    # False = Normal operation
+    TEST_WEBSOCKET = False
