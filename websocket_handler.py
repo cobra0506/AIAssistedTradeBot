@@ -165,6 +165,12 @@ class WebSocketHandler:
         try:
             data = json.loads(message)
             
+            # Debug: Print the first few characters of the message to identify its type
+            if len(message) < 200:
+                print(f"Debug message: {message}")
+            else:
+                print(f"Debug message type: {data.get('topic', 'unknown')}")
+            
             # Check if it's a kline (candlestick) message
             if 'topic' in data and data['topic'].startswith('kline.'):
                 # Extract symbol and timeframe from topic
@@ -176,53 +182,77 @@ class WebSocketHandler:
                 if 'data' in data:
                     candle_data = data['data']
                     
-                    # Parse candle data
-                    candle = {
-                        'timestamp': self._parse_timestamp(candle_data.get('start', 0)),
-                        'open': candle_data.get('open', '0'),
-                        'high': candle_data.get('high', '0'),
-                        'low': candle_data.get('low', '0'),
-                        'close': candle_data.get('close', '0'),
-                        'volume': candle_data.get('volume', '0'),
-                        'turnover': candle_data.get('turnover', '0'),
-                        'confirm': candle_data.get('confirm', False)
-                    }
+                    # Debug: Print the type of candle_data
+                    print(f"Debug: candle_data type for {symbol} {timeframe}: {type(candle_data)}")
                     
-                    # Store candle
-                    key = f"{symbol}_{timeframe}"
-                    async with self.lock:
-                        if key not in self.real_time_data:
-                            self.real_time_data[key] = []
+                    # Handle both single candle (dict) and multiple candles (list)
+                    if isinstance(candle_data, list):
+                        print(f"Debug: Processing list with {len(candle_data)} candles")
+                        # Process each candle in the list
+                        for candle_item in candle_data:
+                            await self._process_candle_data(symbol, timeframe, candle_item)
+                    else:
+                        print(f"Debug: Processing single candle")
+                        # Process single candle
+                        await self._process_candle_data(symbol, timeframe, candle_data)
                         
-                        # Check if candle already exists (avoid duplicates)
-                        existing_timestamps = {c['timestamp'] for c in self.real_time_data[key]}
-                        if candle['timestamp'] not in existing_timestamps:
-                            self.real_time_data[key].append(candle)
-                            
-                            # If candle is complete, trigger callbacks
-                            if candle['confirm']:
-                                for callback in self.callbacks:
-                                    if asyncio.iscoroutinefunction(callback):
-                                        await callback(symbol, timeframe, candle)
-                                    else:
-                                        callback(symbol, timeframe, candle)
-                        else:
-                            # Candle already exists, check if it's now confirmed
-                            existing_candle = None
-                            for c in self.real_time_data[key]:
-                                if c['timestamp'] == candle['timestamp']:
-                                    existing_candle = c
-                                    break
-                            
-                            if existing_candle and not existing_candle['confirm'] and candle['confirm']:
-                                existing_candle['confirm'] = True
-                                for callback in self.callbacks:
-                                    if asyncio.iscoroutinefunction(callback):
-                                        await callback(symbol, timeframe, existing_candle)
-                                    else:
-                                        callback(symbol, timeframe, existing_candle)
         except Exception as e:
             print(f"Error processing message: {e}")
+            # Print the problematic message for debugging
+            try:
+                print(f"Problematic message: {message[:500]}...")
+            except:
+                pass
+
+    async def _process_candle_data(self, symbol: str, timeframe: str, candle_data: Dict):
+        """Process a single candle data object"""
+        try:
+            candle = {
+                'timestamp': self._parse_timestamp(candle_data.get('start', 0)),
+                'open': candle_data.get('open', '0'),
+                'high': candle_data.get('high', '0'),
+                'low': candle_data.get('low', '0'),
+                'close': candle_data.get('close', '0'),
+                'volume': candle_data.get('volume', '0'),
+                'turnover': candle_data.get('turnover', '0'),
+                'confirm': candle_data.get('confirm', False)
+            }
+            
+            # Store candle
+            key = f"{symbol}_{timeframe}"
+            async with self.lock:
+                if key not in self.real_time_data:
+                    self.real_time_data[key] = []
+                
+                # Check if candle already exists (avoid duplicates)
+                existing_timestamps = {c['timestamp'] for c in self.real_time_data[key]}
+                if candle['timestamp'] not in existing_timestamps:
+                    self.real_time_data[key].append(candle)
+                    
+                    # If candle is complete, trigger callbacks
+                    if candle['confirm']:
+                        for callback in self.callbacks:
+                            if asyncio.iscoroutinefunction(callback):
+                                await callback(symbol, timeframe, candle)
+                            else:
+                                callback(symbol, timeframe, candle)
+                else:
+                    # Candle already exists, check if it's now confirmed
+                    existing_candle = None
+                    for c in self.real_time_data[key]:
+                        if c['timestamp'] == candle['timestamp']:
+                            existing_candle = c
+                            break
+                    
+                    if existing_candle and not existing_candle['confirm'] and candle['confirm']:
+                        existing_candle['confirm'] = True
+                        for callback in self.callbacks:
+                            if asyncio.iscoroutinefunction(callback):
+                                await callback(symbol, timeframe, existing_candle)
+                            else:
+                                callback(symbol, timeframe, existing_candle)
+        except Exception as e:
+            print(f"Error processing candle data: {e}")
 
     async def _reconnect(self):
         """Handle reconnection logic"""
