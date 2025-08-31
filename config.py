@@ -14,7 +14,7 @@ class DataCollectionConfig:
     # Data collection mode
     # True = Keep only last 50 entries (for simple strategy testing)
     # False = Get full historical data (for AI training)
-    LIMIT_TO_50_ENTRIES = True
+    LIMIT_TO_50_ENTRIES = False
     
     # Fetch all symbols from Bybit
     # True = Get all available symbols from Bybit
@@ -24,11 +24,15 @@ class DataCollectionConfig:
     # Automatic integrity check after data collection
     # True = Always run integrity check after fetching data
     # False = Skip integrity check (unless manually requested)
-    # CHANGED: Default to False to avoid breaking existing functionality
     RUN_INTEGRITY_CHECK = True
     
+    # NEW: Automatic gap filling after data collection
+    # True = Automatically fill gaps in data after fetching
+    # False = Skip gap filling (unless manually requested)
+    RUN_GAP_FILLING = True
+    
     # Fetch settings
-    DAYS_TO_FETCH = 7
+    DAYS_TO_FETCH =365
     MAX_WORKERS = 10  # For parallel processing
     REQUEST_TIMEOUT = 10  # seconds
     RATE_LIMIT_DELAY = 0.1  # seconds between requests

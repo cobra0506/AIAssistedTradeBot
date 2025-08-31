@@ -8,7 +8,8 @@ from config import DataCollectionConfig
 class DataIntegrityChecker:
     def __init__(self, config: DataCollectionConfig):
         self.config = config
-        self.reports_dir = os.path.join(config.DATA_DIR, 'integrity_reports')
+        # Use logs directory instead of data/integrity_reports
+        self.reports_dir = os.path.join(config.DATA_DIR, 'logs', 'integrity_reports')
         os.makedirs(self.reports_dir, exist_ok=True)
     
     def check_all_files(self) -> Dict[str, Any]:
@@ -125,6 +126,7 @@ class DataIntegrityChecker:
     def _validate_candle(self, candle: Dict[str, Any]) -> bool:
         """Validate a single candle"""
         try:
+            # Only check for required fields (don't require 'filled')
             required_fields = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover']
             if not all(field in candle for field in required_fields):
                 return False
@@ -252,3 +254,95 @@ class DataIntegrityChecker:
         except Exception as e:
             print(f"Error fixing duplicates in {filename}: {e}")
             return False
+        
+    def fill_gaps_in_file(self, filename: str) -> bool:
+        """Fill gaps in a data file with previous candle data"""
+        filepath = os.path.join(self.config.DATA_DIR, filename)
+        
+        try:
+            # Read existing data
+            with open(filepath, 'r') as f:
+                reader = csv.DictReader(f)
+                data = list(reader)
+                fieldnames = reader.fieldnames  # Get existing fieldnames
+            
+            if not data:
+                return False
+            
+            # Parse symbol and timeframe
+            parts = filename.replace('.csv', '').split('_')
+            if len(parts) >= 2:
+                timeframe = parts[1]
+            else:
+                timeframe = '1'
+            
+            # Convert timeframe to minutes
+            timeframe_minutes = {
+                '1': 1, '5': 5, '15': 15, '60': 60, '240': 240, '1440': 1440
+            }.get(timeframe, 1)
+            
+            expected_interval = timedelta(minutes=timeframe_minutes)
+            
+            # Sort by timestamp
+            data.sort(key=lambda x: x['timestamp'])
+            
+            # Find and fill gaps
+            filled_data = []
+            gaps_filled = 0
+            
+            for i in range(len(data)):
+                current_candle = data[i]
+                filled_data.append(current_candle)
+                
+                # Check if there's a gap to next candle
+                if i < len(data) - 1:
+                    current_timestamp = datetime.fromisoformat(current_candle['timestamp'])
+                    next_timestamp = datetime.fromisoformat(data[i+1]['timestamp'])
+                    
+                    while next_timestamp - current_timestamp > expected_interval + timedelta(seconds=1):
+                        # Create filled candle
+                        filled_timestamp = current_timestamp + expected_interval
+                        filled_candle = {
+                            'timestamp': filled_timestamp.isoformat(),
+                            'open': current_candle['close'],
+                            'high': current_candle['close'],
+                            'low': current_candle['close'],
+                            'close': current_candle['close'],
+                            'volume': '0',
+                            'turnover': '0'
+                        }
+                        
+                        filled_data.append(filled_candle)
+                        gaps_filled += 1
+                        
+                        # Update current timestamp
+                        current_timestamp = filled_timestamp
+            
+            if gaps_filled > 0:
+                # Write filled data back to file (using original fieldnames)
+                with open(filepath, 'w', newline='') as f:
+                    writer = csv.DictWriter(f, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(filled_data)
+                
+                print(f"Filled {gaps_filled} gaps in {filename}")
+                return True
+            else:
+                print(f"No gaps to fill in {filename}")
+                return False
+                
+        except Exception as e:
+            print(f"Error filling gaps in {filename}: {e}")
+            return False
+
+    def fill_all_gaps(self):
+        """Fill gaps in all data files"""
+        print("Filling gaps in all files...")
+        
+        files_filled = 0
+        for filename in os.listdir(self.config.DATA_DIR):
+            if filename.endswith('.csv') and not filename.startswith('integrity_'):
+                if self.fill_gaps_in_file(filename):
+                    files_filled += 1
+        
+        print(f"Filled gaps in {files_filled} files")

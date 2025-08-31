@@ -184,7 +184,7 @@ class FastDataFetcher:
         all_data = []
         current_end_time = end_time
         batch_count = 0
-        max_batches = 100  # Safety limit
+        max_batches = 1000  # Safety limit
         
         print(f"  Fetching {symbol} {timeframe} from {start_time} to {end_time}")
         

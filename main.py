@@ -33,17 +33,24 @@ def main():
                        help='Fix duplicate entries in all data files')
     parser.add_argument('--integrity-only', action='store_true',
                        help='Only run integrity check, no data fetching')
+    parser.add_argument('--fill-gaps', action='store_true',
+                       help='Fill gaps in data files (overrides config)')
+    parser.add_argument('--no-gap-fill', action='store_true',
+                       help='Skip gap filling (overrides config)')
     
     args = parser.parse_args()
     
     # Integrity checking mode (standalone)
-    if args.integrity_only or args.fix_duplicates:
+    if args.integrity_only or args.fix_duplicates or args.fill_gaps:
         try:
             from data_integrity import DataIntegrityChecker
             integrity_checker = DataIntegrityChecker(config)
             
             if args.fix_duplicates:
                 integrity_checker.fix_all_duplicates()
+            
+            if args.fill_gaps:
+                integrity_checker.fill_all_gaps()
             
             if args.integrity_only:
                 results = integrity_checker.check_all_files()
@@ -58,13 +65,13 @@ def main():
                 print(f"Total invalid candles: {results['total_invalid_candles']}")
                 print("="*60)
             
-            if args.integrity_only:
+            if args.integrity_only or args.fill_gaps or args.fix_duplicates:
                 return
         except ImportError:
             print("Error: data_integrity.py not found. Please create the data_integrity.py file.")
             return
         except Exception as e:
-            print(f"Error running integrity check: {e}")
+            print(f"Error running integrity/gap filling: {e}")
             return
     
     # Update config with command line arguments
@@ -102,6 +109,18 @@ def main():
         # Use config setting if available
         run_integrity = getattr(config, 'RUN_INTEGRITY_CHECK', False)
     
+    # Determine if we should run gap filling
+    run_gap_filling = False
+    
+    # Priority: Command line arguments override config
+    if args.fill_gaps:
+        run_gap_filling = True
+    elif args.no_gap_fill:
+        run_gap_filling = False
+    else:
+        # Use config setting if available
+        run_gap_filling = getattr(config, 'RUN_GAP_FILLING', False)
+    
     # Create fetcher with updated config
     fetcher = FastDataFetcher(config)
     
@@ -113,6 +132,8 @@ def main():
     print(f"  Data mode: {'Limited to 50 entries' if config.LIMIT_TO_50_ENTRIES else 'Full historical data'}")
     print(f"  Symbols: {'All from Bybit' if config.FETCH_ALL_SYMBOLS else f'{len(config.SYMBOLS)} configured'}")
     print(f"  Timeframes: {config.TIMEFRAMES}")
+    print(f"  Auto integrity check: {'Enabled' if run_integrity else 'Disabled'}")
+    print(f"  Auto gap filling: {'Enabled' if run_gap_filling else 'Disabled'}")
     print(f"{'='*60}")
     
     # Fetch all data
@@ -164,6 +185,25 @@ def main():
             print("To enable integrity checking, create the data_integrity.py file.")
         except Exception as e:
             print(f"\nError running integrity check: {e}")
+    
+    # Run gap filling if enabled
+    if run_gap_filling:
+        try:
+            print("\n" + "="*60)
+            print("RUNNING AUTOMATIC GAP FILLING")
+            print("="*60)
+            
+            from data_integrity import DataIntegrityChecker
+            integrity_checker = DataIntegrityChecker(config)
+            integrity_checker.fill_all_gaps()
+            
+            print("\n✓ Gap filling completed!")
+                
+        except ImportError:
+            print("\nWarning: data_integrity.py not found. Skipping gap filling.")
+            print("To enable gap filling, create the data_integrity.py file.")
+        except Exception as e:
+            print(f"\nError running gap filling: {e}")
     
     print("\nData collection completed!")
 
