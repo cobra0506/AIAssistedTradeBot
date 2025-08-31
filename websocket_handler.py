@@ -76,6 +76,9 @@ class WebSocketHandler:
             # Print subscription summary
             print(f"Subscription summary: {self.subscription_count} subscriptions sent")
             
+            # Start heartbeat task
+            heartbeat_task = asyncio.create_task(self._heartbeat(connection))
+            
             # Listen for messages
             async for message in connection:
                 if not self.running:
@@ -93,9 +96,30 @@ class WebSocketHandler:
                     await self._process_message(message)
                 except Exception as e:
                     print(f"Error processing message: {e}")
+            
+            # Cancel heartbeat task when done
+            heartbeat_task.cancel()
+            
         except Exception as e:
             print(f"Error while listening: {e}")
             raise e
+
+    async def _heartbeat(self, websocket):
+        """Send periodic pings to keep the connection alive"""
+        try:
+            while self.running:
+                # Send a ping every 30 seconds
+                await asyncio.sleep(30)
+                if self.running:
+                    try:
+                        pong_waiter = await websocket.ping()
+                        await asyncio.wait_for(pong_waiter, timeout=10)
+                        print("WebSocket ping successful")
+                    except Exception as e:
+                        print(f"Heartbeat failed: {e}")
+                        break
+        except asyncio.CancelledError:
+            pass
 
     async def _subscribe_to_symbols(self, websocket):
         """Subscribe to symbols and timeframes using batch subscriptions"""
@@ -165,12 +189,6 @@ class WebSocketHandler:
         try:
             data = json.loads(message)
             
-            # Debug: Print the first few characters of the message to identify its type
-            if len(message) < 200:
-                print(f"Debug message: {message}")
-            else:
-                print(f"Debug message type: {data.get('topic', 'unknown')}")
-            
             # Check if it's a kline (candlestick) message
             if 'topic' in data and data['topic'].startswith('kline.'):
                 # Extract symbol and timeframe from topic
@@ -182,27 +200,17 @@ class WebSocketHandler:
                 if 'data' in data:
                     candle_data = data['data']
                     
-                    # Debug: Print the type of candle_data
-                    print(f"Debug: candle_data type for {symbol} {timeframe}: {type(candle_data)}")
-                    
                     # Handle both single candle (dict) and multiple candles (list)
                     if isinstance(candle_data, list):
-                        print(f"Debug: Processing list with {len(candle_data)} candles")
                         # Process each candle in the list
                         for candle_item in candle_data:
                             await self._process_candle_data(symbol, timeframe, candle_item)
                     else:
-                        print(f"Debug: Processing single candle")
                         # Process single candle
                         await self._process_candle_data(symbol, timeframe, candle_data)
                         
         except Exception as e:
             print(f"Error processing message: {e}")
-            # Print the problematic message for debugging
-            try:
-                print(f"Problematic message: {message[:500]}...")
-            except:
-                pass
 
     async def _process_candle_data(self, symbol: str, timeframe: str, candle_data: Dict):
         """Process a single candle data object"""

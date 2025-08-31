@@ -17,12 +17,10 @@ async def update_csv_file(symbol: str, timeframe: str, new_candle: Dict):
     filename = os.path.join(config.DATA_DIR, f"{symbol}_{timeframe}.csv")
     
     async with csv_lock:
-        # Read existing data
+        # Read existing data asynchronously
         existing_data = []
         if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                reader = csv.DictReader(f)
-                existing_data = list(reader)
+            existing_data = await asyncio.to_thread(read_csv, filename)
         
         # Remove 'confirm' field from candle before saving to CSV
         candle_for_csv = {k: v for k, v in new_candle.items() if k != 'confirm'}
@@ -37,14 +35,24 @@ async def update_csv_file(symbol: str, timeframe: str, new_candle: Dict):
             if config.LIMIT_TO_50_ENTRIES and len(existing_data) > 50:
                 existing_data = existing_data[-50:]
             
-            # Write back to file
-            with open(filename, 'w', newline='') as f:
-                fieldnames = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover']
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerows(existing_data)
+            # Write back to file asynchronously
+            fieldnames = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover']
+            await asyncio.to_thread(write_csv, filename, fieldnames, existing_data)
             
             print(f"✓ LIVE UPDATE: {symbol}_{timeframe} - New candle at {new_candle['timestamp']}")
+
+def read_csv(filename):
+    """Read CSV file and return data"""
+    with open(filename, 'r') as f:
+        reader = csv.DictReader(f)
+        return list(reader)
+
+def write_csv(filename, fieldnames, data):
+    """Write data to CSV file"""
+    with open(filename, 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(data)
 
 def process_real_time_candle(symbol: str, timeframe: str, candle: Dict):
     """Callback function to process real-time candles"""
@@ -166,50 +174,56 @@ async def test_websocket_functionality():
         print("❌ TEST FAILED: No messages received!")
         return False
 
-async def run_data_collection():
-    """Main data collection workflow"""
-    global config
-    
-    print("="*60)
-    print("FAST DATA COLLECTOR v3.0")
-    print("="*60)
-    
-    # Create data directory if it doesn't exist
-    os.makedirs(config.DATA_DIR, exist_ok=True)
-    
-    # Run WebSocket test if enabled
-    if config.TEST_WEBSOCKET:
-        test_passed = await test_websocket_functionality()
-        if not test_passed:
-            print("WebSocket test failed. Please check your connection and settings.")
-            return
-        print("\nContinuing with normal operation...\n")
-    
-    # Initialize variables
-    ws_handler = None
-    ws_task = None
-    
-    # First, determine which symbols to use
-    print("Determining symbols to use...")
-    if config.FETCH_ALL_SYMBOLS:
-        print("Fetching all symbols from Bybit...")
+    async def run_data_collection():
+        """Main data collection workflow"""
+        global config
+        
+        print("="*60)
+        print("FAST DATA COLLECTOR v3.0")
+        print("="*60)
+        
+        # Create data directory if it doesn't exist
+        os.makedirs(config.DATA_DIR, exist_ok=True)
+        
+        # Run WebSocket test if enabled
+        if config.TEST_WEBSOCKET:
+            test_passed = await test_websocket_functionality()
+            if not test_passed:
+                print("WebSocket test failed. Please check your connection and settings.")
+                return
+            print("\nContinuing with normal operation...\n")
+        
+        # Initialize variables
+        ws_handler = None
+        ws_task = None
+        
+        # Create fetcher instance
         fetcher = FastDataFetcher(config)
         
-        # Check if symbols were fetched successfully
-        if not fetcher.all_symbols:
-            print("Error: No symbols were fetched from Bybit. Using default symbols instead.")
-            symbols_to_use = config.SYMBOLS
+        # First, determine which symbols to use
+        print("Determining symbols to use...")
+        if config.FETCH_ALL_SYMBOLS:
+            print("Fetching all symbols from Bybit...")
+            # Initialize the fetcher asynchronously
+            await fetcher.initialize()
+            
+            # Check if symbols were fetched successfully
+            if not fetcher.all_symbols:
+                print("Error: No symbols were fetched from Bybit. Using default symbols instead.")
+                symbols_to_use = config.SYMBOLS
+            else:
+                symbols_to_use = fetcher.all_symbols
+                print(f"Successfully fetched {len(symbols_to_use)} symbols from Bybit")
         else:
-            symbols_to_use = fetcher.all_symbols
-            print(f"Successfully fetched {len(symbols_to_use)} symbols from Bybit")
-    else:
-        symbols_to_use = config.SYMBOLS
-        print(f"Using {len(symbols_to_use)} configured symbols")
-    
-    # Verify we have symbols to work with
-    if not symbols_to_use:
-        print("Error: No symbols available for data collection!")
-        return
+            symbols_to_use = config.SYMBOLS
+            print(f"Using {len(symbols_to_use)} configured symbols")
+            # Still need to initialize the fetcher
+            await fetcher.initialize()
+        
+        # Verify we have symbols to work with
+        if not symbols_to_use:
+            print("Error: No symbols available for data collection!")
+            return
     
     # Now create and start WebSocket if enabled (after we know which symbols to use)
     if config.ENABLE_WEBSOCKET:
@@ -259,7 +273,7 @@ async def run_data_collection():
             end_time = datetime.now()
             start_time = end_time - timedelta(days=config.DAYS_TO_FETCH)
             
-            # Use the correct method name
+            # Use the fetcher instance we created earlier
             task = asyncio.create_task(
                 fetcher.fetch_and_save_simple(symbol, timeframe, 
                                            start_time, end_time)
@@ -269,7 +283,16 @@ async def run_data_collection():
     # Wait for all historical data fetching to complete
     if tasks:
         print(f"Fetching data for {len(tasks)} symbol/timeframe combinations...")
-        await asyncio.gather(*tasks)
+        # Use a semaphore to limit concurrent requests and avoid rate limiting
+        semaphore = asyncio.Semaphore(50)  # Adjust based on API limits
+        
+        async def fetch_with_semaphore(task):
+            async with semaphore:
+                return await task
+        
+        # Process tasks with semaphore
+        results = await asyncio.gather(*[fetch_with_semaphore(task) for task in tasks])
+        print(f"Completed {sum(results)} successful fetches out of {len(results)}")
     print("Historical data fetching completed.")
     
     # Merge historical and real-time data if WebSocket is enabled
