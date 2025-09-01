@@ -189,32 +189,67 @@ async def run_data_collection():
     ws_handler = None
     ws_task = None
     
-    # Start WebSocket if enabled
+    # First, determine which symbols to use
+    print("Determining symbols to use...")
+    if config.FETCH_ALL_SYMBOLS:
+        print("Fetching all symbols from Bybit...")
+        fetcher = FastDataFetcher(config)
+        
+        # Check if symbols were fetched successfully
+        if not fetcher.all_symbols:
+            print("Error: No symbols were fetched from Bybit. Using default symbols instead.")
+            symbols_to_use = config.SYMBOLS
+        else:
+            symbols_to_use = fetcher.all_symbols
+            print(f"Successfully fetched {len(symbols_to_use)} symbols from Bybit")
+    else:
+        symbols_to_use = config.SYMBOLS
+        print(f"Using {len(symbols_to_use)} configured symbols")
+    
+    # Verify we have symbols to work with
+    if not symbols_to_use:
+        print("Error: No symbols available for data collection!")
+        return
+    
+    # Now create and start WebSocket if enabled (after we know which symbols to use)
     if config.ENABLE_WEBSOCKET:
         print("Starting WebSocket connection...")
-        # Pass the symbols_to_use to the WebSocketHandler
         ws_handler = WebSocketHandler(config, symbols_to_use)
         ws_handler.add_callback(process_real_time_candle)
         
         # Run WebSocket in background
         ws_task = asyncio.create_task(ws_handler.connect())
         
-        # Give WebSocket time to connect and start collecting data
-        await asyncio.sleep(2)
+        # Wait for WebSocket to connect and complete subscriptions
+        print("Waiting for WebSocket subscriptions to complete...")
+        subscription_timeout = 30  # Maximum time to wait for subscriptions (seconds)
+        start_time = time.time()
+        
+        while ws_task and not ws_task.done():
+            await asyncio.sleep(1)
+            elapsed = time.time() - start_time
+            
+            # Check if we've waited too long
+            if elapsed > subscription_timeout:
+                print(f"Warning: WebSocket subscription taking longer than {subscription_timeout} seconds. Continuing anyway.")
+                break
+            
+            # Check if subscription count matches expected
+            expected_subscriptions = len(symbols_to_use) * len(config.TIMEFRAMES)
+            if ws_handler and hasattr(ws_handler, 'subscription_count'):
+                progress = (ws_handler.subscription_count / expected_subscriptions) * 100
+                print(f"Subscription progress: {ws_handler.subscription_count}/{expected_subscriptions} ({progress:.1f}%)")
+                
+                # If all subscriptions are complete, break the loop
+                if ws_handler.subscription_count >= expected_subscriptions:
+                    print("All WebSocket subscriptions completed!")
+                    break
+        
+        print("WebSocket setup completed.")
     
     # Fetch historical data
     print("Fetching historical data...")
     fetcher = FastDataFetcher(config)
-    
-    # Determine which symbols to use
-    if config.FETCH_ALL_SYMBOLS:
-        # Get all symbols from the fetcher
-        symbols_to_use = fetcher.all_symbols
-        print(f"Using all {len(symbols_to_use)} symbols from Bybit")
-    else:
-        # Use manually specified symbols
-        symbols_to_use = config.SYMBOLS
-        print(f"Using {len(symbols_to_use)} manually specified symbols")
     
     # Create tasks for parallel data fetching
     tasks = []
@@ -266,6 +301,52 @@ async def run_data_collection():
                 print(f"Merged data for {symbol} {timeframe}: {len(historical_data)} historical + {len(realtime_data)} real-time")
         
         print("Data merging completed.")
+    
+    # Run integrity check if enabled
+    if config.RUN_INTEGRITY_CHECK:
+        print("Running integrity check...")
+        integrity_checker = DataIntegrityChecker(config)
+        results = integrity_checker.check_all_files()
+        
+        print("\n"+"="*60)
+        print("INTEGRITY CHECK RESULTS")
+        print("="*60)
+        print(f"Files checked: {results['files_checked']}")
+        print(f"Files with issues: {results['files_with_issues']}")
+        print(f"Total gaps: {results['total_gaps']}")
+        print(f"Total duplicates: {results['total_duplicates']}")
+        print(f"Total invalid candles: {results['total_invalid_candles']}")
+        print("="*60)
+    
+    # Fill gaps if enabled
+    if config.RUN_GAP_FILLING:
+        print("Filling gaps in data...")
+        integrity_checker = DataIntegrityChecker(config)
+        integrity_checker.fill_all_gaps()
+        print("Gap filling completed.")
+    
+    # Continue with live updates if WebSocket is enabled
+    if config.ENABLE_WEBSOCKET and ws_handler:
+        print("\n" + "="*60)
+        print("LIVE DATA COLLECTION MODE")
+        print("="*60)
+        print(f"WebSocket is running and collecting live data for {len(symbols_to_use)} symbols...")
+        print("Watch for '🔥 Processing confirmed candle' and '✓ LIVE UPDATE' messages as new candles arrive.")
+        print("Press Ctrl+C to stop...")
+        
+        try:
+            while ws_handler.running:
+                await asyncio.sleep(1)
+        except KeyboardInterrupt:
+            print("\nStopping WebSocket...")
+            ws_handler.stop()
+            await asyncio.sleep(1)  # Give time for cleanup
+            try:
+                await ws_task
+            except:
+                pass  # Ignore errors when stopping
+    else:
+        print("\nHistorical data collection completed. Exiting...")
     
     # Run integrity check if enabled
     if config.RUN_INTEGRITY_CHECK:
