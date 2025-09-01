@@ -1,4 +1,4 @@
-# websocket_handler.py - Complete Working Version
+# websocket_handler.py - Clean Production Version
 import websockets
 import json
 import asyncio
@@ -24,6 +24,8 @@ class WebSocketHandler:
     async def connect(self):
         """Connect to WebSocket and start listening"""
         self.running = True
+        print(f"🔌 Connecting to WebSocket: {self.ws_url}")
+        
         # Try different connection approaches
         connection_attempts = [
             self._connect_with_ssl,
@@ -34,14 +36,14 @@ class WebSocketHandler:
                 connection = await attempt()
                 if connection:
                     self.connection = connection
-                    print("WebSocket connection established!")
+                    print("✅ WebSocket connection established!")
                     await self._listen_for_messages(connection)
                     return
             except Exception as e:
-                print(f"Connection attempt failed: {e}")
+                print(f"❌ Connection attempt failed: {e}")
                 await asyncio.sleep(1)
         # If all attempts failed
-        print("All connection attempts failed.")
+        print("❌ All connection attempts failed.")
         await self._reconnect()
 
     async def _connect_with_ssl(self):
@@ -71,13 +73,14 @@ class WebSocketHandler:
             # Subscribe to all symbols and timeframes
             await self._subscribe_to_symbols(connection)
             # Print subscription summary
-            print(f"Subscription summary: {self.subscription_count} subscriptions sent")
+            print(f"📊 Subscription summary: {self.subscription_count} subscriptions sent")
             # Start heartbeat task
             heartbeat_task = asyncio.create_task(self._heartbeat(connection))
             # Listen for messages
             async for message in connection:
                 if not self.running:
                     break
+                
                 # Call debug callbacks for all messages
                 for callback in self.debug_callbacks:
                     if asyncio.iscoroutinefunction(callback):
@@ -88,11 +91,11 @@ class WebSocketHandler:
                 try:
                     await self._process_message(message)
                 except Exception as e:
-                    print(f"Error processing message: {e}")
+                    print(f"❌ Error processing message: {e}")
             # Cancel heartbeat task when done
             heartbeat_task.cancel()
         except Exception as e:
-            print(f"Error while listening: {e}")
+            print(f"❌ Error while listening: {e}")
             raise e
 
     async def _heartbeat(self, websocket):
@@ -105,44 +108,45 @@ class WebSocketHandler:
                     try:
                         pong_waiter = await websocket.ping()
                         await asyncio.wait_for(pong_waiter, timeout=10)
-                        print("WebSocket ping successful")
+                        print("💓 WebSocket ping successful")
                     except Exception as e:
-                        print(f"Heartbeat failed: {e}")
+                        print(f"❌ Heartbeat failed: {e}")
                         break
         except asyncio.CancelledError:
             pass
 
     async def _subscribe_to_symbols(self, websocket):
-        """Subscribe to symbols and timeframes using batch subscriptions"""
+        """Subscribe to symbols and timeframes using individual subscriptions"""
         total_subscriptions = len(self.symbols) * len(self.config.TIMEFRAMES)
-        print(f"Subscribing to {total_subscriptions} symbol/timeframe combinations using batch requests...")
+        print(f"📡 Subscribing to {total_subscriptions} symbol/timeframe combinations...")
         
-        # Create all subscription arguments
-        subscription_args = []
+        # Bybit V5 requires individual subscription messages
         for symbol in self.symbols:
             for timeframe in self.config.TIMEFRAMES:
                 # Bybit uses different interval names
                 interval_map = {'1': '1', '5': '5', '15': '15', '60': '60', '240': '240', '1440': 'D'}
                 bybit_interval = interval_map.get(timeframe, timeframe)
                 
-                subscription_args.append({
+                # Create individual subscription message
+                subscription = {
                     "op": "subscribe",
+                    "req_id": f"{symbol}_{timeframe}",
                     "args": [f"kline.{bybit_interval}.{symbol}"]
-                })
-        
-        # Send subscriptions in batches
-        batch_size = 100
-        for i in range(0, len(subscription_args), batch_size):
-            batch = subscription_args[i:i + batch_size]
-            try:
-                await websocket.send(json.dumps(batch))
-                self.subscription_count += len(batch)
-                print(f"Sent batch {i//batch_size + 1}/{(len(subscription_args)-1)//batch_size + 1} with {len(batch)} subscriptions ({self.subscription_count}/{total_subscriptions})")
-            except Exception as e:
-                print(f"Error sending subscription batch: {e}")
+                }
+                
+                try:
+                    await websocket.send(json.dumps(subscription))
+                    self.subscription_count += 1
+                    print(f"✅ Subscribed to {symbol}_{timeframe} ({self.subscription_count}/{total_subscriptions})")
+                    
+                    # Small delay between subscriptions to avoid rate limiting
+                    await asyncio.sleep(0.05)
+                    
+                except Exception as e:
+                    print(f"❌ Error sending subscription for {symbol}_{timeframe}: {e}")
         
         # Wait for subscriptions to be processed
-        print("Waiting for subscriptions to be processed by the server...")
+        print("⏳ Waiting for subscriptions to be processed...")
         await asyncio.sleep(2)
 
     async def _process_message(self, message):
@@ -151,13 +155,17 @@ class WebSocketHandler:
             data = json.loads(message)
             
             # Handle subscription confirmation
-            if data.get("op") == "subscribe" and data.get("success") is True:
-                print(f"Subscription confirmed: {data.get('req_id', 'unknown')}")
+            if data.get("op") == "subscribe":
+                if data.get("success") is True:
+                    print(f"✅ Subscription successful: {data.get('req_id', 'unknown')}")
+                else:
+                    print(f"❌ Subscription failed: {data.get('ret_msg', 'unknown')}")
                 return
             
             # Handle data messages
             if "topic" in data and "data" in data:
                 topic = data["topic"]
+                
                 # Parse topic to get symbol and timeframe
                 parts = topic.split(".")
                 if len(parts) >= 3 and parts[0] == "kline":
@@ -177,7 +185,7 @@ class WebSocketHandler:
                     else:
                         await self._process_candle(symbol, our_timeframe, candle_data)
         except Exception as e:
-            print(f"Error processing message: {e}")
+            print(f"❌ Error processing message: {e}")
 
     async def _process_candle(self, symbol: str, timeframe: str, candle_data: Dict):
         """Process a single candle"""
@@ -229,7 +237,7 @@ class WebSocketHandler:
                             else:
                                 callback(symbol, timeframe, existing_candle)
         except Exception as e:
-            print(f"Error processing candle data: {e}")
+            print(f"❌ Error processing candle data: {e}")
 
     def _parse_timestamp(self, timestamp):
         """Parse timestamp from Bybit format"""
@@ -241,12 +249,12 @@ class WebSocketHandler:
         """Handle reconnection logic"""
         while self.running:
             try:
-                print("Attempting to reconnect WebSocket...")
+                print("🔄 Attempting to reconnect WebSocket...")
                 await asyncio.sleep(5)  # Wait before retry
                 await self.connect()
                 break
             except Exception as e:
-                print(f"Reconnection failed: {e}")
+                print(f"❌ Reconnection failed: {e}")
                 await asyncio.sleep(10)  # Wait longer before retry
 
     def add_callback(self, callback: Callable):

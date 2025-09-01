@@ -1,12 +1,12 @@
-# optimized_data_fetcher.py - Fixed Version
+# optimized_data_fetcher.py - Fixed to save data in correct chronological order
 import asyncio
 import aiohttp
 import csv
 import os
 import time
-from datetime import datetime
 from collections import deque
 from typing import Dict, List, Any
+from datetime import datetime
 from config import DataCollectionConfig
 
 class OptimizedDataFetcher:
@@ -98,9 +98,9 @@ class OptimizedDataFetcher:
                     if key not in self.memory_data:
                         self.memory_data[key] = deque(maxlen=limit if limit_50 else 5000)
                     
-                    # Process candles
+                    # Process candles in reverse order (Bybit returns newest first)
                     processed_candles = []
-                    for candle in candles:
+                    for candle in reversed(candles):  # Reverse to get chronological order
                         processed = {
                             'timestamp': int(candle[0]),
                             'open': float(candle[1]),
@@ -111,7 +111,7 @@ class OptimizedDataFetcher:
                         }
                         processed_candles.append(processed)
                     
-                    # Add to memory storage
+                    # Add to memory storage in chronological order
                     self.memory_data[key].extend(processed_candles)
                     
                     print(f"✅ Fetched {len(processed_candles)} candles for {symbol}_{timeframe}")
@@ -143,7 +143,7 @@ class OptimizedDataFetcher:
                     writer = csv.DictWriter(f, fieldnames=fieldnames)
                     writer.writeheader()
                     
-                    # Write candles with human-readable datetime
+                    # Write candles with human-readable datetime in chronological order
                     for candle in candles:
                         # Convert timestamp to datetime
                         dt = datetime.fromtimestamp(candle['timestamp'] / 1000)

@@ -15,7 +15,7 @@ class DataCollectionConfig:
     # Data collection mode
     # True = Keep only last 50 entries (for simple strategy testing)
     # False = Get full historical data (for AI training)
-    LIMIT_TO_50_ENTRIES = True
+    LIMIT_TO_50_ENTRIES = False
     
     # Fetch all symbols from Bybit
     # True = Get all available symbols from Bybit

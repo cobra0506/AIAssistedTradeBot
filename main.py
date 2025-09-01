@@ -1,4 +1,4 @@
-# main.py - Complete Fixed Version with Debug Function
+# main.py - Updated with more frequent CSV updates
 import os
 import csv
 import asyncio
@@ -134,20 +134,27 @@ async def main():
             print("\n" + "="*60)
             print("LIVE UPDATES MODE - Press Ctrl+C to stop")
             print("="*60)
+            print("⏰ CSV updates every 10 seconds")
+            print("⏰ Status updates every 10 seconds")
             
             try:
                 # Keep the program running for live updates
                 live_update_count = 0
+                last_csv_update = time.time()
+                
                 while True:
-                    await asyncio.sleep(10)
+                    await asyncio.sleep(5)  # Check every 5 seconds instead of 10
                     live_update_count += 1
                     
-                    # Update CSV files with real-time data every 30 seconds
-                    if live_update_count % 3 == 0:
-                        print(f"\n📡 Live update #{live_update_count}:")
+                    current_time = time.time()
+                    
+                    # Update CSV files every 10 seconds (more frequent)
+                    if current_time - last_csv_update >= 10:
+                        print(f"\n📡 Live update #{live_update_count} at {datetime.now().strftime('%H:%M:%S')}:")
                         await hybrid_system.update_csv_with_realtime_data(config.DATA_DIR)
+                        last_csv_update = current_time
                         
-                        # Display live updates
+                        # Display current status
                         for symbol in symbols:
                             for timeframe in config.TIMEFRAMES:
                                 rt_data = hybrid_system.get_data(symbol, timeframe, "websocket")
@@ -156,6 +163,12 @@ async def main():
                                     dt = datetime.fromtimestamp(latest['timestamp'] / 1000)
                                     datetime_str = dt.strftime('%Y-%m-%d %H:%M:%S')
                                     print(f"  {symbol}_{timeframe}: {len(rt_data)} candles, latest: {datetime_str}")
+                    
+                    # Show brief status every 5 seconds (without CSV update)
+                    else:
+                        # Every other iteration (every 10 seconds) show a brief status
+                        if live_update_count % 2 == 0:
+                            print(f"⏰ Tick... {datetime.now().strftime('%H:%M:%S')} (WebSocket: {'Connected' if hybrid_system.websocket_handler.running else 'Disconnected'})")
                     
             except KeyboardInterrupt:
                 print("\n🛑 Stopping live updates...")

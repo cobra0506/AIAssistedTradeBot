@@ -1,4 +1,4 @@
-# hybrid_system.py - Complete Fixed Version
+# hybrid_system.py - Fixed to properly handle field filtering
 import asyncio
 import os
 import csv
@@ -105,8 +105,23 @@ class HybridTradingSystem:
         """Save all data to CSV"""
         await self.data_fetcher.save_to_csv(directory)
     
+    def _filter_csv_fields(self, candle_data):
+        """Filter candle data to only include CSV fields"""
+        csv_fields = ['timestamp', 'datetime', 'open', 'high', 'low', 'close', 'volume']
+        filtered_candle = {}
+        
+        for field in csv_fields:
+            if field in candle_data:
+                filtered_candle[field] = candle_data[field]
+            elif field == 'datetime' and 'timestamp' in candle_data:
+                # Generate datetime from timestamp if not present
+                dt = datetime.fromtimestamp(int(candle_data['timestamp']) / 1000)
+                filtered_candle[field] = dt.strftime('%Y-%m-%d %H:%M:%S')
+        
+        return filtered_candle
+    
     async def update_csv_with_realtime_data(self, directory: str = "data"):
-        """Update CSV files with real-time data"""
+        """Update CSV files with real-time data while maintaining the 50-entry limit"""
         os.makedirs(directory, exist_ok=True)
         
         for symbol in self.websocket_handler.symbols:
@@ -137,22 +152,26 @@ class HybridTradingSystem:
                     ]
                     
                     if new_candles:
-                        # Append new candles to existing data
-                        with open(filename, 'a', newline='') as f:
+                        # Filter new candles to only include CSV fields
+                        filtered_new_candles = [self._filter_csv_fields(candle) for candle in new_candles]
+                        
+                        # Combine existing data with new candles
+                        combined_data = existing_data + filtered_new_candles
+                        
+                        # If we need to maintain 50-entry limit
+                        if self.config.LIMIT_TO_50_ENTRIES and len(combined_data) > 50:
+                            # Keep only the latest 50 entries
+                            combined_data = combined_data[-50:]
+                            print(f"📝 Maintaining 50-entry limit for {filename}")
+                        
+                        # Write the updated data back to the CSV
+                        with open(filename, 'w', newline='') as f:
                             fieldnames = ['timestamp', 'datetime', 'open', 'high', 'low', 'close', 'volume']
                             writer = csv.DictWriter(f, fieldnames=fieldnames)
-                            
-                            for candle in new_candles:
-                                # Convert timestamp to datetime
-                                dt = datetime.fromtimestamp(candle['timestamp'] / 1000)
-                                datetime_str = dt.strftime('%Y-%m-%d %H:%M:%S')
-                                
-                                # Create a new row with both timestamp and datetime
-                                row = candle.copy()
-                                row['datetime'] = datetime_str
-                                writer.writerow(row)
+                            writer.writeheader()
+                            writer.writerows(combined_data)
                         
-                        print(f"📡 Updated {filename} with {len(new_candles)} new candles")
+                        print(f"📡 Updated {filename} with {len(new_candles)} new candles (total: {len(combined_data)} entries)")
     
     async def close(self):
         """Clean up resources"""
