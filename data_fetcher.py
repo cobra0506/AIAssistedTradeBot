@@ -69,11 +69,12 @@ class OptimizedDataFetcher:
     
     async def _fetch_symbol_timeframe(self, symbol: str, timeframe: str,
                                  days: int, limit_50: bool):
-        """Fetch data for single symbol/timeframe with pagination"""
+        """Fetch data for single symbol/timeframe with proven chunking approach"""
         end_time = int(time.time() * 1000)
         
         # If limit_50 is True, we only need the most recent 50 candles
         if limit_50:
+            print(f"🚀 DEBUG: Using limit_50=True path")
             # For limited mode, just fetch the most recent 50 candles
             limit_per_request = 50
             
@@ -142,22 +143,29 @@ class OptimizedDataFetcher:
                 return False
         
         else:
-            # For full historical data, use pagination
+            print(f"🚀 DEBUG: Using limit_50=False path - this should use chunking!")
+            # For full historical data, use the proven chunking approach
             start_time = end_time - (days * 24 * 60 * 60 * 1000)
-            limit_per_request = 1000  # Max limit per request for full data
             
             url = f"https://api.bybit.com/v5/market/kline"
             all_candles = []
-            current_end_time = end_time
             
-            while True:
+            # Use the proven approach: 8-hour chunks working backwards
+            chunk_duration = 8 * 60 * 60 * 1000  # 8 hours in milliseconds
+            current_end = end_time
+            
+            print(f"📊 Fetching {symbol}_{timeframe} using 8-hour chunks...")
+            
+            while current_end > start_time:
+                current_start = max(start_time, current_end - chunk_duration)
+                
                 params = {
                     "category": "linear",
                     "symbol": symbol,
                     "interval": timeframe,
-                    "start": start_time,
-                    "end": current_end_time,
-                    "limit": limit_per_request
+                    "start": int(current_start),
+                    "end": int(current_end),
+                    "limit": 1000
                 }
                 
                 try:
@@ -167,42 +175,39 @@ class OptimizedDataFetcher:
                         if data.get("retCode") == 0:
                             candles = data["result"]["list"]
                             
-                            if not candles:
-                                break  # No more data
-                            
-                            # Process candles
-                            processed_candles = []
-                            for candle in candles:
-                                processed = {
-                                    'timestamp': int(candle[0]),
-                                    'open': float(candle[1]),
-                                    'high': float(candle[2]),
-                                    'low': float(candle[3]),
-                                    'close': float(candle[4]),
-                                    'volume': float(candle[5])
-                                }
-                                processed_candles.append(processed)
-                            
-                            # Add to our collection
-                            all_candles.extend(processed_candles)
-                            
-                            # Update the end time for the next request
-                            # Use the timestamp of the oldest candle we just received
-                            current_end_time = int(candles[-1][0]) - 1  # -1 to avoid overlap
-                            
-                            # Break if we've reached the start time or have no more data
-                            if current_end_time <= start_time or len(candles) < limit_per_request:
+                            if candles:
+                                print(f"📊 Chunk {datetime.fromtimestamp(current_start/1000)} to {datetime.fromtimestamp(current_end/1000)}: {len(candles)} candles")
+                                
+                                # Process candles
+                                processed_candles = []
+                                for candle in candles:
+                                    processed = {
+                                        'timestamp': int(candle[0]),
+                                        'open': float(candle[1]),
+                                        'high': float(candle[2]),
+                                        'low': float(candle[3]),
+                                        'close': float(candle[4]),
+                                        'volume': float(candle[5])
+                                    }
+                                    processed_candles.append(processed)
+                                
+                                all_candles.extend(processed_candles)
+                                
+                                # Update for next chunk - use the oldest candle's timestamp
+                                current_end = int(candles[-1][0]) - 1  # -1 to avoid overlap
+                            else:
+                                print(f"📊 No candles returned for chunk ending at {datetime.fromtimestamp(current_end/1000)}")
                                 break
                                 
                             # Small delay to avoid rate limiting
                             await asyncio.sleep(0.1)
                             
                         else:
-                            print(f"❌ Error fetching {symbol}/{timeframe}: {data.get('retMsg')}")
+                            print(f"❌ Error fetching chunk: {data.get('retMsg')}")
                             break
                             
                 except Exception as e:
-                    print(f"❌ Exception fetching {symbol}/{timeframe}: {e}")
+                    print(f"❌ Exception fetching chunk: {e}")
                     break
             
             # Store in memory

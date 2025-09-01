@@ -15,12 +15,12 @@ class DataCollectionConfig:
     # Data collection mode
     # True = Keep only last 50 entries (for simple strategy testing)
     # False = Get full historical data (for AI training)
-    LIMIT_TO_50_ENTRIES = False
+    LIMIT_TO_50_ENTRIES = True
     
     # Fetch all symbols from Bybit
     # True = Get all available symbols from Bybit
     # False = Use only symbols in SYMBOLS list
-    FETCH_ALL_SYMBOLS = False
+    FETCH_ALL_SYMBOLS = True
     
     # WebSocket settings
     # True = Start WebSocket and continue collecting live data
