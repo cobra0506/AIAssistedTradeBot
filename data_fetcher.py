@@ -3,6 +3,7 @@ import csv
 import time
 import requests
 import concurrent.futures
+import random
 import asyncio
 import aiohttp
 from datetime import datetime, timedelta
@@ -266,8 +267,8 @@ class FastDataFetcher:
             "limit": 1000  # Max limit per request
         }
         
-        max_retries = 3
-        retry_delay = 1  # Initial delay in seconds
+        max_retries = 5  # Increased from 3 to 5
+        retry_delay = 2  # Increased from 1 to 2 seconds
         
         for attempt in range(max_retries):
             try:
@@ -275,6 +276,10 @@ class FastDataFetcher:
                 if attempt > 0:
                     await asyncio.sleep(retry_delay)
                     retry_delay *= 2  # Exponential backoff
+                
+                # Add a small random jitter to avoid synchronized requests
+                jitter = 0.1 + (random.random() * 0.2)  # Random delay between 0.1 and 0.3 seconds
+                await asyncio.sleep(jitter)
                 
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url, params=params, timeout=self.config.REQUEST_TIMEOUT) as response:

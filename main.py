@@ -261,46 +261,47 @@ async def run_data_collection():
         
         print("WebSocket setup completed.")
 
-    # Fetch historical data
-    print("Fetching historical data...")
-    
-    # Create tasks for parallel data fetching
-    tasks = []
-    for symbol in symbols_to_use:
-        for timeframe in config.TIMEFRAMES:
-            # Calculate date range
-            end_time = datetime.now()
-            start_time = end_time - timedelta(days=config.DAYS_TO_FETCH)
+        # Fetch historical data
+        print("Fetching historical data...")
+        
+        # Create tasks for parallel data fetching
+        tasks = []
+        for symbol in symbols_to_use:
+            for timeframe in config.TIMEFRAMES:
+                # Calculate date range
+                end_time = datetime.now()
+                start_time = end_time - timedelta(days=config.DAYS_TO_FETCH)
+                
+                # Use the fetcher instance we created earlier
+                task = asyncio.create_task(
+                    fetcher.fetch_and_save_simple(symbol, timeframe, 
+                                            start_time, end_time)
+                )
+                tasks.append(task)
+        
+        # Wait for all historical data fetching to complete
+        if tasks:
+            print(f"Fetching data for {len(tasks)} symbol/timeframe combinations...")
+            # Use a semaphore to limit concurrent requests and avoid rate limiting
+            semaphore = asyncio.Semaphore(3)  # Reduced from 5 to 3 to further avoid rate limiting
             
-            # Use the fetcher instance we created earlier
-            task = asyncio.create_task(
-                fetcher.fetch_and_save_simple(symbol, timeframe, 
-                                           start_time, end_time)
-            )
-            tasks.append(task)
-    
-    # Wait for all historical data fetching to complete
-    if tasks:
-        print(f"Fetching data for {len(tasks)} symbol/timeframe combinations...")
-        # Use a semaphore to limit concurrent requests and avoid rate limiting
-        semaphore = asyncio.Semaphore(5)  # Reduced from 50 to 5 to avoid rate limiting
-        
-        async def fetch_with_semaphore(task):
-            async with semaphore:
-                # Add a small delay between requests to further avoid rate limiting
-                await asyncio.sleep(0.2)
-                return await task
-        
-        # Process tasks with semaphore
-        results = await asyncio.gather(*[fetch_with_semaphore(task) for task in tasks])
-        
-        # Print summary
-        successful = sum(results)
-        failed = len(results) - successful
-        print(f"Historical data fetching completed.")
-        print(f"Results: {successful} successful, {failed} failed")
-        if failed > 0:
-            print(f"Success rate: {successful / len(results) * 100:.1f}%")
+            async def fetch_with_semaphore(task):
+                async with semaphore:
+                    # Add a small delay between requests to further avoid rate limiting
+                    await asyncio.sleep(0.5)  # Increased from 0.2 to 0.5
+                    return await task
+            
+            # Process tasks with semaphore
+            results = await asyncio.gather(*[fetch_with_semaphore(task) for task in tasks])
+            
+            # Print summary
+            successful = sum(results)
+            failed = len(results) - successful
+            print(f"Historical data fetching completed.")
+            print(f"Results: {successful} successful, {failed} failed")
+            if failed > 0:
+                print(f"Success rate: {successful / len(results) * 100:.1f}%")
+        print("Historical data fetching completed.")
     
     # Merge historical and real-time data if WebSocket is enabled
     if config.ENABLE_WEBSOCKET and ws_handler:
