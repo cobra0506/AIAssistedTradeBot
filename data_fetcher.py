@@ -67,62 +67,161 @@ class OptimizedDataFetcher:
         
         return success_count == len(tasks)
     
-    async def _fetch_symbol_timeframe(self, symbol: str, timeframe: str, 
-                                    days: int, limit_50: bool):
-        """Fetch data for single symbol/timeframe"""
+    async def _fetch_symbol_timeframe(self, symbol: str, timeframe: str,
+                                 days: int, limit_50: bool):
+        """Fetch data for single symbol/timeframe with pagination"""
         end_time = int(time.time() * 1000)
-        start_time = end_time - (days * 24 * 60 * 60 * 1000)
         
-        # Calculate limit
-        limit = 50 if limit_50 else 1000
+        # If limit_50 is True, we only need the most recent 50 candles
+        if limit_50:
+            # For limited mode, just fetch the most recent 50 candles
+            limit_per_request = 50
+            
+            # Estimate how much time we need to go back to get at least 50 candles
+            timeframe_minutes = int(timeframe)
+            if timeframe_minutes <= 1:  # 1m or similar
+                start_time = end_time - (60 * 60 * 1000)  # Go back 1 hour
+            elif timeframe_minutes <= 5:  # 5m or similar
+                start_time = end_time - (5 * 60 * 60 * 1000)  # Go back 5 hours
+            elif timeframe_minutes <= 15:  # 15m or similar
+                start_time = end_time - (15 * 60 * 60 * 1000)  # Go back 15 hours
+            else:
+                start_time = end_time - (24 * 60 * 60 * 1000)  # Go back 1 day
+            
+            url = f"https://api.bybit.com/v5/market/kline"
+            params = {
+                "category": "linear",
+                "symbol": symbol,
+                "interval": timeframe,
+                "start": start_time,
+                "end": end_time,
+                "limit": limit_per_request
+            }
+            
+            try:
+                async with self.session.get(url, params=params) as response:
+                    data = await response.json()
+                    
+                    if data.get("retCode") == 0:
+                        candles = data["result"]["list"]
+                        
+                        # Process candles
+                        processed_candles = []
+                        for candle in candles:
+                            processed = {
+                                'timestamp': int(candle[0]),
+                                'open': float(candle[1]),
+                                'high': float(candle[2]),
+                                'low': float(candle[3]),
+                                'close': float(candle[4]),
+                                'volume': float(candle[5])
+                            }
+                            processed_candles.append(processed)
+                        
+                        # Sort by timestamp (newest first) and limit to 50
+                        processed_candles.sort(key=lambda x: x['timestamp'], reverse=True)
+                        if len(processed_candles) > 50:
+                            processed_candles = processed_candles[:50]
+                        
+                        # Store in memory
+                        key = f"{symbol}_{timeframe}"
+                        if key not in self.memory_data:
+                            self.memory_data[key] = deque(maxlen=50)
+                        
+                        # Add to memory storage
+                        self.memory_data[key].extend(processed_candles)
+                        
+                        print(f"✅ Fetched {len(processed_candles)} candles for {symbol}_{timeframe}")
+                        return True
+                    else:
+                        print(f"❌ Error fetching {symbol}/{timeframe}: {data.get('retMsg')}")
+                        return False
+                        
+            except Exception as e:
+                print(f"❌ Exception fetching {symbol}/{timeframe}: {e}")
+                return False
         
-        url = f"https://api.bybit.com/v5/market/kline"
-        params = {
-            "category": "linear",
-            "symbol": symbol,
-            "interval": timeframe,
-            "start": start_time,
-            "end": end_time,
-            "limit": limit
-        }
-        
-        try:
-            async with self.session.get(url, params=params) as response:
-                data = await response.json()
+        else:
+            # For full historical data, use pagination
+            start_time = end_time - (days * 24 * 60 * 60 * 1000)
+            limit_per_request = 1000  # Max limit per request for full data
+            
+            url = f"https://api.bybit.com/v5/market/kline"
+            all_candles = []
+            current_end_time = end_time
+            
+            while True:
+                params = {
+                    "category": "linear",
+                    "symbol": symbol,
+                    "interval": timeframe,
+                    "start": start_time,
+                    "end": current_end_time,
+                    "limit": limit_per_request
+                }
                 
-                if data.get("retCode") == 0:
-                    candles = data["result"]["list"]
-                    
-                    # Store in memory (like RedoneTradeBot)
-                    key = f"{symbol}_{timeframe}"
-                    if key not in self.memory_data:
-                        self.memory_data[key] = deque(maxlen=limit if limit_50 else 5000)
-                    
-                    # Process candles
-                    processed_candles = []
-                    for candle in candles:
-                        processed = {
-                            'timestamp': int(candle[0]),
-                            'open': float(candle[1]),
-                            'high': float(candle[2]),
-                            'low': float(candle[3]),
-                            'close': float(candle[4]),
-                            'volume': float(candle[5])
-                        }
-                        processed_candles.append(processed)
-                    
-                    # Add to memory storage
-                    self.memory_data[key].extend(processed_candles)
-                    
-                    print(f"✅ Fetched {len(processed_candles)} candles for {symbol}_{timeframe}")
-                    return True
-                else:
-                    print(f"❌ Error fetching {symbol}/{timeframe}: {data.get('retMsg')}")
-                    return False
-                    
-        except Exception as e:
-            print(f"❌ Exception fetching {symbol}/{timeframe}: {e}")
-            return False
+                try:
+                    async with self.session.get(url, params=params) as response:
+                        data = await response.json()
+                        
+                        if data.get("retCode") == 0:
+                            candles = data["result"]["list"]
+                            
+                            if not candles:
+                                break  # No more data
+                            
+                            # Process candles
+                            processed_candles = []
+                            for candle in candles:
+                                processed = {
+                                    'timestamp': int(candle[0]),
+                                    'open': float(candle[1]),
+                                    'high': float(candle[2]),
+                                    'low': float(candle[3]),
+                                    'close': float(candle[4]),
+                                    'volume': float(candle[5])
+                                }
+                                processed_candles.append(processed)
+                            
+                            # Add to our collection
+                            all_candles.extend(processed_candles)
+                            
+                            # Update the end time for the next request
+                            # Use the timestamp of the oldest candle we just received
+                            current_end_time = int(candles[-1][0]) - 1  # -1 to avoid overlap
+                            
+                            # Break if we've reached the start time or have no more data
+                            if current_end_time <= start_time or len(candles) < limit_per_request:
+                                break
+                                
+                            # Small delay to avoid rate limiting
+                            await asyncio.sleep(0.1)
+                            
+                        else:
+                            print(f"❌ Error fetching {symbol}/{timeframe}: {data.get('retMsg')}")
+                            break
+                            
+                except Exception as e:
+                    print(f"❌ Exception fetching {symbol}/{timeframe}: {e}")
+                    break
+            
+            # Store in memory
+            if all_candles:
+                key = f"{symbol}_{timeframe}"
+                if key not in self.memory_data:
+                    self.memory_data[key] = deque(maxlen=5000)
+                
+                # Sort by timestamp (ascending order)
+                all_candles.sort(key=lambda x: x['timestamp'])
+                
+                # Add to memory storage
+                self.memory_data[key].extend(all_candles)
+                
+                print(f"✅ Fetched {len(all_candles)} candles for {symbol}_{timeframe}")
+                return True
+            else:
+                print(f"❌ No data fetched for {symbol}_{timeframe}")
+                return False
     
     def get_memory_data(self):
         """Access to in-memory data (like RedoneTradeBot)"""

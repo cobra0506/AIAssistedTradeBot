@@ -25,7 +25,7 @@ class DataCollectionConfig:
     # WebSocket settings
     # True = Start WebSocket and continue collecting live data
     # False = Only fetch historical data and exit (for AI training)
-    ENABLE_WEBSOCKET = True
+    ENABLE_WEBSOCKET = False
     
     # Automatic integrity check after data collection
     RUN_INTEGRITY_CHECK = False  # Disabled for speed
