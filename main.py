@@ -1,4 +1,221 @@
+# main.py - Updated to handle cleanup
 import os
+import csv
+import asyncio
+import time
+from datetime import datetime, timedelta
+from typing import Dict, List, Any
+from config import DataCollectionConfig
+from hybrid_system import HybridTradingSystem
+from data_integrity import DataIntegrityChecker  # Keep if you want integrity checks
+
+# Global configuration
+config = DataCollectionConfig()
+
+async def main():
+    """Main function using the optimized hybrid system"""
+    print("="*60)
+    print("OPTIMIZED AI ASSISTED TRADING BOT")
+    print("="*60)
+    
+    # Initialize the hybrid system
+    hybrid_system = HybridTradingSystem(config)
+    await hybrid_system.initialize()
+    
+    try:
+        # Determine data collection mode
+        if config.LIMIT_TO_50_ENTRIES:
+            mode = "recent"
+            print("📊 MODE: Recent 50 entries only")
+        else:
+            mode = "full"
+            print("📊 MODE: Full historical data")
+        
+        if config.ENABLE_WEBSOCKET:
+            print("📡 MODE: Live updates enabled")
+        else:
+            print("📡 MODE: Historical data only")
+        
+        # Get symbols to process
+        if config.FETCH_ALL_SYMBOLS:
+            print("🔍 Fetching all available symbols...")
+            # This would be implemented in the hybrid system
+            symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']  # Placeholder
+        else:
+            symbols = config.SYMBOLS
+        
+        print(f"📈 Processing {len(symbols)} symbols: {', '.join(symbols)}")
+        print(f"⏰ Timeframes: {', '.join(config.TIMEFRAMES)}")
+        
+        # Fetch data with optimized system
+        start_time = time.time()
+        
+        await hybrid_system.fetch_data_hybrid(
+            symbols=symbols,
+            timeframes=config.TIMEFRAMES,
+            days=config.DAYS_TO_FETCH,
+            mode=mode
+        )
+        
+        # Performance reporting
+        end_time = time.time()
+        duration = end_time - start_time
+        
+        print("="*60)
+        print("DATA COLLECTION COMPLETED")
+        print("="*60)
+        print(f"⏱️  Total time: {duration:.2f} seconds")
+        print(f"📊 Mode: {mode}")
+        print(f"📡 WebSocket: {'Enabled' if config.ENABLE_WEBSOCKET else 'Disabled'}")
+        
+        # Save data to CSV if needed
+        if hasattr(hybrid_system, 'save_to_csv'):
+            print("💾 Saving data to CSV files...")
+            await hybrid_system.save_to_csv(config.DATA_DIR)
+            print("✅ CSV files saved successfully")
+        
+        # Display final data status
+        print("\n" + "="*60)
+        print("FINAL DATA STATUS")
+        print("="*60)
+        
+        for symbol in symbols:
+            for timeframe in config.TIMEFRAMES:
+                # Get historical data
+                hist_data = hybrid_system.get_data(symbol, timeframe, "memory")
+                # Get real-time data
+                rt_data = hybrid_system.get_data(symbol, timeframe, "websocket")
+                
+                print(f"\n{symbol}_{timeframe}:")
+                print(f"  Historical candles: {len(hist_data)}")
+                print(f"  Real-time candles: {len(rt_data)}")
+                
+                if hist_data:
+                    latest_hist = hist_data[-1]
+                    print(f"  Latest historical: {latest_hist['timestamp']}")
+                
+                if rt_data:
+                    latest_rt = rt_data[-1]
+                    print(f"  Latest real-time: {latest_rt['timestamp']}")
+        
+        # Run integrity check if enabled
+        if config.RUN_INTEGRITY_CHECK:
+            print("\n" + "="*60)
+            print("RUNNING INTEGRITY CHECK")
+            print("="*60)
+            integrity_checker = DataIntegrityChecker(config)
+            results = integrity_checker.check_all_files()
+            print(f"Files checked: {results['files_checked']}")
+            print(f"Files with issues: {results['files_with_issues']}")
+            print(f"Total gaps: {results['total_gaps']}")
+        
+        # Keep running for live updates if WebSocket is enabled
+        if config.ENABLE_WEBSOCKET:
+            print("\n" + "="*60)
+            print("LIVE UPDATES MODE - Press Ctrl+C to stop")
+            print("="*60)
+            
+            try:
+                # Keep the program running for live updates
+                live_update_count = 0
+                while True:
+                    await asyncio.sleep(10)
+                    live_update_count += 1
+                    
+                    # Update CSV files with real-time data every 30 seconds
+                    if live_update_count % 3 == 0:
+                        print(f"\n📡 Live update #{live_update_count}:")
+                        await hybrid_system.update_csv_with_realtime_data(config.DATA_DIR)
+                        
+                        # Display live updates
+                        for symbol in symbols:
+                            for timeframe in config.TIMEFRAMES:
+                                rt_data = hybrid_system.get_data(symbol, timeframe, "websocket")
+                                if rt_data:
+                                    latest = rt_data[-1]
+                                    dt = datetime.fromtimestamp(latest['timestamp'] / 1000)
+                                    datetime_str = dt.strftime('%Y-%m-%d %H:%M:%S')
+                                    print(f"  {symbol}_{timeframe}: {len(rt_data)} candles, latest: {datetime_str}")
+                    
+            except KeyboardInterrupt:
+                print("\n🛑 Stopping live updates...")
+        
+        print("\n✅ Program completed successfully")
+    
+    finally:
+        # Clean up resources
+        await hybrid_system.close()
+
+
+async def test_websocket_functionality():
+    """Test WebSocket functionality with the hybrid system"""
+    print("="*60)
+    print("WEBSOCKET FUNCTIONALITY TEST")
+    print("="*60)
+    
+    # Create test configuration
+    test_config = DataCollectionConfig()
+    test_config.SYMBOLS = ['BTCUSDT']
+    test_config.TIMEFRAMES = ['1']
+    test_config.DAYS_TO_FETCH = 1
+    test_config.ENABLE_WEBSOCKET = True
+    test_config.LIMIT_TO_50_ENTRIES = True
+    
+    # Initialize hybrid system
+    hybrid_system = HybridTradingSystem(test_config)
+    await hybrid_system.initialize()
+    
+    # Test results tracking
+    test_results = {
+        'candles_received': 0,
+        'start_time': time.time(),
+        'last_candle_time': None
+    }
+    
+    def test_callback(symbol: str, timeframe: str, candle: Dict):
+        """Test callback to track received candles"""
+        test_results['candles_received'] += 1
+        test_results['last_candle_time'] = candle['timestamp']
+        print(f"📊 TEST: Received candle #{test_results['candles_received']} for {symbol}_{timeframe}")
+        print(f"   Timestamp: {candle['timestamp']}")
+        print(f"   Confirm: {candle.get('confirm', False)}")
+    
+    # Add callback to WebSocket handler
+    hybrid_system.websocket_handler.add_callback(test_callback)
+    
+    # Start data collection
+    await hybrid_system.fetch_data_hybrid(
+        symbols=test_config.SYMBOLS,
+        timeframes=test_config.TIMEFRAMES,
+        days=test_config.DAYS_TO_FETCH,
+        mode="live"
+    )
+    
+    # Wait for test duration (2 minutes)
+    print("🧪 Running test for 2 minutes...")
+    await asyncio.sleep(120)
+    
+    # Print test results
+    print("\n" + "="*60)
+    print("TEST RESULTS")
+    print("="*60)
+    print(f"Test duration: 120 seconds")
+    print(f"Candles received: {test_results['candles_received']}")
+    print(f"Last candle time: {test_results['last_candle_time']}")
+    
+    if test_results['candles_received'] > 0:
+        print("✅ WebSocket test PASSED")
+    else:
+        print("❌ WebSocket test FAILED")
+
+if __name__ == "__main__":
+    # Check if running in test mode
+    if config.TEST_WEBSOCKET:
+        asyncio.run(test_websocket_functionality())
+    else:
+        asyncio.run(main())
+
+'''import os
 import csv
 import asyncio
 import time
@@ -421,4 +638,4 @@ def main():
         print(f"Error: {e}")
 
 if __name__ == "__main__":
-    main()
+    main()'''

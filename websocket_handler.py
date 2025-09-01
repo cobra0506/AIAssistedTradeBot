@@ -1,3 +1,4 @@
+# websocket_handler.py - Complete working version
 import websockets
 import json
 import asyncio
@@ -17,7 +18,6 @@ class WebSocketHandler:
         self.lock = asyncio.Lock()  # For thread-safe operations
         self.connection = None  # Store the connection object
         self.subscription_count = 0  # Track successful subscriptions
-        
         # Use provided symbols or fall back to config symbols
         self.symbols = symbols if symbols else config.SYMBOLS
 
@@ -29,7 +29,6 @@ class WebSocketHandler:
             self._connect_with_ssl,
             self._connect_without_ssl
         ]
-        
         for attempt in connection_attempts:
             try:
                 connection = await attempt()
@@ -41,7 +40,6 @@ class WebSocketHandler:
             except Exception as e:
                 print(f"Connection attempt failed: {e}")
                 await asyncio.sleep(1)
-        
         # If all attempts failed
         print("All connection attempts failed.")
         await self._reconnect()
@@ -72,34 +70,27 @@ class WebSocketHandler:
         try:
             # Subscribe to all symbols and timeframes
             await self._subscribe_to_symbols(connection)
-            
             # Print subscription summary
             print(f"Subscription summary: {self.subscription_count} subscriptions sent")
-            
             # Start heartbeat task
             heartbeat_task = asyncio.create_task(self._heartbeat(connection))
-            
             # Listen for messages
             async for message in connection:
                 if not self.running:
                     break
-                    
                 # Call debug callbacks for all messages
                 for callback in self.debug_callbacks:
                     if asyncio.iscoroutinefunction(callback):
                         await callback(message)
                     else:
                         callback(message)
-                
                 # Process the message
                 try:
                     await self._process_message(message)
                 except Exception as e:
                     print(f"Error processing message: {e}")
-            
             # Cancel heartbeat task when done
             heartbeat_task.cancel()
-            
         except Exception as e:
             print(f"Error while listening: {e}")
             raise e
@@ -132,105 +123,66 @@ class WebSocketHandler:
             for timeframe in self.config.TIMEFRAMES:
                 # Bybit uses different interval names
                 interval_map = {'1': '1', '5': '5', '15': '15', '60': '60', '240': '240', '1440': 'D'}
-                interval = interval_map.get(timeframe, '1')
-                subscription_args.append(f"kline.{interval}.{symbol}")
-        
-        # Split into batches to avoid overly large messages
-        batch_size = 100  # Adjust based on API limits
-        batches = [subscription_args[i:i + batch_size] for i in range(0, len(subscription_args), batch_size)]
-        
-        print(f"Created {len(batches)} batches of up to {batch_size} subscriptions each")
-        
-        # Send all batch subscription requests and wait for them to complete
-        for i, batch in enumerate(batches):
-            try:
-                subscribe_msg = {
+                bybit_interval = interval_map.get(timeframe, timeframe)
+                
+                subscription_args.append({
                     "op": "subscribe",
-                    "args": batch
-                }
-                
-                await websocket.send(json.dumps(subscribe_msg))
+                    "args": [f"kline.{bybit_interval}.{symbol}"]
+                })
+        
+        # Send subscriptions in batches
+        batch_size = 100
+        for i in range(0, len(subscription_args), batch_size):
+            batch = subscription_args[i:i + batch_size]
+            try:
+                await websocket.send(json.dumps(batch))
                 self.subscription_count += len(batch)
-                print(f"Sent batch {i+1}/{len(batches)} with {len(batch)} subscriptions ({self.subscription_count}/{total_subscriptions})")
-                
-                # Add a small delay between batches to avoid rate limiting
-                await asyncio.sleep(0.5)
-                
+                print(f"Sent batch {i//batch_size + 1}/{(len(subscription_args)-1)//batch_size + 1} with {len(batch)} subscriptions ({self.subscription_count}/{total_subscriptions})")
             except Exception as e:
-                print(f"Error sending batch {i+1}: {e}")
-                # Continue with the next batch even if this one fails
-                continue
+                print(f"Error sending subscription batch: {e}")
         
-        print(f"Subscription completed. Successfully sent {self.subscription_count}/{total_subscriptions} subscription requests.")
-        
-        # Wait a moment for subscriptions to be processed by the server
+        # Wait for subscriptions to be processed
         print("Waiting for subscriptions to be processed by the server...")
         await asyncio.sleep(2)
-
-    def _parse_timestamp(self, timestamp_value):
-        """Parse timestamp from various possible formats"""
-        try:
-            # If it's a number (milliseconds since epoch)
-            if isinstance(timestamp_value, (int, float)):
-                # Check if it's in seconds or milliseconds
-                if timestamp_value > 1e10:  # Likely milliseconds
-                    return datetime.fromtimestamp(timestamp_value/1000).isoformat()
-                else:  # Likely seconds
-                    return datetime.fromtimestamp(timestamp_value).isoformat()
-            # If it's something else, try to convert to string
-            else:
-                return str(timestamp_value)
-        except Exception as e:
-            print(f"Error parsing timestamp {timestamp_value}: {e}")
-            return str(timestamp_value)
 
     async def _process_message(self, message):
         """Process incoming WebSocket message"""
         try:
             data = json.loads(message)
             
-            # Debug: Print the first few characters of the message to identify its type
-            if len(message) < 200:
-                print(f"Debug message: {message}")
-            else:
-                print(f"Debug message type: {data.get('topic', 'unknown')}")
+            # Handle subscription confirmation
+            if data.get("op") == "subscribe" and data.get("success") is True:
+                print(f"Subscription confirmed: {data.get('req_id', 'unknown')}")
+                return
             
-            # Check if it's a kline (candlestick) message
-            if 'topic' in data and data['topic'].startswith('kline.'):
-                # Extract symbol and timeframe from topic
-                topic_parts = data['topic'].split('.')
-                timeframe = topic_parts[1]
-                symbol = topic_parts[2]
-                
-                # Get the candle data
-                if 'data' in data:
-                    candle_data = data['data']
+            # Handle data messages
+            if "topic" in data and "data" in data:
+                topic = data["topic"]
+                # Parse topic to get symbol and timeframe
+                parts = topic.split(".")
+                if len(parts) >= 3 and parts[0] == "kline":
+                    timeframe = parts[1]
+                    symbol = parts[2]
                     
-                    # Debug: Print the type of candle_data
-                    print(f"Debug: candle_data type for {symbol} {timeframe}: {type(candle_data)}")
+                    # Convert Bybit timeframe back to our format
+                    interval_map = {'1': '1', '5': '5', '15': '15', '60': '60', '240': '240', 'D': '1440'}
+                    our_timeframe = interval_map.get(timeframe, timeframe)
                     
-                    # Handle both single candle (dict) and multiple candles (list)
+                    candle_data = data["data"]
+                    
+                    # Handle both single candle and list of candles
                     if isinstance(candle_data, list):
-                        print(f"Debug: Processing list with {len(candle_data)} candles")
-                        # Process each candle in the list
-                        for candle_item in candle_data:
-                            await self._process_candle_data(symbol, timeframe, candle_item)
+                        for candle in candle_data:
+                            await self._process_candle(symbol, our_timeframe, candle)
                     else:
-                        print(f"Debug: Processing single candle")
-                        # Process single candle
-                        await self._process_candle_data(symbol, timeframe, candle_data)
-                        
+                        await self._process_candle(symbol, our_timeframe, candle_data)
         except Exception as e:
             print(f"Error processing message: {e}")
-            # Print the problematic message for debugging
-            try:
-                print(f"Problematic message: {message[:500]}...")
-            except:
-                pass
 
-    async def _process_candle_data(self, symbol: str, timeframe: str, candle_data: Dict):
-        """Process a single candle data object"""
+    async def _process_candle(self, symbol: str, timeframe: str, candle_data: Dict):
+        """Process a single candle"""
         try:
+            # Create candle object
             candle = {
                 'timestamp': self._parse_timestamp(candle_data.get('start', 0)),
                 'open': candle_data.get('open', '0'),
@@ -252,14 +204,14 @@ class WebSocketHandler:
                 existing_timestamps = {c['timestamp'] for c in self.real_time_data[key]}
                 if candle['timestamp'] not in existing_timestamps:
                     self.real_time_data[key].append(candle)
-                    
-                    # If candle is complete, trigger callbacks
-                    if candle['confirm']:
-                        for callback in self.callbacks:
-                            if asyncio.iscoroutinefunction(callback):
-                                await callback(symbol, timeframe, candle)
-                            else:
-                                callback(symbol, timeframe, candle)
+                
+                # If candle is complete, trigger callbacks
+                if candle['confirm']:
+                    for callback in self.callbacks:
+                        if asyncio.iscoroutinefunction(callback):
+                            await callback(symbol, timeframe, candle)
+                        else:
+                            callback(symbol, timeframe, candle)
                 else:
                     # Candle already exists, check if it's now confirmed
                     existing_candle = None
@@ -278,6 +230,12 @@ class WebSocketHandler:
         except Exception as e:
             print(f"Error processing candle data: {e}")
 
+    def _parse_timestamp(self, timestamp):
+        """Parse timestamp from Bybit format"""
+        if isinstance(timestamp, str):
+            return int(timestamp)
+        return int(timestamp)
+
     async def _reconnect(self):
         """Handle reconnection logic"""
         while self.running:
@@ -288,21 +246,45 @@ class WebSocketHandler:
                 break
             except Exception as e:
                 print(f"Reconnection failed: {e}")
-                await asyncio.sleep(10)
+                await asyncio.sleep(10)  # Wait longer before retry
 
     def add_callback(self, callback: Callable):
-        """Add callback function to process real-time candles"""
+        """Add a callback function for processing candles"""
         self.callbacks.append(callback)
-
+    
     def add_debug_callback(self, callback: Callable):
-        """Add debug callback to process all messages"""
+        """Add a debug callback for all messages"""
         self.debug_callbacks.append(callback)
-
-    def get_real_time_data(self, symbol: str, timeframe: str) -> List[Dict]:
-        """Get real-time data for a specific symbol and timeframe"""
-        key = f"{symbol}_{timeframe}"
-        return self.real_time_data.get(key, [])
-
-    def stop(self):
-        """Stop the WebSocket connection"""
-        self.running = False
+    
+    def get_real_time_data(self, symbol=None, timeframe=None):
+        """Get current real-time data
+        
+        Args:
+            symbol: Optional symbol to filter by
+            timeframe: Optional timeframe to filter by
+            
+        Returns:
+            If symbol and timeframe provided: list of candles for that symbol/timeframe
+            If neither provided: dict of all real-time data
+        """
+        if symbol and timeframe:
+            # Get data for specific symbol/timeframe
+            key = f"{symbol}_{timeframe}"
+            return self.real_time_data.get(key, [])
+        else:
+            # Get all real-time data
+            return self.real_time_data
+        
+    def format_candle_with_datetime(self, candle):
+        """Format candle with human-readable datetime"""
+        # Create a copy of the candle
+        formatted_candle = candle.copy()
+        
+        # Convert timestamp to datetime
+        dt = datetime.fromtimestamp(candle['timestamp'] / 1000)
+        datetime_str = dt.strftime('%Y-%m-%d %H:%M:%S')
+        
+        # Add datetime field
+        formatted_candle['datetime'] = datetime_str
+        
+        return formatted_candle
