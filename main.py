@@ -1,8 +1,9 @@
-# main.py - Updated to handle cleanup
+# main.py - Complete Fixed Version with Debug Function
 import os
 import csv
 import asyncio
 import time
+import json
 from datetime import datetime, timedelta
 from typing import Dict, List, Any
 from config import DataCollectionConfig
@@ -11,6 +12,17 @@ from data_integrity import DataIntegrityChecker  # Keep if you want integrity ch
 
 # Global configuration
 config = DataCollectionConfig()
+
+def debug_websocket_message(message: str):
+    """Debug callback to see all WebSocket messages"""
+    try:
+        data = json.loads(message)
+        if "topic" in data:
+            print(f"🔍 Debug: Received message for topic: {data['topic']}")
+        elif data.get("op") == "subscribe":
+            print(f"🔍 Debug: Subscription response: {data}")
+    except:
+        pass  # Ignore JSON parsing errors for binary data
 
 async def main():
     """Main function using the optimized hybrid system"""
@@ -21,6 +33,10 @@ async def main():
     # Initialize the hybrid system
     hybrid_system = HybridTradingSystem(config)
     await hybrid_system.initialize()
+    
+    # Add debug callback to WebSocket
+    if config.ENABLE_WEBSOCKET:
+        hybrid_system.websocket_handler.add_debug_callback(debug_websocket_message)
     
     try:
         # Determine data collection mode
@@ -92,11 +108,15 @@ async def main():
                 
                 if hist_data:
                     latest_hist = hist_data[-1]
-                    print(f"  Latest historical: {latest_hist['timestamp']}")
+                    dt = datetime.fromtimestamp(latest_hist['timestamp'] / 1000)
+                    datetime_str = dt.strftime('%Y-%m-%d %H:%M:%S')
+                    print(f"  Latest historical: {datetime_str}")
                 
                 if rt_data:
                     latest_rt = rt_data[-1]
-                    print(f"  Latest real-time: {latest_rt['timestamp']}")
+                    dt = datetime.fromtimestamp(latest_rt['timestamp'] / 1000)
+                    datetime_str = dt.strftime('%Y-%m-%d %H:%M:%S')
+                    print(f"  Latest real-time: {datetime_str}")
         
         # Run integrity check if enabled
         if config.RUN_INTEGRITY_CHECK:
@@ -146,7 +166,6 @@ async def main():
         # Clean up resources
         await hybrid_system.close()
 
-
 async def test_websocket_functionality():
     """Test WebSocket functionality with the hybrid system"""
     print("="*60)
@@ -164,6 +183,9 @@ async def test_websocket_functionality():
     # Initialize hybrid system
     hybrid_system = HybridTradingSystem(test_config)
     await hybrid_system.initialize()
+    
+    # Add debug callback to WebSocket
+    hybrid_system.websocket_handler.add_debug_callback(debug_websocket_message)
     
     # Test results tracking
     test_results = {

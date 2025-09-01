@@ -1,7 +1,9 @@
-# hybrid_system.py - Fixed to start WebSocket first
+# hybrid_system.py - Complete Fixed Version
 import asyncio
-from datetime import datetime
+import os
+import csv
 from typing import Dict, List, Any
+from datetime import datetime
 from config import DataCollectionConfig
 from optimized_data_fetcher import OptimizedDataFetcher
 from websocket_handler import WebSocketHandler
@@ -20,11 +22,11 @@ class HybridTradingSystem:
             self.is_initialized = True
         
     async def fetch_data_hybrid(self, symbols: List[str], timeframes: List[str], 
-                          days: int, mode: str = "full"):
+                              days: int, mode: str = "full"):
         """
         mode: "full" = all historical data
-            "recent" = only 50 most recent entries
-            "live" = only real-time data
+              "recent" = only 50 most recent entries
+              "live" = only real-time data
         """
         print(f"🔍 Starting data fetch in mode: {mode}")
         
@@ -103,10 +105,6 @@ class HybridTradingSystem:
         """Save all data to CSV"""
         await self.data_fetcher.save_to_csv(directory)
     
-    async def close(self):
-        """Clean up resources"""
-        await self.data_fetcher.close()
-
     async def update_csv_with_realtime_data(self, directory: str = "data"):
         """Update CSV files with real-time data"""
         os.makedirs(directory, exist_ok=True)
@@ -155,3 +153,7 @@ class HybridTradingSystem:
                                 writer.writerow(row)
                         
                         print(f"📡 Updated {filename} with {len(new_candles)} new candles")
+    
+    async def close(self):
+        """Clean up resources"""
+        await self.data_fetcher.close()

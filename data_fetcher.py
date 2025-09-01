@@ -1,4 +1,4 @@
-# optimized_data_fetcher.py - Fixed Version
+# optimized_data_fetcher.py - Complete Fixed Version
 import asyncio
 import aiohttp
 import csv
@@ -6,6 +6,7 @@ import os
 import time
 from collections import deque
 from typing import Dict, List, Any
+from datetime import datetime
 from config import DataCollectionConfig
 
 class OptimizedDataFetcher:
@@ -13,6 +14,13 @@ class OptimizedDataFetcher:
         self.config = config
         self.memory_data = {}  # symbol -> timeframe -> deque
         self.session = None
+        self.fetch_stats = {
+            'total_requests': 0,
+            'successful_requests': 0,
+            'failed_requests': 0,
+            'start_time': None,
+            'end_time': None
+        }
         
     async def initialize(self):
         """Initialize aiohttp session"""
@@ -24,6 +32,11 @@ class OptimizedDataFetcher:
     async def fetch_historical_data_fast(self, symbols: List[str], timeframes: List[str], 
                                        days: int, limit_50: bool = False):
         """Ultra-fast historical data fetching"""
+        self.fetch_stats['start_time'] = time.time()
+        self.fetch_stats['total_requests'] = len(symbols) * len(timeframes)
+        self.fetch_stats['successful_requests'] = 0
+        self.fetch_stats['failed_requests'] = 0
+        
         tasks = []
         
         for symbol in symbols:
@@ -36,7 +49,23 @@ class OptimizedDataFetcher:
         # Execute all tasks concurrently
         results = await asyncio.gather(*tasks, return_exceptions=True)
         
-        return self._process_results(results)
+        # Process results
+        success_count = 0
+        for result in results:
+            if result is True:
+                success_count += 1
+            elif result is False:
+                self.fetch_stats['failed_requests'] += 1
+        
+        self.fetch_stats['successful_requests'] = success_count
+        self.fetch_stats['end_time'] = time.time()
+        
+        # Print performance stats
+        duration = self.fetch_stats['end_time'] - self.fetch_stats['start_time']
+        print(f"📊 Historical data fetch completed in {duration:.2f} seconds")
+        print(f"✅ Successful: {self.fetch_stats['successful_requests']}/{self.fetch_stats['total_requests']}")
+        
+        return success_count == len(tasks)
     
     async def _fetch_symbol_timeframe(self, symbol: str, timeframe: str, 
                                     days: int, limit_50: bool):
@@ -85,20 +114,15 @@ class OptimizedDataFetcher:
                     # Add to memory storage
                     self.memory_data[key].extend(processed_candles)
                     
+                    print(f"✅ Fetched {len(processed_candles)} candles for {symbol}_{timeframe}")
                     return True
                 else:
-                    print(f"Error fetching {symbol}/{timeframe}: {data.get('retMsg')}")
+                    print(f"❌ Error fetching {symbol}/{timeframe}: {data.get('retMsg')}")
                     return False
                     
         except Exception as e:
-            print(f"Exception fetching {symbol}/{timeframe}: {e}")
+            print(f"❌ Exception fetching {symbol}/{timeframe}: {e}")
             return False
-    
-    def _process_results(self, results):
-        """Process results from concurrent fetches"""
-        success_count = sum(1 for result in results if result is True)
-        print(f"Successfully fetched data for {success_count}/{len(results)} symbol/timeframe combinations")
-        return success_count == len(results)
     
     def get_memory_data(self):
         """Access to in-memory data (like RedoneTradeBot)"""
@@ -114,11 +138,28 @@ class OptimizedDataFetcher:
                 filename = os.path.join(directory, f"{symbol}_{timeframe}.csv")
                 
                 with open(filename, 'w', newline='') as f:
-                    writer = csv.DictWriter(f, fieldnames=candles[0].keys())
+                    # Create fieldnames with both timestamp and datetime
+                    fieldnames = ['timestamp', 'datetime', 'open', 'high', 'low', 'close', 'volume']
+                    writer = csv.DictWriter(f, fieldnames=fieldnames)
                     writer.writeheader()
-                    writer.writerows(candles)
+                    
+                    # Write candles with human-readable datetime
+                    for candle in candles:
+                        # Convert timestamp to datetime
+                        dt = datetime.fromtimestamp(candle['timestamp'] / 1000)
+                        datetime_str = dt.strftime('%Y-%m-%d %H:%M:%S')
+                        
+                        # Create a new row with both timestamp and datetime
+                        row = candle.copy()
+                        row['datetime'] = datetime_str
+                        writer.writerow(row)
                 
-                print(f"Saved {len(candles)} candles to {filename}")
+                print(f"💾 Saved {len(candles)} candles to {filename}")
+    
+    async def close(self):
+        """Close the aiohttp session"""
+        if self.session:
+            await self.session.close()
 
 '''import os
 import csv
