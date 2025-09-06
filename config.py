@@ -15,7 +15,7 @@ class DataCollectionConfig:
     # Data collection mode
     # True = Keep only last 50 entries (for simple strategy testing)
     # False = Get full historical data (for AI training)
-    LIMIT_TO_50_ENTRIES = True
+    LIMIT_TO_50_ENTRIES = False
     
     # Fetch all symbols from Bybit
     # True = Get all available symbols from Bybit
@@ -25,7 +25,7 @@ class DataCollectionConfig:
     # WebSocket settings
     # True = Start WebSocket and continue collecting live data
     # False = Only fetch historical data and exit (for AI training)
-    ENABLE_WEBSOCKET = False
+    ENABLE_WEBSOCKET = True
     
     # Automatic integrity check after data collection
     RUN_INTEGRITY_CHECK = False  # Disabled for speed
@@ -40,6 +40,11 @@ class DataCollectionConfig:
     RATE_LIMIT_DELAY = 0.01  # Reduced for speed
     MAX_CONCURRENT_REQUESTS = 50  # Increased for speed
     REQUEST_DELAY = 0.01  # Reduced for speed
+    # Rate limiting settings for bulk symbol processing
+    BULK_REQUEST_DELAY_MS = 10  # Delay between requests in milliseconds (100 = 0.1 seconds) 50, 10, 200
+    BULK_RETRY_DELAY_MS = 2000   # Initial retry delay in milliseconds (1000 = 1 second)
+    BULK_MAX_RETRIES = 5         # Maximum number of retries for failed requests
+    BULK_BATCH_SIZE = 20         # Number of concurrent requests to make at once 50, 20, 10
     
     # Performance settings
     SHOW_DETAILED_TIMING = False  # Disabled for speed
@@ -58,51 +63,3 @@ class DataCollectionConfig:
     USE_MEMORY_STORAGE = True  # Use in-memory storage like RedoneTradeBot
     WRITE_TO_CSV_ON_COMPLETE = True  # Only write CSV when done
 
-'''import os
-
-class DataCollectionConfig:
-    # API settings
-    BYBIT_API_KEY = os.getenv('kKnXjxCtTGjt5z6ZCW', '')
-    BYBIT_API_SECRET = os.getenv('lAQrC1lhVO3LlcdJjgql2DVULwDU8vrPLhsW', '')
-    API_BASE_URL = 'https://api.bybit.com'
-    
-    # Data settings
-    SYMBOLS = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']  # Add more symbols as needed
-    TIMEFRAMES = ['1', '5', '15']  # Add more timeframes as needed
-    DATA_DIR = 'data'
-    
-    # Data collection mode
-    # True = Keep only last 50 entries (for simple strategy testing)
-    # False = Get full historical data (for AI training)
-    LIMIT_TO_50_ENTRIES = True
-    
-    # Fetch all symbols from Bybit
-    # True = Get all available symbols from Bybit
-    # False = Use only symbols in SYMBOLS list
-    FETCH_ALL_SYMBOLS = True
-    
-    # WebSocket settings
-    # True = Start WebSocket and continue collecting live data
-    # False = Only fetch historical data and exit (for AI training)
-    ENABLE_WEBSOCKET = True
-    
-    # Automatic integrity check after data collection
-    RUN_INTEGRITY_CHECK = True
-    
-    # Automatic gap filling after data collection
-    RUN_GAP_FILLING = True
-    
-    # Fetch settings
-    DAYS_TO_FETCH = 2
-    MAX_WORKERS = 10  # For parallel processing
-    REQUEST_TIMEOUT = 10  # seconds
-    RATE_LIMIT_DELAY = 0.1  # seconds between requests
-    
-    # Performance settings
-    SHOW_DETAILED_TIMING = True
-    SHOW_PERFORMANCE_STATS = True
-    
-    # Testing settings
-    # True = Run WebSocket test to verify live data collection
-    # False = Normal operation
-    TEST_WEBSOCKET = False'''
