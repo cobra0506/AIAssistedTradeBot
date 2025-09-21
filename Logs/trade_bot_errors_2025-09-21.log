@@ -1,0 +1,13 @@
+2025-09-21 22:00:00 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_15 (attempt 1/3)
+2025-09-21 22:00:01 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_5 (attempt 1/3)
+2025-09-21 22:00:01 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_15 (attempt 2/3)
+2025-09-21 22:00:02 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_5 (attempt 2/3)
+2025-09-21 22:00:03 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_15 (attempt 3/3)
+2025-09-21 22:00:03 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Max retries reached for 1000TAGUSDT_15
+2025-09-21 22:00:03 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch chunk 7
+2025-09-21 22:00:04 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_15 (attempt 1/3)
+2025-09-21 22:00:05 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_5 (attempt 3/3)
+2025-09-21 22:00:05 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Max retries reached for 1000TAGUSDT_5
+2025-09-21 22:00:05 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch chunk 17
+2025-09-21 22:00:05 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_15 (attempt 2/3)
+2025-09-21 22:00:05 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Empty result for 1000TAGUSDT_5 (attempt 1/3)
