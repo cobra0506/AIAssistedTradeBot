@@ -7,9 +7,9 @@ import json
 import psutil
 from datetime import datetime, timedelta
 from typing import Dict, List, Any
-from shared_modules.data_collection.config import DataCollectionConfig
-from shared_modules.data_collection.hybrid_system import HybridTradingSystem
-from shared_modules.data_collection.data_integrity import DataIntegrityChecker
+from .config import DataCollectionConfig
+from .hybrid_system import HybridTradingSystem
+from .data_integrity import DataIntegrityChecker
 
 # Global configuration
 config = DataCollectionConfig()
