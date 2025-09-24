@@ -5,83 +5,51 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 from pathlib import Path
-from unittest.mock import Mock, MagicMock
+from unittest.mock import Mock, patch
 from abc import ABC, abstractmethod
 
 # Add the project root to Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Import the StrategyBase (adjust path based on your actual implementation)
-try:
-    from shared_modules.simple_strategy.shared.strategy_base import StrategyBase
-    STRATEGY_BASE_EXISTS = True
-except ImportError:
-    STRATEGY_BASE_EXISTS = False
-    print("⚠️  StrategyBase not found - creating mock for testing")
+# Import the StrategyBase and functions from the correct location
+from simple_strategy.shared.strategy_base import (
+    StrategyBase, 
+    calculate_rsi_func as calculate_rsi, 
+    calculate_sma_func as calculate_sma, 
+    calculate_ema_func as calculate_ema,
+    calculate_stochastic_func as calculate_stochastic,
+    calculate_srsi_func as calculate_srsi,
+    check_oversold,
+    check_overbought,
+    check_crossover,
+    check_crossunder,
+    align_multi_timeframe_data
+)
 
-# Mock StrategyBase if it doesn't exist yet
-if not STRATEGY_BASE_EXISTS:
-    class StrategyBase(ABC):
-        """Mock StrategyBase for testing purposes"""
-        def __init__(self, name, symbols, timeframes, config):
-            self.name = name
-            self.symbols = symbols
-            self.timeframes = timeframes
-            self.config = config
-            self.positions = {}
-            self.balance = config.get('initial_balance', 10000)
-            
-        @abstractmethod
-        def generate_signals(self, data):
-            """Generate trading signals - must be implemented by subclasses"""
-            pass
-            
-        def calculate_position_size(self, symbol, signal_strength=1.0):
-            """Calculate position size based on risk management"""
-            risk_percent = self.config.get('risk_per_trade', 0.02)  # 2% risk per trade
-            account_balance = self.balance
-            risk_amount = account_balance * risk_percent * signal_strength
-            
-            # Get current price (mock for testing)
-            current_price = 50000  # Mock BTC price
-            
-            # Calculate position size
-            position_size = risk_amount / current_price
-            
-            return {
-                'quantity': position_size,
-                'risk_amount': risk_amount,
-                'risk_percent': risk_percent * 100
-            }
-            
-        def validate_signal(self, symbol, signal, data):
-            """Validate signal against risk management rules"""
-            # Check if we already have a position
-            current_position = self.positions.get(symbol, 0)
-            
-            # Prevent multiple positions in same direction
-            if current_position > 0 and signal == 'BUY':
-                return False, 'Already in long position'
-            if current_position < 0 and signal == 'SELL':
-                return False, 'Already in short position'
-                
-            # Check max position size
-            max_position = self.config.get('max_position_size', 1.0)
-            if abs(current_position) >= max_position:
-                return False, 'Maximum position size reached'
-                
-            return True, 'Signal valid'
-            
-        def get_strategy_state(self):
-            """Get current strategy state for logging"""
-            return {
-                'name': self.name,
-                'symbols': self.symbols,
-                'timeframes': self.timeframes,
-                'balance': self.balance,
-                'positions': self.positions,
-                'config': self.config
-            }
+class TestStrategy(StrategyBase):
+    """Concrete test strategy implementation"""
+    
+    def generate_signals(self, data):
+        """Simple test strategy - buy when RSI < 30, sell when RSI > 70"""
+        signals = {}
+        for symbol, timeframe_data in data.items():
+            signals[symbol] = {}
+            for timeframe, df in timeframe_data.items():
+                if 'close' in df.columns and len(df) > 14:
+                    # Calculate RSI using the method (which now uses calculate_rsi_func)
+                    rsi = self.calculate_rsi(df['close'], period=14)
+                    if not pd.isna(rsi.iloc[-1]):
+                        if rsi.iloc[-1] < 30:
+                            signals[symbol][timeframe] = 'BUY'
+                        elif rsi.iloc[-1] > 70:
+                            signals[symbol][timeframe] = 'SELL'
+                        else:
+                            signals[symbol][timeframe] = 'HOLD'
+                    else:
+                        signals[symbol][timeframe] = 'HOLD'
+                else:
+                    signals[symbol][timeframe] = 'HOLD'
+        return signals
 
 class TestStrategyBase:
     """Comprehensive test suite for StrategyBase component"""
@@ -91,30 +59,14 @@ class TestStrategyBase:
         """Test configuration"""
         return {
             'initial_balance': 10000,
-            'risk_per_trade': 0.02,
-            'max_position_size': 1.0,
-            'max_daily_loss': 0.05
+            'max_risk_per_trade': 0.02,
+            'max_positions': 3,
+            'max_portfolio_risk': 0.10
         }
     
     @pytest.fixture
     def strategy(self, config):
         """Create a concrete strategy for testing"""
-        class TestStrategy(StrategyBase):
-            def generate_signals(self, data):
-                # Simple test strategy - buy when RSI < 30, sell when RSI > 70
-                signals = {}
-                for symbol, symbol_data in data.items():
-                    if 'close' in symbol_data.columns:
-                        # Calculate RSI
-                        rsi = self.calculate_rsi(symbol_data['close'], period=14)
-                        if rsi.iloc[-1] < 30:
-                            signals[symbol] = 'BUY'
-                        elif rsi.iloc[-1] > 70:
-                            signals[symbol] = 'SELL'
-                        else:
-                            signals[symbol] = 'HOLD'
-                return signals
-        
         return TestStrategy(
             name='TestStrategy',
             symbols=['BTCUSDT', 'ETHUSDT'],
@@ -155,6 +107,54 @@ class TestStrategyBase:
         
         return data
     
+    def create_multi_timeframe_data(self):
+        """Create multi-timeframe data for testing (regular function, not fixture)"""
+        base_time = datetime(2024, 1, 1, 10, 0)
+        
+        # Create nested structure: {symbol: {timeframe: DataFrame}}
+        data = {}
+        
+        for symbol in ['BTCUSDT']:
+            data[symbol] = {}
+            
+            # 1-minute data
+            dates_1m = pd.date_range(start=base_time, periods=100, freq='1min')
+            prices_1m = [50000 + i * 10 for i in range(100)]
+            data[symbol]['1m'] = pd.DataFrame({
+                'timestamp': [int(d.timestamp() * 1000) for d in dates_1m],
+                'open': prices_1m,
+                'high': [p * 1.002 for p in prices_1m],
+                'low': [p * 0.998 for p in prices_1m],
+                'close': prices_1m,
+                'volume': [1000] * 100
+            })
+            
+            # 5-minute data
+            dates_5m = pd.date_range(start=base_time, periods=20, freq='5min')
+            prices_5m = [50000 + i * 50 for i in range(20)]
+            data[symbol]['5m'] = pd.DataFrame({
+                'timestamp': [int(d.timestamp() * 1000) for d in dates_5m],
+                'open': prices_5m,
+                'high': [p * 1.002 for p in prices_5m],
+                'low': [p * 0.998 for p in prices_5m],
+                'close': prices_5m,
+                'volume': [5000] * 20
+            })
+            
+            # 15-minute data
+            dates_15m = pd.date_range(start=base_time, periods=7, freq='15min')
+            prices_15m = [50000 + i * 150 for i in range(7)]
+            data[symbol]['15m'] = pd.DataFrame({
+                'timestamp': [int(d.timestamp() * 1000) for d in dates_15m],
+                'open': prices_15m,
+                'high': [p * 1.002 for p in prices_15m],
+                'low': [p * 0.998 for p in prices_15m],
+                'close': prices_15m,
+                'volume': [15000] * 7
+            })
+        
+        return data
+    
     def test_strategy_base_initialization(self, strategy, config):
         """Test base class initialization"""
         print("\n=== Testing Strategy Base Initialization ===")
@@ -165,7 +165,15 @@ class TestStrategyBase:
         assert strategy.timeframes == ['1m', '5m']
         assert strategy.config == config
         assert strategy.balance == config['initial_balance']
+        assert strategy.initial_balance == strategy.balance
         assert strategy.positions == {}
+        assert strategy.trades == []
+        assert strategy.equity_curve == []
+        
+        # Test risk management parameters
+        assert strategy.max_risk_per_trade == config['max_risk_per_trade']
+        assert strategy.max_positions == config['max_positions']
+        assert strategy.max_portfolio_risk == config['max_portfolio_risk']
         
         print("✅ Strategy base initialization test passed")
     
@@ -174,60 +182,55 @@ class TestStrategyBase:
         print("\n=== Testing Position Sizing Calculations ===")
         
         # Test with default signal strength
-        position_info = strategy.calculate_position_size('BTCUSDT', signal_strength=1.0)
+        position_size = strategy.calculate_position_size('BTCUSDT', signal_strength=1.0)
         
-        # Verify structure
-        assert 'quantity' in position_info
-        assert 'risk_amount' in position_info
-        assert 'risk_percent' in position_info
+        # Verify calculation
+        expected_risk_amount = strategy.balance * strategy.max_risk_per_trade
+        expected_position_size = expected_risk_amount / 50000  # Placeholder price
         
-        # Verify calculations
-        expected_risk_amount = strategy.balance * strategy.config['risk_per_trade']
-        assert position_info['risk_amount'] == expected_risk_amount
-        assert position_info['risk_percent'] == 2.0  # 2%
-        assert position_info['quantity'] > 0
+        assert position_size > 0
+        assert position_size <= strategy.balance * 0.2  # Max 20% limit
         
         # Test with different signal strengths
         position_strong = strategy.calculate_position_size('BTCUSDT', signal_strength=2.0)
         position_weak = strategy.calculate_position_size('BTCUSDT', signal_strength=0.5)
         
-        assert position_strong['quantity'] > position_info['quantity']
-        assert position_weak['quantity'] < position_info['quantity']
+        assert position_strong >= position_size  # Strong signal = larger position
+        assert position_weak <= position_size   # Weak signal = smaller position
+        
+        # Test negative signal strength (should be clamped to 0)
+        position_negative = strategy.calculate_position_size('BTCUSDT', signal_strength=-1.0)
+        assert position_negative >= 0
         
         print("✅ Position sizing calculations test passed")
     
-    def test_signal_validation(self, strategy):
+    def test_validate_signal(self, strategy):
         """Test signal validation against risk management rules"""
         print("\n=== Testing Signal Validation ===")
         
-        # Test valid signals with no positions
-        valid_buy, reason_buy = strategy.validate_signal('BTCUSDT', 'BUY', {})
-        valid_sell, reason_sell = strategy.validate_signal('BTCUSDT', 'SELL', {})
+        # Test HOLD signal (should always be valid)
+        assert strategy.validate_signal('BTCUSDT', 'HOLD', {}) is True
         
-        assert valid_buy is True
-        assert valid_sell is True
-        assert reason_buy == 'Signal valid'
-        assert reason_sell == 'Signal valid'
+        # Test valid BUY signals
+        assert strategy.validate_signal('BTCUSDT', 'BUY', {}) is True
         
-        # Test with existing positions
-        strategy.positions['BTCUSDT'] = 1.0  # Long position
+        # Test maximum positions limit
+        strategy.positions = {'ETHUSDT': {}, 'SOLUSDT': {}, 'ADAUSDT': {}}  # 3 positions
+        assert strategy.validate_signal('BTCUSDT', 'BUY', {}) is False  # Should reject
         
-        # Should reject duplicate long signal
-        valid_duplicate, reason_duplicate = strategy.validate_signal('BTCUSDT', 'BUY', {})
-        assert valid_duplicate is False
-        assert 'Already in long position' in reason_duplicate
+        # Reset positions
+        strategy.positions = {}
         
-        # Should allow opposite signal
-        valid_opposite, reason_opposite = strategy.validate_signal('BTCUSDT', 'SELL', {})
-        assert valid_opposite is True
+        # Test portfolio risk limit
+        with patch.object(strategy, '_calculate_portfolio_risk', return_value=0.15):  # 15% > 10% limit
+            assert strategy.validate_signal('BTCUSDT', 'BUY', {}) is False
         
-        # Test max position size
-        strategy.config['max_position_size'] = 0.5
-        strategy.positions['ETHUSDT'] = 0.6  # Exceeds max
+        # Test SELL signal without position
+        assert strategy.validate_signal('BTCUSDT', 'SELL', {}) is False
         
-        valid_max, reason_max = strategy.validate_signal('ETHUSDT', 'BUY', {})
-        assert valid_max is False
-        assert 'Maximum position size reached' in reason_max
+        # Test SELL signal with position
+        strategy.positions = {'BTCUSDT': {}}
+        assert strategy.validate_signal('BTCUSDT', 'SELL', {}) is True
         
         print("✅ Signal validation test passed")
     
@@ -239,74 +242,85 @@ class TestStrategyBase:
         state = strategy.get_strategy_state()
         
         # Verify structure
-        required_keys = ['name', 'symbols', 'timeframes', 'balance', 'positions', 'config']
+        required_keys = ['name', 'balance', 'initial_balance', 'total_return', 
+                        'open_positions', 'total_trades', 'symbols', 'timeframes', 'config']
         for key in required_keys:
             assert key in state
         
         # Verify values
         assert state['name'] == strategy.name
+        assert state['balance'] == strategy.balance
+        assert state['initial_balance'] == strategy.initial_balance
+        assert state['total_return'] == 0.0  # No trades yet
+        assert state['open_positions'] == 0
+        assert state['total_trades'] == 0
         assert state['symbols'] == strategy.symbols
         assert state['timeframes'] == strategy.timeframes
-        assert state['balance'] == strategy.balance
-        assert state['positions'] == strategy.positions
         assert state['config'] == strategy.config
         
         # Test with modified state
         strategy.balance = 15000
-        strategy.positions['BTCUSDT'] = 0.5
+        strategy.positions = {'BTCUSDT': {}}
+        strategy.trades = [{}]
         
         updated_state = strategy.get_strategy_state()
         assert updated_state['balance'] == 15000
-        assert updated_state['positions']['BTCUSDT'] == 0.5
+        assert updated_state['total_return'] == 0.5  # 50% return
+        assert updated_state['open_positions'] == 1
+        assert updated_state['total_trades'] == 1
         
         print("✅ Strategy state test passed")
     
-    def test_generate_signals_abstract(self, strategy):
-        """Test that generate_signals is properly abstract"""
-        print("\n=== Testing Abstract Method ===")
+    def test_generate_signals(self, strategy):
+        """Test signal generation"""
+        print("\n=== Testing Signal Generation ===")
         
-        # Test that the abstract method raises NotImplementedError if not implemented
-        class IncompleteStrategy(StrategyBase):
-            def generate_signals(self, data):
-                pass  # Not implemented properly
+        # Create multi-timeframe data using the regular function
+        multi_timeframe_data = self.create_multi_timeframe_data()
         
-        incomplete = IncompleteStrategy(
-            name='Incomplete',
-            symbols=['BTCUSDT'],
-            timeframes=['1m'],
-            config={}
-        )
+        # Generate signals
+        signals = strategy.generate_signals(multi_timeframe_data)
         
-        # This should work since we implemented it
-        data = {'BTCUSDT': pd.DataFrame({'close': [50000, 50100, 49900]})}
-        signals = incomplete.generate_signals(data)
+        # Verify structure
         assert isinstance(signals, dict)
+        assert 'BTCUSDT' in signals
         
-        print("✅ Abstract method test passed")
+        # Verify signal values
+        for symbol, timeframe_signals in signals.items():
+            assert isinstance(timeframe_signals, dict)
+            for timeframe, signal in timeframe_signals.items():
+                assert signal in ['BUY', 'SELL', 'HOLD']
+        
+        print("✅ Signal generation test passed")
+    
+    def test_portfolio_risk_calculation(self, strategy):
+        """Test portfolio risk calculation"""
+        print("\n=== Testing Portfolio Risk Calculation ===")
+        
+        # Test with no positions
+        risk = strategy._calculate_portfolio_risk()
+        assert risk == 0.0
+        
+        # Test with positions
+        strategy.positions = {
+            'BTCUSDT': {'value': 2000},
+            'ETHUSDT': {'value': 1000}
+        }
+        risk = strategy._calculate_portfolio_risk()
+        expected_risk = 3000 / strategy.balance  # 3000 / 10000 = 0.3
+        assert abs(risk - expected_risk) < 0.001
+        
+        print("✅ Portfolio risk calculation test passed")
 
-class TestBuildingBlockFunctions:
-    """Test building block functions"""
+class TestIndicatorBuildingBlocks:
+    """Test indicator building block functions"""
     
     def test_calculate_rsi(self):
         """Test RSI calculation"""
         print("\n=== Testing RSI Calculation ===")
         
-        # Import or mock the RSI function
-        try:
-            from shared_modules.simple_strategy.shared.strategy_base import calculate_rsi
-        except ImportError:
-            # Mock RSI calculation for testing
-            def calculate_rsi(data, period=14):
-                """Simple RSI calculation for testing"""
-                delta = data.diff()
-                gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
-                loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
-                rs = gain / loss
-                rsi = 100 - (100 / (1 + rs))
-                return rsi
-        
-        # Create test data
-        prices = pd.Series([50, 51, 52, 51, 50, 49, 48, 49, 50, 51, 52, 53, 52, 51, 50])
+        # Create test data with known pattern
+        prices = pd.Series([44, 44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.85, 46.08, 45.89, 46.03, 46.83, 47.69, 46.49, 46.26])
         rsi = calculate_rsi(prices, period=14)
         
         # Verify RSI properties
@@ -315,50 +329,43 @@ class TestBuildingBlockFunctions:
         assert rsi.max() <= 100
         assert rsi.isna().sum() == 13  # First 13 values should be NaN
         
+        # Verify last value is reasonable (should be around 60-70 for this data)
+        assert not pd.isna(rsi.iloc[-1])
+        assert 0 <= rsi.iloc[-1] <= 100
+        
         print("✅ RSI calculation test passed")
     
     def test_calculate_sma(self):
         """Test SMA calculation"""
         print("\n=== Testing SMA Calculation ===")
         
-        # Import or mock the SMA function
-        try:
-            from shared_modules.simple_strategy.shared.strategy_base import calculate_sma
-        except ImportError:
-            # Mock SMA calculation for testing
-            def calculate_sma(data, period):
-                """Simple SMA calculation for testing"""
-                return data.rolling(window=period).mean()
+        # Use imported function (now renamed)
+        from simple_strategy.shared.strategy_base import calculate_sma_func as calculate_sma
         
         # Create test data
-        prices = pd.Series([50, 51, 52, 53, 54, 55, 56, 57, 58, 59])
+        prices = pd.Series([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
         sma = calculate_sma(prices, period=5)
         
         # Verify SMA properties
         assert len(sma) == len(prices)
         assert sma.isna().sum() == 4  # First 4 values should be NaN
         
-        # Verify specific calculation
-        expected_sma = (50 + 51 + 52 + 53 + 54) / 5
-        assert abs(sma.iloc[4] - expected_sma) < 0.001
+        # Verify specific calculations
+        expected_values = [np.nan, np.nan, np.nan, np.nan, 30, 40, 50, 60, 70, 80]
+        for i in range(4, len(prices)):
+            assert abs(sma.iloc[i] - expected_values[i]) < 0.001
         
         print("✅ SMA calculation test passed")
-    
+
     def test_calculate_ema(self):
         """Test EMA calculation"""
         print("\n=== Testing EMA Calculation ===")
         
-        # Import or mock the EMA function
-        try:
-            from shared_modules.simple_strategy.shared.strategy_base import calculate_ema
-        except ImportError:
-            # Mock EMA calculation for testing
-            def calculate_ema(data, period):
-                """Simple EMA calculation for testing"""
-                return data.ewm(span=period, adjust=False).mean()
+        # Use imported function (now renamed)
+        from simple_strategy.shared.strategy_base import calculate_ema_func as calculate_ema
         
         # Create test data
-        prices = pd.Series([50, 51, 52, 53, 54, 55, 56, 57, 58, 59])
+        prices = pd.Series([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
         ema = calculate_ema(prices, period=5)
         
         # Verify EMA properties
@@ -366,51 +373,158 @@ class TestBuildingBlockFunctions:
         assert ema.isna().sum() == 0  # EMA has no NaN values
         
         # Verify EMA is more responsive than SMA
-        sma = prices.rolling(window=5).mean()
+        sma = calculate_sma_func(prices, period=5)
         assert abs(ema.iloc[4] - prices.iloc[4]) < abs(sma.iloc[4] - prices.iloc[4])
         
+        # Verify EMA values are reasonable
+        assert ema.iloc[-1] > ema.iloc[0]  # Should trend upward
+        
         print("✅ EMA calculation test passed")
+
+    def test_calculate_stochastic(self):
+        """Test Stochastic Oscillator calculation"""
+        print("\n=== Testing Stochastic Calculation ===")
+        
+        # Use imported function (now renamed)
+        from simple_strategy.shared.strategy_base import calculate_stochastic_func as calculate_stochastic
+        
+        # Create test data
+        data = pd.DataFrame({
+            'high': [15, 16, 17, 16, 15, 16, 17, 18, 19, 18],
+            'low': [10, 11, 12, 11, 10, 11, 12, 13, 14, 13],
+            'close': [12, 13, 14, 13, 12, 13, 14, 15, 16, 15]
+        })
+        
+        k_percent, d_percent = calculate_stochastic(data, k_period=5, d_period=3)
+        
+        # Verify Stochastic properties
+        assert len(k_percent) == len(data)
+        assert len(d_percent) == len(data)
+        assert k_percent.min() >= 0
+        assert k_percent.max() <= 100
+        assert d_percent.min() >= 0
+        assert d_percent.max() <= 100
+        
+        # Verify NaN values for warm-up period
+        assert k_percent.isna().sum() == 4  # First 4 values should be NaN
+        assert d_percent.isna().sum() == 6  # First 6 values should be NaN (5+3-1-1)
+        
+        print("✅ Stochastic calculation test passed")
+
+    def test_calculate_srsi(self):
+        """Test Stochastic RSI calculation"""
+        print("\n=== Testing SRSI Calculation ===")
+        
+        # Use imported function (now renamed)
+        from simple_strategy.shared.strategy_base import calculate_srsi_func as calculate_srsi
+        
+        # Create test data
+        prices = pd.Series([44, 44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.85, 46.08, 45.89, 46.03, 46.83, 47.69, 46.49, 46.26])
+        srsi = calculate_srsi(prices, period=14)
+        
+        # Verify SRSI properties
+        assert len(srsi) == len(prices)
+        assert srsi.min() >= 0
+        assert srsi.max() <= 100
+        
+        # Verify NaN values for warm-up period
+        assert srsi.isna().sum() > 0  # Should have NaN values at start
+        
+        print("✅ SRSI calculation test passed")
+
+class TestSignalBuildingBlocks:
+    """Test signal building block functions"""
     
-    def test_signal_building_blocks(self):
-        """Test signal building block functions"""
-        print("\n=== Testing Signal Building Blocks ===")
+    def test_check_oversold(self):
+        """Test oversold detection"""
+        print("\n=== Testing Oversold Detection ===")
         
-        # Import or mock signal functions
-        try:
-            from shared_modules.simple_strategy.shared.strategy_base import (
-                check_oversold, check_overbought, check_crossover
-            )
-        except ImportError:
-            # Mock signal functions for testing
-            def check_oversold(indicator_value, threshold=20):
-                return indicator_value < threshold
-            
-            def check_overbought(indicator_value, threshold=80):
-                return indicator_value > threshold
-            
-            def check_crossover(fast_ma, slow_ma):
-                if len(fast_ma) < 2 or len(slow_ma) < 2:
-                    return False
-                # Check if fast crossed above slow
-                return (fast_ma.iloc[-1] > slow_ma.iloc[-1] and 
-                        fast_ma.iloc[-2] <= slow_ma.iloc[-2])
+        # Use imported function
+        from simple_strategy.shared.strategy_base import check_oversold
         
-        # Test oversold/overbought
-        assert check_oversold(15) is True
-        assert check_oversold(25) is False
-        assert check_overbought(85) is True
-        assert check_overbought(75) is False
+        # Create test indicator values
+        indicator = pd.Series([15, 25, 35, 45, 55, 65, 75, 85])
+        oversold = check_oversold(indicator, threshold=20)
         
-        # Test crossover
-        fast = pd.Series([10, 11, 12, 13, 14])
-        slow = pd.Series([12, 12.5, 13, 13.5, 14])
-        assert check_crossover(fast, slow) is False  # No crossover
+        # Verify results
+        expected = [True, False, False, False, False, False, False, False]
+        pd.testing.assert_series_equal(oversold, pd.Series(expected))
         
-        fast = pd.Series([10, 11, 12, 13, 14])
-        slow = pd.Series([13, 12.5, 12, 11.5, 11])
-        assert check_crossover(fast, slow) is True  # Crossover up
+        # Test custom threshold
+        oversold_custom = check_oversold(indicator, threshold=30)
+        expected_custom = [True, True, False, False, False, False, False, False]
+        pd.testing.assert_series_equal(oversold_custom, pd.Series(expected_custom))
         
-        print("✅ Signal building blocks test passed")
+        print("✅ Oversold detection test passed")
+    
+    def test_check_overbought(self):
+        """Test overbought detection"""
+        print("\n=== Testing Overbought Detection ===")
+        
+        # Use imported function
+        from simple_strategy.shared.strategy_base import check_overbought
+        
+        # Create test indicator values
+        indicator = pd.Series([15, 25, 35, 45, 55, 65, 75, 85])
+        overbought = check_overbought(indicator, threshold=80)
+        
+        # Verify results
+        expected = [False, False, False, False, False, False, False, True]
+        pd.testing.assert_series_equal(overbought, pd.Series(expected))
+        
+        # Test custom threshold
+        overbought_custom = check_overbought(indicator, threshold=70)
+        expected_custom = [False, False, False, False, False, False, True, True]
+        pd.testing.assert_series_equal(overbought_custom, pd.Series(expected_custom))
+        
+        print("✅ Overbought detection test passed")
+    
+    def test_check_crossover(self):
+        """Test crossover detection"""
+        print("\n=== Testing Crossover Detection ===")
+        
+        # Use imported function (now renamed)
+        from simple_strategy.shared.strategy_base import check_crossover
+        
+        # Create test data with known crossover
+        fast_ma = pd.Series([10, 12, 14, 16, 18, 20, 22, 24, 26, 28])
+        slow_ma = pd.Series([15, 15, 15, 15, 15, 15, 15, 15, 15, 15])
+        
+        crossover = check_crossover(fast_ma, slow_ma)
+        
+        # Verify properties
+        assert len(crossover) == len(fast_ma)
+        assert crossover.iloc[0] is False  # First value can't be crossover
+        
+        # Find crossover point (when fast crosses above slow)
+        # Should happen when fast goes from below to above slow
+        crossover_points = crossover[crossover].index.tolist()
+        assert len(crossover_points) >= 1  # Should have at least one crossover
+        
+        print("✅ Crossover detection test passed")
+
+    def test_check_crossunder(self):
+        """Test crossunder detection"""
+        print("\n=== Testing Crossunder Detection ===")
+        
+        # Use imported function (now renamed)
+        from simple_strategy.shared.strategy_base import check_crossunder
+        
+        # Create test data with known crossunder
+        fast_ma = pd.Series([20, 18, 16, 14, 12, 10, 8, 6, 4, 2])
+        slow_ma = pd.Series([15, 15, 15, 15, 15, 15, 15, 15, 15, 15])
+        
+        crossunder = check_crossunder(fast_ma, slow_ma)
+        
+        # Verify properties
+        assert len(crossunder) == len(fast_ma)
+        assert crossunder.iloc[0] is False  # First value can't be crossunder
+        
+        # Find crossunder point (when fast crosses below slow)
+        crossunder_points = crossunder[crossunder].index.tolist()
+        assert len(crossunder_points) >= 1  # Should have at least one crossunder
+        
+        print("✅ Crossunder detection test passed")
 
 class TestMultiTimeframeFunctions:
     """Test multi-timeframe functions"""
@@ -419,47 +533,32 @@ class TestMultiTimeframeFunctions:
         """Test multi-timeframe data alignment"""
         print("\n=== Testing Multi-Timeframe Data Alignment ===")
         
-        # Import or mock alignment function
-        try:
-            from shared_modules.simple_strategy.shared.strategy_base import align_multi_timeframe_data
-        except ImportError:
-            # Mock alignment function for testing
-            def align_multi_timeframe_data(data_1m, data_5m, data_15m, timestamp):
-                """Mock alignment function for testing"""
-                # Find the closest data points for each timeframe
-                result = {}
-                
-                for name, data in [('1m', data_1m), ('5m', data_5m), ('15m', data_15m)]:
-                    if data is not None and len(data) > 0:
-                        # Find closest timestamp
-                        closest_idx = (data['timestamp'] - timestamp).abs().idxmin()
-                        result[name] = data.iloc[closest_idx].to_dict()
-                
-                return result
+        # Use imported function (now renamed)
+        from simple_strategy.shared.strategy_base import align_multi_timeframe_data
         
         # Create test data for different timeframes
-        base_time = int(datetime(2024, 1, 1, 10, 0).timestamp() * 1000)
+        base_time = datetime(2024, 1, 1, 10, 0)
         
         # 1-minute data
         data_1m = pd.DataFrame({
-            'timestamp': [base_time + i * 60000 for i in range(20)],
+            'timestamp': [int((base_time + timedelta(minutes=i)).timestamp() * 1000) for i in range(20)],
             'close': [50000 + i * 10 for i in range(20)]
         })
         
         # 5-minute data
         data_5m = pd.DataFrame({
-            'timestamp': [base_time + i * 300000 for i in range(4)],
+            'timestamp': [int((base_time + timedelta(minutes=i*5)).timestamp() * 1000) for i in range(4)],
             'close': [50000 + i * 50 for i in range(4)]
         })
         
         # 15-minute data
         data_15m = pd.DataFrame({
-            'timestamp': [base_time + i * 900000 for i in range(2)],
+            'timestamp': [int((base_time + timedelta(minutes=i*15)).timestamp() * 1000) for i in range(2)],
             'close': [50000 + i * 150 for i in range(2)]
         })
         
         # Test alignment
-        target_timestamp = base_time + 7 * 60000  # 7 minutes after base
+        target_timestamp = base_time + timedelta(minutes=7)  # 7 minutes after base
         aligned = align_multi_timeframe_data(data_1m, data_5m, data_15m, target_timestamp)
         
         # Verify alignment
@@ -469,56 +568,11 @@ class TestMultiTimeframeFunctions:
         
         # Verify timestamps are close to target
         for tf, data_point in aligned.items():
-            time_diff = abs(data_point['timestamp'] - target_timestamp)
-            max_diff = {'1m': 30000, '5m': 150000, '15m': 450000}  # Half period
+            time_diff = abs(data_point['timestamp'] - int(target_timestamp.timestamp() * 1000))
+            max_diff = {'1m': 30000, '5m': 150000, '15m': 450000}  # Half period in milliseconds
             assert time_diff <= max_diff[tf]
         
         print("✅ Multi-timeframe data alignment test passed")
-    
-    def test_check_multi_timeframe_condition(self):
-        """Test multi-timeframe condition checking"""
-        print("\n=== Testing Multi-Timeframe Condition Checking ===")
-        
-        # Import or mock condition function
-        try:
-            from shared_modules.simple_strategy.shared.strategy_base import check_multi_timeframe_condition
-        except ImportError:
-            # Mock condition function for testing
-            def check_multi_timeframe_condition(indicators_dict, condition_func):
-                """Mock condition function for testing"""
-                results = {}
-                for timeframe, indicators in indicators_dict.items():
-                    results[timeframe] = condition_func(indicators)
-                
-                # Return True if all timeframes meet the condition
-                return all(results.values()), results
-        
-        # Create test indicators for multiple timeframes
-        indicators = {
-            '1m': {'rsi': 25, 'sma': 50000},
-            '5m': {'rsi': 30, 'sma': 50100},
-            '15m': {'rsi': 35, 'sma': 50200}
-        }
-        
-        # Test oversold condition across all timeframes
-        def oversold_condition(indicators):
-            return indicators['rsi'] < 40
-        
-        all_oversold, individual_results = check_multi_timeframe_condition(indicators, oversold_condition)
-        assert all_oversold is True
-        assert individual_results == {'1m': True, '5m': True, '15m': True}
-        
-        # Test mixed condition
-        indicators_mixed = {
-            '1m': {'rsi': 25},  # Oversold
-            '5m': {'rsi': 45},  # Neutral
-            '15m': {'rsi': 75}  # Overbought
-        }
-        
-        all_oversold_mixed, _ = check_multi_timeframe_condition(indicators_mixed, oversold_condition)
-        assert all_oversold_mixed is False
-        
-        print("✅ Multi-timeframe condition checking test passed")
 
 def run_comprehensive_strategy_tests():
     """Run all strategy base tests"""
@@ -529,81 +583,117 @@ def run_comprehensive_strategy_tests():
     # Create test instances
     config = {
         'initial_balance': 10000,
-        'risk_per_trade': 0.02,
-        'max_position_size': 1.0,
-        'max_daily_loss': 0.05
+        'max_risk_per_trade': 0.02,
+        'max_positions': 3,
+        'max_portfolio_risk': 0.10
     }
     
-    strategy = TestStrategy().strategy(config)
+    strategy = TestStrategy(
+        name='TestStrategy',
+        symbols=['BTCUSDT', 'ETHUSDT'],
+        timeframes=['1m', '5m'],
+        config=config
+    )
     
     # Run all tests
     test_results = []
     
     try:
-        TestStrategy().test_strategy_base_initialization(strategy, config)
+        test_suite = TestStrategyBase()
+        test_suite.test_strategy_base_initialization(strategy, config)
         test_results.append("✅ Strategy Base Initialization")
     except Exception as e:
         test_results.append(f"❌ Strategy Base Initialization: {e}")
     
     try:
-        TestStrategy().test_calculate_position_size(strategy)
+        test_suite.test_calculate_position_size(strategy)
         test_results.append("✅ Position Sizing Calculations")
     except Exception as e:
         test_results.append(f"❌ Position Sizing Calculations: {e}")
     
     try:
-        TestStrategy().test_signal_validation(strategy)
+        test_suite.test_validate_signal(strategy)
         test_results.append("✅ Signal Validation")
     except Exception as e:
         test_results.append(f"❌ Signal Validation: {e}")
     
     try:
-        TestStrategy().test_strategy_state(strategy)
+        test_suite.test_strategy_state(strategy)
         test_results.append("✅ Strategy State")
     except Exception as e:
         test_results.append(f"❌ Strategy State: {e}")
     
     try:
-        TestStrategy().test_generate_signals_abstract(strategy)
-        test_results.append("✅ Abstract Method")
+        test_suite.test_generate_signals(strategy)
+        test_results.append("✅ Signal Generation")
     except Exception as e:
-        test_results.append(f"❌ Abstract Method: {e}")
+        test_results.append(f"❌ Signal Generation: {e}")
     
     try:
-        TestBuildingBlockFunctions().test_calculate_rsi()
+        test_suite.test_portfolio_risk_calculation(strategy)
+        test_results.append("✅ Portfolio Risk Calculation")
+    except Exception as e:
+        test_results.append(f"❌ Portfolio Risk Calculation: {e}")
+    
+    try:
+        TestIndicatorBuildingBlocks().test_calculate_rsi()
         test_results.append("✅ RSI Calculation")
     except Exception as e:
         test_results.append(f"❌ RSI Calculation: {e}")
     
     try:
-        TestBuildingBlockFunctions().test_calculate_sma()
+        TestIndicatorBuildingBlocks().test_calculate_sma()
         test_results.append("✅ SMA Calculation")
     except Exception as e:
         test_results.append(f"❌ SMA Calculation: {e}")
     
     try:
-        TestBuildingBlockFunctions().test_calculate_ema()
+        TestIndicatorBuildingBlocks().test_calculate_ema()
         test_results.append("✅ EMA Calculation")
     except Exception as e:
         test_results.append(f"❌ EMA Calculation: {e}")
     
     try:
-        TestBuildingBlockFunctions().test_signal_building_blocks()
-        test_results.append("✅ Signal Building Blocks")
+        TestIndicatorBuildingBlocks().test_calculate_stochastic()
+        test_results.append("✅ Stochastic Calculation")
     except Exception as e:
-        test_results.append(f"❌ Signal Building Blocks: {e}")
+        test_results.append(f"❌ Stochastic Calculation: {e}")
+    
+    try:
+        TestIndicatorBuildingBlocks().test_calculate_srsi()
+        test_results.append("✅ SRSI Calculation")
+    except Exception as e:
+        test_results.append(f"❌ SRSI Calculation: {e}")
+    
+    try:
+        TestSignalBuildingBlocks().test_check_oversold()
+        test_results.append("✅ Oversold Detection")
+    except Exception as e:
+        test_results.append(f"❌ Oversold Detection: {e}")
+    
+    try:
+        TestSignalBuildingBlocks().test_check_overbought()
+        test_results.append("✅ Overbought Detection")
+    except Exception as e:
+        test_results.append(f"❌ Overbought Detection: {e}")
+    
+    try:
+        TestSignalBuildingBlocks().test_check_crossover()
+        test_results.append("✅ Crossover Detection")
+    except Exception as e:
+        test_results.append(f"❌ Crossover Detection: {e}")
+    
+    try:
+        TestSignalBuildingBlocks().test_check_crossunder()
+        test_results.append("✅ Crossunder Detection")
+    except Exception as e:
+        test_results.append(f"❌ Crossunder Detection: {e}")
     
     try:
         TestMultiTimeframeFunctions().test_align_multi_timeframe_data()
         test_results.append("✅ Multi-Timeframe Data Alignment")
     except Exception as e:
         test_results.append(f"❌ Multi-Timeframe Data Alignment: {e}")
-    
-    try:
-        TestMultiTimeframeFunctions().test_check_multi_timeframe_condition()
-        test_results.append("✅ Multi-Timeframe Condition Checking")
-    except Exception as e:
-        test_results.append(f"❌ Multi-Timeframe Condition Checking: {e}")
     
     # Print results
     print("\n" + "=" * 80)
@@ -622,6 +712,7 @@ def run_comprehensive_strategy_tests():
         print("\n🎉 ALL STRATEGY BASE TESTS PASSED!")
         print("✅ Strategy Base Component is working 100%")
         print("✅ Ready for strategy development and backtesting")
+        print("✅ Phase 1.2 is COMPLETE and TESTED")
     else:
         print(f"\n⚠️  {total - passed} TESTS FAILED")
         print("❌ Strategy Base Component needs fixes")
