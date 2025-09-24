@@ -13,6 +13,7 @@ class TradingBotDashboard:
         
         # Track running processes
         self.data_collection_process = None
+        self.simple_strategy_process = None
         
         self.create_widgets()
     
@@ -20,8 +21,10 @@ class TradingBotDashboard:
         # Data Collection Section
         self.create_data_collection_section()
         
+        # Simple Strategy Section (NEW - FUNCTIONAL)
+        self.create_simple_strategy_section()
+        
         # Placeholder sections for future modules
-        self.create_placeholder_section("📈 SIMPLE STRATEGY MODULE", "simple_strategy")
         self.create_placeholder_section("🤖 SL AI MODULE", "sl_ai")
         self.create_placeholder_section("🧠 RL AI MODULE", "rl_ai")
         
@@ -42,16 +45,46 @@ class TradingBotDashboard:
         button_frame = ttk.Frame(dc_frame)
         button_frame.pack(fill="x", pady=5)
         
-        self.dc_start_btn = ttk.Button(button_frame, text="START DATA COLLECTION", 
-                                      command=self.start_data_collection)
+        self.dc_start_btn = ttk.Button(button_frame, text="START DATA COLLECTION",
+                                     command=self.start_data_collection)
         self.dc_start_btn.pack(side="left", padx=5)
         
-        self.dc_stop_btn = ttk.Button(button_frame, text="STOP DATA COLLECTION", 
-                                     command=self.stop_data_collection, state="disabled")
+        self.dc_stop_btn = ttk.Button(button_frame, text="STOP DATA COLLECTION",
+                                    command=self.stop_data_collection, state="disabled")
         self.dc_stop_btn.pack(side="left", padx=5)
         
-        ttk.Button(button_frame, text="SETTINGS", 
+        ttk.Button(button_frame, text="SETTINGS",
                   command=self.open_data_collection_settings).pack(side="left", padx=5)
+    
+    def create_simple_strategy_section(self):
+        # Simple Strategy Frame (NEW - FUNCTIONAL)
+        ss_frame = ttk.LabelFrame(self.root, text="📈 SIMPLE STRATEGY MODULE", padding=10)
+        ss_frame.pack(fill="x", padx=10, pady=5)
+        
+        # Status
+        self.ss_status = tk.StringVar(value="🔴 STOPPED")
+        status_label = ttk.Label(ss_frame, textvariable=self.ss_status, font=("Arial", 10, "bold"))
+        status_label.pack(anchor="w")
+        
+        # Buttons
+        button_frame = ttk.Frame(ss_frame)
+        button_frame.pack(fill="x", pady=5)
+        
+        self.ss_start_btn = ttk.Button(button_frame, text="START BACKTESTER",
+                                     command=self.start_simple_strategy)
+        self.ss_start_btn.pack(side="left", padx=5)
+        
+        self.ss_stop_btn = ttk.Button(button_frame, text="STOP BACKTESTER",
+                                    command=self.stop_simple_strategy, state="disabled")
+        self.ss_stop_btn.pack(side="left", padx=5)
+        
+        ttk.Button(button_frame, text="SETTINGS",
+                  command=self.open_simple_strategy_settings).pack(side="left", padx=5)
+        
+        # Info label
+        info_label = ttk.Label(ss_frame, text="Backtest traditional trading strategies with historical data",
+                            font=("Arial", 9), foreground="gray")
+        info_label.pack(anchor="w", pady=(5, 0))
     
     def create_placeholder_section(self, title, module_name):
         frame = ttk.LabelFrame(self.root, text=f"{title} (Coming Soon)", padding=10)
@@ -78,14 +111,13 @@ class TradingBotDashboard:
         try:
             # Start data collection using the launcher script in data_collection folder
             launcher_path = os.path.join(os.path.dirname(__file__), 
-                                    "shared_modules", "data_collection", "launch_data_collection.py")
+                                       "shared_modules", "data_collection", "launch_data_collection.py")
             self.data_collection_process = subprocess.Popen([sys.executable, launcher_path])
             
             # Update UI
             self.dc_status.set("🟢 RUNNING")
             self.dc_start_btn.config(state="disabled")
             self.dc_stop_btn.config(state="normal")
-            
         except Exception as e:
             messagebox.showerror("Error", f"Failed to start data collection: {e}")
     
@@ -99,13 +131,43 @@ class TradingBotDashboard:
                 self.dc_status.set("🔴 STOPPED")
                 self.dc_start_btn.config(state="normal")
                 self.dc_stop_btn.config(state="disabled")
-                
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to stop data collection: {e}")
     
     def open_data_collection_settings(self):
         # Open data collection settings (could open config file or settings GUI)
         messagebox.showinfo("Settings", "Data collection settings would open here")
+    
+    def start_simple_strategy(self):
+        try:
+            # Start simple strategy backtester
+            launcher_path = os.path.join(os.path.dirname(__file__), 
+                                       "simple_strategy", "gui_monitor.py")
+            self.simple_strategy_process = subprocess.Popen([sys.executable, launcher_path])
+            
+            # Update UI
+            self.ss_status.set("🟢 RUNNING")
+            self.ss_start_btn.config(state="disabled")
+            self.ss_stop_btn.config(state="normal")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to start simple strategy backtester: {e}")
+    
+    def stop_simple_strategy(self):
+        if self.simple_strategy_process:
+            try:
+                self.simple_strategy_process.terminate()
+                self.simple_strategy_process = None
+                
+                # Update UI
+                self.ss_status.set("🔴 STOPPED")
+                self.ss_start_btn.config(state="normal")
+                self.ss_stop_btn.config(state="disabled")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to stop simple strategy backtester: {e}")
+    
+    def open_simple_strategy_settings(self):
+        # Open simple strategy settings
+        messagebox.showinfo("Settings", "Simple strategy settings would open here")
 
 if __name__ == "__main__":
     root = tk.Tk()
