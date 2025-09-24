@@ -1,0 +1,1 @@
+2025-09-24 23:42:43 - shared_modules.data_collection.websocket_handler - ERROR - SSL connection error: object AsyncMock can't be used in 'await' expression

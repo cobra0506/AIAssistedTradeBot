@@ -368,3 +368,16 @@ connector: <aiohttp.connector.TCPConnector object at 0x0000022895EA4950>
 2025-09-24 22:26:40 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-09-24 22:26:00 - O:4161.2 H:4161.2 L:4160.31 C:4160.45
 2025-09-24 22:26:40 - shared_modules.data_collection.hybrid_system - INFO -  ETHUSDT_5: 2016 candles
 2025-09-24 22:26:40 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-09-24 22:25:00 - O:4160.0 H:4161.27 L:4159.47 C:4160.45
+2025-09-24 23:51:41 - root - INFO - Logging system initialized
+2025-09-24 23:51:41 - root - INFO - Logging system initialized
+2025-09-24 23:51:41 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:51:41 - root - INFO - Logging system initialized
+2025-09-24 23:55:40 - root - INFO - Logging system initialized
+2025-09-24 23:55:40 - root - INFO - Logging system initialized
+2025-09-24 23:55:40 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:55:40 - root - INFO - Logging system initialized
+2025-09-24 23:55:40 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-09-24 23:58:32 - root - INFO - Logging system initialized
+2025-09-24 23:58:32 - root - INFO - Logging system initialized
+2025-09-24 23:58:32 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:58:32 - root - INFO - Logging system initialized

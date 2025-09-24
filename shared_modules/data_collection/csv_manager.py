@@ -4,6 +4,7 @@ import os
 import logging
 from typing import List, Dict, Any, Optional
 from datetime import datetime
+from pathlib import Path 
 from .config import DataCollectionConfig
 
 # Configure logging
@@ -13,7 +14,7 @@ logger = logging.getLogger(__name__)
 class CSVManager:
     def __init__(self, config: DataCollectionConfig):
         self.config = config
-        self.data_dir = config.DATA_DIR
+        self.data_dir = Path(config.DATA_DIR)
         
     def ensure_data_directory(self):
         """Ensure data directory exists"""

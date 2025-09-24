@@ -1,0 +1,119 @@
+2025-09-24 23:42:43 - root - INFO - Logging system initialized
+2025-09-24 23:42:43 - root - INFO - Logging system initialized
+2025-09-24 23:42:43 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - shared_modules.data_collection.websocket_handler - INFO - WebSocket connection skipped (ENABLE_WEBSOCKET=False)
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - shared_modules.data_collection.websocket_handler - ERROR - SSL connection error: object AsyncMock can't be used in 'await' expression
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Updated existing candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459260000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459320000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459380000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459440000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459500000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459560000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459620000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459680000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459740000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459800000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459860000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459920000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459980000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460040000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460100000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460160000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460220000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460280000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460340000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460400000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460460000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460520000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460580000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460640000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460700000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460760000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460820000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460880000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609460940000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461000000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461060000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461120000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461180000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461240000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461300000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461360000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461420000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461480000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461540000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461600000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461660000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461720000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461780000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461840000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461900000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609461960000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609462020000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609462080000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609462140000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609462200000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609462260000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609462320000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609462380000
+2025-09-24 23:42:43 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609462440000
+2025-09-24 23:42:44 - root - INFO - Logging system initialized
+2025-09-24 23:42:44 - root - INFO - Logging system initialized
+2025-09-24 23:42:44 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:42:44 - root - INFO - Logging system initialized
+2025-09-24 23:42:44 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:44 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:44 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:44 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:45 - root - INFO - Logging system initialized
+2025-09-24 23:42:45 - root - INFO - Logging system initialized
+2025-09-24 23:42:45 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:42:45 - root - INFO - Logging system initialized
+2025-09-24 23:42:45 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:45 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:45 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:45 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:46 - root - INFO - Logging system initialized
+2025-09-24 23:42:46 - root - INFO - Logging system initialized
+2025-09-24 23:42:46 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:42:46 - root - INFO - Logging system initialized
+2025-09-24 23:42:46 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:46 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:46 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:42:46 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:32 - root - INFO - Logging system initialized
+2025-09-24 23:50:32 - root - INFO - Logging system initialized
+2025-09-24 23:50:32 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:33 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:33 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Processing 1 symbols in batches of <Mock name='mock.BULK_BATCH_SIZE' id='1651206678288'>
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:33 - shared_modules.data_collection.websocket_handler - INFO - WebSocket connection skipped (ENABLE_WEBSOCKET=False)
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:33 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-24 23:50:33 - root - INFO - Logging system initialized
+2025-09-24 23:50:33 - root - INFO - Logging system initialized
+2025-09-24 23:50:33 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-24 23:50:33 - root - INFO - Logging system initialized
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-24 23:50:33 - asyncio - DEBUG - Using proactor: IocpProactor
