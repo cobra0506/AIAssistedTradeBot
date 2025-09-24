@@ -1,0 +1,5 @@
+2025-09-24 21:43:58 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000002289503D850>
+2025-09-24 21:43:58 - asyncio - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5E900>, 8973.765), (<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5ECF0>, 8973.765), (<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5EC10>, 8974.921), (<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5EA50>, 8975.562), (<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5EBA0>, 8975.593), (<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5E6D0>, 8976.125), (<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5EC80>, 8980.562), (<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5EB30>, 8980.671), (<aiohttp.client_proto.ResponseHandler object at 0x0000022895E5EAC0>, 8981.687)]']
+connector: <aiohttp.connector.TCPConnector object at 0x0000022895EA4950>
