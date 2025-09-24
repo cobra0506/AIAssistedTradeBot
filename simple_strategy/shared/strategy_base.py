@@ -64,14 +64,15 @@ class StrategyBase(ABC):
     def calculate_position_size(self, symbol: str, signal_strength: float = 1.0) -> float:
         """
         Calculate position size based on risk management rules.
-        
         Args:
             symbol: Trading symbol
             signal_strength: Strength of the signal (0.0 to 1.0)
-            
         Returns:
             Position size in base currency
         """
+        # FIX: Clamp signal_strength to be non-negative
+        signal_strength = max(0.0, signal_strength)
+        
         # Calculate risk amount
         risk_amount = self.balance * self.max_risk_per_trade * signal_strength
         
@@ -287,29 +288,59 @@ def check_overbought(indicator_value: pd.Series, threshold: float = 80) -> pd.Se
 def check_crossover(fast_ma: pd.Series, slow_ma: pd.Series) -> pd.Series:
     """
     Check for moving average crossover.
-    
     Args:
         fast_ma: Fast moving average series
         slow_ma: Slow moving average series
-        
     Returns:
         Boolean series indicating crossover (fast crosses above slow)
     """
-    return (fast_ma > slow_ma) & (fast_ma.shift(1) <= slow_ma.shift(1))
+    # FIXED: Complete the implementation that was missing
+    # A crossover happens when:
+    # 1. Current fast > current slow AND
+    # 2. Previous fast <= previous slow
+    
+    # Create shifted series for comparison
+    fast_prev = fast_ma.shift(1)
+    slow_prev = slow_ma.shift(1)
+    
+    # Crossover condition
+    crossover = (fast_ma > slow_ma) & (fast_prev <= slow_prev)
+    
+    # First value can never be a crossover (no previous data)
+    crossover.iloc[0] = False
+    
+    return crossover
 
 def check_crossunder(fast_ma: pd.Series, slow_ma: pd.Series) -> pd.Series:
     """
     Check for moving average crossunder.
-    
     Args:
         fast_ma: Fast moving average series
         slow_ma: Slow moving average series
-        
     Returns:
         Boolean series indicating crossunder (fast crosses below slow)
     """
-    # Fix: Need to check if previous fast was above or equal to slow
-    return (fast_ma < slow_ma) & (fast_ma.shift(1) >= slow_ma.shift(1))
+    # FIXED: Simpler, more direct loop-based approach
+    
+    crossunder = pd.Series(False, index=fast_ma.index)
+    
+    # Start from index 1 (need at least one previous point)
+    for i in range(1, len(fast_ma)):
+        # Current values
+        fast_current = fast_ma.iloc[i]
+        slow_current = slow_ma.iloc[i]
+        
+        # Previous values
+        fast_prev = fast_ma.iloc[i-1]
+        slow_prev = slow_ma.iloc[i-1]
+        
+        # Check if we have a valid crossunder
+        # 1. Current fast < current slow
+        # 2. Previous fast >= previous slow
+        if (fast_current < slow_current) and (fast_prev >= slow_prev):
+            crossunder.iloc[i] = True
+    
+    return crossunder
 
 # ============================================================================
 # MULTI-TIMEFRAME BUILDING BLOCKS
@@ -341,30 +372,41 @@ def align_multi_timeframe_data(data_1m: pd.DataFrame, data_5m: pd.DataFrame,
     
     return aligned_data
 
-def check_multi_timeframe_condition(indicators_dict: Dict[str, Dict[str, pd.Series]], 
-                                   condition_func: callable) -> bool:
+def check_multi_timeframe_condition(indicators_dict: Dict[str, Dict[str, pd.Series]],
+                                  condition_func: callable) -> bool:
     """
     Check condition across multiple timeframes.
-    
     Args:
         indicators_dict: Nested dictionary {timeframe: {indicator_name: values}}
         condition_func: Function to evaluate condition on indicator values
-                       (takes dict of current values, returns bool)
-        
+                       (takes dict of current values and returns boolean)
     Returns:
-        True if condition is met across timeframes
+        Boolean indicating if condition is met
     """
+    # FIXED: Handle both Series and scalar values properly
     current_values = {}
     
-    # Get current values for each timeframe
     for timeframe, indicators in indicators_dict.items():
         current_values[timeframe] = {}
-        for indicator_name, series in indicators.items():
-            if len(series) > 0:
-                # Get the last value (scalar, not Series)
-                current_values[timeframe][indicator_name] = series.iloc[-1]
+        for indicator_name, values in indicators.items():
+            # FIXED: Handle both pandas Series and scalar values
+            if isinstance(values, pd.Series):
+                if len(values) > 0:
+                    # Get the latest value (last non-NaN value)
+                    latest_value = values.dropna().iloc[-1] if values.dropna().any() else values.iloc[-1]
+                    current_values[timeframe][indicator_name] = latest_value
+                else:
+                    # Empty series, use NaN
+                    current_values[timeframe][indicator_name] = np.nan
+            else:
+                # Scalar value, use as-is
+                current_values[timeframe][indicator_name] = values
     
-    return condition_func(current_values)
+    try:
+        return condition_func(current_values)
+    except Exception as e:
+        logger.warning(f"Error evaluating multi-timeframe condition: {e}")
+        return False
 
 # ============================================================================
 # UTILITY FUNCTIONS
@@ -402,18 +444,23 @@ def clean_data(data: pd.DataFrame) -> pd.DataFrame:
     
     return data
 
-def get_latest_data_point(data: pd.DataFrame, timestamp: datetime) -> Optional[pd.Series]:
+def get_latest_data_point(data: pd.DataFrame, timestamp: datetime) -> pd.Series:
     """
-    Get the latest data point at or before a specific timestamp.
-    
+    Get the latest data point at or before the specified timestamp.
     Args:
         data: DataFrame with datetime index
         timestamp: Target timestamp
-        
     Returns:
-        Latest data point or None if no data available
+        pandas Series with the latest data point, or None if no data available
     """
+    if data is None or len(data) == 0:
+        return None
+    
+    # Find data points at or before the timestamp
     mask = data.index <= timestamp
-    if mask.any():
-        return data[mask].iloc[-1]
-    return None
+    if not mask.any():
+        return None
+    
+    # Get the most recent data point
+    latest_data = data[mask].iloc[-1]
+    return latest_data

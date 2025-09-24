@@ -8,7 +8,7 @@ class DataCollectionConfig:
     API_BASE_URL = 'https://api.bybit.com'
     
     # Data settings
-    SYMBOLS = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT']  # Add more symbols as needed
+    SYMBOLS = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'ADAUSDT']  # Add more symbols as needed
     TIMEFRAMES = ['1', '5', '15']  # Add more timeframes as needed
     DATA_DIR = 'data'
     
