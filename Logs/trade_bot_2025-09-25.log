@@ -9,3 +9,9 @@
 2025-09-25 00:21:38 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
 2025-09-25 00:21:38 - root - INFO - Logging system initialized
 2025-09-25 00:21:38 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-25 02:27:27 - root - INFO - Logging system initialized
+2025-09-25 02:27:27 - root - INFO - Logging system initialized
+2025-09-25 02:27:27 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 02:27:27 - root - INFO - Logging system initialized
+2025-09-25 02:27:27 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-09-25 02:27:27 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000

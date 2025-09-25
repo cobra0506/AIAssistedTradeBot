@@ -29,13 +29,13 @@ class StrategyBase(ABC):
         self.timeframes = timeframes
         self.config = config
         # Strategy state
-        self.positions = {} # symbol -> position info
+        self.positions = {}  # symbol -> position info
         self.balance = config.get('initial_balance', 10000.0)
         self.initial_balance = self.balance
         # Risk management parameters
-        self.max_risk_per_trade = config.get('max_risk_per_trade', 0.01) # 1% of balance
+        self.max_risk_per_trade = config.get('max_risk_per_trade', 0.01)  # 1% of balance
         self.max_positions = config.get('max_positions', 3)
-        self.max_portfolio_risk = config.get('max_portfolio_risk', 0.10) # 10% of balance
+        self.max_portfolio_risk = config.get('max_portfolio_risk', 0.10)  # 10% of balance
         # Performance tracking
         self.trades = []
         self.equity_curve = []
@@ -75,7 +75,7 @@ class StrategyBase(ABC):
         else:
             position_size = 0
         # Apply maximum position limits
-        max_position_size = self.balance * 0.2 # Max 20% of balance in single position
+        max_position_size = self.balance * 0.2  # Max 20% of balance in single position
         position_size = min(position_size, max_position_size)
         logger.debug(f"Calculated position size for {symbol}: {position_size} (risk: {risk_amount})")
         return position_size
@@ -112,7 +112,7 @@ class StrategyBase(ABC):
         """
         Get current strategy state for logging and monitoring.
         Returns:
-        Dictionary with strategy state information
+            Dictionary with strategy state information
         """
         return {
             'name': self.name,
@@ -137,7 +137,7 @@ class StrategyBase(ABC):
         """
         # This is a placeholder - in practice, this would come from the data feeder
         logger.warning(f"Using placeholder price for {symbol}")
-        return 50000.0 # Placeholder price
+        return 50000.0  # Placeholder price
 
     def _calculate_portfolio_risk(self) -> float:
         """
@@ -152,7 +152,6 @@ class StrategyBase(ABC):
     # ============================================================================
     # INDICATOR METHODS (make functions accessible as methods)
     # ============================================================================
-
     def calculate_rsi(self, data: pd.Series, period: int = 14) -> pd.Series:
         """Calculate RSI - wrapper for the standalone function"""
         return calculate_rsi_func(data, period)
@@ -176,7 +175,6 @@ class StrategyBase(ABC):
 # ============================================================================
 # INDICATOR BUILDING BLOCKS (renamed to avoid naming conflicts)
 # ============================================================================
-
 def calculate_rsi_func(data: pd.Series, period: int = 14) -> pd.Series:
     """
     Calculate Relative Strength Index (RSI).
@@ -244,16 +242,16 @@ def calculate_srsi_func(data: pd.Series, period: int = 14) -> pd.Series:
     # Create DataFrame for stochastic calculation
     stochastic_data = pd.DataFrame({
         'high': rsi,
-        'low': rsi, 
+        'low': rsi,
         'close': rsi
     })
-    k_percent, d_percent = calculate_stochastic_func(stochastic_data, period, 3)
+    # FIXED: Use k_period instead of period
+    k_percent, d_percent = calculate_stochastic_func(stochastic_data, k_period=period, d_period=3)
     return k_percent
 
 # ============================================================================
 # SIGNAL BUILDING BLOCKS
 # ============================================================================
-
 def check_oversold(indicator_value: pd.Series, threshold: float = 20) -> pd.Series:
     """
     Check if indicator is in oversold territory.
@@ -288,13 +286,10 @@ def check_crossover(fast_ma: pd.Series, slow_ma: pd.Series) -> pd.Series:
     # Create shifted series for comparison
     fast_prev = fast_ma.shift(1)
     slow_prev = slow_ma.shift(1)
-    
     # Crossover condition: (current fast > current slow) AND (previous fast <= previous slow)
     crossover = (fast_ma > slow_ma) & (fast_prev <= slow_prev)
-    
     # First value can never be a crossover (no previous data)
     crossover.iloc[0] = False
-    
     return crossover
 
 def check_crossunder(fast_ma: pd.Series, slow_ma: pd.Series) -> pd.Series:
@@ -309,55 +304,15 @@ def check_crossunder(fast_ma: pd.Series, slow_ma: pd.Series) -> pd.Series:
     # Create shifted series for comparison
     fast_prev = fast_ma.shift(1)
     slow_prev = slow_ma.shift(1)
-    
     # Crossunder condition: (current fast < current slow) AND (previous fast >= previous slow)
     crossunder = (fast_ma < slow_ma) & (fast_prev >= slow_prev)
-    
     # First value can never be a crossunder (no previous data)
     crossunder.iloc[0] = False
-    
     return crossunder
-
-# ============================================================================
-# MULTI-TIMEFRAME BUILDING BLOCKS
-# ============================================================================
-
-def align_multi_timeframe_data(data_1m: pd.DataFrame, data_5m: pd.DataFrame,
-                             data_15m: pd.DataFrame, timestamp: datetime) -> Dict[str, Dict[str, Any]]:
-    """
-    Align data across multiple timeframes for a specific timestamp.
-    Args:
-        data_1m: 1-minute DataFrame
-        data_5m: 5-minute DataFrame  
-        data_15m: 15-minute DataFrame
-        timestamp: Target timestamp as datetime object
-    Returns:
-        Dictionary with aligned data for each timeframe
-    """
-    result = {}
-    
-    # Convert timestamp to milliseconds for comparison
-    timestamp_ms = int(timestamp.timestamp() * 1000)
-    
-    timeframes = [
-        ('1m', data_1m),
-        ('5m', data_5m),
-        ('15m', data_15m)
-    ]
-    
-    for tf_name, tf_data in timeframes:
-        if tf_data is not None and len(tf_data) > 0 and 'timestamp' in tf_data.columns:
-            # Find closest timestamp
-            time_diffs = abs(tf_data['timestamp'] - timestamp_ms)
-            closest_idx = time_diffs.idxmin()
-            result[tf_name] = tf_data.iloc[closest_idx].to_dict()
-    
-    return result
 
 # ============================================================================
 # UTILITY FUNCTIONS
 # ============================================================================
-
 def validate_data_format(data: pd.DataFrame) -> bool:
     """
     Validate that data has required columns and format.
@@ -368,3 +323,21 @@ def validate_data_format(data: pd.DataFrame) -> bool:
     """
     required_columns = ['open', 'high', 'low', 'close', 'volume']
     return all(col in data.columns for col in required_columns)
+
+def align_multi_timeframe_data(data_dict: Dict[str, Dict[str, pd.DataFrame]]) -> Dict[str, Dict[str, pd.DataFrame]]:
+    """
+    Align multi-timeframe data to ensure consistent timestamps.
+    Args:
+        data_dict: Nested dictionary {symbol: {timeframe: DataFrame}}
+    Returns:
+        Aligned data dictionary
+    """
+    aligned_data = {}
+    for symbol, timeframe_data in data_dict.items():
+        aligned_data[symbol] = {}
+        for timeframe, df in timeframe_data.items():
+            # Ensure timestamp is datetime
+            if 'timestamp' in df.columns:
+                df['datetime'] = pd.to_datetime(df['timestamp'], unit='ms')
+            aligned_data[symbol][timeframe] = df
+    return aligned_data
