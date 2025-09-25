@@ -15,3 +15,85 @@
 2025-09-25 02:27:27 - root - INFO - Logging system initialized
 2025-09-25 02:27:27 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
 2025-09-25 02:27:27 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-25 02:40:24 - root - INFO - Logging system initialized
+2025-09-25 02:40:24 - root - INFO - Logging system initialized
+2025-09-25 02:40:24 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 02:40:24 - root - INFO - Logging system initialized
+2025-09-25 02:40:24 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-09-25 02:40:24 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-25 02:44:23 - root - INFO - Logging system initialized
+2025-09-25 02:44:23 - root - INFO - Logging system initialized
+2025-09-25 02:44:23 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 02:44:23 - root - INFO - Logging system initialized
+2025-09-25 02:51:58 - root - INFO - Logging system initialized
+2025-09-25 02:51:58 - root - INFO - Logging system initialized
+2025-09-25 02:51:58 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 02:51:58 - root - INFO - Logging system initialized
+2025-09-25 02:55:35 - root - INFO - Logging system initialized
+2025-09-25 02:55:35 - root - INFO - Logging system initialized
+2025-09-25 02:55:35 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 02:55:35 - root - INFO - Logging system initialized
+2025-09-25 02:56:47 - root - INFO - Logging system initialized
+2025-09-25 02:56:47 - root - INFO - Logging system initialized
+2025-09-25 02:56:47 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 02:56:47 - root - INFO - Logging system initialized
+2025-09-25 03:03:26 - root - INFO - Logging system initialized
+2025-09-25 03:03:26 - root - INFO - Logging system initialized
+2025-09-25 03:03:26 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:08:58 - root - INFO - Logging system initialized
+2025-09-25 03:08:58 - root - INFO - Logging system initialized
+2025-09-25 03:08:58 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:08:58 - root - INFO - Logging system initialized
+2025-09-25 03:09:19 - root - INFO - Logging system initialized
+2025-09-25 03:09:19 - root - INFO - Logging system initialized
+2025-09-25 03:09:19 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:09:19 - root - INFO - Logging system initialized
+2025-09-25 03:13:20 - root - INFO - Logging system initialized
+2025-09-25 03:13:20 - root - INFO - Logging system initialized
+2025-09-25 03:13:20 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:13:20 - shared_modules.data_collection.csv_manager - INFO - Wrote 3 entries to C:\Users\cobra\AppData\Local\Temp\tmplpvrjwyh\BTCUSDT_1m.csv
+2025-09-25 03:13:20 - shared_modules.data_collection.csv_manager - INFO - Read 3 entries from C:\Users\cobra\AppData\Local\Temp\tmplpvrjwyh\BTCUSDT_1m.csv
+2025-09-25 03:13:20 - shared_modules.data_collection.csv_manager - INFO - Read 3 entries from C:\Users\cobra\AppData\Local\Temp\tmplpvrjwyh\BTCUSDT_1m.csv
+2025-09-25 03:13:20 - shared_modules.data_collection.csv_manager - INFO - [CSV] Updated existing candle for BTCUSDT_1m at timestamp 1640995260000
+2025-09-25 03:13:20 - root - INFO - Logging system initialized
+2025-09-25 03:26:58 - root - INFO - Logging system initialized
+2025-09-25 03:26:58 - root - INFO - Logging system initialized
+2025-09-25 03:26:58 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:26:58 - root - INFO - Logging system initialized
+2025-09-25 03:28:07 - root - INFO - Logging system initialized
+2025-09-25 03:28:07 - root - INFO - Logging system initialized
+2025-09-25 03:28:07 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:28:07 - root - INFO - Logging system initialized
+2025-09-25 03:28:07 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-25 03:31:29 - root - INFO - Logging system initialized
+2025-09-25 03:31:29 - root - INFO - Logging system initialized
+2025-09-25 03:31:29 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:31:29 - root - INFO - Logging system initialized
+2025-09-25 03:31:29 - shared_modules.data_collection.csv_manager - INFO - Read 1 entries from C:\Users\cobra\AppData\Local\Temp\tmp3u1md1ae\BTCUSDT_1m.csv
+2025-09-25 03:31:29 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:35:30 - root - INFO - Logging system initialized
+2025-09-25 03:35:30 - root - INFO - Logging system initialized
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:35:30 - root - INFO - Logging system initialized
+2025-09-25 03:35:30 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:35:30 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:37:12 - root - INFO - Logging system initialized
+2025-09-25 03:37:12 - root - INFO - Logging system initialized
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 03:37:12 - root - INFO - Logging system initialized
+2025-09-25 03:37:12 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-09-25 03:37:12 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration

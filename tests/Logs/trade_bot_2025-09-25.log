@@ -1,0 +1,11 @@
+2025-09-25 02:55:15 - root - INFO - Logging system initialized
+2025-09-25 02:55:15 - root - INFO - Logging system initialized
+2025-09-25 02:55:15 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 02:55:16 - shared_modules.data_collection.csv_manager - INFO - [CSV] Added new candle for BTCUSDT_1 at timestamp 1609459200000
+2025-09-25 02:55:16 - root - INFO - Logging system initialized
+2025-09-25 02:55:16 - root - INFO - Logging system initialized
+2025-09-25 02:55:16 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-09-25 02:55:16 - root - INFO - Logging system initialized
+2025-09-25 02:55:16 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-25 02:55:16 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-25 02:55:16 - asyncio - DEBUG - Using proactor: IocpProactor
