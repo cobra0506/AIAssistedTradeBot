@@ -85,32 +85,61 @@ class StrategyBuilder:
     
     def add_signal_rule(self, name: str, signal_func: Callable, **params) -> 'StrategyBuilder':
         """
-        Add a signal rule to the strategy with validation
+        Add a signal rule to the strategy
+        
+        Args:
+            name: Unique name for this signal rule
+            signal_func: Signal function from signals_library
+            **params: Parameters including indicator references
+            
+        Returns:
+            Self for method chaining
         """
         try:
-            # Validate that any indicators referenced in params exist
-            if 'indicator' in params:
-                indicator_name = params['indicator']
-                if indicator_name not in self.indicators:
-                    raise ValueError(f"Signal rule '{name}' references unknown indicator '{indicator_name}'. "
-                                f"Available indicators: {list(self.indicators.keys())}")
+            if name in self.signal_rules:
+                logger.warning(f"⚠️ Signal rule '{name}' already exists, overwriting")
             
-            # Validate that any indicators in indicator_params exist
-            if 'indicator_params' in params:
-                for param_name, param_value in params['indicator_params'].items():
-                    if param_name == 'indicator' and param_value not in self.indicators:
-                        raise ValueError(f"Signal rule '{name}' references unknown indicator '{param_value}'. "
-                                    f"Available indicators: {list(self.indicators.keys())}")
+            # Separate indicator references from signal parameters
+            indicator_refs = []
+            signal_params = {}
+            
+            # Known indicator parameters for common signal functions
+            indicator_param_names = {
+                'overbought_oversold': ['indicator'],
+                'ma_crossover': ['fast_ma', 'slow_ma'],
+                'macd_signals': ['macd_line', 'signal_line'],
+                'bollinger_bands_signals': ['price', 'upper_band', 'lower_band'],
+                'stochastic_signals': ['k_percent', 'd_percent'],
+                'divergence_signals': ['price', 'indicator'],
+                'breakout_signals': ['price', 'resistance', 'support'],
+                'trend_strength_signals': ['price', 'short_ma', 'long_ma']
+            }
+            
+            # Get the expected indicator parameter names for this function
+            expected_indicators = indicator_param_names.get(signal_func.__name__, [])
+            
+            for param_name, param_value in params.items():
+                if param_name in expected_indicators:
+                    # This is an indicator reference - store it for validation during build
+                    indicator_refs.append((param_name, param_value))
+                else:
+                    # This is a signal parameter
+                    signal_params[param_name] = param_value
             
             self.signal_rules[name] = {
                 'function': signal_func,
-                'params': params
+                'indicator_refs': indicator_refs,  # List of (param_name, indicator_name)
+                'params': signal_params
             }
-            logger.debug(f"📈 Added signal rule: {name} with params: {params}")
+            
+            logger.debug(f"📈 Added signal rule: {name} with indicators: {[ref[1] for ref in indicator_refs]}")
+            logger.debug(f"📈 Signal parameters: {signal_params}")
+            
             return self
+            
         except Exception as e:
             logger.error(f"❌ Error adding signal rule {name}: {e}")
-            raise  # Re-raise the exception so the test can catch it
+            return self
     
     def add_risk_rule(self, rule_type: str, **params) -> 'StrategyBuilder':
         """
@@ -133,52 +162,28 @@ class StrategyBuilder:
     
     def set_signal_combination(self, method: str, **kwargs) -> 'StrategyBuilder':
         """
-        Set how signals should be combined with validation
+        Set how signals should be combined
+        
+        Args:
+            method: Combination method ('majority_vote', 'weighted', 'unanimous')
+            **kwargs: Additional parameters (like weights for weighted method)
+            
+        Returns:
+            Self for method chaining
         """
         try:
-            # Validate combination method
-            valid_methods = ['majority_vote', 'weighted', 'unanimous']
-            if method not in valid_methods:
-                raise ValueError(f"Invalid signal combination method: '{method}'. "
-                            f"Valid methods: {valid_methods}")
-            
+            # Store the method and weights, validate during build
             self.signal_combination = method
             
-            # Validate weights if using weighted method
-            if method == 'weighted':
-                if 'weights' not in kwargs:
-                    raise ValueError("Weights parameter is required for weighted signal combination")
-                
-                weights = kwargs['weights']
-                
-                # Validate weights is a dictionary
-                if not isinstance(weights, dict):
-                    raise ValueError("Weights must be a dictionary")
-                
-                # Validate that all weight keys reference existing signal rules
-                for signal_rule_name in weights.keys():
-                    if signal_rule_name not in self.signal_rules:
-                        raise ValueError(f"Weight references unknown signal rule '{signal_rule_name}'. "
-                                    f"Available signal rules: {list(self.signal_rules.keys())}")
-                
-                # Validate weight values are numeric
-                for signal_rule_name, weight in weights.items():
-                    if not isinstance(weight, (int, float)):
-                        raise ValueError(f"Weight for signal rule '{signal_rule_name}' must be numeric")
-                    if weight <= 0:
-                        raise ValueError(f"Weight for signal rule '{signal_rule_name}' must be positive")
-                
-                # Validate weights sum to a reasonable value (optional but good practice)
-                total_weight = sum(weights.values())
-                if total_weight <= 0:
-                    raise ValueError("Total weight must be positive")
-                
-                self.signal_weights = weights
+            if method == 'weighted' and 'weights' in kwargs:
+                self.signal_weights = kwargs['weights']
             
+            logger.debug(f"🔀 Set signal combination to: {method}")
             return self
+            
         except Exception as e:
             logger.error(f"❌ Error setting signal combination: {e}")
-            raise  # Re-raise the exception so the test can catch it
+            return self
     
     def set_strategy_info(self, name: str, version: str = "1.0.0") -> 'StrategyBuilder':
         """
@@ -196,7 +201,7 @@ class StrategyBuilder:
         logger.debug(f"📝 Set strategy info: {name} v{version}")
         return self
     
-    '''def build(self) -> StrategyBase:
+    def build(self) -> StrategyBase:
         """
         Build the complete strategy
         
@@ -207,68 +212,7 @@ class StrategyBuilder:
             logger.info(f"🔨 Building strategy: {self.strategy_name}")
             
             # Validate the strategy configuration
-            self._validate_configuration()'''
-    def build(self) -> StrategyBase:
-        """
-        Build the final strategy with comprehensive validation
-        """
-        try:
-            # Validate that we have at least one indicator
-            if not self.indicators:
-                raise ValueError("No indicators defined. Add at least one indicator.")
-            
-            # Validate that we have at least one signal rule
-            if not self.signal_rules:
-                raise ValueError("No signal rules defined. Add at least one signal rule.")
-            
-            # Validate that all signal rules reference existing indicators
-            for rule_name, rule_data in self.signal_rules.items():
-                params = rule_data['params']
-                
-                # Check for direct indicator reference
-                if 'indicator' in params and params['indicator'] not in self.indicators:
-                    raise ValueError(f"Signal rule '{rule_name}' references unknown indicator '{params['indicator']}'. "
-                                f"Available indicators: {list(self.indicators.keys())}")
-                
-                # Check for indicator_params references
-                if 'indicator_params' in params:
-                    for param_name, param_value in params['indicator_params'].items():
-                        if param_name == 'indicator' and param_value not in self.indicators:
-                            raise ValueError(f"Signal rule '{rule_name}' references unknown indicator '{param_value}'. "
-                                        f"Available indicators: {list(self.indicators.keys())}")
-            
-            # Validate signal combination setup
-            if self.signal_combination == 'weighted':
-                if not self.signal_weights:
-                    raise ValueError("Weights must be specified for weighted signal combination")
-                
-                # Validate that all weight keys reference existing signal rules
-                for signal_rule_name in self.signal_weights.keys():
-                    if signal_rule_name not in self.signal_rules:
-                        raise ValueError(f"Weight references unknown signal rule '{signal_rule_name}'. "
-                                    f"Available signal rules: {list(self.signal_rules.keys())}")
-            
-            # Create strategy instance
-            strategy_instance = StrategyBase(
-                symbols=self.symbols,
-                timeframes=self.timeframes,
-                strategy_name=self.strategy_name,
-                version=self.version
-            )
-            
-            # Set strategy components
-            strategy_instance.indicators = self.indicators
-            strategy_instance.signal_rules = self.signal_rules
-            strategy_instance.risk_rules = self.risk_rules
-            strategy_instance.signal_combination = self.signal_combination
-            strategy_instance.signal_weights = self.signal_weights
-            
-            logger.info(f"✅ Strategy '{self.strategy_name}' built successfully!")
-            return strategy_instance
-        
-        except Exception as e:
-            logger.error(f"❌ Error building strategy: {e}")
-            raise  # Re-raise the exception so the test can catch it
+            self._validate_configuration()
             
             # Create the strategy class
             class BuiltStrategy(StrategyBase):
