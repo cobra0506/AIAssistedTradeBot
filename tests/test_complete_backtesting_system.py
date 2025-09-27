@@ -22,6 +22,7 @@ from simple_strategy.backtester.performance_tracker import PerformanceTracker
 from simple_strategy.backtester.position_manager import PositionManager
 from simple_strategy.shared.data_feeder import DataFeeder
 from simple_strategy.shared.strategy_base import StrategyBase
+from simple_strategy.backtester.risk_manager import RiskManager
 
 class TestCompleteBacktestingSystem(unittest.TestCase):
     """Comprehensive test suite for the complete backtesting system"""
@@ -46,7 +47,6 @@ class TestCompleteBacktestingSystem(unittest.TestCase):
     def setUp(self):
         """Debug version of setUp to isolate the issue"""
         print("🔧 DEBUG: setUp method starting...")
-        
         try:
             print("🔧 DEBUG: Step 1 - Creating temp directory...")
             self.temp_dir = tempfile.mkdtemp()
@@ -68,8 +68,17 @@ class TestCompleteBacktestingSystem(unittest.TestCase):
             self.performance_tracker = PerformanceTracker(initial_balance=10000.0)
             print("✅ DEBUG: PerformanceTracker initialized")
             
+            print("🔧 DEBUG: Step 6 - Initializing RiskManager...")
+            self.risk_manager = RiskManager(
+                max_risk_per_trade=0.02,
+                max_portfolio_risk=0.10,
+                max_positions=5,
+                default_stop_loss_pct=0.02
+            )
+            print("✅ DEBUG: RiskManager initialized")
+            
             print("📈 Creating test strategy...")
-            self.test_strategy=MultiSymbolStrategy(  # ← FIXED: Use MultiSymbolStrategy
+            self.test_strategy = MultiSymbolStrategy(  # ← FIXED: Use MultiSymbolStrategy
                 name="TestStrategy",
                 symbols=["BTCUSDT", "ETHUSDT"],
                 timeframes=["1m"],
@@ -81,12 +90,12 @@ class TestCompleteBacktestingSystem(unittest.TestCase):
             self.backtester = BacktesterEngine(
                 data_feeder=self.data_feeder,
                 strategy=self.test_strategy,
+                risk_manager=self.risk_manager,  # ← Add this line
                 config={"processing_mode": "sequential"}
             )
             print("✅ DEBUG: Backtester initialized")
             
             print("🔧 DEBUG: Setup completed successfully!")
-            
         except Exception as e:
             print(f"❌ DEBUG: Exception in setUp: {e}")
             import traceback
@@ -122,6 +131,70 @@ class TestCompleteBacktestingSystem(unittest.TestCase):
             print(f"AttributeError: {e}")
         except Exception as e:
             print(f"Other error: {e}")
+
+    def test_risk_management_integration(self):
+        """Test specific risk management integration features"""
+        print("🔍 Testing risk management integration...")
+        
+        # Test position size calculation
+        print("📏 Testing position size calculation...")
+        position_size = self.risk_manager.calculate_position_size(
+            "BTCUSDT", 20000.0, 10000.0, strategy='fixed_percentage'
+        )
+        self.assertGreater(position_size, 0, "Position size should be positive")
+        print(f" Position size calculated: {position_size}")
+        
+        # Test trade signal validation
+        print("✅ Testing trade signal validation...")
+        account_state = {
+            'balance': 10000.0,
+            'positions': {}
+        }
+        
+        buy_signal = {
+            'symbol': 'BTCUSDT',
+            'signal_type': 'BUY',
+            'price': 20000.0,
+            'timestamp': datetime.now()
+        }
+        
+        validation_result = self.risk_manager.validate_trade_signal(buy_signal, account_state)
+        self.assertTrue(validation_result['valid'], "Valid BUY signal should be accepted")
+        self.assertIsNotNone(validation_result['adjusted_position_size'], "Should have adjusted position size")
+        print("✅ Trade signal validation working")
+        
+        # Test stop-loss mechanism
+        print("🛑 Testing stop-loss mechanism...")
+        position = {
+            'symbol': 'BTCUSDT',
+            'direction': 'long',
+            'entry_price': 20000.0,
+            'size': 0.1,
+            'current_price': 20000.0
+        }
+        
+        # Test stop-loss trigger
+        stop_loss_result = self.risk_manager.check_stop_loss(position, 19500.0)  # 2.5% drop
+        self.assertTrue(stop_loss_result['triggered'], "Stop-loss should trigger with significant price drop")
+        print("✅ Stop-loss mechanism working")
+        
+        # Test portfolio risk calculation
+        print("📊 Testing portfolio risk calculation...")
+        account_state['positions']['BTCUSDT'] = {
+            'symbol': 'BTCUSDT',
+            'direction': 'long',
+            'size': 0.1,
+            'current_price': 20000.0
+        }
+        
+        portfolio_risk = self.risk_manager.calculate_portfolio_risk(
+            account_state['positions'], account_state['balance']
+        )
+        self.assertGreaterEqual(portfolio_risk, 0, "Portfolio risk should be non-negative")
+        self.assertLessEqual(portfolio_risk, 1.0, "Portfolio risk should not exceed 100%")
+        print(f" Portfolio risk calculated: {portfolio_risk:.2%}")
+        
+        print("🎉 Risk management integration tests PASSED!")
 
     def _create_test_data(self):
         """Create realistic test data for backtesting"""
@@ -456,6 +529,8 @@ class TestCompleteBacktestingSystem(unittest.TestCase):
             import traceback
             print(f"❌ Full traceback: {traceback.format_exc()}")
             raise
+
+
 
 
 class MultiSymbolStrategy(StrategyBase):

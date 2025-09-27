@@ -10,6 +10,7 @@ from typing import Dict, List, Any, Optional, Union, Tuple
 from datetime import datetime, timedelta
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from simple_strategy.backtester.risk_manager import RiskManager
 import time
 from pathlib import Path
 import sys
@@ -30,18 +31,20 @@ class BacktesterEngine:
     Core backtesting engine that processes historical data and executes strategies
     """
     
-    def __init__(self, data_feeder: DataFeeder, strategy: StrategyBase, 
-                 config: Dict[str, Any] = None):
+    def __init__(self, data_feeder: DataFeeder, strategy: StrategyBase,
+             risk_manager: Optional[RiskManager] = None, config: Dict[str, Any] = None):
         """
-        Initialize backtester engine
+        Initialize backtester engine with risk management integration
         
         Args:
             data_feeder: DataFeeder instance for data access
             strategy: StrategyBase instance for signal generation
+            risk_manager: RiskManager instance for risk management (optional)
             config: Backtester configuration
         """
         self.data_feeder = data_feeder
         self.strategy = strategy
+        self.risk_manager = risk_manager or RiskManager()  # Use default if not provided
         self.config = config or {}
         
         # Backtester state
@@ -67,6 +70,7 @@ class BacktesterEngine:
         self.enable_parallel_processing = self.config.get('enable_parallel_processing', False)
         
         logger.info(f"BacktesterEngine initialized with strategy: {strategy.name}")
+        logger.info(f"Risk management {'enabled' if self.risk_manager else 'disabled'}")
     
     def run_backtest(self, symbols: List[str], timeframes: List[str],
                      start_date: Union[str, datetime], 
