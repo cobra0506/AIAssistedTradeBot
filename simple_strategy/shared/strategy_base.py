@@ -53,31 +53,47 @@ class StrategyBase(ABC):
         """
         pass
 
-    def calculate_position_size(self, symbol: str, signal_strength: float = 1.0) -> float:
+    def calculate_position_size(self, symbol: str, current_price: float = None, signal_strength: float = 1.0) -> float:
         """
         Calculate position size based on risk management rules.
         Args:
             symbol: Trading symbol
+            current_price: Current price of the asset
             signal_strength: Strength of the signal (0.0 to 1.0)
         Returns:
-            Position size in base currency
+            Position size in units of the asset
         """
-        # FIX: Clamp signal_strength to be non-negative
-        signal_strength = max(0.0, signal_strength)
-        # Calculate risk amount
+        if current_price is None:
+            # We don't have the current price, so we can't calculate the position size accurately
+            # Return a small fixed size as a fallback
+            if symbol.startswith('BTC'):
+                return 0.001  # 0.001 BTC
+            elif symbol.startswith('ETH'):
+                return 0.01   # 0.01 ETH
+            else:
+                return 1.0    # 1 unit of other assets
+        
+        # Calculate risk amount for this trade
         risk_amount = self.balance * self.max_risk_per_trade * signal_strength
-        # Get current price (would need to be passed in or fetched)
-        # For now, use a placeholder - in practice, this would come from data
-        current_price = self._get_current_price(symbol)
-        # Calculate position size
-        if current_price > 0:
-            position_size = risk_amount / current_price
-        else:
-            position_size = 0
-        # Apply maximum position limits
-        max_position_size = self.balance * 0.2  # Max 20% of balance in single position
+        
+        # Calculate position size in units of the asset
+        position_size = risk_amount / current_price
+        
+        # Ensure we don't exceed maximum position size
+        # Max position size is a fraction of the account balance
+        max_position_value = self.balance * self.max_positions / 10  # Distribute among max positions
+        max_position_size = max_position_value / current_price
+        
         position_size = min(position_size, max_position_size)
-        logger.debug(f"Calculated position size for {symbol}: {position_size} (risk: {risk_amount})")
+        
+        # For crypto assets, we might want to round to a reasonable number of decimal places
+        if symbol.startswith('BTC'):
+            position_size = round(position_size, 6)  # Bitcoin can be divided to 8 decimal places, but 6 is reasonable for trading
+        elif symbol.startswith('ETH'):
+            position_size = round(position_size, 4)  # Ethereum can be divided to 18 decimal places, but 4 is reasonable
+        else:
+            position_size = round(position_size, 2)  # Other assets
+        
         return position_size
 
     def validate_signal(self, symbol: str, signal: str, data: Dict[str, pd.DataFrame]) -> bool:

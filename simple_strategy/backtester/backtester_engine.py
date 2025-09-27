@@ -22,9 +22,19 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from shared.data_feeder import DataFeeder
 from shared.strategy_base import StrategyBase
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Configure logging to reduce debug output
+import logging
+logging.basicConfig(
+    level=logging.INFO,  # Change from DEBUG to INFO
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
+
+# Specifically set debug level for backtester to INFO
+logging.getLogger('simple_strategy.backtester.backtester_engine').setLevel(logging.INFO)
+logging.getLogger('simple_strategy.strategies.strategy_builder').setLevel(logging.INFO)
 
 class BacktesterEngine:
     """
@@ -267,132 +277,96 @@ class BacktesterEngine:
         
         return timestamp_data
     
-    def _process_signals(self, signals: Dict[str, Dict[str, str]], 
-                        current_data: Dict[str, Dict[str, pd.DataFrame]], 
-                        timestamp: datetime) -> List[Dict[str, Any]]:
-        """
-        Process strategy signals and execute trades
+    def _process_signals(self, signals: Dict[str, Dict[str, str]], current_data: Dict[str, Dict[str, pd.DataFrame]], timestamp: datetime) -> List[Dict[str, Any]]:
+        """Process signals and execute trades"""
+        trade_results = []
         
-        Args:
-            signals: Signals from strategy
-            current_data: Current market data
-            timestamp: Current timestamp
-            
-        Returns:
-            List of executed trades
-        """
-        trades = []
-        
-        for symbol, timeframe_signals in signals.items():
-            for timeframe, signal in timeframe_signals.items():
-                if signal == 'HOLD':
-                    continue
-                
-                # Get current price
-                current_price = self._get_current_price(current_data[symbol][timeframe])
-                
-                if current_price is None:
-                    logger.warning(f"Could not get current price for {symbol} at {timestamp}")
-                    continue
-                
-                # Validate signal
-                if not self.strategy.validate_signal(symbol, signal, current_data[symbol][timeframe]):
-                    logger.warning(f"Signal validation failed for {symbol}: {signal}")
-                    continue
-                
-                # Calculate position size
-                position_size = self.strategy.calculate_position_size(symbol)
-                
-                # Execute trade
-                trade = self._execute_trade(symbol, signal, position_size, current_price, timestamp)
-                if trade:
-                    trades.append(trade)
-                    self.processing_stats['total_trades_executed'] += 1
-        
-        return trades
-    
-    def _get_current_price(self, df: pd.DataFrame) -> Optional[float]:
-        """Get current price from DataFrame"""
-        if df.empty:
-            print(f"🔧 DEBUG: _get_current_price: DataFrame is empty")
-            return None
-        
-        # Use the last available close price
-        price = df['close'].iloc[-1]
-        print(f"🔧 DEBUG: _get_current_price: {price}")
-        return price
-    
-    def _execute_trade(self, symbol: str, signal: str, position_size: float,
-                  price: float, timestamp: datetime) -> Optional[Dict[str, Any]]:
-        """Execute a trade"""
         try:
-            print(f"🔧 DEBUG: _execute_trade called with symbol={symbol}, signal={signal}, position_size={position_size}, price={price}")
+            for symbol, timeframe_signals in signals.items():
+                for timeframe, signal in timeframe_signals.items():
+                    if signal in ['BUY', 'SELL']:
+                        # Check if we can execute this trade
+                        if self._can_execute_trade(symbol, signal, timestamp):
+                            # Execute the trade
+                            trade_result = self._execute_trade(symbol, signal, timestamp, current_data)
+                            trade_results.append(trade_result)
+                        else:
+                            logger.info(f"⚠️ Cannot execute {signal} trade for {symbol} at {timestamp}")
             
-            trade = {
+            return trade_results
+            
+        except Exception as e:
+            logger.error(f"❌ Error processing signals: {e}")
+            return []
+    
+    def _get_current_price(self, symbol: str, current_data: Dict[str, Dict[str, pd.DataFrame]]) -> float:
+        """Get current price for a symbol from the current data"""
+        try:
+            # Get the first timeframe data for this symbol
+            if symbol not in current_data or not current_data[symbol]:
+                logger.warning(f"⚠️ No data available for {symbol}")
+                return 0.0
+            
+            # Get the first timeframe DataFrame
+            timeframe_data = list(current_data[symbol].values())[0]
+            
+            if timeframe_data.empty:
+                logger.warning(f"⚠️ Empty data for {symbol}")
+                return 0.0
+            
+            # Get the last close price
+            current_price = timeframe_data['close'].iloc[-1]
+            
+            return float(current_price)
+            
+        except Exception as e:
+            logger.error(f"❌ Error getting current price for {symbol}: {e}")
+            return 0.0
+    
+    def _execute_trade(self, symbol: str, signal: str, timestamp: datetime, current_data: Dict[str, Dict[str, pd.DataFrame]]) -> Dict[str, Any]:
+        """Execute a trade based on signal"""
+        try:
+            # Get current price
+            current_price = self._get_current_price(symbol, current_data)
+            
+            # Calculate position size - pass the current price
+            position_size = self.strategy.calculate_position_size(symbol, current_price=current_price)
+            
+            # Log the trade execution attempt
+            logger.info(f"📊 Executing {signal} trade for {symbol} at {current_price}")
+            
+            # Check if we have enough balance
+            trade_cost = position_size * current_price
+            available_balance = self.strategy.balance
+            
+            if trade_cost > available_balance:
+                logger.info(f"⚠️ Insufficient balance for {symbol} {signal}: needed=${trade_cost:.2f}, available=${available_balance:.2f}")
+                return {'executed': False, 'reason': 'insufficient_balance'}
+            
+            # Execute the trade
+            trade_result = {
                 'symbol': symbol,
                 'signal': signal,
-                'position_size': position_size,
-                'price': price,
                 'timestamp': timestamp,
-                'trade_id': f"{symbol}_{timestamp.strftime('%Y%m%d_%H%M%S')}_{np.random.randint(1000, 9999)}"
+                'price': current_price,
+                'quantity': position_size,
+                'cost': trade_cost,
+                'executed': True
             }
             
-            # Update strategy state
+            # Update strategy balance
             if signal == 'BUY':
-                # Open long position
-                cost = position_size * price
-                print(f"🔧 DEBUG: BUY trade - cost={cost}, available balance={self.strategy.balance}")
-                
-                if cost <= self.strategy.balance:
-                    self.strategy.balance -= cost
-                    self.strategy.positions[symbol] = {
-                        'direction': 'long',
-                        'size': position_size,
-                        'entry_price': price,
-                        'entry_timestamp': timestamp
-                    }
-                    print(f"🔧 DEBUG: Executed BUY for {symbol}: size={position_size}, price={price}")
-                else:
-                    print(f"🔧 DEBUG: Insufficient balance for {symbol} BUY: needed={cost}, available={self.strategy.balance}")
-                    return None
-                    
+                self.strategy.balance -= trade_cost
             elif signal == 'SELL':
-                # Close position if exists
-                if symbol in self.strategy.positions:
-                    position = self.strategy.positions[symbol]
-                    print(f"🔧 DEBUG: SELL trade - closing position: {position}")
-                    
-                    if position['direction'] == 'long':
-                        # Calculate profit/loss
-                        profit_loss = (price - position['entry_price']) * position['size']
-                        print(f"🔧 DEBUG: Profit/Loss calculation: ({price} - {position['entry_price']}) * {position['size']} = {profit_loss}")
-                        
-                        # Update balance
-                        self.strategy.balance += position_size * price
-                        print(f"🔧 DEBUG: Updated balance: {self.strategy.balance}")
-                        
-                        # Remove position
-                        del self.strategy.positions[symbol]
-                        
-                        # Add profit/loss to trade
-                        trade['profit_loss'] = profit_loss
-                        trade['entry_price'] = position['entry_price']
-                        trade['entry_timestamp'] = position['entry_timestamp']
-                        
-                        print(f"🔧 DEBUG: Executed SELL for {symbol}: size={position_size}, price={price}, P&L={profit_loss}")
-                    else:
-                        print(f"🔧 DEBUG: Unknown position direction: {position['direction']}")
-                        return None
-                else:
-                    print(f"🔧 DEBUG: No position to close for {symbol}")
-                    return None
-                    
-            return trade
+                self.strategy.balance += trade_cost
+            
+            logger.info(f"✅ Executed {signal} trade: {position_size} {symbol} at ${current_price:.2f}")
+            
+            return trade_result
+            
         except Exception as e:
-            print(f"🔧 DEBUG: Error in _execute_trade: {e}")
-            import traceback
-            print(f"🔧 DEBUG: Full traceback: {traceback.format_exc()}")
-            return None
+            logger.error(f"❌ Error executing trade for {symbol}: {e}")
+            return {'executed': False, 'reason': str(e)}
     
     def _update_results(self, results: Dict[str, Any], signals: Dict[str, Dict[str, str]], 
                        trades: List[Dict[str, Any]], timestamp: datetime):
@@ -430,70 +404,70 @@ class BacktesterEngine:
         results['trades'].extend(trades)
     
     def _calculate_final_results(self, results: Dict[str, Any]) -> Dict[str, Any]:
-        """Calculate final backtest results"""
+        """
+        Calculate final backtest results from intermediate results
+        Args:
+            results: Intermediate results from _process_data_chronologically
+        Returns:
+            Final results dictionary
+        """
         try:
-            print(f"🔧 DEBUG: _calculate_final_results called with keys: {list(results.keys())}")
+            logger.debug("🔧 DEBUG: _calculate_final_results called")
             
-            # Calculate summary statistics
-            total_trades = len(results['trades'])
-            print(f"🔧 DEBUG: Total trades: {total_trades}")
+            # Check if results contains an error
+            if 'error' in results:
+                logger.error(f"❌ Error in backtest processing: {results['error']}")
+                return {'error': results['error']}
             
-            # Calculate profit/loss
-            total_pnl = 0
-            winning_trades = 0
-            losing_trades = 0
-            
-            for trade in results['trades']:
-                if 'profit_loss' in trade:
-                    pnl = trade['profit_loss']
-                    print(f"🔧 DEBUG: Processing trade P&L: {pnl}")
-                    
-                    # Check if pnl is None
-                    if pnl is None:
-                        print(f"🔧 DEBUG: WARNING: Trade P&L is None!")
-                        continue
-                        
-                    total_pnl += pnl
-                    
-                    if pnl > 0:
-                        winning_trades += 1
-                    elif pnl < 0:
-                        losing_trades += 1
-            
-            print(f"🔧 DEBUG: Total P&L: {total_pnl}")
-            
-            # Calculate win rate
-            win_rate = winning_trades / total_trades if total_trades > 0 else 0
-            print(f"🔧 DEBUG: Win rate: {win_rate}")
-            
-            # Create summary
-            summary = {
-                'total_trades': total_trades,
-                'winning_trades': winning_trades,
-                'losing_trades': losing_trades,
-                'win_rate': win_rate,
-                'total_pnl': total_pnl,
-                'initial_balance': self.strategy.initial_balance,
-                'final_balance': self.strategy.balance,
-                'balance_change': self.strategy.balance - self.strategy.initial_balance
-            }
-            
-            print(f"🔧 DEBUG: Summary: {summary}")
-            
-            # Return final results
+            # Calculate performance metrics
             final_results = {
-                'summary': summary,
-                'trades': results['trades'],
-                'equity_curve': results['equity_curve'],
-                'signals': results['signals'],
-                'processing_stats': self.processing_stats
+                'equity_curve': results.get('equity_curve', []),
+                'trades': results.get('trades', []),
+                'signals': results.get('signals', []),
+                'timestamps': results.get('timestamps', []),
+                'portfolio_values': results.get('portfolio_values', []),
+                'performance_metrics': {}
             }
             
+            # Calculate basic metrics
+            if final_results['trades']:
+                total_trades = len(final_results['trades'])
+                winning_trades = len([t for t in final_results['trades'] if t.get('pnl', 0) > 0])
+                losing_trades = total_trades - winning_trades
+                
+                final_results['performance_metrics']['total_trades'] = total_trades
+                final_results['performance_metrics']['winning_trades'] = winning_trades
+                final_results['performance_metrics']['losing_trades'] = losing_trades
+                
+                if total_trades > 0:
+                    win_rate = winning_trades / total_trades
+                    final_results['performance_metrics']['win_rate'] = win_rate
+            
+            # Calculate equity-based metrics
+            if final_results['equity_curve']:
+                initial_equity = final_results['equity_curve'][0] if final_results['equity_curve'] else 10000
+                final_equity = final_results['equity_curve'][-1] if final_results['equity_curve'] else initial_equity
+                
+                total_return = (final_equity - initial_equity) / initial_equity
+                final_results['performance_metrics']['total_return'] = total_return
+                final_results['performance_metrics']['initial_equity'] = initial_equity
+                final_results['performance_metrics']['final_equity'] = final_equity
+            
+            # Add processing stats
+            final_results['processing_stats'] = self.processing_stats
+            
+            # Add execution time
+            if self.start_time and self.end_time:
+                execution_time = self.end_time - self.start_time
+                final_results['execution_time'] = execution_time
+            
+            logger.debug("✅ Final results calculated successfully")
             return final_results
+        
         except Exception as e:
-            print(f"🔧 DEBUG: Error in _calculate_final_results: {e}")
+            logger.error(f"❌ Error calculating final results: {e}")
             import traceback
-            print(f"🔧 DEBUG: Full traceback: {traceback.format_exc()}")
+            logger.error(f"❌ Full traceback: {traceback.format_exc()}")
             return {'error': str(e)}
     
     def stop_backtest(self):
