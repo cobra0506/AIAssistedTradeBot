@@ -94,7 +94,17 @@ class BacktesterEngine:
             # Load data using DataFeeder
             if not self.data_feeder.load_data(symbols, timeframes, start_date, end_date):
                 raise RuntimeError("Failed to load data for backtest")
-            
+
+            # DEBUG: Check what data was loaded
+            print(f"🔧 DEBUG: Data cache after load: {list(self.data_feeder.data_cache.keys())}")
+            for symbol in symbols:
+                if symbol in self.data_feeder.data_cache:
+                    print(f"🔧 DEBUG: {symbol} timeframes: {list(self.data_feeder.data_cache[symbol].keys())}")
+                    for timeframe in timeframes:
+                        if timeframe in self.data_feeder.data_cache[symbol]:
+                            df = self.data_feeder.data_cache[symbol][timeframe]
+                            print(f"🔧 DEBUG: {symbol} {timeframe} shape: {df.shape}, date range: {df.index.min()} to {df.index.max()}")
+
             # Get loaded data
             all_data = self.data_feeder.get_data_for_symbols(symbols, timeframes, start_date, end_date)
             
@@ -162,69 +172,66 @@ class BacktesterEngine:
         logger.info("Data validation passed")
         return True
     
-    def _process_data_chronologically(self, data: Dict[str, Dict[str, pd.DataFrame]], 
-                                   symbols: List[str], timeframes: List[str]) -> Dict[str, Any]:
-        """
-        Process data chronologically and execute strategy signals
-        
-        Args:
-            data: Data dictionary from DataFeeder
-            symbols: Trading symbols
-            timeframes: Timeframes
+    def _process_data_chronologically(self, data: Dict[str, Dict[str, pd.DataFrame]],
+                                symbols: List[str], timeframes: List[str]) -> Dict[str, Any]:
+        """Process data chronologically and execute strategy signals"""
+        try:
+            print(f"🔧 DEBUG: _process_data_chronologically called")
             
-        Returns:
-            Dictionary with processing results
-        """
-        logger.info("Processing data chronologically...")
-        
-        # Get all unique timestamps across all symbols and timeframes
-        all_timestamps = set()
-        for symbol in symbols:
-            for timeframe in timeframes:
-                all_timestamps.update(data[symbol][timeframe].index)
-        
-        # Sort timestamps chronologically
-        sorted_timestamps = sorted(all_timestamps)
-        
-        logger.info(f"Processing {len(sorted_timestamps)} timestamps")
-        
-        # Initialize results tracking
-        results = {
-            'equity_curve': [],
-            'trades': [],
-            'signals': [],
-            'timestamps': [],
-            'portfolio_values': []
-        }
-        
-        # Process each timestamp
-        for i, timestamp in enumerate(sorted_timestamps):
-            if not self.is_running:
-                logger.warning("Backtest stopped during processing")
-                break
+            # Get all unique timestamps across all symbols and timeframes
+            all_timestamps = set()
+            for symbol in symbols:
+                for timeframe in timeframes:
+                    if symbol in data and timeframe in data[symbol]:
+                        all_timestamps.update(data[symbol][timeframe].index)
             
-            # Get data for current timestamp across all symbols and timeframes
-            current_data = self._get_data_for_timestamp(data, symbols, timeframes, timestamp)
+            # Sort timestamps chronologically
+            sorted_timestamps = sorted(all_timestamps)
+            print(f"🔧 DEBUG: Processing {len(sorted_timestamps)} timestamps")
             
-            # Generate signals using strategy
-            signals = self.strategy.generate_signals(current_data)
+            # Initialize results tracking
+            results = {
+                'equity_curve': [],
+                'trades': [],
+                'signals': [],
+                'timestamps': [],
+                'portfolio_values': []
+            }
             
-            # Process signals and execute trades
-            trade_results = self._process_signals(signals, current_data, timestamp)
+            # Process each timestamp
+            for i, timestamp in enumerate(sorted_timestamps):
+                if not self.is_running:
+                    print("🔧 DEBUG: Backtest stopped during processing")
+                    break
+                
+                # Get data for current timestamp across all symbols and timeframes
+                current_data = self._get_data_for_timestamp(data, symbols, timeframes, timestamp)
+                
+                # Generate signals using strategy
+                signals = self.strategy.generate_signals(current_data)
+                
+                # Process signals and execute trades
+                trade_results = self._process_signals(signals, current_data, timestamp)
+                
+                # Update results
+                self._update_results(results, signals, trade_results, timestamp)
+                
+                # Update processing stats
+                self.processing_stats['total_rows_processed'] += len(symbols) * len(timeframes)
+                self.processing_stats['total_signals_generated'] += len([s for s in signals.values() if s != 'HOLD'])
+                
+                # Log progress
+                if i % 1000 == 0:
+                    progress = (i / len(sorted_timestamps)) * 100
+                    print(f"🔧 DEBUG: Processing progress: {progress:.1f}%")
             
-            # Update results
-            self._update_results(results, signals, trade_results, timestamp)
-            
-            # Update processing stats
-            self.processing_stats['total_rows_processed'] += len(symbols) * len(timeframes)
-            self.processing_stats['total_signals_generated'] += len([s for s in signals.values() if s != 'HOLD'])
-            
-            # Log progress
-            if i % 1000 == 0:
-                progress = (i / len(sorted_timestamps)) * 100
-                logger.info(f"Processing progress: {progress:.1f}%")
-        
-        return results
+            print(f"🔧 DEBUG: Processing complete. Generated {len(results['trades'])} trades")
+            return results
+        except Exception as e:
+            print(f"🔧 DEBUG: Error in _process_data_chronologically: {e}")
+            import traceback
+            print(f"🔧 DEBUG: Full traceback: {traceback.format_exc()}")
+            return {'error': str(e)}
     
     def _get_data_for_timestamp(self, data: Dict[str, Dict[str, pd.DataFrame]], 
                                symbols: List[str], timeframes: List[str], 
@@ -301,37 +308,22 @@ class BacktesterEngine:
         return trades
     
     def _get_current_price(self, df: pd.DataFrame) -> Optional[float]:
-        """
-        Get current price from DataFrame
-        
-        Args:
-            df: DataFrame with price data
-            
-        Returns:
-            Current price or None if not available
-        """
+        """Get current price from DataFrame"""
         if df.empty:
+            print(f"🔧 DEBUG: _get_current_price: DataFrame is empty")
             return None
         
         # Use the last available close price
-        return df['close'].iloc[-1]
+        price = df['close'].iloc[-1]
+        print(f"🔧 DEBUG: _get_current_price: {price}")
+        return price
     
-    def _execute_trade(self, symbol: str, signal: str, position_size: float, 
-                      price: float, timestamp: datetime) -> Optional[Dict[str, Any]]:
-        """
-        Execute a trade
-        
-        Args:
-            symbol: Trading symbol
-            signal: Trade signal ('BUY' or 'SELL')
-            position_size: Position size
-            price: Trade price
-            timestamp: Trade timestamp
-            
-        Returns:
-            Trade dictionary or None if execution failed
-        """
+    def _execute_trade(self, symbol: str, signal: str, position_size: float,
+                  price: float, timestamp: datetime) -> Optional[Dict[str, Any]]:
+        """Execute a trade"""
         try:
+            print(f"🔧 DEBUG: _execute_trade called with symbol={symbol}, signal={signal}, position_size={position_size}, price={price}")
+            
             trade = {
                 'symbol': symbol,
                 'signal': signal,
@@ -345,6 +337,8 @@ class BacktesterEngine:
             if signal == 'BUY':
                 # Open long position
                 cost = position_size * price
+                print(f"🔧 DEBUG: BUY trade - cost={cost}, available balance={self.strategy.balance}")
+                
                 if cost <= self.strategy.balance:
                     self.strategy.balance -= cost
                     self.strategy.positions[symbol] = {
@@ -353,41 +347,47 @@ class BacktesterEngine:
                         'entry_price': price,
                         'entry_timestamp': timestamp
                     }
-                    logger.debug(f"Executed BUY for {symbol}: size={position_size}, price={price}")
+                    print(f"🔧 DEBUG: Executed BUY for {symbol}: size={position_size}, price={price}")
                 else:
-                    logger.warning(f"Insufficient balance for {symbol} BUY: needed={cost}, available={self.strategy.balance}")
+                    print(f"🔧 DEBUG: Insufficient balance for {symbol} BUY: needed={cost}, available={self.strategy.balance}")
                     return None
-            
+                    
             elif signal == 'SELL':
                 # Close position if exists
                 if symbol in self.strategy.positions:
                     position = self.strategy.positions[symbol]
+                    print(f"🔧 DEBUG: SELL trade - closing position: {position}")
+                    
                     if position['direction'] == 'long':
-                        # Close long position
-                        proceeds = position_size * price
-                        self.strategy.balance += proceeds
-                        trade['pnl'] = proceeds - (position['size'] * position['entry_price'])
-                        trade['entry_price'] = position['entry_price']
-                        trade['entry_timestamp'] = position['entry_timestamp']
+                        # Calculate profit/loss
+                        profit_loss = (price - position['entry_price']) * position['size']
+                        print(f"🔧 DEBUG: Profit/Loss calculation: ({price} - {position['entry_price']}) * {position['size']} = {profit_loss}")
                         
-                        # Add to strategy trades
-                        self.strategy.trades.append(trade)
+                        # Update balance
+                        self.strategy.balance += position_size * price
+                        print(f"🔧 DEBUG: Updated balance: {self.strategy.balance}")
                         
                         # Remove position
                         del self.strategy.positions[symbol]
                         
-                        logger.debug(f"Executed SELL for {symbol}: size={position_size}, price={price}, pnl={trade['pnl']}")
+                        # Add profit/loss to trade
+                        trade['profit_loss'] = profit_loss
+                        trade['entry_price'] = position['entry_price']
+                        trade['entry_timestamp'] = position['entry_timestamp']
+                        
+                        print(f"🔧 DEBUG: Executed SELL for {symbol}: size={position_size}, price={price}, P&L={profit_loss}")
                     else:
-                        logger.warning(f"Cannot close short position for {symbol} (not implemented)")
+                        print(f"🔧 DEBUG: Unknown position direction: {position['direction']}")
                         return None
                 else:
-                    logger.warning(f"No position to close for {symbol}")
+                    print(f"🔧 DEBUG: No position to close for {symbol}")
                     return None
-            
+                    
             return trade
-            
         except Exception as e:
-            logger.error(f"Error executing trade for {symbol}: {e}")
+            print(f"🔧 DEBUG: Error in _execute_trade: {e}")
+            import traceback
+            print(f"🔧 DEBUG: Full traceback: {traceback.format_exc()}")
             return None
     
     def _update_results(self, results: Dict[str, Any], signals: Dict[str, Dict[str, str]], 
@@ -426,76 +426,71 @@ class BacktesterEngine:
         results['trades'].extend(trades)
     
     def _calculate_final_results(self, results: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Calculate final backtest results and performance metrics
-        
-        Args:
-            results: Processing results
+        """Calculate final backtest results"""
+        try:
+            print(f"🔧 DEBUG: _calculate_final_results called with keys: {list(results.keys())}")
             
-        Returns:
-            Final results dictionary
-        """
-        # Calculate processing speed
-        processing_time = self.end_time - self.start_time
-        if processing_time > 0:
-            self.processing_stats['processing_speed_rows_per_sec'] = (
-                self.processing_stats['total_rows_processed'] / processing_time
-            )
-        
-        # Calculate performance metrics
-        initial_balance = self.strategy.initial_balance
-        final_balance = self.strategy.balance
-        
-        total_return = (final_balance - initial_balance) / initial_balance
-        
-        # Calculate trade statistics
-        trades = results['trades']
-        winning_trades = [t for t in trades if t.get('pnl', 0) > 0]
-        losing_trades = [t for t in trades if t.get('pnl', 0) <= 0]
-        
-        win_rate = len(winning_trades) / len(trades) if trades else 0
-        
-        avg_win = np.mean([t['pnl'] for t in winning_trades]) if winning_trades else 0
-        avg_loss = np.mean([t['pnl'] for t in losing_trades]) if losing_trades else 0
-        
-        profit_factor = abs(avg_win / avg_loss) if avg_loss != 0 else 0
-        
-        # Calculate drawdown
-        portfolio_values = results['portfolio_values']
-        peak = portfolio_values[0] if portfolio_values else initial_balance
-        max_drawdown = 0
-        
-        for value in portfolio_values:
-            if value > peak:
-                peak = value
-            drawdown = (peak - value) / peak
-            max_drawdown = max(max_drawdown, drawdown)
-        
-        final_results = {
-            'summary': {
-                'initial_balance': initial_balance,
-                'final_balance': final_balance,
-                'total_return': total_return,
-                'total_return_pct': total_return * 100,
-                'max_drawdown': max_drawdown,
-                'max_drawdown_pct': max_drawdown * 100,
+            # Calculate summary statistics
+            total_trades = len(results['trades'])
+            print(f"🔧 DEBUG: Total trades: {total_trades}")
+            
+            # Calculate profit/loss
+            total_pnl = 0
+            winning_trades = 0
+            losing_trades = 0
+            
+            for trade in results['trades']:
+                if 'profit_loss' in trade:
+                    pnl = trade['profit_loss']
+                    print(f"🔧 DEBUG: Processing trade P&L: {pnl}")
+                    
+                    # Check if pnl is None
+                    if pnl is None:
+                        print(f"🔧 DEBUG: WARNING: Trade P&L is None!")
+                        continue
+                        
+                    total_pnl += pnl
+                    
+                    if pnl > 0:
+                        winning_trades += 1
+                    elif pnl < 0:
+                        losing_trades += 1
+            
+            print(f"🔧 DEBUG: Total P&L: {total_pnl}")
+            
+            # Calculate win rate
+            win_rate = winning_trades / total_trades if total_trades > 0 else 0
+            print(f"🔧 DEBUG: Win rate: {win_rate}")
+            
+            # Create summary
+            summary = {
+                'total_trades': total_trades,
+                'winning_trades': winning_trades,
+                'losing_trades': losing_trades,
                 'win_rate': win_rate,
-                'win_rate_pct': win_rate * 100,
-                'profit_factor': profit_factor,
-                'total_trades': len(trades),
-                'winning_trades': len(winning_trades),
-                'losing_trades': len(losing_trades),
-                'avg_win': avg_win,
-                'avg_loss': avg_loss
-            },
-            'processing_stats': self.processing_stats,
-            'equity_curve': results['equity_curve'],
-            'trades': results['trades'],
-            'signals': results['signals'],
-            'strategy_state': self.strategy.get_strategy_state()
-        }
-        
-        return final_results
+                'total_pnl': total_pnl,
+                'initial_balance': self.strategy.initial_balance,
+                'final_balance': self.strategy.balance,
+                'balance_change': self.strategy.balance - self.strategy.initial_balance
+            }
+            
+            print(f"🔧 DEBUG: Summary: {summary}")
+            
+            # Return final results
+            final_results = {
+                'summary': summary,
+                'trades': results['trades'],
+                'equity_curve': results['equity_curve'],
+                'signals': results['signals'],
+                'processing_stats': self.processing_stats
+            }
+            
+            return final_results
+        except Exception as e:
+            print(f"🔧 DEBUG: Error in _calculate_final_results: {e}")
+            import traceback
+            print(f"🔧 DEBUG: Full traceback: {traceback.format_exc()}")
+            return {'error': str(e)}
     
     def stop_backtest(self):
         """Stop the currently running backtest"""
@@ -504,7 +499,7 @@ class BacktesterEngine:
     
     def get_status(self) -> Dict[str, Any]:
         """
-        Get current backtest status
+        Get current backtest statusrun_backtest
         
         Returns:
             Status dictionary
