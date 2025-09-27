@@ -50,6 +50,47 @@ simple_strategy/
 - Sample strategy implementations (RSI, EMA, Stochastic)
 - Parameter optimization system
 
+### 🚀 NEW: Building Block Strategy System
+
+We've implemented a revolutionary **Building Block Strategy System** that allows you to create ANY trading strategy you can imagine with unprecedented flexibility and speed!
+
+#### 🎯 Key Features:
+- **Unlimited Strategy Combinations**: Mix and match any indicators with any signal logic
+- **Rapid Development**: Create complex strategies in minutes, not hours
+- **No Code Templates**: No need to copy/modify template files
+- **Multi-Symbol & Multi-Timeframe**: Built-in support for complex analysis
+- **Risk Management Integration**: Automatic integration with your risk system
+- **Backtesting Ready**: All strategies work instantly with your backtesting engine
+
+#### 📚 Strategy Building Components:
+1. **Indicators Library** (`strategies/indicators_library.py`): 20+ technical indicators
+2. **Signals Library** (`strategies/signals_library.py`): 15+ signal processing functions  
+3. **Strategy Builder** (`strategies/strategy_builder.py`): Ultimate strategy creation tool
+
+#### 🚀 Quick Start Example:
+```python
+from simple_strategy.strategies.strategy_builder import StrategyBuilder
+from simple_strategy.strategies.indicators_library import rsi, sma, ema
+from simple_strategy.strategies.signals_library import overbought_oversold, ma_crossover
+
+# Create ANY strategy you want
+strategy = StrategyBuilder(['BTCUSDT', 'ETHUSDT'], ['1m', '5m'])
+
+# Add ANY indicators with ANY parameters
+strategy.add_indicator('rsi', rsi, period=14)
+strategy.add_indicator('sma_short', sma, period=20)
+strategy.add_indicator('sma_long', sma, period=50)
+
+# Add ANY signal logic
+strategy.add_signal_rule('rsi_oversold', overbought_oversold, oversold=30)
+strategy.add_signal_rule('ma_crossover', ma_crossover)
+
+# Combine signals with majority vote
+strategy.set_signal_combination('majority_vote')
+
+# Build and use your strategy
+my_strategy = strategy.build()
+
 ### ⏳ Future Phases: PLANNED
 - SL AI Program (Supervised Learning)
 - RL AI Program (Reinforcement Learning)
