@@ -97,6 +97,23 @@ class DataFeeder:
         
         return df
     
+    def get_data_for_symbols(self, symbols, timeframes, start_date, end_date):
+        """Return cached data for multiple symbols/timeframes, filtered by date range"""
+        result = {}
+        for symbol in symbols:
+            result[symbol] = {}
+            for timeframe in timeframes:
+                # Get cached data
+                if symbol in self.data_cache and timeframe in self.data_cache[symbol]:
+                    df = self.data_cache[symbol][timeframe].copy()
+                    # Filter by date range
+                    mask = (df.index >= start_date) & (df.index <= end_date)
+                    result[symbol][timeframe] = df[mask]
+                else:
+                    # Return empty DataFrame if no data
+                    result[symbol][timeframe] = pd.DataFrame()
+        return result
+    
     def load_data(self, symbols: List[str], timeframes: List[str], 
                   start_date: Optional[Union[str, datetime]] = None, 
                   end_date: Optional[Union[str, datetime]] = None) -> bool:
