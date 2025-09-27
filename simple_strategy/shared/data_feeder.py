@@ -99,19 +99,57 @@ class DataFeeder:
     
     def get_data_for_symbols(self, symbols, timeframes, start_date, end_date):
         """Return cached data for multiple symbols/timeframes, filtered by date range"""
+        print(f"🔧 DEBUG: get_data_for_symbols called with symbols={symbols}, timeframes={timeframes}")
+        print(f"🔧 DEBUG: Date range: {start_date} to {end_date}")
+        
+        # Convert string dates to datetime if needed
+        if isinstance(start_date, str):
+            start_date = pd.to_datetime(start_date)
+        if isinstance(end_date, str):
+            end_date = pd.to_datetime(end_date)
+        
         result = {}
         for symbol in symbols:
             result[symbol] = {}
             for timeframe in timeframes:
-                # Get cached data
+                print(f"🔧 DEBUG: Processing {symbol} {timeframe}")
+                
+                # Check if data is in cache
                 if symbol in self.data_cache and timeframe in self.data_cache[symbol]:
+                    print(f"🔧 DEBUG: Found data in cache for {symbol} {timeframe}")
                     df = self.data_cache[symbol][timeframe].copy()
+                    print(f"🔧 DEBUG: Original data shape: {df.shape}")
+                    print(f"🔧 DEBUG: Original data date range: {df.index.min()} to {df.index.max()}")
+                    
                     # Filter by date range
                     mask = (df.index >= start_date) & (df.index <= end_date)
-                    result[symbol][timeframe] = df[mask]
+                    filtered_df = df[mask]
+                    print(f"🔧 DEBUG: Filtered data shape: {filtered_df.shape}")
+                    
+                    result[symbol][timeframe] = filtered_df
                 else:
-                    # Return empty DataFrame if no data
-                    result[symbol][timeframe] = pd.DataFrame()
+                    print(f"🔧 DEBUG: No data in cache for {symbol} {timeframe}")
+                    # Try to load data directly if not in cache
+                    df = self._load_csv_file(symbol, timeframe)
+                    if df is not None:
+                        print(f"🔧 DEBUG: Loaded data from file for {symbol} {timeframe}")
+                        # Filter by date range
+                        mask = (df.index >= start_date) & (df.index <= end_date)
+                        filtered_df = df[mask]
+                        print(f"🔧 DEBUG: Filtered data shape: {filtered_df.shape}")
+                        
+                        # Store in cache for future use
+                        if symbol not in self.data_cache:
+                            self.data_cache[symbol] = {}
+                        self.data_cache[symbol][timeframe] = df
+                        
+                        result[symbol][timeframe] = filtered_df
+                    else:
+                        print(f"🔧 DEBUG: Could not load data for {symbol} {timeframe}")
+                        # Return empty DataFrame with expected columns
+                        result[symbol][timeframe] = pd.DataFrame(columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+        
+        print(f"🔧 DEBUG: Returning data with keys: {list(result.keys())}")
         return result
     
     def load_data(self, symbols: List[str], timeframes: List[str], 
