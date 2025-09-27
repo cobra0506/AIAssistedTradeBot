@@ -11,7 +11,7 @@ Date: 2025
 
 import pandas as pd
 import numpy as np
-from typing import Union, List, Dict, Any
+from typing import Union, List, Dict, Any, Tuple  # ← FIXED: Added Tuple import
 import logging
 
 logger = logging.getLogger(__name__)
@@ -33,9 +33,12 @@ def overbought_oversold(indicator: pd.Series, overbought: float = 70,
         Signal series: 1=BUY, -1=SELL, 0=HOLD
     """
     try:
-        signals = pd.Series(0, index=indicator.index)
-        signals[indicator <= oversold] = 1    # BUY when oversold
-        signals[indicator >= overbought] = -1  # SELL when overbought
+        # Handle NaN values - replace with neutral value
+        indicator_clean = indicator.fillna(50)  # 50 is neutral for RSI-like indicators
+        
+        signals = pd.Series(0, index=indicator_clean.index)
+        signals[indicator_clean <= oversold] = 1    # BUY when oversold
+        signals[indicator_clean >= overbought] = -1  # SELL when overbought
         return signals
     except Exception as e:
         logger.error(f"Error in overbought_oversold: {e}")
@@ -359,7 +362,7 @@ def majority_vote_signals(*signal_series: pd.Series) -> pd.Series:
         return pd.Series()
 
 
-def weighted_signals(*weighted_signals: Tuple[pd.Series, float]) -> pd.Series:
+def weighted_signals(*weighted_signals: Tuple[pd.Series, float]) -> pd.Series:  # ← FIXED: Now Tuple is imported
     """
     Generate signals based on weighted combination of multiple signal series
     
