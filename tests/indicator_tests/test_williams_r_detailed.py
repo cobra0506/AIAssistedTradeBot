@@ -193,19 +193,17 @@ class TestWilliamsRIndicator(unittest.TestCase):
         print("------------------------------------------------------------")
         
         # Test with constant prices (all high, low, close values are the same)
-        constant_high = [100.0] * 10
-        constant_low = [100.0] * 10
-        constant_close = [100.0] * 10
+        constant_high = pd.Series([100.0] * 10, name='high')
+        constant_low = pd.Series([100.0] * 10, name='low')
+        constant_close = pd.Series([100.0] * 10, name='close')
         
-        print(f"Constant price data - High: {constant_high}")
-        print(f"Constant price data - Low: {constant_low}")
-        print(f"Constant price data - Close: {constant_close}")
+        print(f"Constant price data - High: {constant_high.tolist()}")
+        print(f"Constant price data - Low: {constant_low.tolist()}")
+        print(f"Constant price data - Close: {constant_close.tolist()}")
         
-        williams_r_result = self.indicator.calculate_williams_r(
-            constant_high, constant_low, constant_close, period=5
-        )
+        williams_r_result = williams_r(constant_high, constant_low, constant_close, period=5)
         
-        print(f"Williams %R result: {self._format_series(williams_r_result)}")
+        print(f"Williams %R result: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in williams_r_result.tolist()]}")
         
         # With constant prices, all Williams %R values should be NaN
         for i in range(len(williams_r_result)):
@@ -215,12 +213,10 @@ class TestWilliamsRIndicator(unittest.TestCase):
             )
         
         # Test with period larger than data length
-        williams_r_result = self.indicator.calculate_williams_r(
-            self.high_data, self.low_data, self.close_data, period=20
-        )
+        williams_r_result = williams_r(self.simple_high, self.simple_low, self.simple_close, period=20)
         
-        print(f"\nTesting with period (20) larger than data length ({len(self.high_data)})")
-        print(f"Williams %R result: {self._format_series(williams_r_result)}")
+        print(f"\nTesting with period (20) larger than data length ({len(self.simple_high)})")
+        print(f"Williams %R result: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in williams_r_result.tolist()]}")
         
         # All values should be NaN when period > data length
         for i in range(len(williams_r_result)):
@@ -231,12 +227,10 @@ class TestWilliamsRIndicator(unittest.TestCase):
         print("✓ All values are NaN when period > data length")
         
         # Test with minimum period (1)
-        williams_r_result = self.indicator.calculate_williams_r(
-            self.high_data, self.low_data, self.close_data, period=1
-        )
+        williams_r_result = williams_r(self.simple_high, self.simple_low, self.simple_close, period=1)
         
         print(f"\nTesting with minimum period (1):")
-        print(f"Williams %R result: {self._format_series(williams_r_result)}")
+        print(f"Williams %R result: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in williams_r_result.tolist()]}")
         
         # With period 1, the formula becomes: (high - close) / (high - low) * -100
         # For index 0: (10 - 9) / (10 - 8) * -100 = 1 / 2 * -100 = -50
@@ -267,7 +261,11 @@ class TestWilliamsRIndicator(unittest.TestCase):
         print("------------------------------------------------------------")
         
         # Test with empty data
-        wr_empty = self.indicator.calculate_williams_r([], [], [])
+        empty_high = pd.Series([], name='high')
+        empty_low = pd.Series([], name='low')
+        empty_close = pd.Series([], name='close')
+        
+        wr_empty = williams_r(empty_high, empty_low, empty_close)
         print(f"Empty data test - Williams %R type: {type(wr_empty)}")
         print(f"Empty data test - Williams %R length: {len(wr_empty)}")
         
@@ -277,11 +275,11 @@ class TestWilliamsRIndicator(unittest.TestCase):
         
         # Test with period 0
         try:
-            wr_zero_period = self.indicator.calculate_williams_r(
-                self.high_data, self.low_data, self.close_data, period=0
+            wr_zero_period = williams_r(
+                self.simple_high, self.simple_low, self.simple_close, period=0
             )
             print(f"Result with period 0:")
-            print(f"Williams %R: {self._format_series(wr_zero_period)}")
+            print(f"Williams %R: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in wr_zero_period.tolist()]}")
             
             # All values should be NaN with period 0
             for i in range(len(wr_zero_period)):
@@ -293,11 +291,11 @@ class TestWilliamsRIndicator(unittest.TestCase):
         
         # Test with negative period
         try:
-            wr_neg_period = self.indicator.calculate_williams_r(
-                self.high_data, self.low_data, self.close_data, period=-1
+            wr_neg_period = williams_r(
+                self.simple_high, self.simple_low, self.simple_close, period=-1
             )
             print(f"Result with period -1:")
-            print(f"Williams %R: {self._format_series(wr_neg_period)}")
+            print(f"Williams %R: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in wr_neg_period.tolist()]}")
             
             # All values should be NaN with negative period
             for i in range(len(wr_neg_period)):

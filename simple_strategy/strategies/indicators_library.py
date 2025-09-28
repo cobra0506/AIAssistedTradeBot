@@ -276,44 +276,132 @@ def cci(high: pd.Series, low: pd.Series, close: pd.Series, period: int = 20) -> 
         logger.error(f"Error calculating CCI: {e}")
         return pd.Series(index=close.index, dtype=float)
 
-
-# In simple_strategy/strategies/indicators_library.py
-def williams_r(self, high_prices, low_prices, close_prices, period=14):
+def atr(high_prices: pd.Series, low_prices: pd.Series, close_prices: pd.Series, period: int = 14) -> pd.Series:
     """
-    Calculate Williams %R indicator
+    Average True Range (ATR)
+    
+    ATR is a volatility indicator that measures the average range of price movement over a given period.
+    It was developed by J. Welles Wilder Jr. and is used to measure market volatility.
+    
+    True Range (TR) is the greatest of:
+    1. High - Low
+    2. |High - Previous Close|
+    3. |Low - Previous Close|
+    
+    ATR is the moving average of True Range over the specified period.
     
     Args:
-        high_prices: Series or list of high prices
-        low_prices: Series or list of low prices
-        close_prices: Series or list of close prices
-        period: Lookback period for calculation
+        high_prices: Series of high prices
+        low_prices: Series of low prices
+        close_prices: Series of close prices
+        period: Lookback period for ATR calculation (default: 14)
+        
+    Returns:
+        Series of ATR values
+    """
+    try:
+        print(f"\n=== DEBUG: ATR Function ===")
+        print(f"Period: {period}")
+        print(f"Data length: {len(high_prices)}")
+        
+        # Handle edge case: period larger than data length
+        if period > len(high_prices):
+            print("DEBUG: Period > data length, returning all NaN")
+            return pd.Series([np.nan] * len(high_prices), index=high_prices.index, dtype=float)
+        
+        # Handle edge case: period <= 0
+        if period <= 0:
+            print("DEBUG: Period <= 0, returning all NaN")
+            return pd.Series([np.nan] * len(high_prices), index=high_prices.index, dtype=float)
+        
+        # Initialize result with NaN values
+        atr_values = pd.Series([np.nan] * len(high_prices), index=high_prices.index, dtype=float)
+        print(f"DEBUG: Initialized ATR values with {len(atr_values)} NaN values")
+        
+        # Calculate True Range for each day (starting from index 0)
+        # For index 0, we only have High - Low since there's no previous close
+        true_ranges = []
+        
+        # For index 0, TR is just High - Low
+        tr0 = high_prices.iloc[0] - low_prices.iloc[0]
+        true_ranges.append(tr0)
+        print(f"DEBUG: Index 0: TR = {tr0} (High - Low only)")
+        
+        # For indices 1 to end, calculate full TR
+        for i in range(1, len(high_prices)):
+            tr1 = high_prices.iloc[i] - low_prices.iloc[i]  # High - Low
+            tr2 = abs(high_prices.iloc[i] - close_prices.iloc[i-1])  # |High - Previous Close|
+            tr3 = abs(low_prices.iloc[i] - close_prices.iloc[i-1])  # |Low - Previous Close|
+            tr = max(tr1, tr2, tr3)
+            true_ranges.append(tr)
+            print(f"DEBUG: Index {i}: TR1={tr1}, TR2={tr2}, TR3={tr3}, TR={tr}")
+        
+        print(f"DEBUG: True ranges: {true_ranges}")
+        
+        # Calculate ATR using simple moving average of True Range
+        # For period 1, ATR is just the True Range
+        if period == 1:
+            for i in range(len(true_ranges)):
+                atr_values.iloc[i] = true_ranges[i]
+                print(f"DEBUG: Setting ATR[{i}] = TR[{i}] = {atr_values.iloc[i]}")
+        else:
+            # For period > 1, calculate SMA of True Ranges
+            for i in range(period - 1, len(true_ranges)):
+                atr_values.iloc[i] = sum(true_ranges[i-period+1:i+1]) / period
+                print(f"DEBUG: Setting ATR[{i}] = sum(TR[{i-period+1}:{i+1}]) / {period} = {atr_values.iloc[i]}")
+        
+        print(f"DEBUG: Final ATR values: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in atr_values.tolist()]}")
+        print(f"=== END DEBUG: ATR Function ===\n")
+        
+        return atr_values
+        
+    except Exception as e:
+        logger.error(f"Error calculating ATR: {e}")
+        return pd.Series(index=high_prices.index, dtype=float)
+
+def williams_r(high_prices: pd.Series, low_prices: pd.Series, close_prices: pd.Series, period: int = 14) -> pd.Series:
+    """
+    Williams %R Indicator
+    
+    Williams %R is a momentum indicator that is the inverse of the Stochastic Oscillator.
+    It ranges from 0 to -100, with readings above -20 considered overbought and 
+    readings below -80 considered oversold.
+    
+    Formula: %R = -100 * (Highest High - Close) / (Highest High - Lowest Low)
+    
+    Args:
+        high_prices: Series of high prices
+        low_prices: Series of low prices
+        close_prices: Series of close prices
+        period: Lookback period (default: 14)
         
     Returns:
         Series of Williams %R values
     """
-    import pandas as pd
-    import numpy as np
-    
-    # Convert to pandas Series if not already
-    high = pd.Series(high_prices)
-    low = pd.Series(low_prices)
-    close = pd.Series(close_prices)
-    
-    # Check for empty data
-    if len(high) == 0 or len(low) == 0 or len(close) == 0:
-        return pd.Series(dtype=float)
-    
-    # Calculate highest high and lowest low over the period
-    highest_high = high.rolling(window=period, min_periods=period).max()
-    lowest_low = low.rolling(window=period, min_periods=period).min()
-    
-    # Calculate Williams %R
-    williams_r = -100 * (highest_high - close) / (highest_high - lowest_low)
-    
-    # Handle division by zero case (when highest_high equals lowest_low)
-    williams_r = williams_r.replace([np.inf, -np.inf], np.nan)
-    
-    return williams_r
+    try:
+        # Handle edge case: period larger than data length
+        if period > len(high_prices):
+            return pd.Series([np.nan] * len(high_prices), index=high_prices.index, dtype=float)
+        
+        # Handle edge case: period <= 0
+        if period <= 0:
+            return pd.Series([np.nan] * len(high_prices), index=high_prices.index, dtype=float)
+        
+        # Calculate highest high and lowest low over the period
+        highest_high = high_prices.rolling(window=period).max()
+        lowest_low = low_prices.rolling(window=period).min()
+        
+        # Calculate Williams %R
+        williams_r = -100 * (highest_high - close_prices) / (highest_high - lowest_low)
+        
+        # Handle division by zero case (when highest_high equals lowest_low)
+        williams_r = williams_r.replace([np.inf, -np.inf], np.nan)
+        
+        return williams_r
+        
+    except Exception as e:
+        logger.error(f"Error calculating Williams %R: {e}")
+        return pd.Series(index=high_prices.index, dtype=float)
 
 # === VOLATILITY INDICATORS ===
 
@@ -368,115 +456,263 @@ def atr(high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14) -> 
 
 # === VOLUME INDICATORS ===
 
-def volume_sma(volume: pd.Series, period: int = 20) -> pd.Series:
+def volume_sma(volume_data: pd.Series, period: int = 20) -> pd.Series:
     """
     Volume Simple Moving Average
     
-    Args:
-        volume: Volume series
-        period: Lookback period
-        
-    Returns:
-        Volume SMA series
-    """
-    try:
-        return sma(volume, period)
-    except Exception as e:
-        logger.error(f"Error calculating Volume SMA: {e}")
-        return pd.Series(index=volume.index, dtype=float)
-
-
-def on_balance_volume(close: pd.Series, volume: pd.Series) -> pd.Series:
-    """
-    On Balance Volume
+    Calculates the simple moving average of volume data.
+    This is useful for identifying trends in trading volume and
+    comparing current volume to its historical average.
     
     Args:
-        close: Close price series
-        volume: Volume series
+        volume_data: Series of volume data
+        period: Lookback period for SMA calculation (default: 20)
         
     Returns:
-        OBV series
+        Series of volume SMA values
     """
     try:
-        obv = np.where(close > close.shift(1), volume, 
-                      np.where(close < close.shift(1), -volume, 0))
-        return pd.Series(obv, index=close.index).cumsum()
+        # Handle edge case: period larger than data length
+        if period > len(volume_data):
+            return pd.Series([np.nan] * len(volume_data), index=volume_data.index, dtype=float)
+        
+        # Handle edge case: period <= 0
+        if period <= 0:
+            return pd.Series([np.nan] * len(volume_data), index=volume_data.index, dtype=float)
+        
+        # Calculate Volume SMA using simple moving average
+        volume_sma_values = volume_data.rolling(window=period, min_periods=period).mean()
+        
+        return volume_sma_values
+        
     except Exception as e:
-        logger.error(f"Error calculating OBV: {e}")
-        return pd.Series(index=close.index, dtype=float)
+        logger.error(f"Error calculating Volume SMA: {e}")
+        return pd.Series(index=volume_data.index, dtype=float)
+
+
+def on_balance_volume(close_prices: pd.Series, volume_data: pd.Series) -> pd.Series:
+    """
+    On Balance Volume (OBV)
+    
+    On Balance Volume is a momentum indicator that uses volume flow to predict 
+    changes in stock price. The theory is that volume precedes price movement,
+    so if volume is increasing while price is flat, price will soon increase.
+    
+    Calculation:
+    - If today's close > yesterday's close: OBV = yesterday's OBV + today's volume
+    - If today's close < yesterday's close: OBV = yesterday's OBV - today's volume
+    - If today's close = yesterday's close: OBV = yesterday's OBV
+    
+    Args:
+        close_prices: Series of close prices
+        volume_data: Series of volume data
+        
+    Returns:
+        Series of OBV values
+    """
+    try:
+        # Handle edge case: empty data
+        if len(close_prices) == 0 or len(volume_data) == 0:
+            return pd.Series(dtype=float)
+        
+        # Handle edge case: different lengths
+        if len(close_prices) != len(volume_data):
+            # Use the minimum length
+            min_length = min(len(close_prices), len(volume_data))
+            close_prices = close_prices.iloc[:min_length]
+            volume_data = volume_data.iloc[:min_length]
+        
+        # Initialize OBV series with zeros
+        obv_values = pd.Series([0.0] * len(close_prices), index=close_prices.index, dtype=float)
+        
+        # Calculate OBV starting from the second day (index 1)
+        for i in range(1, len(close_prices)):
+            if close_prices.iloc[i] > close_prices.iloc[i-1]:
+                # Price increased: add volume
+                obv_values.iloc[i] = obv_values.iloc[i-1] + volume_data.iloc[i]
+            elif close_prices.iloc[i] < close_prices.iloc[i-1]:
+                # Price decreased: subtract volume
+                obv_values.iloc[i] = obv_values.iloc[i-1] - volume_data.iloc[i]
+            else:
+                # Price unchanged: OBV remains the same
+                obv_values.iloc[i] = obv_values.iloc[i-1]
+        
+        return obv_values
+        
+    except Exception as e:
+        logger.error(f"Error calculating On Balance Volume: {e}")
+        return pd.Series(index=close_prices.index, dtype=float)
 
 
 # === UTILITY FUNCTIONS ===
 
 def crossover(series1: pd.Series, series2: pd.Series) -> pd.Series:
     """
-    Detect crossover between two series
+    Crossover Signal Generator
+    
+    Generates signals when series1 crosses above series2.
+    Returns 1 when series1 crosses above series2, 0 otherwise.
+    
+    This is useful for detecting when one indicator crosses above another,
+    such as a fast moving average crossing above a slow moving average.
     
     Args:
-        series1: First series
-        series2: Second series
+        series1: First data series (e.g., fast MA)
+        series2: Second data series (e.g., slow MA)
         
     Returns:
-        Boolean series where crossover occurs
+        Series of binary signals (1 for crossover, 0 for no crossover)
     """
     try:
-        return (series1 > series2) & (series1.shift(1) <= series2.shift(1))
+        # Handle edge case: empty data
+        if len(series1) == 0 or len(series2) == 0:
+            return pd.Series(dtype=float)
+        
+        # Handle edge case: different lengths
+        if len(series1) != len(series2):
+            # Use the minimum length
+            min_length = min(len(series1), len(series2))
+            series1 = series1.iloc[:min_length]
+            series2 = series2.iloc[:min_length]
+        
+        # Initialize result series with zeros
+        crossover_signals = pd.Series([0] * len(series1), index=series1.index, dtype=float)
+        
+        # Check for crossovers starting from index 1
+        for i in range(1, len(series1)):
+            # Current and previous values
+            s1_curr = series1.iloc[i]
+            s1_prev = series1.iloc[i-1]
+            s2_curr = series2.iloc[i]
+            s2_prev = series2.iloc[i-1]
+            
+            # Check for crossover: series1 was below series2, now above
+            if (s1_prev <= s2_prev) and (s1_curr > s2_curr):
+                crossover_signals.iloc[i] = 1
+        
+        return crossover_signals
+        
     except Exception as e:
-        logger.error(f"Error detecting crossover: {e}")
-        return pd.Series(index=series1.index, dtype=bool)
+        logger.error(f"Error calculating crossover signals: {e}")
+        return pd.Series(dtype=float)
 
 
 def crossunder(series1: pd.Series, series2: pd.Series) -> pd.Series:
     """
-    Detect crossunder between two series
+    Crossunder Signal Generator
+    
+    Generates signals when series1 crosses below series2.
+    Returns 1 when series1 crosses below series2, 0 otherwise.
+    
+    This is useful for detecting when one indicator crosses below another,
+    such as a fast moving average crossing below a slow moving average.
     
     Args:
-        series1: First series
-        series2: Second series
+        series1: First data series (e.g., fast MA)
+        series2: Second data series (e.g., slow MA)
         
     Returns:
-        Boolean series where crossunder occurs
+        Series of binary signals (1 for crossunder, 0 for no crossunder)
     """
     try:
-        return (series1 < series2) & (series1.shift(1) >= series2.shift(1))
+        # Handle edge case: empty data
+        if len(series1) == 0 or len(series2) == 0:
+            return pd.Series(dtype=float)
+        
+        # Handle edge case: different lengths
+        if len(series1) != len(series2):
+            # Use the minimum length
+            min_length = min(len(series1), len(series2))
+            series1 = series1.iloc[:min_length]
+            series2 = series2.iloc[:min_length]
+        
+        # Initialize result series with zeros
+        crossunder_signals = pd.Series([0] * len(series1), index=series1.index, dtype=float)
+        
+        # Check for crossunders starting from index 1
+        for i in range(1, len(series1)):
+            # Current and previous values
+            s1_curr = series1.iloc[i]
+            s1_prev = series1.iloc[i-1]
+            s2_curr = series2.iloc[i]
+            s2_prev = series2.iloc[i-1]
+            
+            # Check for crossunder: series1 was above series2, now below
+            if (s1_prev >= s2_prev) and (s1_curr < s2_curr):
+                crossunder_signals.iloc[i] = 1
+        
+        return crossunder_signals
+        
     except Exception as e:
-        logger.error(f"Error detecting crossunder: {e}")
-        return pd.Series(index=series1.index, dtype=bool)
+        logger.error(f"Error calculating crossunder signals: {e}")
+        return pd.Series(dtype=float)
 
 
-def highest(data: pd.Series, period: int) -> pd.Series:
+def highest(data: pd.Series, period: int = 20) -> pd.Series:
     """
-    Highest value over period
+    Highest Value Over Period
+    
+    Returns the highest value in the data series over the specified period.
+    This is useful for identifying resistance levels, highest high in a period,
+    and for various technical analysis calculations.
     
     Args:
-        data: Price series
-        period: Lookback period
+        data: Series of data values
+        period: Lookback period for finding highest value (default: 20)
         
     Returns:
-        Highest value series
+        Series of highest values over the specified period
     """
     try:
-        return data.rolling(window=period).max()
+        # Handle edge case: period larger than data length
+        if period > len(data):
+            return pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+        
+        # Handle edge case: period <= 0
+        if period <= 0:
+            return pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+        
+        # Calculate highest value using rolling window
+        highest_values = data.rolling(window=period, min_periods=1).max()
+        
+        return highest_values
+        
     except Exception as e:
-        logger.error(f"Error calculating highest: {e}")
+        logger.error(f"Error calculating highest values: {e}")
         return pd.Series(index=data.index, dtype=float)
 
 
-def lowest(data: pd.Series, period: int) -> pd.Series:
+def lowest(data: pd.Series, period: int = 20) -> pd.Series:
     """
-    Lowest value over period
+    Lowest Value Over Period
+    
+    Returns the lowest value in the data series over the specified period.
+    This is useful for identifying support levels, lowest low in a period,
+    and for various technical analysis calculations.
     
     Args:
-        data: Price series
-        period: Lookback period
+        data: Series of data values
+        period: Lookback period for finding lowest value (default: 20)
         
     Returns:
-        Lowest value series
+        Series of lowest values over the specified period
     """
     try:
-        return data.rolling(window=period).min()
+        # Handle edge case: period larger than data length
+        if period > len(data):
+            return pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+        
+        # Handle edge case: period <= 0
+        if period <= 0:
+            return pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+        
+        # Calculate lowest value using rolling window
+        lowest_values = data.rolling(window=period, min_periods=1).min()
+        
+        return lowest_values
+        
     except Exception as e:
-        logger.error(f"Error calculating lowest: {e}")
+        logger.error(f"Error calculating lowest values: {e}")
         return pd.Series(index=data.index, dtype=float)
 
 
