@@ -40,16 +40,36 @@ def sma(data: pd.Series, period: int = 20) -> pd.Series:
 def ema(data: pd.Series, period: int = 20) -> pd.Series:
     """
     Exponential Moving Average
-    
     Args:
         data: Price series
         period: Lookback period
-        
     Returns:
         EMA series
     """
     try:
-        return data.ewm(span=period, adjust=False).mean()
+        # Handle edge case: period larger than data length
+        if period > len(data):
+            return pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+        
+        # Handle edge case: period <= 0
+        if period <= 0:
+            return pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+        
+        # Initialize result series with NaN values
+        ema_series = pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+        
+        # First EMA value is the SMA of the first period values
+        first_ema = data.iloc[:period].mean()
+        ema_series.iloc[period - 1] = first_ema
+        
+        # Calculate smoothing factor
+        smoothing = 2 / (period + 1)
+        
+        # Calculate subsequent EMA values
+        for i in range(period, len(data)):
+            ema_series.iloc[i] = smoothing * data.iloc[i] + (1 - smoothing) * ema_series.iloc[i - 1]
+        
+        return ema_series
     except Exception as e:
         logger.error(f"Error calculating EMA: {e}")
         return pd.Series(index=data.index, dtype=float)
