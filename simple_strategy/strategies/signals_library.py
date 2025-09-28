@@ -50,7 +50,7 @@ def ma_crossover(fast_ma, slow_ma):
     Returns:
         Series with 'BUY', 'SELL', or 'HOLD' signals
     """
-    # Create a series with default HOLD values
+    # Create a series with default HOLD valuesF
     signals = pd.Series('HOLD', index=fast_ma.index)
     
     # Generate BUY signals when fast MA crosses above slow MA
