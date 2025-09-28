@@ -19,59 +19,49 @@ logger = logging.getLogger(__name__)
 
 # === BASIC SIGNAL FUNCTIONS ===
 
-def overbought_oversold(indicator: pd.Series, overbought: float = 70, 
-                        oversold: float = 30) -> pd.Series:
+def overbought_oversold(indicator, overbought=70, oversold=30):
     """
     Generate overbought/oversold signals
-    
     Args:
         indicator: Indicator series (RSI, Stochastic, etc.)
         overbought: Overbought threshold
         oversold: Oversold threshold
-        
     Returns:
-        Signal series: 1=BUY, -1=SELL, 0=HOLD
+        Series with 'BUY', 'SELL', or 'HOLD' signals
     """
-    try:
-        # Handle NaN values - replace with neutral value
-        indicator_clean = indicator.fillna(50)  # 50 is neutral for RSI-like indicators
-        
-        signals = pd.Series(0, index=indicator_clean.index)
-        signals[indicator_clean <= oversold] = 1    # BUY when oversold
-        signals[indicator_clean >= overbought] = -1  # SELL when overbought
-        return signals
-    except Exception as e:
-        logger.error(f"Error in overbought_oversold: {e}")
-        return pd.Series(0, index=indicator.index)
-
-
-def ma_crossover(fast_ma: pd.Series, slow_ma: pd.Series) -> pd.Series:
-    """
-    Generate moving average crossover signals
+    # Create a series with default HOLD values
+    signals = pd.Series('HOLD', index=indicator.index)
     
-    Args:
-        fast_ma: Fast moving average
-        slow_ma: Slow moving average
-        
-    Returns:
-        Signal series: 1=BUY, -1=SELL, 0=HOLD
-    """
-    try:
-        signals = pd.Series(0, index=fast_ma.index)
-        
-        # BUY when fast MA crosses above slow MA
-        buy_signals = (fast_ma > slow_ma) & (fast_ma.shift(1) <= slow_ma.shift(1))
-        signals[buy_signals] = 1
-        
-        # SELL when fast MA crosses below slow MA
-        sell_signals = (fast_ma < slow_ma) & (fast_ma.shift(1) >= slow_ma.shift(1))
-        signals[sell_signals] = -1
-        
-        return signals
-    except Exception as e:
-        logger.error(f"Error in ma_crossover: {e}")
-        return pd.Series(0, index=fast_ma.index)
+    # Generate BUY signals when indicator is below oversold
+    signals[indicator < oversold] = 'BUY'
+    
+    # Generate SELL signals when indicator is above overbought
+    signals[indicator > overbought] = 'SELL'
+    
+    return signals
 
+
+def ma_crossover(fast_ma, slow_ma):
+    """
+    Generate MA crossover signals
+    Args:
+        fast_ma: Fast moving average series
+        slow_ma: Slow moving average series
+    Returns:
+        Series with 'BUY', 'SELL', or 'HOLD' signals
+    """
+    # Create a series with default HOLD values
+    signals = pd.Series('HOLD', index=fast_ma.index)
+    
+    # Generate BUY signals when fast MA crosses above slow MA
+    buy_signals = (fast_ma > slow_ma) & (fast_ma.shift(1) <= slow_ma.shift(1))
+    signals[buy_signals] = 'BUY'
+    
+    # Generate SELL signals when fast MA crosses below slow MA
+    sell_signals = (fast_ma < slow_ma) & (fast_ma.shift(1) >= slow_ma.shift(1))
+    signals[sell_signals] = 'SELL'
+    
+    return signals
 
 def macd_signals(macd_line: pd.Series, signal_line: pd.Series, 
                  histogram: pd.Series = None) -> pd.Series:

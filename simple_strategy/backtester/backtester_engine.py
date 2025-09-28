@@ -3,7 +3,6 @@ Backtester Engine Component - Phase 1.1
 Core backtesting logic that processes data and executes strategies
 Integrates with DataFeeder for data access and StrategyBase for signal generation
 """
-
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Any, Optional, Union, Tuple
@@ -14,38 +13,36 @@ from simple_strategy.backtester.risk_manager import RiskManager
 import time
 from pathlib import Path
 import sys
-
 # Fix import paths - shared is a sibling directory, not a subdirectory
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from shared.data_feeder import DataFeeder
 from shared.strategy_base import StrategyBase
 
 # Configure logging to reduce debug output
-import logging
 logging.basicConfig(
-    level=logging.INFO,  # Change from DEBUG to INFO
+    level=logging.WARNING,  # Change from INFO to WARNING to reduce output
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler()
     ]
 )
 
-# Specifically set debug level for backtester to INFO
-logging.getLogger('simple_strategy.backtester.backtester_engine').setLevel(logging.INFO)
-logging.getLogger('simple_strategy.strategies.strategy_builder').setLevel(logging.INFO)
+# Specifically set debug level for backtester to WARNING
+logging.getLogger('simple_strategy.backtester.backtester_engine').setLevel(logging.WARNING)
+logging.getLogger('simple_strategy.strategies.strategy_builder').setLevel(logging.WARNING)
+
+# Create logger instance for this module
+logger = logging.getLogger(__name__)
 
 class BacktesterEngine:
     """
     Core backtesting engine that processes historical data and executes strategies
     """
-    
     def __init__(self, data_feeder: DataFeeder, strategy: StrategyBase,
-             risk_manager: Optional[RiskManager] = None, config: Dict[str, Any] = None):
+                 risk_manager: Optional[RiskManager] = None, config: Dict[str, Any] = None):
         """
         Initialize backtester engine with risk management integration
-        
         Args:
             data_feeder: DataFeeder instance for data access
             strategy: StrategyBase instance for signal generation
@@ -190,8 +187,6 @@ class BacktesterEngine:
                                 symbols: List[str], timeframes: List[str]) -> Dict[str, Any]:
         """Process data chronologically and execute strategy signals"""
         try:
-            print(f"🔧 DEBUG: _process_data_chronologically called")
-            
             # Get all unique timestamps across all symbols and timeframes
             all_timestamps = set()
             for symbol in symbols:
@@ -199,9 +194,8 @@ class BacktesterEngine:
                     if symbol in data and timeframe in data[symbol]:
                         all_timestamps.update(data[symbol][timeframe].index)
             
-            # Sort timestamps chronologically
+            # Sort timestamps
             sorted_timestamps = sorted(all_timestamps)
-            print(f"🔧 DEBUG: Processing {len(sorted_timestamps)} timestamps")
             
             # Initialize results tracking
             results = {
@@ -212,10 +206,12 @@ class BacktesterEngine:
                 'portfolio_values': []
             }
             
+            # Track first few signals for debugging
+            signal_count = {'BUY': 0, 'SELL': 0, 'HOLD': 0}
+            
             # Process each timestamp
             for i, timestamp in enumerate(sorted_timestamps):
                 if not self.is_running:
-                    print("🔧 DEBUG: Backtest stopped during processing")
                     break
                 
                 # Get data for current timestamp across all symbols and timeframes
@@ -223,6 +219,11 @@ class BacktesterEngine:
                 
                 # Generate signals using strategy
                 signals = self.strategy.generate_signals(current_data)
+                
+                # Count signals for debugging
+                for symbol, timeframe_signals in signals.items():
+                    for timeframe, signal in timeframe_signals.items():
+                        signal_count[signal] += 1
                 
                 # Process signals and execute trades
                 trade_results = self._process_signals(signals, current_data, timestamp)
@@ -234,46 +235,113 @@ class BacktesterEngine:
                 self.processing_stats['total_rows_processed'] += len(symbols) * len(timeframes)
                 self.processing_stats['total_signals_generated'] += len([s for s in signals.values() if s != 'HOLD'])
                 
-                # Log progress
+                # Log progress every 1000 timestamps
                 if i % 1000 == 0:
                     progress = (i / len(sorted_timestamps)) * 100
-                    print(f"🔧 DEBUG: Processing progress: {progress:.1f}%")
+                    print(f"🔧 Processing progress: {progress:.1f}%")
             
-            print(f"🔧 DEBUG: Processing complete. Generated {len(results['trades'])} trades")
+            # Print signal summary for debugging
+            print(f"🔧 Signal summary: BUY={signal_count['BUY']}, SELL={signal_count['SELL']}, HOLD={signal_count['HOLD']}")
+            print(f"🔧 Processing complete. Generated {len(results['trades'])} trades")
+            
             return results
         except Exception as e:
-            print(f"🔧 DEBUG: Error in _process_data_chronologically: {e}")
+            print(f"🔧 Error in _process_data_chronologically: {e}")
             import traceback
-            print(f"🔧 DEBUG: Full traceback: {traceback.format_exc()}")
+            print(f"🔧 Full traceback: {traceback.format_exc()}")
             return {'error': str(e)}
+        
+    def _can_execute_trade(self, symbol: str, signal: str, timestamp: datetime, current_data: Dict[str, Dict[str, pd.DataFrame]] = None) -> bool:
+        """
+        Check if a trade can be executed based on current positions and risk rules
+        Args:
+            symbol: Trading symbol
+            signal: Trade signal ('BUY' or 'SELL')
+            timestamp: Current timestamp
+            current_data: Current market data (optional)
+        Returns:
+            True if trade can be executed, False otherwise
+        """
+        try:
+            # Check if we already have a position for this symbol
+            has_position = symbol in self.strategy.positions and self.strategy.positions[symbol].get('size', 0) > 0
+            
+            # For BUY signals, check if we already have a position
+            if signal == 'BUY' and has_position:
+                logger.info(f"⚠️ Already have position for {symbol}, skipping BUY")
+                return False
+            
+            # For SELL signals, check if we have a position to sell
+            if signal == 'SELL' and not has_position:
+                logger.info(f"⚠️ No position to sell for {symbol}, skipping SELL")
+                return False
+            
+            # Get current price for risk management
+            current_price = 0.0
+            if current_data:
+                current_price = self._get_current_price(symbol, current_data)
+            else:
+                logger.warning(f"⚠️ No current data provided for {symbol}, using default price")
+                # Use a reasonable default price based on the strategy balance
+                current_price = 20000.0  # Default BTC price
+            
+            # Check risk management rules
+            if self.risk_manager:
+                account_state = {
+                    'balance': self.strategy.balance,
+                    'positions': self.strategy.positions
+                }
+                
+                trade_signal = {
+                    'symbol': symbol,
+                    'signal_type': signal,
+                    'price': current_price,
+                    'timestamp': timestamp
+                }
+                
+                validation_result = self.risk_manager.validate_trade_signal(trade_signal, account_state)
+                if not validation_result['valid']:
+                    logger.info(f"⚠️ Risk management blocked {signal} trade for {symbol}: {validation_result.get('reason', 'Unknown reason')}")
+                    return False
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Error checking if trade can be executed for {symbol}: {e}")
+            return False
     
-    def _get_data_for_timestamp(self, data: Dict[str, Dict[str, pd.DataFrame]], 
-                               symbols: List[str], timeframes: List[str], 
-                               timestamp: datetime) -> Dict[str, Dict[str, pd.DataFrame]]:
+    def _get_data_for_timestamp(self, data: Dict[str, Dict[str, pd.DataFrame]],
+                           symbols: List[str], timeframes: List[str],
+                           timestamp: datetime) -> Dict[str, Dict[str, pd.DataFrame]]:
         """
         Get data for a specific timestamp across all symbols and timeframes
-        
         Args:
             data: Full data dictionary
             symbols: Trading symbols
             timeframes: Timeframes
             timestamp: Target timestamp
-            
         Returns:
-            Data dictionary for the specific timestamp
+            Data dictionary for the specific timestamp with historical data
         """
         timestamp_data = {}
         
         for symbol in symbols:
             timestamp_data[symbol] = {}
+            
             for timeframe in timeframes:
                 df = data[symbol][timeframe]
                 
-                # Get data up to current timestamp
+                # Get all data up to and including the target timestamp
+                # This is crucial for indicators that need historical data
                 mask = df.index <= timestamp
-                historical_data = df[mask].copy()
                 
-                timestamp_data[symbol][timeframe] = historical_data
+                if mask.any():
+                    # Get all historical data up to this timestamp
+                    historical_data = df[mask].copy()
+                    timestamp_data[symbol][timeframe] = historical_data
+                else:
+                    # No data before this timestamp
+                    timestamp_data[symbol][timeframe] = df.iloc[0:0]  # Empty DataFrame
         
         return timestamp_data
     
@@ -285,8 +353,8 @@ class BacktesterEngine:
             for symbol, timeframe_signals in signals.items():
                 for timeframe, signal in timeframe_signals.items():
                     if signal in ['BUY', 'SELL']:
-                        # Check if we can execute this trade
-                        if self._can_execute_trade(symbol, signal, timestamp):
+                        # Check if we can execute this trade (pass current_data)
+                        if self._can_execute_trade(symbol, signal, timestamp, current_data):
                             # Execute the trade
                             trade_result = self._execute_trade(symbol, signal, timestamp, current_data)
                             trade_results.append(trade_result)
@@ -368,40 +436,46 @@ class BacktesterEngine:
             logger.error(f"❌ Error executing trade for {symbol}: {e}")
             return {'executed': False, 'reason': str(e)}
     
-    def _update_results(self, results: Dict[str, Any], signals: Dict[str, Dict[str, str]], 
-                       trades: List[Dict[str, Any]], timestamp: datetime):
-        """
-        Update results dictionary with current state
-        
-        Args:
-            results: Results dictionary to update
-            signals: Current signals
-            trades: Executed trades
-            timestamp: Current timestamp
-        """
-        # Calculate current portfolio value
-        portfolio_value = self.strategy.balance
-        for symbol, position in self.strategy.positions.items():
-            # For simplicity, use entry price (in real implementation, would use current price)
-            portfolio_value += position['size'] * position['entry_price']
-        
-        # Update results
-        results['equity_curve'].append({
-            'timestamp': timestamp,
-            'balance': self.strategy.balance,
-            'portfolio_value': portfolio_value
-        })
-        
-        results['signals'].append({
-            'timestamp': timestamp,
-            'signals': signals
-        })
-        
-        results['timestamps'].append(timestamp)
-        results['portfolio_values'].append(portfolio_value)
-        
-        # Add trades
-        results['trades'].extend(trades)
+    def _update_results(self, results: Dict[str, Any], signals: Dict[str, Dict[str, str]], trade_results: List[Dict[str, Any]], timestamp: datetime):
+        """Update results with new signals and trades"""
+        try:
+            # Update signals
+            results['signals'].append({
+                'timestamp': timestamp,
+                'signals': signals
+            })
+            
+            # Update trades
+            results['trades'].extend(trade_results)
+            
+            # Update timestamps
+            results['timestamps'].append(timestamp)
+            
+            # Calculate current portfolio value
+            current_value = self.strategy.balance
+            
+            # Add value of open positions
+            for symbol, position in self.strategy.positions.items():
+                if position.get('size', 0) > 0:
+                    # Get current price (this is a simplified approach)
+                    current_price = position.get('current_price', position.get('entry_price', 0))
+                    position_value = position['size'] * current_price
+                    current_value += position_value
+            
+            # Update portfolio values
+            results['portfolio_values'].append({
+                'timestamp': timestamp,
+                'value': current_value
+            })
+            
+            # Update equity curve
+            results['equity_curve'].append({
+                'timestamp': timestamp,
+                'value': current_value
+            })
+            
+        except Exception as e:
+            logger.error(f"❌ Error updating results: {e}")
     
     def _calculate_final_results(self, results: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -445,10 +519,17 @@ class BacktesterEngine:
             
             # Calculate equity-based metrics
             if final_results['equity_curve']:
-                initial_equity = final_results['equity_curve'][0] if final_results['equity_curve'] else 10000
-                final_equity = final_results['equity_curve'][-1] if final_results['equity_curve'] else initial_equity
+                # Handle the case where equity curve contains dictionaries
+                if isinstance(final_results['equity_curve'][0], dict):
+                    # Extract values from dictionaries
+                    initial_equity = final_results['equity_curve'][0].get('value', 10000) if final_results['equity_curve'] else 10000
+                    final_equity = final_results['equity_curve'][-1].get('value', 10000) if final_results['equity_curve'] else initial_equity
+                else:
+                    # Direct numeric values
+                    initial_equity = final_results['equity_curve'][0] if final_results['equity_curve'] else 10000
+                    final_equity = final_results['equity_curve'][-1] if final_results['equity_curve'] else initial_equity
                 
-                total_return = (final_equity - initial_equity) / initial_equity
+                total_return = (final_equity - initial_equity) / initial_equity if initial_equity != 0 else 0
                 final_results['performance_metrics']['total_return'] = total_return
                 final_results['performance_metrics']['initial_equity'] = initial_equity
                 final_results['performance_metrics']['final_equity'] = final_equity

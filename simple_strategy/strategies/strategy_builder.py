@@ -357,6 +357,9 @@ class StrategyBuilder:
                     """Calculate all indicators for the given data"""
                     results = {}
                     
+                    # Debug: Print data info
+                    print(f"🔧 Calculating indicators for {symbol} {timeframe} with {len(df)} rows of data")
+                    
                     for name, config in self.indicators.items():
                         try:
                             func = config['function']
@@ -386,10 +389,14 @@ class StrategyBuilder:
                                     result = func(df['close'], **params)
                                 results[name] = result
                             
-                            logger.debug(f"📊 Calculated {name} for {symbol} {timeframe}")
+                            # Debug: Print indicator result
+                            if hasattr(result, 'iloc'):
+                                print(f"🔧 Indicator {name}: last value = {result.iloc[-1] if len(result) > 0 else 'N/A'}")
+                            else:
+                                print(f"🔧 Indicator {name}: {result}")
                             
                         except Exception as e:
-                            logger.error(f"❌ Error calculating {name}: {e}")
+                            print(f"🔧 Error calculating {name}: {e}")
                     
                     return results
                 
@@ -409,7 +416,7 @@ class StrategyBuilder:
                             # First, add the indicator arguments in the correct order
                             for param_name, indicator_name in indicator_refs:
                                 if indicator_name not in indicators:
-                                    logger.error(f"❌ Indicator '{indicator_name}' not found in calculated indicators")
+                                    print(f"🔧 Indicator '{indicator_name}' not found in calculated indicators")
                                     continue
                                 
                                 indicator_result = indicators[indicator_name]
@@ -432,10 +439,12 @@ class StrategyBuilder:
                             signal_result = func(*args)
                             signals[rule_name] = signal_result
                             
-                            logger.debug(f"📈 Generated {rule_name} signal")
+                            # Debug: Print signal result
+                            last_signal = signal_result.iloc[-1] if len(signal_result) > 0 else 'N/A'
+                            print(f"🔧 Signal {rule_name}: last value = {last_signal}")
                             
                         except Exception as e:
-                            logger.error(f"❌ Error generating {rule_name} signal: {e}")
+                            print(f"🔧 Error generating {rule_name} signal: {e}")
                     
                     return signals
                 
@@ -446,21 +455,73 @@ class StrategyBuilder:
                     
                     try:
                         if self.signal_combination == 'majority_vote':
-                            return self._majority_vote_combination(signals)
-                        elif self.signal_combination == 'weighted':
-                            return self._weighted_combination(signals)
-                        elif self.signal_combination == 'unanimous':
-                            return self._unanimous_combination(signals)
-                        else:
-                            # Default to first signal
-                            first_signal = next(iter(signals.values()))
-                            if len(first_signal) > 0:
-                                latest_signal = first_signal.iloc[-1]
-                                return 'BUY' if latest_signal == 1 else 'SELL' if latest_signal == -1 else 'HOLD'
-                            return 'HOLD'
+                            # Count BUY, SELL, and HOLD signals
+                            signal_counts = {'BUY': 0, 'SELL': 0, 'HOLD': 0}
                             
+                            for signal_series in signals.values():
+                                # Get the last signal value
+                                last_signal = signal_series.iloc[-1] if len(signal_series) > 0 else 'HOLD'
+                                if last_signal in signal_counts:
+                                    signal_counts[last_signal] += 1
+                            
+                            # Debug: Print signal counts
+                            print(f"🔧 Signal counts: {signal_counts}")
+                            
+                            # Return the signal with the most votes
+                            return max(signal_counts, key=signal_counts.get)
+                        
+                        elif self.signal_combination == 'weighted':
+                            # Apply weights to signals and calculate weighted score
+                            weighted_score = 0
+                            
+                            for rule_name, signal_series in signals.items():
+                                if rule_name in self.signal_weights:
+                                    weight = self.signal_weights[rule_name]
+                                    last_signal = signal_series.iloc[-1] if len(signal_series) > 0 else 'HOLD'
+                                    
+                                    # Convert signal to numeric value
+                                    signal_value = 0
+                                    if last_signal == 'BUY':
+                                        signal_value = 1
+                                    elif last_signal == 'SELL':
+                                        signal_value = -1
+                                    
+                                    weighted_score += weight * signal_value
+                            
+                            # Debug: Print weighted score
+                            print(f"🔧 Weighted score: {weighted_score}")
+                            
+                            # Convert weighted score back to signal
+                            if weighted_score > 0:
+                                return 'BUY'
+                            elif weighted_score < 0:
+                                return 'SELL'
+                            else:
+                                return 'HOLD'
+                        
+                        elif self.signal_combination == 'unanimous':
+                            # All signals must agree
+                            all_signals = []
+                            
+                            for signal_series in signals.values():
+                                last_signal = signal_series.iloc[-1] if len(signal_series) > 0 else 'HOLD'
+                                all_signals.append(last_signal)
+                            
+                            # Debug: Print all signals
+                            print(f"🔧 All signals: {all_signals}")
+                            
+                            # If all signals are the same, return that signal
+                            if len(set(all_signals)) == 1:
+                                return all_signals[0]
+                            else:
+                                return 'HOLD'
+                        
+                        else:
+                            print(f"🔧 Unknown signal combination method: {self.signal_combination}")
+                            return 'HOLD'
+                    
                     except Exception as e:
-                        logger.error(f"❌ Error combining signals: {e}")
+                        print(f"🔧 Error combining signals: {e}")
                         return 'HOLD'
                 
                 def _majority_vote_combination(self, signals: Dict[str, pd.Series]) -> str:
@@ -583,7 +644,7 @@ class StrategyBuilder:
                     logger.info(f"📏 Calculated position size for {symbol}: {position_size} (signal: {signal}, price: {current_price})")
                     return position_size
                 
-                
+
                 def get_stop_loss_take_profit(self, symbol: str, signal: str, 
                                            entry_price: float) -> Tuple[float, float]:
                     """Calculate stop loss and take profit levels"""
