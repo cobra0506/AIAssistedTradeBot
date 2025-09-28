@@ -17,6 +17,11 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(current_dir))
 sys.path.insert(0, project_root)
 
+# Force reload of the indicators module to get the updated EMA function
+import importlib
+import simple_strategy.strategies.indicators_library
+importlib.reload(simple_strategy.strategies.indicators_library)
+
 # Import the indicators library
 from simple_strategy.strategies.indicators_library import macd, ema
 
@@ -82,8 +87,10 @@ class TestMACDIndicator(unittest.TestCase):
         # Show some sample values
         valid_indices = macd_line.dropna().index[:5]
         print(f"Sample MACD values: {[(i, f'{macd_line.iloc[i]:.4f}') for i in valid_indices]}")
-        print(f"Sample Signal values: {[(i, f'{signal_line.iloc[i]:.4f}') for i in valid_indices if not pd.isna(signal_line.iloc[i])]}")
-        print(f"Sample Histogram values: {[(i, f'{histogram.iloc[i]:.4f}') for i in valid_indices if not pd.isna(histogram.iloc[i])]}")
+        valid_signal_indices = signal_line.dropna().index[:5]
+        print(f"Sample Signal values: {[(i, f'{signal_line.iloc[i]:.4f}') for i in valid_signal_indices]}")
+        valid_hist_indices = histogram.dropna().index[:5]
+        print(f"Sample Histogram values: {[(i, f'{histogram.iloc[i]:.4f}') for i in valid_hist_indices]}")
         
         # Assertions
         self.assertEqual(len(macd_line), len(self.simple_data), "MACD line length should match input length")
