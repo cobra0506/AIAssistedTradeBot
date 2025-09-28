@@ -185,100 +185,127 @@ class TestWilliamsRIndicator(unittest.TestCase):
         print("✓ Test passed: Williams %R with realistic data")
 
     def test_williams_r_edge_cases(self):
-        """Test Williams %R with edge cases"""
-        print("\n" + "-"*60)
+        """
+        Test Williams %R with edge cases
+        """
+        print("\n------------------------------------------------------------")
         print("TEST: Williams %R Edge Cases")
-        print("-"*60)
+        print("------------------------------------------------------------")
         
-        # Test with constant prices (high = low = close)
-        wr_result = williams_r(self.edge_high, self.edge_low, self.edge_close, self.period)
+        # Test with constant prices (all high, low, close values are the same)
+        constant_high = [100.0] * 10
+        constant_low = [100.0] * 10
+        constant_close = [100.0] * 10
         
-        print(f"Constant price data - High: {self.edge_high.tolist()}")
-        print(f"Constant price data - Low: {self.edge_low.tolist()}")
-        print(f"Constant price data - Close: {self.edge_close.tolist()}")
-        print(f"Williams %R result: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in wr_result.tolist()]}")
+        print(f"Constant price data - High: {constant_high}")
+        print(f"Constant price data - Low: {constant_low}")
+        print(f"Constant price data - Close: {constant_close}")
         
-        # With constant prices, highest high = lowest low = close
-        # Williams %R = -100 * (HH - C) / (HH - LL) = -100 * 0 / 0, which is undefined
-        # The implementation should handle this gracefully (typically returning NaN or -50)
-        for i in range(len(wr_result)):
-            if not pd.isna(wr_result.iloc[i]):
-                # With constant prices, Williams %R should typically be -50 (common convention)
-                self.assertEqual(
-                    wr_result.iloc[i],
-                    -50.0,
-                    msg=f"With constant prices, Williams %R should be -50 at index {i}: got {wr_result.iloc[i]}"
-                )
-                print(f"✓ Index {i}: Williams %R = {wr_result.iloc[i]} (constant prices)")
+        williams_r_result = self.indicator.calculate_williams_r(
+            constant_high, constant_low, constant_close, period=5
+        )
+        
+        print(f"Williams %R result: {self._format_series(williams_r_result)}")
+        
+        # With constant prices, all Williams %R values should be NaN
+        for i in range(len(williams_r_result)):
+            self.assertTrue(
+                pd.isna(williams_r_result.iloc[i]), 
+                f"With constant prices, Williams %R should be NaN at index {i}: got {float(williams_r_result.iloc[i])}"
+            )
         
         # Test with period larger than data length
-        large_period = 20
-        wr_large = williams_r(self.simple_high, self.simple_low, self.simple_close, large_period)
+        williams_r_result = self.indicator.calculate_williams_r(
+            self.high_data, self.low_data, self.close_data, period=20
+        )
         
-        print(f"\nTesting with period ({large_period}) larger than data length ({len(self.simple_close)})")
-        print(f"Williams %R result: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in wr_large.tolist()]}")
+        print(f"\nTesting with period (20) larger than data length ({len(self.high_data)})")
+        print(f"Williams %R result: {self._format_series(williams_r_result)}")
         
-        # All values should be NaN
-        self.assertTrue(wr_large.isna().all(), "All Williams %R values should be NaN when period > data length")
+        # All values should be NaN when period > data length
+        for i in range(len(williams_r_result)):
+            self.assertTrue(
+                pd.isna(williams_r_result.iloc[i]), 
+                f"All values should be NaN when period > data length, but index {i} is {float(williams_r_result.iloc[i])}"
+            )
         print("✓ All values are NaN when period > data length")
         
-        # Test with minimum valid period
-        wr_min = williams_r(self.simple_high, self.simple_low, self.simple_close, 1)
+        # Test with minimum period (1)
+        williams_r_result = self.indicator.calculate_williams_r(
+            self.high_data, self.low_data, self.close_data, period=1
+        )
         
         print(f"\nTesting with minimum period (1):")
-        print(f"Williams %R result: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in wr_min.tolist()]}")
+        print(f"Williams %R result: {self._format_series(williams_r_result)}")
         
-        # With period 1, highest high = lowest low = close
-        # Williams %R should be -50 (common convention for undefined case)
-        for i in range(len(wr_min)):
-            if not pd.isna(wr_min.iloc[i]):
-                self.assertEqual(
-                    wr_min.iloc[i],
-                    -50.0,
-                    msg=f"With period 1, Williams %R should be -50 at index {i}: got {wr_min.iloc[i]}"
-                )
-                print(f"✓ Index {i}: Williams %R = {wr_min.iloc[i]} (period 1)")
+        # With period 1, the formula becomes: (high - close) / (high - low) * -100
+        # For index 0: (10 - 9) / (10 - 8) * -100 = 1 / 2 * -100 = -50
+        self.assertEqual(
+            float(williams_r_result.iloc[0]), 
+            -50.0, 
+            f"With period 1, Williams %R should be -50 at index 0: got {float(williams_r_result.iloc[0])}"
+        )
+        print(f"✓ Index 0: Williams %R = {float(williams_r_result.iloc[0])} (period 1)")
+        
+        # For index 1: (12 - 11) / (12 - 9) * -100 = 1 / 3 * -100 = -33.333...
+        self.assertAlmostEqual(
+            float(williams_r_result.iloc[1]), 
+            -33.333333333333336, 
+            places=5,
+            msg=f"With period 1, Williams %R should be approximately -33.33333 at index 1: got {float(williams_r_result.iloc[1])}"
+        )
+        print(f"✓ Index 1: Williams %R = {float(williams_r_result.iloc[1])} (period 1)")
         
         print("✓ Test passed: Williams %R edge cases")
 
     def test_williams_r_error_handling(self):
-        """Test Williams %R error handling"""
-        print("\n" + "-"*60)
+        """
+        Test Williams %R error handling
+        """
+        print("\n------------------------------------------------------------")
         print("TEST: Williams %R Error Handling")
-        print("-"*60)
+        print("------------------------------------------------------------")
         
         # Test with empty data
-        empty_high = pd.Series([], dtype=float)
-        empty_low = pd.Series([], dtype=float)
-        empty_close = pd.Series([], dtype=float)
-        
-        wr_empty = williams_r(empty_high, empty_low, empty_close, self.period)
-        
+        wr_empty = self.indicator.calculate_williams_r([], [], [])
         print(f"Empty data test - Williams %R type: {type(wr_empty)}")
         print(f"Empty data test - Williams %R length: {len(wr_empty)}")
         
-        self.assertIsInstance(wr_empty, pd.Series)
-        self.assertEqual(len(wr_empty), 0)
+        # Empty data should return an empty Series
+        self.assertEqual(len(wr_empty), 0, "Empty data should return an empty Series")
         print("✓ Handles empty data correctly")
         
-        # Test with invalid period
+        # Test with period 0
         try:
-            wr_invalid = williams_r(self.simple_high, self.simple_low, self.simple_close, 0)
-            print("Result with period 0:")
-            print(f"Williams %R: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in wr_invalid.tolist()]}")
+            wr_zero_period = self.indicator.calculate_williams_r(
+                self.high_data, self.low_data, self.close_data, period=0
+            )
+            print(f"Result with period 0:")
+            print(f"Williams %R: {self._format_series(wr_zero_period)}")
+            
+            # All values should be NaN with period 0
+            for i in range(len(wr_zero_period)):
+                self.assertTrue(pd.isna(wr_zero_period.iloc[i]), f"Value at index {i} should be NaN with period 0")
             print("✓ Handles period 0 without crashing")
         except Exception as e:
-            print(f"Exception with period 0: {e}")
-            print("✓ Exception handled gracefully")
+            print(f"Error with period 0: {e}")
+            self.fail(f"Failed to handle period 0: {e}")
         
+        # Test with negative period
         try:
-            wr_negative = williams_r(self.simple_high, self.simple_low, self.simple_close, -1)
-            print("Result with period -1:")
-            print(f"Williams %R: {[f'{x:.6f}' if not pd.isna(x) else 'nan' for x in wr_negative.tolist()]}")
+            wr_neg_period = self.indicator.calculate_williams_r(
+                self.high_data, self.low_data, self.close_data, period=-1
+            )
+            print(f"Result with period -1:")
+            print(f"Williams %R: {self._format_series(wr_neg_period)}")
+            
+            # All values should be NaN with negative period
+            for i in range(len(wr_neg_period)):
+                self.assertTrue(pd.isna(wr_neg_period.iloc[i]), f"Value at index {i} should be NaN with negative period")
             print("✓ Handles negative period without crashing")
         except Exception as e:
-            print(f"Exception with period -1: {e}")
-            print("✓ Exception handled gracefully")
+            print(f"Error with negative period: {e}")
+            self.fail(f"Failed to handle negative period: {e}")
         
         print("✓ Test passed: Williams %R error handling")
 

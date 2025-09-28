@@ -277,28 +277,43 @@ def cci(high: pd.Series, low: pd.Series, close: pd.Series, period: int = 20) -> 
         return pd.Series(index=close.index, dtype=float)
 
 
-def williams_r(high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14) -> pd.Series:
+# In simple_strategy/strategies/indicators_library.py
+def williams_r(self, high_prices, low_prices, close_prices, period=14):
     """
-    Williams %R
+    Calculate Williams %R indicator
     
     Args:
-        high: High price series
-        low: Low price series
-        close: Close price series
-        period: Lookback period
+        high_prices: Series or list of high prices
+        low_prices: Series or list of low prices
+        close_prices: Series or list of close prices
+        period: Lookback period for calculation
         
     Returns:
-        Williams %R series
+        Series of Williams %R values
     """
-    try:
-        highest_high = high.rolling(window=period).max()
-        lowest_low = low.rolling(window=period).min()
-        wr = -100 * (highest_high - close) / (highest_high - lowest_low)
-        return wr
-    except Exception as e:
-        logger.error(f"Error calculating Williams %R: {e}")
-        return pd.Series(index=close.index, dtype=float)
-
+    import pandas as pd
+    import numpy as np
+    
+    # Convert to pandas Series if not already
+    high = pd.Series(high_prices)
+    low = pd.Series(low_prices)
+    close = pd.Series(close_prices)
+    
+    # Check for empty data
+    if len(high) == 0 or len(low) == 0 or len(close) == 0:
+        return pd.Series(dtype=float)
+    
+    # Calculate highest high and lowest low over the period
+    highest_high = high.rolling(window=period, min_periods=period).max()
+    lowest_low = low.rolling(window=period, min_periods=period).min()
+    
+    # Calculate Williams %R
+    williams_r = -100 * (highest_high - close) / (highest_high - lowest_low)
+    
+    # Handle division by zero case (when highest_high equals lowest_low)
+    williams_r = williams_r.replace([np.inf, -np.inf], np.nan)
+    
+    return williams_r
 
 # === VOLATILITY INDICATORS ===
 
