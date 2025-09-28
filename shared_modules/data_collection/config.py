@@ -9,7 +9,7 @@ class DataCollectionConfig:
     
     # Data settings
     SYMBOLS = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'ADAUSDT']  # Add more symbols as needed
-    TIMEFRAMES = ['1', '5', '15']  # Add more timeframes as needed
+    TIMEFRAMES = ['1', '5', '15', '60','120', '240']  # Add more timeframes as needed
     DATA_DIR = 'data'
     
     # Data collection mode
