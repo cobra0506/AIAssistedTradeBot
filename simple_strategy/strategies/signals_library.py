@@ -124,35 +124,34 @@ def bollinger_bands_signals(price: pd.Series, upper_band: pd.Series,
         return pd.Series(0, index=price.index)
 
 
-def stochastic_signals(k_percent: pd.Series, d_percent: pd.Series, 
-                      overbought: float = 80, oversold: float = 20) -> pd.Series:
+def stochastic_signals(k_percent: pd.Series, d_percent: pd.Series,
+                     overbought: float=80, oversold: float=20) -> pd.Series:
     """
     Generate Stochastic signals
-    
     Args:
         k_percent: %K line
         d_percent: %D line
         overbought: Overbought threshold
         oversold: Oversold threshold
-        
     Returns:
-        Signal series: 1=BUY, -1=SELL, 0=HOLD
+        Series with 'BUY', 'SELL', or 'HOLD' signals
     """
     try:
-        signals = pd.Series(0, index=k_percent.index)
+        # Create a series with default HOLD values
+        signals = pd.Series('HOLD', index=k_percent.index)
         
-        # BUY when both %K and %D are oversold
-        buy_signals = (k_percent <= oversold) & (d_percent <= oversold)
-        signals[buy_signals] = 1
+        # Generate BUY signals when both %K and %D are below oversold
+        buy_signals = (k_percent < oversold) & (d_percent < oversold)
+        signals[buy_signals] = 'BUY'
         
-        # SELL when both %K and %D are overbought
-        sell_signals = (k_percent >= overbought) & (d_percent >= overbought)
-        signals[sell_signals] = -1
+        # Generate SELL signals when both %K and %D are above overbought
+        sell_signals = (k_percent > overbought) & (d_percent > overbought)
+        signals[sell_signals] = 'SELL'
         
         return signals
     except Exception as e:
         logger.error(f"Error in stochastic_signals: {e}")
-        return pd.Series(0, index=k_percent.index)
+        return pd.Series('HOLD', index=k_percent.index)
 
 
 # === ADVANCED SIGNAL FUNCTIONS ===
@@ -310,41 +309,45 @@ def trend_strength_signals(price: pd.Series, short_ma: pd.Series,
 
 # === COMBINATION SIGNAL FUNCTIONS ===
 
-def majority_vote_signals(*signal_series: pd.Series) -> pd.Series:
+def majority_vote_signals(signal_list: List[pd.Series]) -> pd.Series:
     """
-    Generate signals based on majority vote of multiple signal series
-    
+    Generate majority vote combination of signals
     Args:
-        *signal_series: Variable number of signal series
-        
+        signal_list: List of signal series to combine
     Returns:
-        Majority vote signal series
+        Combined signal series: 1=BUY, -1=SELL, 0=HOLD
     """
     try:
-        if not signal_series:
+        if not signal_list:
             return pd.Series()
         
-        # Get common index
-        common_index = signal_series[0].index
-        for series in signal_series[1:]:
+        # Find common index across all signal series
+        common_index = signal_list[0].index
+        for series in signal_list[1:]:
             common_index = common_index.intersection(series.index)
         
         if len(common_index) == 0:
             return pd.Series()
         
-        # Create DataFrame with all signals
-        signals_df = pd.DataFrame(index=common_index)
-        for i, series in enumerate(signal_series):
-            signals_df[f'signal_{i}'] = series.reindex(common_index)
+        # Count votes for each signal type
+        buy_votes = pd.Series(0, index=common_index)
+        sell_votes = pd.Series(0, index=common_index)
+        hold_votes = pd.Series(0, index=common_index)
         
-        # Count buy and sell votes
-        buy_votes = (signals_df == 1).sum(axis=1)
-        sell_votes = (signals_df == -1).sum(axis=1)
+        for series in signal_list:
+            aligned_series = series.reindex(common_index)
+            buy_votes += (aligned_series == 1) | (aligned_series == 'BUY')
+            sell_votes += (aligned_series == -1) | (aligned_series == 'SELL')
+            hold_votes += (aligned_series == 0) | (aligned_series == 'HOLD')
         
-        # Majority vote
+        # Determine majority vote
         final_signals = pd.Series(0, index=common_index)
-        final_signals[buy_votes > sell_votes] = 1
-        final_signals[sell_votes > buy_votes] = -1
+        total_signals = len(signal_list)
+        majority_threshold = total_signals / 2
+        
+        final_signals[buy_votes > majority_threshold] = 1
+        final_signals[sell_votes > majority_threshold] = -1
+        # Hold is default (0)
         
         return final_signals
     except Exception as e:
@@ -352,23 +355,21 @@ def majority_vote_signals(*signal_series: pd.Series) -> pd.Series:
         return pd.Series()
 
 
-def weighted_signals(*weighted_signals: Tuple[pd.Series, float]) -> pd.Series:  # ← FIXED: Now Tuple is imported
+def weighted_signals(signal_list: List[Tuple[pd.Series, float]]) -> pd.Series:
     """
-    Generate signals based on weighted combination of multiple signal series
-    
+    Generate weighted combination of signals
     Args:
-        *weighted_signals: Variable number of (signal_series, weight) tuples
-        
+        signal_list: List of (signal_series, weight) tuples
     Returns:
-        Weighted signal series
+        Combined signal series: 1=BUY, -1=SELL, 0=HOLD
     """
     try:
-        if not weighted_signals:
+        if not signal_list:
             return pd.Series()
         
-        # Get common index
-        common_index = weighted_signals[0][0].index
-        for series, _ in weighted_signals[1:]:
+        # Find common index across all signal series
+        common_index = signal_list[0][0].index
+        for series, weight in signal_list[1:]:
             common_index = common_index.intersection(series.index)
         
         if len(common_index) == 0:
@@ -378,7 +379,7 @@ def weighted_signals(*weighted_signals: Tuple[pd.Series, float]) -> pd.Series:  
         weighted_sum = pd.Series(0.0, index=common_index)
         total_weight = 0
         
-        for series, weight in weighted_signals:
+        for series, weight in signal_list:
             aligned_series = series.reindex(common_index)
             weighted_sum += aligned_series * weight
             total_weight += weight
@@ -389,7 +390,6 @@ def weighted_signals(*weighted_signals: Tuple[pd.Series, float]) -> pd.Series:  
             final_signals = pd.Series(0, index=common_index)
             final_signals[normalized_signals > 0.3] = 1
             final_signals[normalized_signals < -0.3] = -1
-            
             return final_signals
         else:
             return pd.Series(0, index=common_index)
