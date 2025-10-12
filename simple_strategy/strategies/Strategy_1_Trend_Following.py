@@ -6,12 +6,14 @@ import sys
 import os
 
 # Add parent directories to path
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
-from .strategy_builder import StrategyBuilder
-from .indicators_library import sma, ema
-from .signals_library import ma_crossover
+# Use absolute imports instead of relative imports
+from strategies.strategy_builder import StrategyBuilder
+from strategies.indicators_library import sma, ema
+from strategies.signals_library import ma_crossover
 
 def create_strategy(symbols=None, timeframes=None, **params):
     """

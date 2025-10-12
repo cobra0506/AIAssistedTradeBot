@@ -5,13 +5,15 @@ This is a basic strategy that uses two moving averages to generate signals.
 import sys
 import os
 
-# Add parent directories to path
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Add parent directories to path - FIXED
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
-from .strategy_builder import StrategyBuilder
-from .indicators_library import sma
-from .signals_library import ma_crossover
+# FIXED: Use relative imports correctly
+from strategies.strategy_builder import StrategyBuilder
+from strategies.indicators_library import sma
+from strategies.signals_library import ma_crossover
 
 def create_strategy(symbols=None, timeframes=None, **params):
     """
@@ -33,8 +35,8 @@ def create_strategy(symbols=None, timeframes=None, **params):
     strategy = StrategyBuilder(symbols, timeframes)
     strategy.add_indicator('sma_fast', sma, period=fast_period)
     strategy.add_indicator('sma_slow', sma, period=slow_period)
-    strategy.add_signal_rule('ma_crossover', ma_crossover, 
-                           fast_ma='sma_fast', 
+    strategy.add_signal_rule('ma_crossover', ma_crossover,
+                           fast_ma='sma_fast',
                            slow_ma='sma_slow')
     strategy.set_signal_combination('majority_vote')
     strategy.set_strategy_info('MA_Crossover', '1.0.0')
