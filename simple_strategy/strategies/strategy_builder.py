@@ -13,6 +13,12 @@ import pandas as pd
 import numpy as np
 from typing import Dict, List, Tuple, Any, Optional, Union, Callable
 import logging
+import sys
+import os
+# Add parent directory to path
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, parent_dir)
+
 from simple_strategy.shared.strategy_base import StrategyBase
 
 logger = logging.getLogger(__name__)
