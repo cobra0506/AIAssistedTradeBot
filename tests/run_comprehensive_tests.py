@@ -1,8 +1,9 @@
 """
 Comprehensive Test Runner
-Runs all tests to achieve 95% confidence in the system
+Runs all tests to achieve 98% confidence in the system
 Author: AI Assisted TradeBot Team
-Date: 2025
+Date: 2025-06-23
+Version: 2.0
 """
 
 import unittest
