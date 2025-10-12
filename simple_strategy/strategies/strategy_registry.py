@@ -19,18 +19,48 @@ class StrategyRegistry:
         # Scan for strategy files in the strategies folder
         strategy_dir = os.path.dirname(__file__)
         
+        print(f"🔍 Scanning for strategies in: {strategy_dir}")
+        
         # Look for files that start with "Strategy_" and end with ".py"
         pattern = os.path.join(strategy_dir, "Strategy_*.py")
         strategy_files = glob.glob(pattern)
+        
+        print(f"📁 Found strategy files: {strategy_files}")
+        
+        # Filter out non-strategy files
+        strategy_files = [f for f in strategy_files if not f.endswith('strategy_builder.py') 
+                         and not f.endswith('strategy_registry.py')]
+        
+        print(f"📁 Filtered strategy files: {strategy_files}")
         
         for file_path in strategy_files:
             file_name = os.path.basename(file_path)
             strategy_name = file_name.replace('.py', '')
             
             try:
-                # Import the strategy file
-                spec = importlib.util.spec_from_file_location(strategy_name, file_path)
+                print(f"⚡ Loading strategy: {strategy_name}")
+                
+                # Create a module spec with proper package information
+                spec = importlib.util.spec_from_file_location(
+                    f"strategies.{strategy_name}", file_path,
+                    submodule_search_locations=[strategy_dir]
+                )
+                
+                if spec is None:
+                    print(f"❌ Could not create spec for {strategy_name}")
+                    continue
+                    
                 module = importlib.util.module_from_spec(spec)
+                if module is None:
+                    print(f"❌ Could not create module for {strategy_name}")
+                    continue
+                
+                # Add the module to sys.modules before loading to fix relative imports
+                sys.modules[f"strategies.{strategy_name}"] = module
+                
+                # Set __package__ attribute to enable relative imports
+                module.__package__ = "strategies"
+                
                 spec.loader.exec_module(module)
                 
                 # Check if it has a create_strategy function
@@ -45,14 +75,18 @@ class StrategyRegistry:
                         'parameters': params
                     }
                     
-                    print(f"✅ Loaded strategy: {strategy_name}")
+                    print(f"✅ Successfully loaded strategy: {strategy_name}")
+                    print(f"   Parameters: {params}")
                 else:
                     print(f"⚠️ Strategy {strategy_name} missing create_strategy function")
                     
             except Exception as e:
                 print(f"❌ Error loading strategy {strategy_name}: {e}")
+                import traceback
+                traceback.print_exc()
     
     def get_all_strategies(self) -> Dict[str, dict]:
+        print(f"📋 Returning {len(self.strategies)} strategies: {list(self.strategies.keys())}")
         return self.strategies
     
     def get_strategy(self, name: str):

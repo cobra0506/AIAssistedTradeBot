@@ -1,22 +1,35 @@
+# simple_strategy/gui_monitor.py - Dynamic GUI for Simple Strategy Backtester
 import tkinter as tk
-from tkinter import ttk, messagebox
-import sys
+from tkinter import ttk, messagebox, filedialog
 import os
+import sys
+from datetime import datetime, timedelta
+from pathlib import Path
 
-# Add current directory to path
+# Add current directory to path for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
+
+# Import strategy registry
+from strategies.strategy_registry import StrategyRegistry
 
 class SimpleStrategyGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Simple Strategy Backtester")
-        self.root.geometry("800x600")
+        self.root.title("Dynamic Strategy Backtester")
+        self.root.geometry("900x700")
+        
+        # Initialize strategy registry
+        try:
+            self.strategy_registry = StrategyRegistry()
+            self.strategies = self.strategy_registry.get_all_strategies()
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load strategy registry: {e}")
+            self.strategies = {}
         
         # Initialize variables
-        self.strategy_var = tk.StringVar(value="Strategy_Example")
-        self.fast_period_var = tk.IntVar(value=10)
-        self.slow_period_var = tk.IntVar(value=30)
+        self.current_strategy = None
+        self.param_widgets = {}
         
         self.create_widgets()
     
@@ -42,77 +55,74 @@ class SimpleStrategyGUI:
         select_frame = ttk.LabelFrame(strategy_frame, text="Strategy Selection", padding=10)
         select_frame.pack(fill="x", padx=10, pady=5)
         
-        ttk.Label(select_frame, text="Strategy:").grid(row=0, column=0, sticky="w", padx=5, pady=5)
+        ttk.Label(select_frame, text="Select Strategy:").grid(row=0, column=0, sticky="w", padx=5, pady=5)
         
-        # Initialize strategy registry
-        try:
-            self.strategy_registry = StrategyRegistry()
-            strategies = list(self.strategy_registry.get_all_strategies().keys())
-            self.strategy_var = tk.StringVar(value=strategies[0] if strategies else "")
-            
-            self.strategy_combo = ttk.Combobox(select_frame, textvariable=self.strategy_var, 
-                                            values=strategies, state="readonly", width=30)
-            self.strategy_combo.grid(row=0, column=1, padx=5, pady=5)
-            self.strategy_combo.bind('<<ComboboxSelected>>', self.on_strategy_selected)
-            
-            # Strategy description
-            self.description_text = tk.Text(select_frame, height=3, width=60)
-            self.description_text.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
-            
-            # Initialize with first strategy
-            self.on_strategy_selected()
-            
-        except Exception as e:
-            ttk.Label(select_frame, text=f"Error loading strategies: {str(e)}").grid(row=1, column=0, columnspan=2)
-            self.strategy_var = tk.StringVar(value="")
+        # Strategy dropdown
+        strategy_names = list(self.strategies.keys()) if self.strategies else ["No strategies found"]
+        self.strategy_var = tk.StringVar(value=strategy_names[0] if strategy_names else "")
+        
+        self.strategy_combo = ttk.Combobox(select_frame, textvariable=self.strategy_var, 
+                                         values=strategy_names, state="readonly", width=40)
+        self.strategy_combo.grid(row=0, column=1, padx=5, pady=5)
+        self.strategy_combo.bind('<<ComboboxSelected>>', self.on_strategy_selected)
+        
+        # Strategy description
+        self.description_text = tk.Text(select_frame, height=3, width=60)
+        self.description_text.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
         
         # Strategy Parameters
         self.param_frame = ttk.LabelFrame(strategy_frame, text="Strategy Parameters", padding=10)
         self.param_frame.pack(fill="both", expand=True, padx=10, pady=5)
         
         # Create Strategy Button
-        ttk.Button(self.param_frame, text="Create Strategy", command=self.create_strategy).grid(row=100, column=0, columnspan=2, pady=10)
+        self.create_btn = ttk.Button(self.param_frame, text="🔧 Create Strategy", command=self.create_strategy)
+        self.create_btn.grid(row=100, column=0, columnspan=2, pady=10)
         
         # Strategy Info
-        self.strategy_info_text = tk.Text(self.param_frame, height=5, width=60)
+        self.strategy_info_text = tk.Text(self.param_frame, height=5, width=70)
         self.strategy_info_text.grid(row=101, column=0, columnspan=2, padx=5, pady=5)
-
+        
+        # Initialize with first strategy
+        if strategy_names:
+            self.on_strategy_selected()
+    
     def on_strategy_selected(self, event=None):
         """Called when strategy selection changes"""
         strategy_name = self.strategy_var.get()
-        if not strategy_name:
+        if not strategy_name or strategy_name not in self.strategies:
             return
         
         try:
             # Get strategy info
-            strategy_info = self.strategy_registry.get_strategy(strategy_name)
-            if strategy_info:
-                # Update description
-                self.description_text.delete(1.0, tk.END)
-                self.description_text.insert(1.0, strategy_info['description'])
-                
-                # Update parameters
-                self.update_parameters(strategy_info['parameters'])
+            strategy_info = self.strategies[strategy_name]
+            
+            # Update description
+            self.description_text.delete(1.0, tk.END)
+            self.description_text.insert(1.0, strategy_info.get('description', 'No description available'))
+            
+            # Update parameters
+            self.update_parameters(strategy_info.get('parameters', {}))
+            
         except Exception as e:
             print(f"Error updating strategy info: {e}")
-
+    
     def update_parameters(self, parameters):
         """Update parameter widgets based on strategy parameters"""
-        # Clear existing parameter widgets
+        # Clear existing parameter widgets (except buttons and info text)
         for widget in self.param_frame.winfo_children():
-            if widget.grid_info()['row'] >= 2 and widget.grid_info()['row'] < 100:  # Keep buttons and info text
+            if widget.grid_info() and widget.grid_info()['row'] >= 2 and widget.grid_info()['row'] < 100:
                 widget.destroy()
         
-        self.param_widgets = {}
+        self.param_widgets.clear()
         
         row = 0
         for param_name, param_info in parameters.items():
             # Parameter label
             label_text = f"{param_name.replace('_', ' ').title()}"
             if 'description' in param_info:
-                label_text += f" ({param_info['description']})"
+                label_text += f"\n({param_info['description']})"
             
-            ttk.Label(self.param_frame, text=label_text).grid(row=row, column=0, sticky="w", padx=5, pady=2)
+            ttk.Label(self.param_frame, text=label_text).grid(row=row, column=0, sticky="w", padx=5, pady=5)
             
             # Parameter input based on type
             default_value = param_info.get('default', 0)
@@ -122,25 +132,92 @@ class SimpleStrategyGUI:
                 min_val = param_info.get('min', 1)
                 max_val = param_info.get('max', 100)
                 widget = ttk.Spinbox(self.param_frame, from_=min_val, to=max_val, 
-                                textvariable=var, width=10)
+                                   textvariable=var, width=15)
             elif param_info.get('type') == 'float':
                 var = tk.DoubleVar(value=default_value)
                 min_val = param_info.get('min', 0.1)
                 max_val = param_info.get('max', 10.0)
                 widget = ttk.Spinbox(self.param_frame, from_=min_val, to=max_val, 
-                                textvariable=var, width=10, increment=0.1)
+                                   textvariable=var, width=15, increment=0.1)
             elif param_info.get('type') == 'str' and 'options' in param_info:
                 var = tk.StringVar(value=default_value)
                 widget = ttk.Combobox(self.param_frame, textvariable=var, 
-                                    values=param_info['options'], state="readonly", width=15)
+                                    values=param_info['options'], state="readonly", width=20)
             else:  # string or other
                 var = tk.StringVar(value=str(default_value))
                 widget = ttk.Entry(self.param_frame, textvariable=var, width=20)
             
-            widget.grid(row=row, column=1, padx=5, pady=2)
+            widget.grid(row=row, column=1, padx=5, pady=5)
             self.param_widgets[param_name] = var
             row += 1
+    
+    def create_backtest_tab(self):
+        # Backtest Configuration Tab
+        backtest_frame = ttk.Frame(self.notebook)
+        self.notebook.add(backtest_frame, text="Backtest Configuration")
+        
+        # Data Directory
+        dir_frame = ttk.LabelFrame(backtest_frame, text="Data Directory", padding=10)
+        dir_frame.pack(fill="x", padx=10, pady=5)
+        
+        self.data_dir_var = tk.StringVar(value="data")
+        ttk.Entry(dir_frame, textvariable=self.data_dir_var, width=50).pack(side="left", padx=5)
+        ttk.Button(dir_frame, text="Browse", command=self.browse_data_dir).pack(side="left", padx=5)
+        
+        # Symbols and Timeframes
+        config_frame = ttk.LabelFrame(backtest_frame, text="Backtest Configuration", padding=10)
+        config_frame.pack(fill="both", expand=True, padx=10, pady=5)
 
+        ttk.Button(config_frame, text="🔍 Check Data Files", command=self.check_data_files).grid(row=5, column=0, columnspan=2, pady=5)
+        
+        # Symbols
+        ttk.Label(config_frame, text="Symbols (comma-separated):").grid(row=0, column=0, sticky="w", padx=5, pady=5)
+        self.symbols_var = tk.StringVar(value="BTCUSDT,ETHUSDT")
+        ttk.Entry(config_frame, textvariable=self.symbols_var, width=40).grid(row=0, column=1, padx=5, pady=5)
+        
+        # Timeframes
+        ttk.Label(config_frame, text="Timeframes (comma-separated):").grid(row=1, column=0, sticky="w", padx=5, pady=5)
+        self.timeframes_var = tk.StringVar(value="1m,5m,15m")
+        ttk.Entry(config_frame, textvariable=self.timeframes_var, width=40).grid(row=1, column=1, padx=5, pady=5)
+        
+        # Date Range
+        ttk.Label(config_frame, text="Start Date:").grid(row=2, column=0, sticky="w", padx=5, pady=5)
+        self.start_date_var = tk.StringVar(value="2023-01-01")
+        ttk.Entry(config_frame, textvariable=self.start_date_var, width=40).grid(row=2, column=1, padx=5, pady=5)
+        
+        ttk.Label(config_frame, text="End Date:").grid(row=3, column=0, sticky="w", padx=5, pady=5)
+        self.end_date_var = tk.StringVar(value="2023-12-31")
+        ttk.Entry(config_frame, textvariable=self.end_date_var, width=40).grid(row=3, column=1, padx=5, pady=5)
+        
+        # Run Backtest Button
+        self.run_btn = ttk.Button(config_frame, text="🚀 Run Backtest", command=self.run_backtest)
+        self.run_btn.grid(row=4, column=0, columnspan=2, pady=10)
+    
+    def create_results_tab(self):
+        # Results Tab
+        results_frame = ttk.Frame(self.notebook)
+        self.notebook.add(results_frame, text="Results")
+        
+        # Results Text
+        self.results_text = tk.Text(results_frame, height=25, width=90)
+        self.results_text.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        # Scrollbar
+        scrollbar = ttk.Scrollbar(results_frame, orient="vertical", command=self.results_text.yview)
+        scrollbar.pack(side="right", fill="y")
+        self.results_text.config(yscrollcommand=scrollbar.set)
+    
+    def create_status_bar(self):
+        # Status Bar
+        self.status_var = tk.StringVar(value="Ready")
+        status_bar = ttk.Label(self.root, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W)
+        status_bar.pack(side=tk.BOTTOM, fill=tk.X)
+    
+    def browse_data_dir(self):
+        directory = filedialog.askdirectory()
+        if directory:
+            self.data_dir_var.set(directory)
+    
     def create_strategy(self):
         """Create strategy instance with selected parameters"""
         try:
@@ -161,135 +238,19 @@ class SimpleStrategyGUI:
             if self.current_strategy:
                 # Update strategy info
                 self.strategy_info_text.delete(1.0, tk.END)
-                self.strategy_info_text.insert(tk.END, f"Strategy: {strategy_name}\n")
-                self.strategy_info_text.insert(tk.END, f"Parameters: {params}\n")
-                self.strategy_info_text.insert(tk.END, "Status: Strategy created successfully\n")
-                self.strategy_info_text.insert(tk.END, "Ready for backtest\n")
+                self.strategy_info_text.insert(tk.END, f"✅ Strategy: {strategy_name}\n")
+                self.strategy_info_text.insert(tk.END, f"📊 Parameters: {params}\n")
+                self.strategy_info_text.insert(tk.END, f"🔧 Status: Strategy created successfully\n")
+                self.strategy_info_text.insert(tk.END, f"⚡ Ready for backtest\n")
                 
+                self.status_var.set("Strategy created successfully")
                 messagebox.showinfo("Success", "Strategy created successfully!")
             else:
                 messagebox.showerror("Error", "Failed to create strategy")
                 
         except Exception as e:
             messagebox.showerror("Error", f"Failed to create strategy: {str(e)}")
-        
-    def create_backtest_tab(self):
-        # Backtest Configuration Tab
-        backtest_frame = ttk.Frame(self.notebook)
-        self.notebook.add(backtest_frame, text="Backtest Configuration")
-        
-        # Data Directory
-        dir_frame = ttk.LabelFrame(backtest_frame, text="Data Directory", padding=10)
-        dir_frame.pack(fill="x", padx=10, pady=5)
-        
-        self.data_dir_var = tk.StringVar(value="data")
-        ttk.Entry(dir_frame, textvariable=self.data_dir_var, width=50).pack(side="left", padx=5)
-        ttk.Button(dir_frame, text="Browse", command=self.browse_data_dir).pack(side="left", padx=5)
-        
-        # Symbols and Timeframes
-        config_frame = ttk.LabelFrame(backtest_frame, text="Backtest Configuration", padding=10)
-        config_frame.pack(fill="both", expand=True, padx=10, pady=5)
-        
-        # Symbols
-        ttk.Label(config_frame, text="Symbols:").grid(row=0, column=0, sticky="w", padx=5, pady=5)
-        self.symbols_var = tk.StringVar(value="BTCUSDT,ETHUSDT")
-        ttk.Entry(config_frame, textvariable=self.symbols_var, width=30).grid(row=0, column=1, padx=5, pady=5)
-        
-        # Timeframes
-        ttk.Label(config_frame, text="Timeframes:").grid(row=1, column=0, sticky="w", padx=5, pady=5)
-        self.timeframes_var = tk.StringVar(value="1m,5m,15m")
-        ttk.Entry(config_frame, textvariable=self.timeframes_var, width=30).grid(row=1, column=1, padx=5, pady=5)
-        
-        # Date Range
-        ttk.Label(config_frame, text="Start Date:").grid(row=2, column=0, sticky="w", padx=5, pady=5)
-        self.start_date_var = tk.StringVar(value="2023-01-01")
-        ttk.Entry(config_frame, textvariable=self.start_date_var, width=30).grid(row=2, column=1, padx=5, pady=5)
-        
-        ttk.Label(config_frame, text="End Date:").grid(row=3, column=0, sticky="w", padx=5, pady=5)
-        self.end_date_var = tk.StringVar(value="2023-12-31")
-        ttk.Entry(config_frame, textvariable=self.end_date_var, width=30).grid(row=3, column=1, padx=5, pady=5)
-        
-        # Run Backtest Button
-        ttk.Button(config_frame, text="Run Backtest", command=self.run_backtest).grid(row=4, column=0, columnspan=2, pady=10)
     
-    def create_results_tab(self):
-        # Results Tab
-        results_frame = ttk.Frame(self.notebook)
-        self.notebook.add(results_frame, text="Results")
-        
-        # Results Text
-        self.results_text = tk.Text(results_frame, height=20, width=80)
-        self.results_text.pack(fill="both", expand=True, padx=10, pady=10)
-        
-        # Scrollbar
-        scrollbar = ttk.Scrollbar(results_frame, orient="vertical", command=self.results_text.yview)
-        scrollbar.pack(side="right", fill="y")
-        self.results_text.config(yscrollcommand=scrollbar.set)
-    
-    def create_status_bar(self):
-        # Status Bar
-        self.status_var = tk.StringVar(value="Ready")
-        status_bar = ttk.Label(self.root, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W)
-        status_bar.pack(side=tk.BOTTOM, fill=tk.X)
-    
-    def browse_data_dir(self):
-        from tkinter import filedialog
-        directory = filedialog.askdirectory()
-        if directory:
-            self.data_dir_var.set(directory)
-    
-    def create_strategy(self):
-        try:
-            self.status_var.set("Creating strategy...")
-            
-            # Get strategy parameters
-            strategy_name = self.strategy_var.get()
-            fast_period = self.fast_period_var.get()
-            slow_period = self.slow_period_var.get()
-            
-            # Update strategy info
-            self.strategy_info_text.delete(1.0, tk.END)
-            self.strategy_info_text.insert(tk.END, f"Strategy: {strategy_name}\n")
-            self.strategy_info_text.insert(tk.END, f"Fast Period: {fast_period}\n")
-            self.strategy_info_text.insert(tk.END, f"Slow Period: {slow_period}\n")
-            self.strategy_info_text.insert(tk.END, "Status: Ready for backtest\n")
-            
-            self.status_var.set("Strategy created successfully")
-            
-        except Exception as e:
-            self.status_var.set(f"Error creating strategy: {str(e)}")
-            messagebox.showerror("Error", f"Failed to create strategy: {str(e)}")
-    
-    def run_backtest(self):
-        try:
-            self.status_var.set("Running backtest...")
-            self.results_text.delete(1.0, tk.END)
-            
-            # Get backtest parameters
-            symbols = [s.strip() for s in self.symbols_var.get().split(',')]
-            timeframes = [t.strip() for t in self.timeframes_var.get().split(',')]
-            start_date = self.start_date_var.get()
-            end_date = self.end_date_var.get()
-            
-            # Display backtest info
-            self.results_text.insert(tk.END, f"Backtest Configuration:\n")
-            self.results_text.insert(tk.END, f"Symbols: {symbols}\n")
-            self.results_text.insert(tk.END, f"Timeframes: {timeframes}\n")
-            self.results_text.insert(tk.END, f"Date Range: {start_date} to {end_date}\n")
-            self.results_text.insert(tk.END, "-" * 50 + "\n")
-            
-            # This is where you would integrate with your existing backtest engine
-            # For now, just show a placeholder
-            self.results_text.insert(tk.END, "Backtest running...\n")
-            self.results_text.insert(tk.END, "This would integrate with your existing backtest engine\n")
-            self.results_text.insert(tk.END, "Results would appear here when complete\n")
-            
-            self.status_var.set("Backtest completed")
-            
-        except Exception as e:
-            self.status_var.set(f"Error running backtest: {str(e)}")
-            messagebox.showerror("Error", f"Failed to run backtest: {str(e)}")
-
     def run_backtest(self):
         """Run backtest with current strategy and configuration"""
         try:
@@ -302,26 +263,43 @@ class SimpleStrategyGUI:
             self.results_text.delete(1.0, tk.END)
             
             # Get backtest parameters
-            symbols = [s.strip() for s in self.symbols_var.get().split(',')]
-            timeframes = [t.strip() for t in self.timeframes_var.get().split(',')]
+            symbols = [s.strip() for s in self.symbols_var.get().split(',') if s.strip()]
+            timeframes = [t.strip() for t in self.timeframes_var.get().split(',') if t.strip()]
             start_date = self.start_date_var.get()
             end_date = self.end_date_var.get()
             
             # Display backtest info
-            self.results_text.insert(tk.END, f"Backtest Configuration:\n")
+            self.results_text.insert(tk.END, f"🚀 BACKTEST CONFIGURATION\n")
+            self.results_text.insert(tk.END, f"=" * 50 + "\n")
             self.results_text.insert(tk.END, f"Strategy: {self.current_strategy.name}\n")
             self.results_text.insert(tk.END, f"Symbols: {symbols}\n")
             self.results_text.insert(tk.END, f"Timeframes: {timeframes}\n")
             self.results_text.insert(tk.END, f"Date Range: {start_date} to {end_date}\n")
-            self.results_text.insert(tk.END, "-" * 50 + "\n")
+            self.results_text.insert(tk.END, f"=" * 50 + "\n\n")
             
             # Import and use your existing backtest engine
             try:
+                # Try to import the backtest engine
                 from backtester.backtester_engine import BacktesterEngine
                 from shared.data_feeder import DataFeeder
                 
                 # Create data feeder
                 data_feeder = DataFeeder(data_dir=self.data_dir_var.get())
+                
+                # Check if data files exist
+                self.results_text.insert(tk.END, "🔍 Checking data files...\n")
+                self.root.update()  # Update GUI
+                
+                for symbol in symbols:
+                    for timeframe in timeframes:
+                        file_path = os.path.join(self.data_dir_var.get(), f"{symbol}_{timeframe}.csv")
+                        if os.path.exists(file_path):
+                            self.results_text.insert(tk.END, f"✅ Found: {file_path}\n")
+                        else:
+                            self.results_text.insert(tk.END, f"❌ Missing: {file_path}\n")
+                
+                self.results_text.insert(tk.END, "\n⏳ Running backtest...\n")
+                self.root.update()  # Update GUI
                 
                 # Create backtester
                 backtester = BacktesterEngine(
@@ -329,42 +307,70 @@ class SimpleStrategyGUI:
                     strategy=self.current_strategy
                 )
                 
-                # Run backtest
-                self.results_text.insert(tk.END, "Running backtest...\n")
-                self.root.update()  # Update GUI
-                
-                results = backtester.run_backtest(
-                    symbols=symbols,
-                    timeframes=timeframes,
-                    start_date=start_date,
-                    end_date=end_date
-                )
-                
-                # Display results
-                self.results_text.insert(tk.END, "\n" + "="*50 + "\n")
-                self.results_text.insert(tk.END, "BACKTEST RESULTS\n")
-                self.results_text.insert(tk.END, "="*50 + "\n")
-                
-                if 'performance_metrics' in results:
-                    metrics = results['performance_metrics']
-                    self.results_text.insert(tk.END, f"Total Return: {metrics.get('total_return', 0):.2f}%\n")
-                    self.results_text.insert(tk.END, f"Win Rate: {metrics.get('win_rate', 0):.2f}%\n")
-                    self.results_text.insert(tk.END, f"Sharpe Ratio: {metrics.get('sharpe_ratio', 0):.2f}\n")
-                    self.results_text.insert(tk.END, f"Max Drawdown: {metrics.get('max_drawdown', 0):.2f}%\n")
-                    self.results_text.insert(tk.END, f"Total Trades: {metrics.get('total_trades', 0)}\n")
-                
-                self.status_var.set("Backtest completed successfully")
-                
+                # Try to run backtest with error handling
+                try:
+                    results = backtester.run_backtest(
+                        symbols=symbols,
+                        timeframes=timeframes,
+                        start_date=start_date,
+                        end_date=end_date
+                    )
+                    
+                    # Display results
+                    self.results_text.insert(tk.END, "\n" + "="*50 + "\n")
+                    self.results_text.insert(tk.END, "📊 BACKTEST RESULTS\n")
+                    self.results_text.insert(tk.END, "="*50 + "\n")
+                    
+                    if 'performance_metrics' in results:
+                        metrics = results['performance_metrics']
+                        self.results_text.insert(tk.END, f"💰 Total Return: {metrics.get('total_return', 0):.2f}%\n")
+                        self.results_text.insert(tk.END, f"🎯 Win Rate: {metrics.get('win_rate', 0):.2f}%\n")
+                        self.results_text.insert(tk.END, f"📈 Sharpe Ratio: {metrics.get('sharpe_ratio', 0):.2f}\n")
+                        self.results_text.insert(tk.END, f"📉 Max Drawdown: {metrics.get('max_drawdown', 0):.2f}%\n")
+                        self.results_text.insert(tk.END, f"🔄 Total Trades: {metrics.get('total_trades', 0)}\n")
+                    else:
+                        self.results_text.insert(tk.END, "❌ No performance metrics returned\n")
+                        self.results_text.insert(tk.END, f"Results: {results}\n")
+                    
+                    self.status_var.set("✅ Backtest completed successfully")
+                    
+                except Exception as backtest_error:
+                    self.results_text.insert(tk.END, f"\n❌ Backtest execution error: {str(backtest_error)}\n")
+                    import traceback
+                    self.results_text.insert(tk.END, f"Traceback: {traceback.format_exc()}\n")
+                    self.status_var.set("❌ Backtest execution failed")
+                    
             except ImportError as e:
-                self.results_text.insert(tk.END, f"\nError: Could not import backtest engine\n")
+                self.results_text.insert(tk.END, f"\n❌ Error: Could not import backtest engine\n")
                 self.results_text.insert(tk.END, f"Please ensure backtest engine is available\n")
                 self.results_text.insert(tk.END, f"Import error: {str(e)}\n")
-                self.status_var.set("Backtest failed - import error")
-                
+                self.status_var.set("❌ Backtest failed - import error")
+                    
         except Exception as e:
-            self.status_var.set(f"Error running backtest: {str(e)}")
-            self.results_text.insert(tk.END, f"\nError: {str(e)}\n")
+            self.status_var.set(f"❌ Error running backtest: {str(e)}")
+            self.results_text.insert(tk.END, f"\n❌ Error: {str(e)}\n")
+            import traceback
+            self.results_text.insert(tk.END, f"Traceback: {traceback.format_exc()}\n")
             messagebox.showerror("Error", f"Failed to run backtest: {str(e)}")
+
+
+    def check_data_files(self):
+        """Check what data files are available"""
+        data_dir = self.data_dir_var.get()
+        self.results_text.delete(1.0, tk.END)
+        self.results_text.insert(tk.END, f"🔍 Checking data directory: {data_dir}\n\n")
+        
+        if os.path.exists(data_dir):
+            files = os.listdir(data_dir)
+            csv_files = [f for f in files if f.endswith('.csv')]
+            
+            self.results_text.insert(tk.END, f"📁 Found {len(csv_files)} CSV files:\n")
+            for file in csv_files:
+                file_path = os.path.join(data_dir, file)
+                file_size = os.path.getsize(file_path)
+                self.results_text.insert(tk.END, f"  - {file} ({file_size} bytes)\n")
+        else:
+            self.results_text.insert(tk.END, f"❌ Data directory does not exist: {data_dir}\n")
 
 if __name__ == "__main__":
     root = tk.Tk()
