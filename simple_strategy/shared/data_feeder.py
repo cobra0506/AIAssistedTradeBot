@@ -60,9 +60,8 @@ class DataFeeder:
         Returns:
             DataFrame with loaded data or None if file doesn't exist
         """
-        # Try both naming conventions
+        # Use only one naming convention: BTCUSDT_1.csv (without 'm')
         possible_filenames = [
-            f"{symbol}_{timeframe}.csv",      # With 'm' suffix (e.g., BTCUSDT_5m.csv)
             f"{symbol}_{timeframe.rstrip('m')}.csv"  # Without 'm' suffix (e.g., BTCUSDT_5.csv)
         ]
         

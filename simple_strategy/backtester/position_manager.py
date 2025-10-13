@@ -72,8 +72,8 @@ class PositionManager:
     Manages all trading positions, account balance, and trading limits
     """
     
-    def __init__(self, initial_balance: float = 10000.0, max_positions: int = 10, 
-                 max_risk_per_trade: float = 0.01):
+    def __init__(self, initial_balance: float = 10000.0, max_positions: int = 3, 
+                 max_risk_per_trade: float = 0.02):
         """
         Initialize position manager
         
@@ -303,24 +303,36 @@ class PositionManager:
         """
         return self.completed_trades.copy()
     
-    def calculate_position_size(self, symbol: str, price: float, 
-                              risk_fraction: float = None) -> float:
+    def calculate_position_size(self, symbol: str, price: float,
+                           risk_fraction: float = None) -> float:
         """
         Calculate safe position size based on risk
-        
         Args:
             symbol: Trading symbol
             price: Current price
             risk_fraction: Risk fraction (uses default if None)
-            
         Returns:
             Safe position size
         """
         if risk_fraction is None:
             risk_fraction = self.max_risk_per_trade
         
+        # Calculate risk amount
         risk_amount = self.current_balance * risk_fraction
+        
+        # For crypto, we need to consider the actual position size
+        # Use a minimum position size if calculation gives too small value
         position_size = risk_amount / price
+        
+        # Ensure minimum position size (at least 0.001 for crypto)
+        min_position_size = 0.001
+        if position_size < min_position_size:
+            position_size = min_position_size
+        
+        # Ensure we don't exceed balance
+        max_position_size = self.current_balance / price
+        if position_size > max_position_size:
+            position_size = max_position_size * 0.95  # Use 95% of max to be safe
         
         return position_size
     
