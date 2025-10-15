@@ -306,33 +306,39 @@ class PositionManager:
     def calculate_position_size(self, symbol: str, price: float,
                            risk_fraction: float = None) -> float:
         """
-        Calculate safe position size based on risk
-        Args:
-            symbol: Trading symbol
-            price: Current price
-            risk_fraction: Risk fraction (uses default if None)
-        Returns:
-            Safe position size
+        Calculate safe position size based on risk - FIXED VERSION
         """
         if risk_fraction is None:
             risk_fraction = self.max_risk_per_trade
         
-        # Calculate risk amount
+        # Calculate risk amount in dollars
         risk_amount = self.current_balance * risk_fraction
         
-        # For crypto, we need to consider the actual position size
-        # Use a minimum position size if calculation gives too small value
+        # Calculate position size
         position_size = risk_amount / price
         
-        # Ensure minimum position size (at least 0.001 for crypto)
-        min_position_size = 0.001
-        if position_size < min_position_size:
-            position_size = min_position_size
+        # Apply minimum position sizes based on asset type
+        if symbol.startswith('BTC'):
+            min_position = 0.001  # Minimum 0.001 BTC
+        elif symbol.startswith('ETH'):
+            min_position = 0.01   # Minimum 0.01 ETH
+        elif symbol.startswith('SOL'):
+            min_position = 1.0    # Minimum 1 SOL
+        else:
+            min_position = 1.0    # Minimum 1 unit for other assets
         
-        # Ensure we don't exceed balance
-        max_position_size = self.current_balance / price
-        if position_size > max_position_size:
-            position_size = max_position_size * 0.95  # Use 95% of max to be safe
+        # Ensure minimum position size
+        position_size = max(position_size, min_position)
+        
+        # Ensure we don't exceed available balance
+        max_position = (self.current_balance * 0.95) / price  # Use 95% of balance
+        position_size = min(position_size, max_position)
+        
+        print(f"📏 Position size calculation:")
+        print(f"  - Symbol: {symbol}")
+        print(f"  - Price: ${price:.2f}")
+        print(f"  - Risk amount: ${risk_amount:.2f}")
+        print(f"  - Position size: {position_size}")
         
         return position_size
     

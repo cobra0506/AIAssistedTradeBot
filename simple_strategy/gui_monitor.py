@@ -172,12 +172,12 @@ class SimpleStrategyGUI:
         
         # Symbols
         ttk.Label(config_frame, text="Symbols (comma-separated):").grid(row=0, column=0, sticky="w", padx=5, pady=5)
-        self.symbols_var = tk.StringVar(value="BTCUSDT,ETHUSDT")
+        self.symbols_var = tk.StringVar(value="ADAUSDT")
         ttk.Entry(config_frame, textvariable=self.symbols_var, width=40).grid(row=0, column=1, padx=5, pady=5)
         
         # Timeframes
         ttk.Label(config_frame, text="Timeframes (comma-separated):").grid(row=1, column=0, sticky="w", padx=5, pady=5)
-        self.timeframes_var = tk.StringVar(value="1m,5m,15m")
+        self.timeframes_var = tk.StringVar(value="5m")
         ttk.Entry(config_frame, textvariable=self.timeframes_var, width=40).grid(row=1, column=1, padx=5, pady=5)
         
         # Date Range
@@ -269,7 +269,6 @@ class SimpleStrategyGUI:
                 self.strategy_info_text.insert(tk.END, f"⚡ Ready for backtest\n")
                 
                 self.status_var.set("Strategy created successfully")
-                messagebox.showinfo("Success", "Strategy created successfully!")
             else:
                 messagebox.showerror("Error", "Failed to create strategy")
                 
