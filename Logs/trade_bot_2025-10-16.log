@@ -1,0 +1,916 @@
+2025-10-16 18:29:38 - root - INFO - Logging system initialized
+2025-10-16 18:29:38 - root - INFO - Logging system initialized
+2025-10-16 18:29:38 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-10-16 18:29:38 - root - INFO - Logging system initialized
+2025-10-16 18:29:44 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-10-16 18:29:44 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-10-16 18:29:44 - shared_modules.data_collection.hybrid_system - INFO - [DEBUG] Starting data fetch in mode: full
+2025-10-16 18:29:44 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Using 4 symbols from configuration
+2025-10-16 18:29:44 - shared_modules.data_collection.hybrid_system - INFO - [WS] WebSocket disabled (ENABLE_WEBSOCKET=False)
+2025-10-16 18:29:44 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Fetching historical data...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Processing 4 symbols in batches of 20
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Processing batch 1/1 (4 symbols)
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_1...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 1m, 7 days: 10080 candles needed, 11 chunks, 999 candles per chunk, chunk duration: 999.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_1 using 11 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/11: 2025-10-16 01:50:44.558000 to 2025-10-16 18:29:44.558000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_5...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 7 days: 2016 candles needed, 3 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_5 using 3 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/3: 2025-10-13 07:14:44.576000 to 2025-10-16 18:29:44.576000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_15...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 15m, 7 days: 672 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 14985.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_15 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.577000 to 2025-10-16 18:29:44.577000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_60...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 60m, 7 days: 168 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 59940.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_60 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.578000 to 2025-10-16 18:29:44.578000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_120...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 120m, 7 days: 84 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 119880.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_120 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.579000 to 2025-10-16 18:29:44.579000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_240...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 240m, 7 days: 42 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 239760.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_240 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.579000 to 2025-10-16 18:29:44.579000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_1...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 1m, 7 days: 10080 candles needed, 11 chunks, 999 candles per chunk, chunk duration: 999.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_1 using 11 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/11: 2025-10-16 01:50:44.580000 to 2025-10-16 18:29:44.580000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_5...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 7 days: 2016 candles needed, 3 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_5 using 3 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/3: 2025-10-13 07:14:44.581000 to 2025-10-16 18:29:44.581000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_15...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 15m, 7 days: 672 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 14985.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_15 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.583000 to 2025-10-16 18:29:44.583000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_60...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 60m, 7 days: 168 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 59940.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_60 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.583000 to 2025-10-16 18:29:44.583000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_120...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 120m, 7 days: 84 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 119880.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_120 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.584000 to 2025-10-16 18:29:44.584000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_240...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 240m, 7 days: 42 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 239760.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_240 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.585000 to 2025-10-16 18:29:44.585000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_1...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 1m, 7 days: 10080 candles needed, 11 chunks, 999 candles per chunk, chunk duration: 999.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_1 using 11 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/11: 2025-10-16 01:50:44.586000 to 2025-10-16 18:29:44.586000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_5...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 7 days: 2016 candles needed, 3 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_5 using 3 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/3: 2025-10-13 07:14:44.587000 to 2025-10-16 18:29:44.587000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_15...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 15m, 7 days: 672 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 14985.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_15 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.588000 to 2025-10-16 18:29:44.588000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_60...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 60m, 7 days: 168 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 59940.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_60 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.588000 to 2025-10-16 18:29:44.588000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_120...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 120m, 7 days: 84 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 119880.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_120 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.589000 to 2025-10-16 18:29:44.589000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_240...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 240m, 7 days: 42 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 239760.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_240 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.590000 to 2025-10-16 18:29:44.590000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_1...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 1m, 7 days: 10080 candles needed, 11 chunks, 999 candles per chunk, chunk duration: 999.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_1 using 11 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/11: 2025-10-16 01:50:44.591000 to 2025-10-16 18:29:44.591000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_5...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 7 days: 2016 candles needed, 3 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_5 using 3 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/3: 2025-10-13 07:14:44.592000 to 2025-10-16 18:29:44.592000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_15...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 15m, 7 days: 672 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 14985.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_15 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.593000 to 2025-10-16 18:29:44.593000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_60...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 60m, 7 days: 168 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 59940.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_60 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.594000 to 2025-10-16 18:29:44.594000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_120...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 120m, 7 days: 84 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 119880.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_120 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.595000 to 2025-10-16 18:29:44.595000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_240...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 240m, 7 days: 42 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 239760.0 minutes
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_240 using 1 chunks...
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-10-09 18:29:44.595000 to 2025-10-16 18:29:44.595000
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 42 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.csv_manager - INFO - Wrote 42 entries to data\BTCUSDT_240.csv
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 42 candles for BTCUSDT_240 (1 successful, 0 failed)
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 84 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 672 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.csv_manager - INFO - Wrote 84 entries to data\BTCUSDT_120.csv
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 84 candles for BTCUSDT_120 (1 successful, 0 failed)
+2025-10-16 18:29:44 - shared_modules.data_collection.csv_manager - INFO - Wrote 672 entries to data\BTCUSDT_15.csv
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 672 candles for BTCUSDT_15 (1 successful, 0 failed)
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 84 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 42 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 168 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 84 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/3: 2025-10-09 19:59:44.576000 to 2025-10-13 07:14:44.576000
+2025-10-16 18:29:44 - shared_modules.data_collection.csv_manager - INFO - Wrote 84 entries to data\ETHUSDT_120.csv
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 84 candles for ETHUSDT_120 (1 successful, 0 failed)
+2025-10-16 18:29:44 - shared_modules.data_collection.csv_manager - INFO - Wrote 42 entries to data\ADAUSDT_240.csv
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 42 candles for ADAUSDT_240 (1 successful, 0 failed)
+2025-10-16 18:29:44 - shared_modules.data_collection.csv_manager - INFO - Wrote 168 entries to data\ADAUSDT_60.csv
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 168 candles for ADAUSDT_60 (1 successful, 0 failed)
+2025-10-16 18:29:44 - shared_modules.data_collection.csv_manager - INFO - Wrote 84 entries to data\SOLUSDT_120.csv
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 84 candles for SOLUSDT_120 (1 successful, 0 failed)
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:29:44 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/11: 2025-10-15 09:11:44.586000 to 2025-10-16 01:50:44.586000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 168 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 168 entries to data\BTCUSDT_60.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 168 candles for BTCUSDT_60 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/3: 2025-10-09 19:59:44.592000 to 2025-10-13 07:14:44.592000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/3: 2025-10-09 18:29:44.576000 to 2025-10-09 19:59:44.576000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/11: 2025-10-14 16:32:44.586000 to 2025-10-15 09:11:44.586000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 42 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 84 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 42 entries to data\ETHUSDT_240.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 42 candles for ETHUSDT_240 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 168 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 84 entries to data\ADAUSDT_120.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 84 candles for ADAUSDT_120 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 42 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 168 entries to data\SOLUSDT_60.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 168 candles for SOLUSDT_60 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 42 entries to data\SOLUSDT_240.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 42 candles for SOLUSDT_240 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 18 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/3: 2025-10-09 18:29:44.592000 to 2025-10-09 19:59:44.592000
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 2016 entries to data\BTCUSDT_5.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 2016 candles for BTCUSDT_5 (3 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 168 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 168 entries to data\ETHUSDT_60.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 168 candles for ETHUSDT_60 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 672 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 672 entries to data\SOLUSDT_15.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 672 candles for SOLUSDT_15 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/3: 2025-10-09 19:59:44.587000 to 2025-10-13 07:14:44.587000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 672 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/11: 2025-10-15 09:11:44.558000 to 2025-10-16 01:50:44.558000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/3: 2025-10-09 19:59:44.581000 to 2025-10-13 07:14:44.581000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/11: 2025-10-15 09:11:44.580000 to 2025-10-16 01:50:44.580000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 672 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 672 entries to data\ADAUSDT_15.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 672 candles for ADAUSDT_15 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/11: 2025-10-15 09:11:44.591000 to 2025-10-16 01:50:44.591000
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 672 entries to data\ETHUSDT_15.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 672 candles for ETHUSDT_15 (1 successful, 0 failed)
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/11: 2025-10-13 23:53:44.586000 to 2025-10-14 16:32:44.586000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/11: 2025-10-14 16:32:44.580000 to 2025-10-15 09:11:44.580000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/11: 2025-10-14 16:32:44.558000 to 2025-10-15 09:11:44.558000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/3: 2025-10-09 18:29:44.587000 to 2025-10-09 19:59:44.587000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/11: 2025-10-14 16:32:44.591000 to 2025-10-15 09:11:44.591000
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 18 candles
+2025-10-16 18:29:45 - shared_modules.data_collection.csv_manager - INFO - Wrote 2016 entries to data\ADAUSDT_5.csv
+2025-10-16 18:29:45 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 2016 candles for ADAUSDT_5 (3 successful, 0 failed)
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/3: 2025-10-09 18:29:44.581000 to 2025-10-09 19:59:44.581000
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 18 candles
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/11: 2025-10-13 23:53:44.558000 to 2025-10-14 16:32:44.558000
+2025-10-16 18:29:46 - shared_modules.data_collection.csv_manager - INFO - Wrote 2016 entries to data\SOLUSDT_5.csv
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 2016 candles for SOLUSDT_5 (3 successful, 0 failed)
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 18 candles
+2025-10-16 18:29:46 - shared_modules.data_collection.csv_manager - INFO - Wrote 2016 entries to data\ETHUSDT_5.csv
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 2016 candles for ETHUSDT_5 (3 successful, 0 failed)
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/11: 2025-10-13 07:14:44.586000 to 2025-10-13 23:53:44.586000
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/11: 2025-10-13 23:53:44.580000 to 2025-10-14 16:32:44.580000
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:29:46 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/11: 2025-10-13 23:53:44.591000 to 2025-10-14 16:32:44.591000
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/11: 2025-10-12 14:35:44.586000 to 2025-10-13 07:14:44.586000
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/11: 2025-10-11 21:56:44.586000 to 2025-10-12 14:35:44.586000
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/11: 2025-10-13 07:14:44.558000 to 2025-10-13 23:53:44.558000
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/11: 2025-10-11 05:17:44.586000 to 2025-10-11 21:56:44.586000
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/11: 2025-10-12 14:35:44.558000 to 2025-10-13 07:14:44.558000
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/11: 2025-10-13 07:14:44.580000 to 2025-10-13 23:53:44.580000
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:29:47 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/11: 2025-10-13 07:14:44.591000 to 2025-10-13 23:53:44.591000
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/11: 2025-10-12 14:35:44.580000 to 2025-10-13 07:14:44.580000
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/11: 2025-10-12 14:35:44.591000 to 2025-10-13 07:14:44.591000
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/11: 2025-10-11 21:56:44.580000 to 2025-10-12 14:35:44.580000
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/11: 2025-10-11 05:17:44.580000 to 2025-10-11 21:56:44.580000
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/11: 2025-10-10 12:38:44.586000 to 2025-10-11 05:17:44.586000
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:29:48 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/11: 2025-10-11 21:56:44.558000 to 2025-10-12 14:35:44.558000
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/11: 2025-10-11 21:56:44.591000 to 2025-10-12 14:35:44.591000
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/11: 2025-10-11 05:17:44.591000 to 2025-10-11 21:56:44.591000
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/11: 2025-10-10 12:38:44.580000 to 2025-10-11 05:17:44.580000
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 999 candles
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 10/11: 2025-10-09 19:59:44.586000 to 2025-10-10 12:38:44.586000
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:29:49 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/11: 2025-10-11 05:17:44.558000 to 2025-10-11 21:56:44.558000
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 999 candles
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 10/11: 2025-10-09 19:59:44.580000 to 2025-10-10 12:38:44.580000
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/11: 2025-10-10 12:38:44.591000 to 2025-10-11 05:17:44.591000
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 10: Got 999 candles
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 11/11: 2025-10-09 18:29:44.586000 to 2025-10-09 19:59:44.586000
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/11: 2025-10-10 12:38:44.558000 to 2025-10-11 05:17:44.558000
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 10: Got 999 candles
+2025-10-16 18:29:50 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 11/11: 2025-10-09 18:29:44.580000 to 2025-10-09 19:59:44.580000
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 999 candles
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 10/11: 2025-10-09 19:59:44.558000 to 2025-10-10 12:38:44.558000
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 10: Got 999 candles
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 11/11: 2025-10-09 18:29:44.558000 to 2025-10-09 19:59:44.558000
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 11: Got 90 candles
+2025-10-16 18:29:51 - shared_modules.data_collection.csv_manager - INFO - Wrote 10080 entries to data\SOLUSDT_1.csv
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 10080 candles for SOLUSDT_1 (11 successful, 0 failed)
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 999 candles
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 11: Got 90 candles
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 10/11: 2025-10-09 19:59:44.591000 to 2025-10-10 12:38:44.591000
+2025-10-16 18:29:51 - shared_modules.data_collection.csv_manager - INFO - Wrote 10080 entries to data\BTCUSDT_1.csv
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 10080 candles for BTCUSDT_1 (11 successful, 0 failed)
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 11: Got 90 candles
+2025-10-16 18:29:51 - shared_modules.data_collection.csv_manager - INFO - Wrote 10080 entries to data\ETHUSDT_1.csv
+2025-10-16 18:29:51 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 10080 candles for ETHUSDT_1 (11 successful, 0 failed)
+2025-10-16 18:29:52 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 10: Got 999 candles
+2025-10-16 18:29:52 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 11/11: 2025-10-09 18:29:44.591000 to 2025-10-09 19:59:44.591000
+2025-10-16 18:29:53 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 11: Got 90 candles
+2025-10-16 18:29:53 - shared_modules.data_collection.csv_manager - INFO - Wrote 10080 entries to data\ADAUSDT_1.csv
+2025-10-16 18:29:53 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 10080 candles for ADAUSDT_1 (11 successful, 0 failed)
+2025-10-16 18:29:53 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Historical data fetch completed in 8.70 seconds
+2025-10-16 18:29:53 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Successful: 24/24 (100.0%)
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO - [OK] Historical data fetched successfully
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO - 
+[INFO] Sample of fetched historical data:
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO -  BTCUSDT_1: 10080 candles
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-10-16 18:29:00 - O:108099.4 H:108129.3 L:108044.5 C:108065.2
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO -  BTCUSDT_5: 2016 candles
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-10-16 18:25:00 - O:107988.3 H:108220.6 L:107837.6 C:108051.0
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO -  ETHUSDT_1: 10080 candles
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-10-16 18:29:00 - O:3879.12 H:3882.5 L:3877.4 C:3877.41
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO -  ETHUSDT_5: 2016 candles
+2025-10-16 18:29:53 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-10-16 18:25:00 - O:3880.75 H:3884.96 L:3863.74 C:3877.41
+2025-10-16 18:29:55 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000214867E4C50>
+2025-10-16 18:29:55 - asyncio - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x000002148679F2A0>, 477500.5), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F310>, 477500.5), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F380>, 477500.5), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F230>, 477500.515), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F620>, 477500.515), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FE70>, 477500.515), (<aiohttp.client_proto.ResponseHandler object at 0x00000214885B0130>, 477500.515), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F1C0>, 477500.687), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FA80>, 477500.906), (<aiohttp.client_proto.ResponseHandler object at 0x00000214885B0050>, 477500.906), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FBD0>, 477500.906), (<aiohttp.client_proto.ResponseHandler object at 0x00000214885B06E0>, 477500.906), (<aiohttp.client_proto.ResponseHandler object at 0x00000214885B00C0>, 477500.937), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F5B0>, 477501.093), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F690>, 477501.281), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F770>, 477501.296), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FB60>, 477501.296), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FC40>, 477501.562), (<aiohttp.client_proto.ResponseHandler object at 0x00000214885B0750>, 477502.14), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FAF0>, 477502.156), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679F700>, 477506.968), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FA10>, 477507.125), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FD20>, 477507.234), (<aiohttp.client_proto.ResponseHandler object at 0x000002148679FCB0>, 477508.781)]']
+connector: <aiohttp.connector.TCPConnector object at 0x00000214867E4AD0>
+2025-10-16 18:40:45 - root - INFO - Logging system initialized
+2025-10-16 18:40:45 - root - INFO - Logging system initialized
+2025-10-16 18:40:45 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-10-16 18:40:45 - root - INFO - Logging system initialized
+2025-10-16 18:40:54 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-10-16 18:40:54 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-10-16 18:40:54 - shared_modules.data_collection.hybrid_system - INFO - [DEBUG] Starting data fetch in mode: full
+2025-10-16 18:40:54 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Using 4 symbols from configuration
+2025-10-16 18:40:54 - shared_modules.data_collection.hybrid_system - INFO - [WS] WebSocket disabled (ENABLE_WEBSOCKET=False)
+2025-10-16 18:40:54 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Fetching historical data...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Processing 4 symbols in batches of 20
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Processing batch 1/1 (4 symbols)
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_1...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 1m, 30 days: 43200 candles needed, 44 chunks, 999 candles per chunk, chunk duration: 999.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_1 using 44 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/44: 2025-10-16 02:01:54.469000 to 2025-10-16 18:40:54.469000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_5...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_5 using 9 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/9: 2025-10-13 07:25:54.487000 to 2025-10-16 18:40:54.487000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_15...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 15m, 30 days: 2880 candles needed, 3 chunks, 999 candles per chunk, chunk duration: 14985.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_15 using 3 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/3: 2025-10-06 08:55:54.489000 to 2025-10-16 18:40:54.489000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_60...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 60m, 30 days: 720 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 59940.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_60 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.490000 to 2025-10-16 18:40:54.490000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_120...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 120m, 30 days: 360 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 119880.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_120 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.491000 to 2025-10-16 18:40:54.491000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BTCUSDT_240...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 240m, 30 days: 180 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 239760.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching BTCUSDT_240 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.492000 to 2025-10-16 18:40:54.492000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_1...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 1m, 30 days: 43200 candles needed, 44 chunks, 999 candles per chunk, chunk duration: 999.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_1 using 44 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/44: 2025-10-16 02:01:54.493000 to 2025-10-16 18:40:54.493000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_5...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_5 using 9 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/9: 2025-10-13 07:25:54.494000 to 2025-10-16 18:40:54.494000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_15...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 15m, 30 days: 2880 candles needed, 3 chunks, 999 candles per chunk, chunk duration: 14985.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_15 using 3 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/3: 2025-10-06 08:55:54.495000 to 2025-10-16 18:40:54.495000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_60...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 60m, 30 days: 720 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 59940.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_60 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.496000 to 2025-10-16 18:40:54.496000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_120...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 120m, 30 days: 360 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 119880.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_120 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.497000 to 2025-10-16 18:40:54.497000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ETHUSDT_240...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 240m, 30 days: 180 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 239760.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ETHUSDT_240 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.498000 to 2025-10-16 18:40:54.498000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_1...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 1m, 30 days: 43200 candles needed, 44 chunks, 999 candles per chunk, chunk duration: 999.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_1 using 44 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/44: 2025-10-16 02:01:54.499000 to 2025-10-16 18:40:54.499000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_5...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_5 using 9 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/9: 2025-10-13 07:25:54.500000 to 2025-10-16 18:40:54.500000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_15...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 15m, 30 days: 2880 candles needed, 3 chunks, 999 candles per chunk, chunk duration: 14985.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_15 using 3 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/3: 2025-10-06 08:55:54.501000 to 2025-10-16 18:40:54.501000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_60...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 60m, 30 days: 720 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 59940.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_60 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.501000 to 2025-10-16 18:40:54.501000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_120...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 120m, 30 days: 360 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 119880.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_120 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.502000 to 2025-10-16 18:40:54.502000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SOLUSDT_240...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 240m, 30 days: 180 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 239760.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching SOLUSDT_240 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.503000 to 2025-10-16 18:40:54.503000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_1...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 1m, 30 days: 43200 candles needed, 44 chunks, 999 candles per chunk, chunk duration: 999.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_1 using 44 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/44: 2025-10-16 02:01:54.504000 to 2025-10-16 18:40:54.504000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_5...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 5m, 30 days: 8640 candles needed, 9 chunks, 999 candles per chunk, chunk duration: 4995.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_5 using 9 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/9: 2025-10-13 07:25:54.505000 to 2025-10-16 18:40:54.505000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_15...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 15m, 30 days: 2880 candles needed, 3 chunks, 999 candles per chunk, chunk duration: 14985.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_15 using 3 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/3: 2025-10-06 08:55:54.505000 to 2025-10-16 18:40:54.505000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_60...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 60m, 30 days: 720 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 59940.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_60 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.506000 to 2025-10-16 18:40:54.506000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_120...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 120m, 30 days: 360 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 119880.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_120 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.507000 to 2025-10-16 18:40:54.507000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_240...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - Calculated chunks for 240m, 30 days: 180 candles needed, 1 chunks, 999 candles per chunk, chunk duration: 239760.0 minutes
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching ADAUSDT_240 using 1 chunks...
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 1/1: 2025-09-16 18:40:54.508000 to 2025-10-16 18:40:54.508000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/9: 2025-10-09 20:10:54.487000 to 2025-10-13 07:25:54.487000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/44: 2025-10-15 09:22:54.493000 to 2025-10-16 02:01:54.493000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 720 candles
+2025-10-16 18:40:54 - shared_modules.data_collection.csv_manager - INFO - Wrote 720 entries to data\ADAUSDT_60.csv
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 720 candles for ADAUSDT_60 (1 successful, 0 failed)
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 720 candles
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 180 candles
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:54 - shared_modules.data_collection.csv_manager - INFO - Wrote 720 entries to data\BTCUSDT_60.csv
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 720 candles for BTCUSDT_60 (1 successful, 0 failed)
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/3: 2025-09-25 23:10:54.495000 to 2025-10-06 08:55:54.495000
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/44: 2025-10-15 09:22:54.499000 to 2025-10-16 02:01:54.499000
+2025-10-16 18:40:54 - shared_modules.data_collection.csv_manager - INFO - Wrote 180 entries to data\ADAUSDT_240.csv
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 180 candles for ADAUSDT_240 (1 successful, 0 failed)
+2025-10-16 18:40:54 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/3: 2025-09-25 23:10:54.501000 to 2025-10-06 08:55:54.501000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 360 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 360 entries to data\BTCUSDT_120.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 360 candles for BTCUSDT_120 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 180 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 180 entries to data\SOLUSDT_240.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 180 candles for SOLUSDT_240 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/44: 2025-10-14 16:43:54.493000 to 2025-10-15 09:22:54.493000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/3: 2025-09-16 18:40:54.495000 to 2025-09-25 23:10:54.495000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/3: 2025-09-16 18:40:54.501000 to 2025-09-25 23:10:54.501000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/3: 2025-09-25 23:10:54.489000 to 2025-10-06 08:55:54.489000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/9: 2025-10-09 20:10:54.494000 to 2025-10-13 07:25:54.494000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/9: 2025-10-09 20:10:54.505000 to 2025-10-13 07:25:54.505000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 720 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 720 entries to data\SOLUSDT_60.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 720 candles for SOLUSDT_60 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/44: 2025-10-14 00:04:54.493000 to 2025-10-14 16:43:54.493000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 360 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 360 entries to data\SOLUSDT_120.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 360 candles for SOLUSDT_120 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 360 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 180 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 360 entries to data\ADAUSDT_120.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 360 candles for ADAUSDT_120 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 180 entries to data\BTCUSDT_240.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 180 candles for BTCUSDT_240 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 360 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 360 entries to data\ETHUSDT_120.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 360 candles for ETHUSDT_120 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/3: 2025-09-16 18:40:54.489000 to 2025-09-25 23:10:54.489000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 180 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 180 entries to data\ETHUSDT_240.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 180 candles for ETHUSDT_240 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/9: 2025-10-06 08:55:54.505000 to 2025-10-09 20:10:54.505000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/9: 2025-10-09 20:10:54.500000 to 2025-10-13 07:25:54.500000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 720 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.csv_manager - INFO - Wrote 720 entries to data\ETHUSDT_60.csv
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 720 candles for ETHUSDT_60 (1 successful, 0 failed)
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/3: 2025-09-25 23:10:54.505000 to 2025-10-06 08:55:54.505000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 1: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/44: 2025-10-15 09:22:54.504000 to 2025-10-16 02:01:54.504000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 2/44: 2025-10-15 09:22:54.469000 to 2025-10-16 02:01:54.469000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/9: 2025-10-06 08:55:54.487000 to 2025-10-09 20:10:54.487000
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:55 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/44: 2025-10-14 16:43:54.499000 to 2025-10-15 09:22:54.499000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/3: 2025-09-16 18:40:54.505000 to 2025-09-25 23:10:54.505000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 882 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.csv_manager - INFO - Wrote 2880 entries to data\ETHUSDT_15.csv
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 2880 candles for ETHUSDT_15 (3 successful, 0 failed)
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 882 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.csv_manager - INFO - Wrote 2880 entries to data\SOLUSDT_15.csv
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 2880 candles for SOLUSDT_15 (3 successful, 0 failed)
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/9: 2025-10-06 08:55:54.494000 to 2025-10-09 20:10:54.494000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/9: 2025-10-06 08:55:54.500000 to 2025-10-09 20:10:54.500000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 882 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.csv_manager - INFO - Wrote 2880 entries to data\ADAUSDT_15.csv
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 2880 candles for ADAUSDT_15 (3 successful, 0 failed)
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/44: 2025-10-14 00:04:54.499000 to 2025-10-14 16:43:54.499000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/44: 2025-10-13 07:25:54.493000 to 2025-10-14 00:04:54.493000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 882 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.csv_manager - INFO - Wrote 2880 entries to data\BTCUSDT_15.csv
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 2880 candles for BTCUSDT_15 (3 successful, 0 failed)
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/9: 2025-10-02 21:40:54.500000 to 2025-10-06 08:55:54.500000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/9: 2025-10-02 21:40:54.505000 to 2025-10-06 08:55:54.505000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/44: 2025-10-13 07:25:54.499000 to 2025-10-14 00:04:54.499000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/9: 2025-10-02 21:40:54.494000 to 2025-10-06 08:55:54.494000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/44: 2025-10-14 16:43:54.504000 to 2025-10-15 09:22:54.504000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 2: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 3/44: 2025-10-14 16:43:54.469000 to 2025-10-15 09:22:54.469000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/9: 2025-09-29 10:25:54.505000 to 2025-10-02 21:40:54.505000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/9: 2025-09-29 10:25:54.500000 to 2025-10-02 21:40:54.500000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/9: 2025-10-02 21:40:54.487000 to 2025-10-06 08:55:54.487000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/44: 2025-10-14 00:04:54.504000 to 2025-10-14 16:43:54.504000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 3: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 4/44: 2025-10-14 00:04:54.469000 to 2025-10-14 16:43:54.469000
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:40:56 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/44: 2025-10-12 14:46:54.493000 to 2025-10-13 07:25:54.493000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/44: 2025-10-13 07:25:54.504000 to 2025-10-14 00:04:54.504000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/9: 2025-09-25 23:10:54.500000 to 2025-09-29 10:25:54.500000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/44: 2025-10-12 14:46:54.499000 to 2025-10-13 07:25:54.499000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/9: 2025-09-29 10:25:54.494000 to 2025-10-02 21:40:54.494000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/44: 2025-10-12 14:46:54.504000 to 2025-10-13 07:25:54.504000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/44: 2025-10-11 22:07:54.499000 to 2025-10-12 14:46:54.499000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/9: 2025-09-29 10:25:54.487000 to 2025-10-02 21:40:54.487000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/9: 2025-09-22 11:55:54.500000 to 2025-09-25 23:10:54.500000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/9: 2025-09-25 23:10:54.487000 to 2025-09-29 10:25:54.487000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/9: 2025-09-25 23:10:54.505000 to 2025-09-29 10:25:54.505000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 4: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 5/44: 2025-10-13 07:25:54.469000 to 2025-10-14 00:04:54.469000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/9: 2025-09-22 11:55:54.487000 to 2025-09-25 23:10:54.487000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/44: 2025-10-11 22:07:54.493000 to 2025-10-12 14:46:54.493000
+2025-10-16 18:40:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/9: 2025-09-22 11:55:54.505000 to 2025-09-25 23:10:54.505000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/44: 2025-10-12 14:46:54.469000 to 2025-10-13 07:25:54.469000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/44: 2025-10-11 05:28:54.493000 to 2025-10-11 22:07:54.493000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/9: 2025-09-19 00:40:54.500000 to 2025-09-22 11:55:54.500000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/9: 2025-09-19 00:40:54.505000 to 2025-09-22 11:55:54.505000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 5: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 6/9: 2025-09-25 23:10:54.494000 to 2025-09-29 10:25:54.494000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/44: 2025-10-11 22:07:54.504000 to 2025-10-12 14:46:54.504000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/44: 2025-10-11 05:28:54.499000 to 2025-10-11 22:07:54.499000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/44: 2025-10-10 12:49:54.493000 to 2025-10-11 05:28:54.493000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/9: 2025-09-16 18:40:54.500000 to 2025-09-19 00:40:54.500000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 10/44: 2025-10-09 20:10:54.493000 to 2025-10-10 12:49:54.493000
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 648 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/9: 2025-09-22 11:55:54.494000 to 2025-09-25 23:10:54.494000
+2025-10-16 18:40:58 - shared_modules.data_collection.csv_manager - INFO - Wrote 8640 entries to data\SOLUSDT_5.csv
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 8640 candles for SOLUSDT_5 (9 successful, 0 failed)
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:40:58 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/9: 2025-09-19 00:40:54.487000 to 2025-09-22 11:55:54.487000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 10: Got 999 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 11/44: 2025-10-09 03:31:54.493000 to 2025-10-09 20:10:54.493000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/9: 2025-09-19 00:40:54.494000 to 2025-09-22 11:55:54.494000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 6: Got 999 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 7/44: 2025-10-11 22:07:54.469000 to 2025-10-12 14:46:54.469000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/9: 2025-09-16 18:40:54.505000 to 2025-09-19 00:40:54.505000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/44: 2025-10-11 05:28:54.504000 to 2025-10-11 22:07:54.504000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 7: Got 999 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 8/44: 2025-10-11 05:28:54.469000 to 2025-10-11 22:07:54.469000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 648 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.csv_manager - INFO - Wrote 8640 entries to data\ADAUSDT_5.csv
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 8640 candles for ADAUSDT_5 (9 successful, 0 failed)
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/44: 2025-10-10 12:49:54.499000 to 2025-10-11 05:28:54.499000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 11: Got 999 candles
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 12/44: 2025-10-08 10:52:54.493000 to 2025-10-09 03:31:54.493000
+2025-10-16 18:40:59 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/9: 2025-09-16 18:40:54.487000 to 2025-09-19 00:40:54.487000
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/44: 2025-10-10 12:49:54.504000 to 2025-10-11 05:28:54.504000
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/44: 2025-10-10 12:49:54.469000 to 2025-10-11 05:28:54.469000
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 8: Got 999 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 9/9: 2025-09-16 18:40:54.494000 to 2025-09-19 00:40:54.494000
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 648 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 8640 entries to data\BTCUSDT_5.csv
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 8640 candles for BTCUSDT_5 (9 successful, 0 failed)
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 12: Got 999 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 13/44: 2025-10-07 18:13:54.493000 to 2025-10-08 10:52:54.493000
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 648 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 8640 entries to data\ETHUSDT_5.csv
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 8640 candles for ETHUSDT_5 (9 successful, 0 failed)
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 13: Got 999 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 14/44: 2025-10-07 01:34:54.493000 to 2025-10-07 18:13:54.493000
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 999 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 10/44: 2025-10-09 20:10:54.499000 to 2025-10-10 12:49:54.499000
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 10: Got 999 candles
+2025-10-16 18:41:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 11/44: 2025-10-09 03:31:54.499000 to 2025-10-09 20:10:54.499000
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 999 candles
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 10/44: 2025-10-09 20:10:54.504000 to 2025-10-10 12:49:54.504000
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 9: Got 999 candles
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 10/44: 2025-10-09 20:10:54.469000 to 2025-10-10 12:49:54.469000
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 11: Got 999 candles
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 12/44: 2025-10-08 10:52:54.499000 to 2025-10-09 03:31:54.499000
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 14: Got 999 candles
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 15/44: 2025-10-06 08:55:54.493000 to 2025-10-07 01:34:54.493000
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 10: Got 999 candles
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 11/44: 2025-10-09 03:31:54.504000 to 2025-10-09 20:10:54.504000
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 11: Got 999 candles
+2025-10-16 18:41:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 12/44: 2025-10-08 10:52:54.504000 to 2025-10-09 03:31:54.504000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 10: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 11/44: 2025-10-09 03:31:54.469000 to 2025-10-09 20:10:54.469000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 12: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 13/44: 2025-10-07 18:13:54.499000 to 2025-10-08 10:52:54.499000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 12: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 13/44: 2025-10-07 18:13:54.504000 to 2025-10-08 10:52:54.504000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 11: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 12/44: 2025-10-08 10:52:54.469000 to 2025-10-09 03:31:54.469000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 13: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 14/44: 2025-10-07 01:34:54.499000 to 2025-10-07 18:13:54.499000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 13: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 14/44: 2025-10-07 01:34:54.504000 to 2025-10-07 18:13:54.504000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 14: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 15/44: 2025-10-06 08:55:54.499000 to 2025-10-07 01:34:54.499000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 15: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 16/44: 2025-10-05 16:16:54.493000 to 2025-10-06 08:55:54.493000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 16: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 17/44: 2025-10-04 23:37:54.493000 to 2025-10-05 16:16:54.493000
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 12: Got 999 candles
+2025-10-16 18:41:02 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 13/44: 2025-10-07 18:13:54.469000 to 2025-10-08 10:52:54.469000
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 17: Got 999 candles
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 18/44: 2025-10-04 06:58:54.493000 to 2025-10-04 23:37:54.493000
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 14: Got 999 candles
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 15/44: 2025-10-06 08:55:54.504000 to 2025-10-07 01:34:54.504000
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 18: Got 999 candles
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 19/44: 2025-10-03 14:19:54.493000 to 2025-10-04 06:58:54.493000
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 15: Got 999 candles
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 16/44: 2025-10-05 16:16:54.499000 to 2025-10-06 08:55:54.499000
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 19: Got 999 candles
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 20/44: 2025-10-02 21:40:54.493000 to 2025-10-03 14:19:54.493000
+2025-10-16 18:41:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 13: Got 999 candles
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 14/44: 2025-10-07 01:34:54.469000 to 2025-10-07 18:13:54.469000
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 16: Got 999 candles
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 17/44: 2025-10-04 23:37:54.499000 to 2025-10-05 16:16:54.499000
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 20: Got 999 candles
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 21/44: 2025-10-02 05:01:54.493000 to 2025-10-02 21:40:54.493000
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 14: Got 999 candles
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 15/44: 2025-10-06 08:55:54.469000 to 2025-10-07 01:34:54.469000
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 15: Got 999 candles
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 16/44: 2025-10-05 16:16:54.504000 to 2025-10-06 08:55:54.504000
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 21: Got 999 candles
+2025-10-16 18:41:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 22/44: 2025-10-01 12:22:54.493000 to 2025-10-02 05:01:54.493000
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 17: Got 999 candles
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 18/44: 2025-10-04 06:58:54.499000 to 2025-10-04 23:37:54.499000
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 15: Got 999 candles
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 16/44: 2025-10-05 16:16:54.469000 to 2025-10-06 08:55:54.469000
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 16: Got 999 candles
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 17/44: 2025-10-04 23:37:54.504000 to 2025-10-05 16:16:54.504000
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 16: Got 999 candles
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 17/44: 2025-10-04 23:37:54.469000 to 2025-10-05 16:16:54.469000
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 22: Got 999 candles
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 23/44: 2025-09-30 19:43:54.493000 to 2025-10-01 12:22:54.493000
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 17: Got 999 candles
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 18/44: 2025-10-04 06:58:54.469000 to 2025-10-04 23:37:54.469000
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 18: Got 999 candles
+2025-10-16 18:41:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 19/44: 2025-10-03 14:19:54.469000 to 2025-10-04 06:58:54.469000
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 18: Got 999 candles
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 19/44: 2025-10-03 14:19:54.499000 to 2025-10-04 06:58:54.499000
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 17: Got 999 candles
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 18/44: 2025-10-04 06:58:54.504000 to 2025-10-04 23:37:54.504000
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 18: Got 999 candles
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 19/44: 2025-10-03 14:19:54.504000 to 2025-10-04 06:58:54.504000
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 23: Got 999 candles
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 24/44: 2025-09-30 03:04:54.493000 to 2025-09-30 19:43:54.493000
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 19: Got 999 candles
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 20/44: 2025-10-02 21:40:54.504000 to 2025-10-03 14:19:54.504000
+2025-10-16 18:41:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 19: Got 999 candles
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 20/44: 2025-10-02 21:40:54.469000 to 2025-10-03 14:19:54.469000
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 19: Got 999 candles
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 20/44: 2025-10-02 21:40:54.499000 to 2025-10-03 14:19:54.499000
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 20: Got 999 candles
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 21/44: 2025-10-02 05:01:54.504000 to 2025-10-02 21:40:54.504000
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 20: Got 999 candles
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 21/44: 2025-10-02 05:01:54.469000 to 2025-10-02 21:40:54.469000
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 20: Got 999 candles
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 21/44: 2025-10-02 05:01:54.499000 to 2025-10-02 21:40:54.499000
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 21: Got 999 candles
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 22/44: 2025-10-01 12:22:54.469000 to 2025-10-02 05:01:54.469000
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 24: Got 999 candles
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 25/44: 2025-09-29 10:25:54.493000 to 2025-09-30 03:04:54.493000
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 22: Got 999 candles
+2025-10-16 18:41:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 23/44: 2025-09-30 19:43:54.469000 to 2025-10-01 12:22:54.469000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 23: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 24/44: 2025-09-30 03:04:54.469000 to 2025-09-30 19:43:54.469000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 21: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 22/44: 2025-10-01 12:22:54.504000 to 2025-10-02 05:01:54.504000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 21: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 22/44: 2025-10-01 12:22:54.499000 to 2025-10-02 05:01:54.499000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 24: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 25/44: 2025-09-29 10:25:54.469000 to 2025-09-30 03:04:54.469000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 22: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 23/44: 2025-09-30 19:43:54.504000 to 2025-10-01 12:22:54.504000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 22: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 23/44: 2025-09-30 19:43:54.499000 to 2025-10-01 12:22:54.499000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 25: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 26/44: 2025-09-28 17:46:54.469000 to 2025-09-29 10:25:54.469000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 23: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 24/44: 2025-09-30 03:04:54.504000 to 2025-09-30 19:43:54.504000
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 25: Got 999 candles
+2025-10-16 18:41:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 26/44: 2025-09-28 17:46:54.493000 to 2025-09-29 10:25:54.493000
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 26: Got 999 candles
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 27/44: 2025-09-28 01:07:54.493000 to 2025-09-28 17:46:54.493000
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 23: Got 999 candles
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 24/44: 2025-09-30 03:04:54.499000 to 2025-09-30 19:43:54.499000
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 26: Got 999 candles
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 27/44: 2025-09-28 01:07:54.469000 to 2025-09-28 17:46:54.469000
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 24: Got 999 candles
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 25/44: 2025-09-29 10:25:54.504000 to 2025-09-30 03:04:54.504000
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 24: Got 999 candles
+2025-10-16 18:41:09 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 25/44: 2025-09-29 10:25:54.499000 to 2025-09-30 03:04:54.499000
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 27: Got 999 candles
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 28/44: 2025-09-27 08:28:54.493000 to 2025-09-28 01:07:54.493000
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 25: Got 999 candles
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 26/44: 2025-09-28 17:46:54.499000 to 2025-09-29 10:25:54.499000
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 28: Got 999 candles
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 29/44: 2025-09-26 15:49:54.493000 to 2025-09-27 08:28:54.493000
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 25: Got 999 candles
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 26/44: 2025-09-28 17:46:54.504000 to 2025-09-29 10:25:54.504000
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 26: Got 999 candles
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 27/44: 2025-09-28 01:07:54.504000 to 2025-09-28 17:46:54.504000
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 27: Got 999 candles
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 28/44: 2025-09-27 08:28:54.469000 to 2025-09-28 01:07:54.469000
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 27: Got 999 candles
+2025-10-16 18:41:10 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 28/44: 2025-09-27 08:28:54.504000 to 2025-09-28 01:07:54.504000
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 26: Got 999 candles
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 27/44: 2025-09-28 01:07:54.499000 to 2025-09-28 17:46:54.499000
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 29: Got 999 candles
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 30/44: 2025-09-25 23:10:54.493000 to 2025-09-26 15:49:54.493000
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 27: Got 999 candles
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 28/44: 2025-09-27 08:28:54.499000 to 2025-09-28 01:07:54.499000
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 30: Got 999 candles
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 31/44: 2025-09-25 06:31:54.493000 to 2025-09-25 23:10:54.493000
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 28: Got 999 candles
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 29/44: 2025-09-26 15:49:54.469000 to 2025-09-27 08:28:54.469000
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 28: Got 999 candles
+2025-10-16 18:41:11 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 29/44: 2025-09-26 15:49:54.504000 to 2025-09-27 08:28:54.504000
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 29: Got 999 candles
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 30/44: 2025-09-25 23:10:54.469000 to 2025-09-26 15:49:54.469000
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 30: Got 999 candles
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 31/44: 2025-09-25 06:31:54.469000 to 2025-09-25 23:10:54.469000
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 28: Got 999 candles
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 29/44: 2025-09-26 15:49:54.499000 to 2025-09-27 08:28:54.499000
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 31: Got 999 candles
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 32/44: 2025-09-24 13:52:54.493000 to 2025-09-25 06:31:54.493000
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 29: Got 999 candles
+2025-10-16 18:41:12 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 30/44: 2025-09-25 23:10:54.504000 to 2025-09-26 15:49:54.504000
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 32: Got 999 candles
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 33/44: 2025-09-23 21:13:54.493000 to 2025-09-24 13:52:54.493000
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 33: Got 999 candles
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 34/44: 2025-09-23 04:34:54.493000 to 2025-09-23 21:13:54.493000
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 31: Got 999 candles
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 32/44: 2025-09-24 13:52:54.469000 to 2025-09-25 06:31:54.469000
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 29: Got 999 candles
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 30/44: 2025-09-25 23:10:54.499000 to 2025-09-26 15:49:54.499000
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 30: Got 999 candles
+2025-10-16 18:41:13 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 31/44: 2025-09-25 06:31:54.504000 to 2025-09-25 23:10:54.504000
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 34: Got 999 candles
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 35/44: 2025-09-22 11:55:54.493000 to 2025-09-23 04:34:54.493000
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 32: Got 999 candles
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 33/44: 2025-09-23 21:13:54.469000 to 2025-09-24 13:52:54.469000
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 30: Got 999 candles
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 31/44: 2025-09-25 06:31:54.499000 to 2025-09-25 23:10:54.499000
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 35: Got 999 candles
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 36/44: 2025-09-21 19:16:54.493000 to 2025-09-22 11:55:54.493000
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 31: Got 999 candles
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 32/44: 2025-09-24 13:52:54.499000 to 2025-09-25 06:31:54.499000
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 36: Got 999 candles
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 37/44: 2025-09-21 02:37:54.493000 to 2025-09-21 19:16:54.493000
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 31: Got 999 candles
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 32/44: 2025-09-24 13:52:54.504000 to 2025-09-25 06:31:54.504000
+2025-10-16 18:41:14 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 32: Got 999 candles
+2025-10-16 18:41:15 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 33/44: 2025-09-23 21:13:54.499000 to 2025-09-24 13:52:54.499000
+2025-10-16 18:41:15 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 33: Got 999 candles
+2025-10-16 18:41:15 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 34/44: 2025-09-23 04:34:54.469000 to 2025-09-23 21:13:54.469000
+2025-10-16 18:41:15 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 34: Got 999 candles
+2025-10-16 18:41:15 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 35/44: 2025-09-22 11:55:54.469000 to 2025-09-23 04:34:54.469000
+2025-10-16 18:41:15 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 37: Got 999 candles
+2025-10-16 18:41:15 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 38/44: 2025-09-20 09:58:54.493000 to 2025-09-21 02:37:54.493000
+2025-10-16 18:41:15 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 32: Got 999 candles
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 33/44: 2025-09-23 21:13:54.504000 to 2025-09-24 13:52:54.504000
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 35: Got 999 candles
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 36/44: 2025-09-21 19:16:54.469000 to 2025-09-22 11:55:54.469000
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 33: Got 999 candles
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 34/44: 2025-09-23 04:34:54.499000 to 2025-09-23 21:13:54.499000
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 38: Got 999 candles
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 39/44: 2025-09-19 17:19:54.493000 to 2025-09-20 09:58:54.493000
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 33: Got 999 candles
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 34/44: 2025-09-23 04:34:54.504000 to 2025-09-23 21:13:54.504000
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 39: Got 999 candles
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 40/44: 2025-09-19 00:40:54.493000 to 2025-09-19 17:19:54.493000
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 34: Got 999 candles
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 35/44: 2025-09-22 11:55:54.504000 to 2025-09-23 04:34:54.504000
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 35: Got 999 candles
+2025-10-16 18:41:16 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 36/44: 2025-09-21 19:16:54.504000 to 2025-09-22 11:55:54.504000
+2025-10-16 18:41:17 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 36: Got 999 candles
+2025-10-16 18:41:17 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 34: Got 999 candles
+2025-10-16 18:41:17 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 37/44: 2025-09-21 02:37:54.469000 to 2025-09-21 19:16:54.469000
+2025-10-16 18:41:17 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 35/44: 2025-09-22 11:55:54.499000 to 2025-09-23 04:34:54.499000
+2025-10-16 18:41:17 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 36: Got 999 candles
+2025-10-16 18:41:17 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 37/44: 2025-09-21 02:37:54.504000 to 2025-09-21 19:16:54.504000
+2025-10-16 18:41:17 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 40: Got 999 candles
+2025-10-16 18:41:17 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 41/44: 2025-09-18 08:01:54.493000 to 2025-09-19 00:40:54.493000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 37: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 38/44: 2025-09-20 09:58:54.469000 to 2025-09-21 02:37:54.469000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 35: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 36/44: 2025-09-21 19:16:54.499000 to 2025-09-22 11:55:54.499000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 41: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 42/44: 2025-09-17 15:22:54.493000 to 2025-09-18 08:01:54.493000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 37: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 38/44: 2025-09-20 09:58:54.504000 to 2025-09-21 02:37:54.504000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 38: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 39/44: 2025-09-19 17:19:54.469000 to 2025-09-20 09:58:54.469000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 36: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 37/44: 2025-09-21 02:37:54.499000 to 2025-09-21 19:16:54.499000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 42: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 43/44: 2025-09-16 22:43:54.493000 to 2025-09-17 15:22:54.493000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 38: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 39/44: 2025-09-19 17:19:54.504000 to 2025-09-20 09:58:54.504000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 37: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 38/44: 2025-09-20 09:58:54.499000 to 2025-09-21 02:37:54.499000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 43: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 44/44: 2025-09-16 18:40:54.493000 to 2025-09-16 22:43:54.493000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 39: Got 999 candles
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 40/44: 2025-09-19 00:40:54.504000 to 2025-09-19 17:19:54.504000
+2025-10-16 18:41:18 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 44: Got 243 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.csv_manager - INFO - Wrote 43200 entries to data\ETHUSDT_1.csv
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 43200 candles for ETHUSDT_1 (44 successful, 0 failed)
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 40: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 41/44: 2025-09-18 08:01:54.504000 to 2025-09-19 00:40:54.504000
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 39: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 40/44: 2025-09-19 00:40:54.469000 to 2025-09-19 17:19:54.469000
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 41: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 42/44: 2025-09-17 15:22:54.504000 to 2025-09-18 08:01:54.504000
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 40: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 41/44: 2025-09-18 08:01:54.469000 to 2025-09-19 00:40:54.469000
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 38: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 39/44: 2025-09-19 17:19:54.499000 to 2025-09-20 09:58:54.499000
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 42: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 43/44: 2025-09-16 22:43:54.504000 to 2025-09-17 15:22:54.504000
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 41: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 42/44: 2025-09-17 15:22:54.469000 to 2025-09-18 08:01:54.469000
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 39: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 40/44: 2025-09-19 00:40:54.499000 to 2025-09-19 17:19:54.499000
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 43: Got 999 candles
+2025-10-16 18:41:19 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 44/44: 2025-09-16 18:40:54.504000 to 2025-09-16 22:43:54.504000
+2025-10-16 18:41:20 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 42: Got 999 candles
+2025-10-16 18:41:20 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 43/44: 2025-09-16 22:43:54.469000 to 2025-09-17 15:22:54.469000
+2025-10-16 18:41:20 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 44: Got 243 candles
+2025-10-16 18:41:20 - shared_modules.data_collection.csv_manager - INFO - Wrote 43200 entries to data\ADAUSDT_1.csv
+2025-10-16 18:41:20 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 43200 candles for ADAUSDT_1 (44 successful, 0 failed)
+2025-10-16 18:41:20 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 40: Got 999 candles
+2025-10-16 18:41:20 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 41/44: 2025-09-18 08:01:54.499000 to 2025-09-19 00:40:54.499000
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 43: Got 999 candles
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 44/44: 2025-09-16 18:40:54.469000 to 2025-09-16 22:43:54.469000
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 41: Got 999 candles
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 42/44: 2025-09-17 15:22:54.499000 to 2025-09-18 08:01:54.499000
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 44: Got 243 candles
+2025-10-16 18:41:21 - shared_modules.data_collection.csv_manager - INFO - Wrote 43200 entries to data\BTCUSDT_1.csv
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 43200 candles for BTCUSDT_1 (44 successful, 0 failed)
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 42: Got 999 candles
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 43/44: 2025-09-16 22:43:54.499000 to 2025-09-17 15:22:54.499000
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 43: Got 999 candles
+2025-10-16 18:41:21 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Fetching chunk 44/44: 2025-09-16 18:40:54.499000 to 2025-09-16 22:43:54.499000
+2025-10-16 18:41:22 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Chunk 44: Got 243 candles
+2025-10-16 18:41:22 - shared_modules.data_collection.csv_manager - INFO - Wrote 43200 entries to data\SOLUSDT_1.csv
+2025-10-16 18:41:22 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 43200 candles for SOLUSDT_1 (44 successful, 0 failed)
+2025-10-16 18:41:22 - shared_modules.data_collection.optimized_data_fetcher - INFO - [DATA] Historical data fetch completed in 27.98 seconds
+2025-10-16 18:41:22 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Successful: 24/24 (100.0%)
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO - [OK] Historical data fetched successfully
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO - 
+[INFO] Sample of fetched historical data:
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO -  BTCUSDT_1: 43200 candles
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-10-16 18:40:00 - O:107860.0 H:107903.2 L:107778.6 C:107870.3
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO -  BTCUSDT_5: 8640 candles
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-10-16 18:40:00 - O:107860.0 H:107903.2 L:107778.6 C:107852.5
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO -  ETHUSDT_1: 43200 candles
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-10-16 18:40:00 - O:3875.33 H:3882.88 L:3874.57 C:3880.81
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO -  ETHUSDT_5: 8640 candles
+2025-10-16 18:41:22 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-10-16 18:40:00 - O:3875.33 H:3882.88 L:3874.57 C:3880.81
+2025-10-16 18:41:44 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000023D59394D90>
+2025-10-16 18:41:44 - asyncio - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934FB60>, 478171.062), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934FEE0>, 478171.062), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F700>, 478171.062), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934FC40>, 478171.062), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934FD90>, 478171.078), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F5B0>, 478171.25), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F770>, 478171.703), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5C8D0130>, 478171.734), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5C8D0210>, 478171.906), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F1C0>, 478172.078), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F620>, 478174.5), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934FD20>, 478175.093), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F4D0>, 478175.843), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F310>, 478176.0), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F230>, 478194.453), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934F690>, 478195.765), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5934FBD0>, 478196.875), (<aiohttp.client_proto.ResponseHandler object at 0x0000023D5C8D00C0>, 478197.718)]']
+connector: <aiohttp.connector.TCPConnector object at 0x0000023D59394C10>
