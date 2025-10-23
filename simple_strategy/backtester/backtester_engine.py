@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from simple_strategy.backtester.risk_manager import RiskManager
+from simple_strategy.backtester.performance_tracker import PerformanceTracker
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -77,9 +78,15 @@ class BacktesterEngine:
         self.memory_limit_percent = self.config.get('memory_limit_percent', 70)
         self.enable_parallel_processing = self.config.get('enable_parallel_processing', False)
         
+        # Initialize performance tracker
+        self.performance_tracker = PerformanceTracker(initial_balance=10000)
+
+        # Position tracking
+        self.positions = {}  # Track open positions by symbol
+
         logger.info(f"BacktesterEngine initialized with strategy: {strategy.name}")
-        logger.info(f"Risk management {'enabled' if self.risk_manager else 'disabled'}")
-    
+        logger.info(f"Risk management {'enabled'if self.risk_manager else'disabled'}")
+
     def run_backtest(self, strategy=None, data=None, start_date=None, end_date=None, 
                  initial_balance=10000, symbols=None, timeframes=None, config=None):
         """
@@ -101,9 +108,12 @@ class BacktesterEngine:
                 )
             
             # Initialize variables
-            self.trades = []
-            self.balance = initial_balance
-            self.initial_balance = initial_balance
+            self.trades= []
+            self.balance=initial_balance
+            self.initial_balance=initial_balance
+
+            # Initialize performance tracker with initial balance
+            self.performance_tracker = PerformanceTracker(initial_balance=initial_balance)
             
             # Calculate total processing steps for progress tracking
             total_steps = 0
@@ -131,28 +141,124 @@ class BacktesterEngine:
                         
                         # Generate signals
                         signals = strategy.generate_signals(current_data)
-                        
+
                         # Execute trades based on signals
                         signal = signals[symbol][timeframe]
                         if signal in ['BUY', 'SELL']:
                             # Create proper data structure for trade execution
                             trade_data = {symbol: {timeframe: df.loc[:timestamp]}}
                             trade_result = self._execute_trade(symbol, signal, timestamp, trade_data)
+                            
                             if trade_result.get('executed', False):
-                                # Calculate PnL for the trade
-                                if signal == 'SELL':
-                                    # For SELL trades, calculate PnL based on entry price
-                                    entry_price = trade_result.get('entry_price', row['close'])
-                                    exit_price = row['close']
-                                    quantity = trade_result.get('quantity', 0)
-                                    pnl = (exit_price - entry_price) * quantity
-                                    trade_result['pnl'] = pnl
-                                    trade_result['balance_after'] = self.balance
-                                else:
-                                    # For BUY trades, just track the entry
-                                    trade_result['entry_price'] = row['close']
-                                    trade_result['pnl'] = 0
-                                    trade_result['balance_after'] = self.balance
+                                current_price = row['close']
+                                quantity = trade_result.get('quantity', 0)
+                                
+                                if signal == 'BUY':
+                                    # For BUY signals, open a new position or add to existing
+                                    if symbol not in self.positions:
+                                        # Open new position
+                                        self.positions[symbol] = {
+                                            'entry_price': current_price,
+                                            'quantity': quantity,
+                                            'entry_timestamp': timestamp,
+                                            'is_short': False  # Mark this as a long position
+                                        }
+                                        logger.info(f"DEBUG: Opened BUY position for {symbol} at {current_price}, qty={quantity}")
+                                    else:
+                                        # Check if this is a short position that needs to be closed
+                                        if self.positions[symbol].get('is_short', False):
+                                            # Close the short position
+                                            position = self.positions[symbol]
+                                            entry_price = position['entry_price']
+                                            entry_timestamp = position['entry_timestamp']
+                                            short_quantity = position['quantity']
+                                            
+                                            # Calculate PnL for short position (we profit when price goes down)
+                                            pnl = (entry_price - current_price) * short_quantity
+                                            
+                                            # Record the completed trade
+                                            logger.info(f"DEBUG: Closing SHORT position with BUY: entry={entry_price}, exit={current_price}, qty={short_quantity}, pnl={pnl}")
+                                            
+                                            self.performance_tracker.record_trade({
+                                                'symbol': symbol,
+                                                'direction': 'BUY',  # We're using a BUY to close a short
+                                                'entry_price': entry_price,
+                                                'exit_price': current_price,
+                                                'size': short_quantity,
+                                                'entry_timestamp': entry_timestamp,
+                                                'exit_timestamp': timestamp,
+                                                'pnl': pnl
+                                            })
+                                            
+                                            # Remove the short position
+                                            del self.positions[symbol]
+                                            
+                                            # Open a new long position
+                                            self.positions[symbol] = {
+                                                'entry_price': current_price,
+                                                'quantity': quantity,
+                                                'entry_timestamp': timestamp,
+                                                'is_short': False
+                                            }
+                                            logger.info(f"DEBUG: Opened BUY position for {symbol} at {current_price}, qty={quantity}")
+                                        else:
+                                            # Add to existing long position
+                                            old_qty = self.positions[symbol]['quantity']
+                                            old_price = self.positions[symbol]['entry_price']
+                                            new_qty = old_qty + quantity
+                                            # Calculate weighted average entry price
+                                            new_entry_price = ((old_price * old_qty) + (current_price * quantity)) / new_qty
+                                            self.positions[symbol]['entry_price'] = new_entry_price
+                                            self.positions[symbol]['quantity'] = new_qty
+                                            logger.info(f"DEBUG: Added to BUY position for {symbol}: avg_price={new_entry_price}, total_qty={new_qty}")
+                                
+                                elif signal == 'SELL':
+                                    # For SELL signals, close the position and calculate PnL
+                                    if symbol in self.positions:
+                                        position = self.positions[symbol]
+                                        entry_price = position['entry_price']
+                                        entry_timestamp = position['entry_timestamp']
+                                        quantity = position['quantity']  # Sell the entire position
+                                        
+                                        # Calculate PnL
+                                        pnl = (current_price - entry_price) * quantity
+                                        
+                                        # Record the completed trade
+                                        logger.info(f"DEBUG: Recording SELL trade: entry={entry_price}, exit={current_price}, qty={quantity}, pnl={pnl}")
+                                        
+                                        success = self.performance_tracker.record_trade({
+                                            'symbol': symbol,
+                                            'direction': 'SELL',
+                                            'entry_price': entry_price,
+                                            'exit_price': current_price,
+                                            'size': quantity,
+                                            'entry_timestamp': entry_timestamp,
+                                            'exit_timestamp': timestamp,
+                                            'pnl': pnl
+                                        })
+                                        
+                                        logger.info(f"DEBUG: Trade recording success: {success}")
+                                        
+                                        # Remove the position
+                                        del self.positions[symbol]
+                                        
+                                        # Open a new short position for this SELL signal
+                                        self.positions[symbol] = {
+                                            'entry_price': current_price,
+                                            'quantity': quantity,  # Use the same quantity we just sold
+                                            'entry_timestamp': timestamp,
+                                            'is_short': True  # Mark this as a short position
+                                        }
+                                        logger.info(f"DEBUG: Opened SHORT position for {symbol} at {current_price}, qty={quantity}")
+                                    else:
+                                        # No open position, open a new short position
+                                        self.positions[symbol] = {
+                                            'entry_price': current_price,
+                                            'quantity': quantity,
+                                            'entry_timestamp': timestamp,
+                                            'is_short': True  # Mark this as a short position
+                                        }
+                                        logger.info(f"DEBUG: Opened SHORT position for {symbol} at {current_price}, qty={quantity}")
                         
                         # Update progress
                         processed_steps += 1
@@ -160,25 +266,63 @@ class BacktesterEngine:
                         
                         # Update progress every 5% or for the last update
                         if progress_percent - last_progress_update >= 5 or progress_percent == 100:
-                            logger.info(f"🔧 Backtest progress: {progress_percent:.1f}%")
-                            last_progress_update = progress_percent
-                    
-                    logger.info(f"🔧 Completed {symbol} {timeframe}")
-            
-            # Calculate final metrics
-            final_balance = self.balance
-            performance_metrics = self.calculate_performance_metrics(
-                self.trades, self.initial_balance, final_balance
-            )
-            
-            # Display results
-            self.display_results(performance_metrics)
-            
-            return performance_metrics
-            
+                            logger.info(f"🔧 Backtest progress: 100.0%")
+                            logger.info(f"🔧 Completed {symbol}{timeframe}")
+
+                            # Close any remaining positions at the end of backtest
+                            for symbol, position in self.positions.items():
+                                current_price = data[symbol][timeframe].iloc[-1]['close']  # Use last known price
+                                entry_price = position['entry_price']
+                                entry_timestamp = position['entry_timestamp']
+                                quantity = position['quantity']
+                                is_short = position.get('is_short', False)
+                                
+                                # Calculate final PnL based on position type
+                                if is_short:
+                                    # For short positions, we profit when price goes down
+                                    pnl = (entry_price - current_price) * quantity
+                                    direction = 'BUY'  # We use a BUY to close a short position
+                                else:
+                                    # For long positions, we profit when price goes up
+                                    pnl = (current_price - entry_price) * quantity
+                                    direction = 'SELL'  # We use a SELL to close a long position
+                                
+                                # Record the completed trade
+                                logger.info(f"DEBUG: Closing final {'SHORT' if is_short else 'LONG'} position for {symbol}: entry={entry_price}, exit={current_price}, qty={quantity}, pnl={pnl}")
+                                
+                                self.performance_tracker.record_trade({
+                                    'symbol': symbol,
+                                    'direction': direction,
+                                    'entry_price': entry_price,
+                                    'exit_price': current_price,
+                                    'size': quantity,
+                                    'entry_timestamp': entry_timestamp,
+                                    'exit_timestamp': timestamp,
+                                    'pnl': pnl
+                                })
+
+                            # Calculate and display performance metrics
+                            metrics = self._calculate_performance_metrics()
+                            self._display_results(metrics)
+
+                            # Return metrics for GUI
+                            return {
+                                'win_rate': metrics['win_rate_pct'],
+                                'sharpe_ratio': metrics['sharpe_ratio'],
+                                'max_drawdown': metrics['max_drawdown_pct'],
+                                'total_return': metrics['total_return_pct'],
+                                'total_trades': metrics['total_trades']
+                            }
+
         except Exception as e:
-            logger.error(f"❌ Error during backtest: {e}")
-            raise
+            logger.error(f"Error in backtest: {e}")
+            return {
+                'win_rate': 0.0,
+                'sharpe_ratio': 0.0,
+                'max_drawdown': 0.0,
+                'total_return': 0.0,
+                'total_trades': 0
+            }
     
     def _validate_data(self, data: Dict[str, Dict[str, pd.DataFrame]], 
                       symbols: List[str], timeframes: List[str]) -> bool:
@@ -700,3 +844,59 @@ class BacktesterEngine:
             'processing_stats': self.processing_stats,
             'strategy_state': self.strategy.get_strategy_state() if hasattr(self.strategy, 'get_strategy_state') else None
         }
+    
+    def _calculate_performance_metrics(self):
+        """Calculate performance metrics from trades"""
+        logger.info(f"DEBUG: Calculating metrics with {len(self.performance_tracker.trades)} trades")
+        
+        if not self.performance_tracker.trades:
+            logger.info("DEBUG: No trades found in performance tracker")
+            return {
+                'total_return_pct': 0.0,
+                'win_rate_pct': 0.0,
+                'sharpe_ratio': 0.0,
+                'max_drawdown_pct': 0.0,
+                'total_trades': 0
+            }
+        
+        trades = self.performance_tracker.trades
+        total_trades = len(trades)
+        logger.info(f"DEBUG: Processing {total_trades} trades")
+        
+        # Debug: Print first few trades
+        for i, trade in enumerate(trades[:3]):
+            logger.info(f"DEBUG: Trade {i}: {trade.direction} {trade.symbol} pnl={trade.pnl}")
+        
+        winning_trades = len([t for t in trades if t.pnl > 0])
+        win_rate = (winning_trades / total_trades * 100) if total_trades > 0 else 0.0
+        
+        total_pnl = sum(t.pnl for t in trades)
+        logger.info(f"DEBUG: Total PnL: {total_pnl}")
+        total_return_pct = (total_pnl / self.initial_balance * 100) if self.initial_balance > 0 else 0.0
+        
+        # Simple Sharpe ratio calculation (assuming risk-free rate = 0)
+        pnl_list = [t.pnl for t in trades]
+        sharpe_ratio = (np.mean(pnl_list) / np.std(pnl_list)) * np.sqrt(252) if len(pnl_list) > 1 and np.std(pnl_list) > 0 else 0.0
+        
+        metrics = {
+            'total_return_pct': total_return_pct,
+            'win_rate_pct': win_rate,
+            'sharpe_ratio': sharpe_ratio,
+            'max_drawdown_pct': 0.0,  # Simplified for now
+            'total_trades': total_trades
+        }
+        
+        logger.info(f"DEBUG: Calculated metrics: {metrics}")
+        return metrics
+
+    def _display_results(self, metrics):
+        """Display backtest results"""
+        print("=" * 50)
+        print("📊 BACKTEST RESULTS")
+        print("=" * 50)
+        print(f"💰 Total Return: {metrics['total_return_pct']:.2f}%")
+        print(f"🎯 Win Rate: {metrics['win_rate_pct']:.2f}%")
+        print(f"📈 Sharpe Ratio: {metrics['sharpe_ratio']:.2f}")
+        print(f"📉 Max Drawdown: {metrics['max_drawdown_pct']:.2f}%")
+        print(f"🔄 Total Trades: {metrics['total_trades']}")
+        print("=" * 50)

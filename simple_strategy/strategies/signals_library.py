@@ -40,7 +40,6 @@ def overbought_oversold(indicator, overbought=70, oversold=30):
     
     return signals
 
-
 def ma_crossover(fast_ma, slow_ma):
     """
     Generate MA crossover signals
