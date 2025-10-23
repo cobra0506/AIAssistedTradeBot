@@ -1,0 +1,49 @@
+2025-10-22 22:25:02 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000257EE2523D0>
+2025-10-22 22:25:02 - asyncio - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x00000257EE5DBA60>, 1710.515), (<aiohttp.client_proto.ResponseHandler object at 0x00000257EE5DB6A0>, 1711.406), (<aiohttp.client_proto.ResponseHandler object at 0x00000257EE5EC6A0>, 1711.406), (<aiohttp.client_proto.ResponseHandler object at 0x00000257EE5DBA00>, 1716.14)]']
+connector: <aiohttp.connector.TCPConnector object at 0x00000257EE252190>
+2025-10-22 22:25:02 - asyncio - ERROR - Fatal error on SSL transport
+protocol: <asyncio.sslproto.SSLProtocol object at 0x00000257EE22A9D0>
+transport: <_ProactorSocketTransport fd=1168 read=<_OverlappedFuture cancelled>>
+Traceback (most recent call last):
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 690, in _process_write_backlog
+    self._transport.write(chunk)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 359, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 395, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+AttributeError: 'NoneType' object has no attribute 'send'
+2025-10-22 22:25:02 - asyncio - ERROR - Fatal error on SSL transport
+protocol: <asyncio.sslproto.SSLProtocol object at 0x00000257EE5D62B0>
+transport: <_ProactorSocketTransport fd=1160 read=<_OverlappedFuture cancelled>>
+Traceback (most recent call last):
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 690, in _process_write_backlog
+    self._transport.write(chunk)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 359, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 395, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+AttributeError: 'NoneType' object has no attribute 'send'
+2025-10-22 22:25:02 - asyncio - ERROR - Fatal error on SSL transport
+protocol: <asyncio.sslproto.SSLProtocol object at 0x00000257EE5D6550>
+transport: <_ProactorSocketTransport fd=1324 read=<_OverlappedFuture cancelled>>
+Traceback (most recent call last):
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 690, in _process_write_backlog
+    self._transport.write(chunk)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 359, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 395, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+AttributeError: 'NoneType' object has no attribute 'send'
+2025-10-22 22:25:02 - asyncio - ERROR - Fatal error on SSL transport
+protocol: <asyncio.sslproto.SSLProtocol object at 0x00000257EE5E0310>
+transport: <_ProactorSocketTransport fd=-1 read=<_OverlappedFuture cancelled>>
+Traceback (most recent call last):
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 690, in _process_write_backlog
+    self._transport.write(chunk)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 359, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 395, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+AttributeError: 'NoneType' object has no attribute 'send'

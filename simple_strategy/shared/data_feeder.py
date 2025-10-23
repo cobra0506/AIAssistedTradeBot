@@ -18,7 +18,7 @@ class DataFeeder:
     Supports multiple symbols, timeframes, and memory management.
     """
     
-    def __init__(self, data_dir: str = 'data', memory_limit_percent: float = 50):
+    def __init__(self, data_dir: str = 'data', memory_limit_percent: float = 90):
         """
         Initialize data feeder with memory management.
         
