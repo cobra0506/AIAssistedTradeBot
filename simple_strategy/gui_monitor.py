@@ -366,15 +366,28 @@ class SimpleStrategyGUI:
                     self.results_text.insert(tk.END, "📊 BACKTEST RESULTS\n")
                     self.results_text.insert(tk.END, "="*50 + "\n")
                     
-                    if 'performance_metrics' in results:
-                        metrics = results['performance_metrics']
-                        self.results_text.insert(tk.END, f"💰 Total Return: {metrics.get('total_return', 0):.2f}%\n")
-                        self.results_text.insert(tk.END, f"🎯 Win Rate: {metrics.get('win_rate', 0):.2f}%\n")
-                        self.results_text.insert(tk.END, f"📈 Sharpe Ratio: {metrics.get('sharpe_ratio', 0):.2f}\n")
-                        self.results_text.insert(tk.END, f"📉 Max Drawdown: {metrics.get('max_drawdown', 0):.2f}%\n")
-                        self.results_text.insert(tk.END, f"🔄 Total Trades: {metrics.get('total_trades', 0)}\n")
+                    # Check if results contain the expected metrics
+                    if results and isinstance(results, dict):
+                        # Handle direct metrics format (your current format)
+                        if 'total_return' in results:
+                            self.results_text.insert(tk.END, f"💰 Total Return: {results.get('total_return', 0):.2f}%\n")
+                            self.results_text.insert(tk.END, f"🎯 Win Rate: {results.get('win_rate', 0):.2f}%\n")
+                            self.results_text.insert(tk.END, f"📈 Sharpe Ratio: {results.get('sharpe_ratio', 0):.2f}\n")
+                            self.results_text.insert(tk.END, f"📉 Max Drawdown: {results.get('max_drawdown', 0):.2f}%\n")
+                            self.results_text.insert(tk.END, f"🔄 Total Trades: {results.get('total_trades', 0)}\n")
+                        # Handle nested metrics format (alternative format)
+                        elif 'performance_metrics' in results:
+                            metrics = results['performance_metrics']
+                            self.results_text.insert(tk.END, f"💰 Total Return: {metrics.get('total_return', 0):.2f}%\n")
+                            self.results_text.insert(tk.END, f"🎯 Win Rate: {metrics.get('win_rate', 0):.2f}%\n")
+                            self.results_text.insert(tk.END, f"📈 Sharpe Ratio: {metrics.get('sharpe_ratio', 0):.2f}\n")
+                            self.results_text.insert(tk.END, f"📉 Max Drawdown: {metrics.get('max_drawdown', 0):.2f}%\n")
+                            self.results_text.insert(tk.END, f"🔄 Total Trades: {metrics.get('total_trades', 0)}\n")
+                        else:
+                            self.results_text.insert(tk.END, "❌ No performance metrics returned\n")
+                            self.results_text.insert(tk.END, f"Results: {results}\n")
                     else:
-                        self.results_text.insert(tk.END, "❌ No performance metrics returned\n")
+                        self.results_text.insert(tk.END, "❌ No results returned\n")
                         self.results_text.insert(tk.END, f"Results: {results}\n")
                     
                     self.status_var.set("✅ Backtest completed successfully")

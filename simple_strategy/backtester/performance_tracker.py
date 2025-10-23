@@ -145,15 +145,16 @@ class PerformanceTracker:
             
             # Add to trades list
             self.trades.append(trade)
-            
             # Update current balance
-            self.current_balance += trade.pnl
-            
+            self.current_balance+=trade.pnl
             # Invalidate cache
             self._metrics_cache = None
             self._last_calculation_time = None
-            
-            logger.debug(f"Recorded trade: {trade.symbol} {trade.direction} P&L: ${trade.pnl:.2f}")
+
+            # Debug output
+            logger.info(f"DEBUG: Recorded trade {trade.trade_id}: {trade.direction} {trade.symbol} pnl={trade.pnl}")
+            logger.info(f"DEBUG: Total trades in tracker: {len(self.trades)}")
+
             return True
             
         except Exception as e:
