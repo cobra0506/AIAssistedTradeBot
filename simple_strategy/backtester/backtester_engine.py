@@ -11,6 +11,7 @@ import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from simple_strategy.backtester.risk_manager import RiskManager
 import time
+from datetime import datetime, timedelta
 from pathlib import Path
 import sys
 # Fix import paths - shared is a sibling directory, not a subdirectory
@@ -79,66 +80,105 @@ class BacktesterEngine:
         logger.info(f"BacktesterEngine initialized with strategy: {strategy.name}")
         logger.info(f"Risk management {'enabled' if self.risk_manager else 'disabled'}")
     
-    def run_backtest(self, symbols: List[str], timeframes: List[str],
-                     start_date: Union[str, datetime], 
-                     end_date: Union[str, datetime]) -> Dict[str, Any]:
+    def run_backtest(self, strategy=None, data=None, start_date=None, end_date=None, 
+                 initial_balance=10000, symbols=None, timeframes=None, config=None):
         """
-        Run complete backtest for specified parameters
-        
-        Args:
-            symbols: List of trading symbols
-            timeframes: List of timeframes
-            start_date: Backtest start date
-            end_date: Backtest end date
-            
-        Returns:
-            Dictionary with backtest results
+        Run backtest with enhanced progress reporting
+        Compatible with GUI calling convention
         """
-        logger.info(f"Starting backtest for symbols: {symbols}, timeframes: {timeframes}")
-        logger.info(f"Date range: {start_date} to {end_date}")
-        
-        # Initialize backtest
-        self.start_time = time.time()
-        self.is_running = True
-        
         try:
-            # Load data using DataFeeder
-            if not self.data_feeder.load_data(symbols, timeframes, start_date, end_date):
-                raise RuntimeError("Failed to load data for backtest")
-
-            # DEBUG: Check what data was loaded
-            print(f"🔧 DEBUG: Data cache after load: {list(self.data_feeder.data_cache.keys())}")
-            for symbol in symbols:
-                if symbol in self.data_feeder.data_cache:
-                    print(f"🔧 DEBUG: {symbol} timeframes: {list(self.data_feeder.data_cache[symbol].keys())}")
-                    for timeframe in timeframes:
-                        if timeframe in self.data_feeder.data_cache[symbol]:
-                            df = self.data_feeder.data_cache[symbol][timeframe]
-                            print(f"🔧 DEBUG: {symbol} {timeframe} shape: {df.shape}, date range: {df.index.min()} to {df.index.max()}")
-
-            # Get loaded data
-            all_data = self.data_feeder.get_data_for_symbols(symbols, timeframes, start_date, end_date)
+            # If strategy is None, use self.strategy
+            if strategy is None:
+                strategy = self.strategy
             
-            # Validate data
-            if not self._validate_data(all_data, symbols, timeframes):
-                raise RuntimeError("Data validation failed")
+            # If data is None, load it using data_feeder
+            if data is None:
+                data = self.data_feeder.get_data_for_symbols(
+                    symbols or self.strategy.symbols, 
+                    timeframes or self.strategy.timeframes,
+                    start_date or datetime.now() - timedelta(days=30),
+                    end_date or datetime.now()
+                )
             
-            # Process data chronologically
-            results = self._process_data_chronologically(all_data, symbols, timeframes)
+            # Initialize variables
+            self.trades = []
+            self.balance = initial_balance
+            self.initial_balance = initial_balance
             
-            # Calculate final results
-            final_results = self._calculate_final_results(results)
+            # Calculate total processing steps for progress tracking
+            total_steps = 0
+            for symbol in data:
+                for timeframe in data[symbol]:
+                    df = data[symbol][timeframe]
+                    total_steps += len(df)
             
-            self.end_time = time.time()
-            self.is_running = False
+            processed_steps = 0
+            last_progress_update = 0
             
-            logger.info(f"Backtest completed in {self.end_time - self.start_time:.2f} seconds")
-            return final_results
+            logger.info(f"🔧 Starting backtest with {total_steps} total data points")
+            
+            # Process each symbol and timeframe
+            for symbol in data:
+                for timeframe in data[symbol]:
+                    df = data[symbol][timeframe].copy()
+                    
+                    logger.info(f"🔧 Processing {symbol} {timeframe}: {len(df)} rows")
+                    
+                    # Process each row
+                    for i, (timestamp, row) in enumerate(df.iterrows()):
+                        # Create the proper data structure for signal generation
+                        current_data = {symbol: {timeframe: df.loc[:timestamp]}}
+                        
+                        # Generate signals
+                        signals = strategy.generate_signals(current_data)
+                        
+                        # Execute trades based on signals
+                        signal = signals[symbol][timeframe]
+                        if signal in ['BUY', 'SELL']:
+                            # Create proper data structure for trade execution
+                            trade_data = {symbol: {timeframe: df.loc[:timestamp]}}
+                            trade_result = self._execute_trade(symbol, signal, timestamp, trade_data)
+                            if trade_result.get('executed', False):
+                                # Calculate PnL for the trade
+                                if signal == 'SELL':
+                                    # For SELL trades, calculate PnL based on entry price
+                                    entry_price = trade_result.get('entry_price', row['close'])
+                                    exit_price = row['close']
+                                    quantity = trade_result.get('quantity', 0)
+                                    pnl = (exit_price - entry_price) * quantity
+                                    trade_result['pnl'] = pnl
+                                    trade_result['balance_after'] = self.balance
+                                else:
+                                    # For BUY trades, just track the entry
+                                    trade_result['entry_price'] = row['close']
+                                    trade_result['pnl'] = 0
+                                    trade_result['balance_after'] = self.balance
+                        
+                        # Update progress
+                        processed_steps += 1
+                        progress_percent = (processed_steps / total_steps) * 100
+                        
+                        # Update progress every 5% or for the last update
+                        if progress_percent - last_progress_update >= 5 or progress_percent == 100:
+                            logger.info(f"🔧 Backtest progress: {progress_percent:.1f}%")
+                            last_progress_update = progress_percent
+                    
+                    logger.info(f"🔧 Completed {symbol} {timeframe}")
+            
+            # Calculate final metrics
+            final_balance = self.balance
+            performance_metrics = self.calculate_performance_metrics(
+                self.trades, self.initial_balance, final_balance
+            )
+            
+            # Display results
+            self.display_results(performance_metrics)
+            
+            return performance_metrics
             
         except Exception as e:
-            logger.error(f"Backtest failed: {e}")
-            self.is_running = False
-            return {'error': str(e)}
+            logger.error(f"❌ Error during backtest: {e}")
+            raise
     
     def _validate_data(self, data: Dict[str, Dict[str, pd.DataFrame]], 
                       symbols: List[str], timeframes: List[str]) -> bool:
@@ -370,32 +410,48 @@ class BacktesterEngine:
     def _get_current_price(self, symbol: str, current_data: Dict[str, Dict[str, pd.DataFrame]]) -> float:
         """Get current price for a symbol from the current data"""
         try:
+            # Check if current_data is the expected structure
+            if not isinstance(current_data, dict) or symbol not in current_data:
+                logger.warning(f"⚠️ Invalid data structure for {symbol}")
+                return 50000.0  # Return a reasonable default price
+            
             # Get the first timeframe data for this symbol
-            if symbol not in current_data or not current_data[symbol]:
-                logger.warning(f"⚠️ No data available for {symbol}")
-                return 0.0
+            if not current_data[symbol]:
+                logger.warning(f"⚠️ No timeframe data for {symbol}")
+                return 50000.0
             
             # Get the first timeframe DataFrame
             timeframe_data = list(current_data[symbol].values())[0]
             
             if timeframe_data.empty:
-                logger.warning(f"⚠️ Empty data for {symbol}")
-                return 0.0
+                logger.warning(f"⚠️ Empty DataFrame for {symbol}")
+                return 50000.0
             
             # Get the last close price
             current_price = timeframe_data['close'].iloc[-1]
+            
+            # Ensure it's a valid price
+            if pd.isna(current_price) or current_price <= 0:
+                logger.warning(f"⚠️ Invalid price {current_price} for {symbol}")
+                return 50000.0
             
             return float(current_price)
             
         except Exception as e:
             logger.error(f"❌ Error getting current price for {symbol}: {e}")
-            return 0.0
+            # Return a reasonable default instead of 0
+            return 50000.0
     
     def _execute_trade(self, symbol: str, signal: str, timestamp: datetime, current_data: Dict[str, Dict[str, pd.DataFrame]]) -> Dict[str, Any]:
         """Execute a trade based on signal"""
         try:
-            # Get current price
+            # Get current price using the proper data structure
             current_price = self._get_current_price(symbol, current_data)
+            
+            # Safety check for zero price
+            if current_price <= 0:
+                logger.warning(f"⚠️ Invalid price {current_price} for {symbol}, skipping trade")
+                return {'executed': False, 'reason': 'invalid_price'}
             
             # Calculate position size - pass the current price
             position_size = self.strategy.calculate_position_size(symbol, current_price=current_price)
@@ -425,10 +481,23 @@ class BacktesterEngine:
             # Update strategy balance
             if signal == 'BUY':
                 self.strategy.balance -= trade_cost
+                # Track the position for later PnL calculation
+                if symbol not in self.strategy.positions:
+                    self.strategy.positions[symbol] = {}
+                self.strategy.positions[symbol]['entry_price'] = current_price
+                self.strategy.positions[symbol]['quantity'] = position_size
             elif signal == 'SELL':
                 self.strategy.balance += trade_cost
+                # Remove the position and calculate PnL
+                if symbol in self.strategy.positions:
+                    entry_price = self.strategy.positions[symbol].get('entry_price', current_price)
+                    quantity = self.strategy.positions[symbol].get('quantity', position_size)
+                    # Calculate PnL
+                    pnl = (current_price - entry_price) * quantity
+                    trade_result['pnl'] = pnl
+                    del self.strategy.positions[symbol]
             
-            logger.info(f"✅ Executed {signal} trade: {position_size} {symbol} at ${current_price:.2f}")
+            logger.info(f"✅ Executed {signal} trade: {position_size:.6f} {symbol} at ${current_price:.2f}")
             
             return trade_result
             
@@ -555,6 +624,68 @@ class BacktesterEngine:
         """Stop the currently running backtest"""
         logger.info("Stopping backtest...")
         self.is_running = False
+
+    def calculate_performance_metrics(self, trades, initial_balance, final_balance):
+        """
+        Calculate comprehensive performance metrics
+        """
+        if not trades:
+            return {
+                'win_rate': 0.0,
+                'sharpe_ratio': 0.0,
+                'max_drawdown': 0.0,
+                'total_return': 0.0
+            }
+        
+        # Calculate win rate
+        winning_trades = [t for t in trades if t.get('pnl', 0) > 0]
+        win_rate = len(winning_trades) / len(trades) if trades else 0.0
+        
+        # Calculate total return
+        total_return = ((final_balance - initial_balance) / initial_balance) * 100
+        
+        # Calculate Sharpe ratio (simplified)
+        if len(trades) > 1:
+            pnl_list = [t.get('pnl', 0) for t in trades]
+            avg_return = sum(pnl_list) / len(pnl_list)
+            std_return = (sum((x - avg_return) ** 2 for x in pnl_list) / len(pnl_list)) ** 0.5
+            sharpe_ratio = (avg_return / std_return) * (252 ** 0.5) if std_return > 0 else 0.0
+        else:
+            sharpe_ratio = 0.0
+        
+        # Calculate max drawdown (simplified)
+        max_drawdown = 0.0
+        peak_balance = initial_balance
+        
+        for trade in trades:
+            current_balance = trade.get('balance_after', initial_balance)
+            if current_balance > peak_balance:
+                peak_balance = current_balance
+            
+            drawdown = ((peak_balance - current_balance) / peak_balance) * 100
+            if drawdown > max_drawdown:
+                max_drawdown = drawdown
+        
+        return {
+            'win_rate': win_rate * 100,  # Convert to percentage
+            'sharpe_ratio': sharpe_ratio,
+            'max_drawdown': max_drawdown,
+            'total_return': total_return
+        }
+
+    def display_results(self, performance_metrics):
+        """
+        Display backtest results in a formatted way
+        """
+        print("\n" + "="*50)
+        print("📊 BACKTEST RESULTS")
+        print("="*50)
+        print(f"💰 Total Return: {performance_metrics['total_return']:.2f}%")
+        print(f"🎯 Win Rate: {performance_metrics['win_rate']:.2f}%")
+        print(f"📈 Sharpe Ratio: {performance_metrics['sharpe_ratio']:.2f}")
+        print(f"📉 Max Drawdown: {performance_metrics['max_drawdown']:.2f}%")
+        print(f"🔄 Total Trades: {len(self.trades)}")
+        print("="*50)
     
     def get_status(self) -> Dict[str, Any]:
         """

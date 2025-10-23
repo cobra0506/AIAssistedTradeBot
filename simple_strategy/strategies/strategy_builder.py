@@ -33,7 +33,7 @@ class StrategyBuilder:
     - Explicit indicator references in signal rules
     - Type safety and error prevention
     - Easy debugging and understanding
-    - Validations happen during build(), not during method calls
+    - Validations happen during build(), not during individual method calls
     """
     
     def __init__(self, symbols: List[str], timeframes: List[str] = ['1m']):
@@ -258,11 +258,7 @@ class StrategyBuilder:
 
     def _calculate_indicators(self, data: pd.DataFrame) -> Dict[str, Any]:
         """
-        Calculate all indicators and handle multi-component indicators
-        Args:
-            data: OHLCV data
-        Returns:
-            Dictionary of calculated indicators and their components
+        Calculate all indicators and add them to DataFrame columns
         """
         calculated_indicators = {}
         
@@ -270,29 +266,56 @@ class StrategyBuilder:
             try:
                 func = indicator_data['function']
                 params = indicator_data['params']
+                func_name = func.__name__
                 
-                # Calculate the indicator
-                result = func(data['close'], **params)
+                # Handle different indicator function signatures
+                if func_name in ['stochastic', 'atr', 'cci', 'williams_r']:
+                    # These indicators need OHLC data
+                    result = func(data['high'], data['low'], data['close'], **params)
+                elif func_name in ['on_balance_volume']:
+                    # This needs close and volume
+                    result = func(data['close'], data['volume'], **params)
+                elif func_name in ['volume_sma']:
+                    # This needs volume data
+                    result = func(data['volume'], **params)
+                else:
+                    # Standard indicators that only need close price
+                    result = func(data['close'], **params)
                 
                 # Handle different result types
                 if isinstance(result, tuple):
                     # Multi-component indicator (MACD, Bollinger Bands, etc.)
-                    if func.__name__ == 'macd':
+                    if func_name == 'macd':
                         # MACD returns (macd_line, signal_line, histogram)
+                        data[f"{indicator_name}_macd_line"] = result[0]
+                        data[f"{indicator_name}_signal_line"] = result[1]
+                        data[f"{indicator_name}_histogram"] = result[2]
                         calculated_indicators[f"{indicator_name}_macd_line"] = result[0]
                         calculated_indicators[f"{indicator_name}_signal_line"] = result[1]
                         calculated_indicators[f"{indicator_name}_histogram"] = result[2]
-                    elif func.__name__ == 'bollinger_bands':
+                    elif func_name == 'bollinger_bands':
                         # Bollinger Bands returns (upper_band, middle_band, lower_band)
+                        data[f"{indicator_name}_upper_band"] = result[0]
+                        data[f"{indicator_name}_middle_band"] = result[1]
+                        data[f"{indicator_name}_lower_band"] = result[2]
                         calculated_indicators[f"{indicator_name}_upper_band"] = result[0]
                         calculated_indicators[f"{indicator_name}_middle_band"] = result[1]
                         calculated_indicators[f"{indicator_name}_lower_band"] = result[2]
+                    elif func_name == 'stochastic':
+                        # Stochastic returns (%K, %D)
+                        data[f"{indicator_name}_k_percent"] = result[0]
+                        data[f"{indicator_name}_d_percent"] = result[1]
+                        calculated_indicators[f"{indicator_name}_k_percent"] = result[0]
+                        calculated_indicators[f"{indicator_name}_d_percent"] = result[1]
                     else:
                         # Generic tuple handling
                         for i, component in enumerate(result):
-                            calculated_indicators[f"{indicator_name}_component_{i}"] = component
+                            col_name = f"{indicator_name}_component_{i}"
+                            data[col_name] = component
+                            calculated_indicators[col_name] = component
                 else:
                     # Single-component indicator
+                    data[indicator_name] = result
                     calculated_indicators[indicator_name] = result
                 
                 # Store the result for reference
@@ -301,12 +324,15 @@ class StrategyBuilder:
             except Exception as e:
                 logger.error(f"❌ Error calculating indicator {indicator_name}: {e}")
                 # Create empty result to avoid breaking the system
-                calculated_indicators[indicator_name] = pd.Series(0, index=data.index)
+                empty_series = pd.Series(0, index=data.index)
+                data[indicator_name] = empty_series
+                calculated_indicators[indicator_name] = empty_series
         
-        # Add price data as a special indicator
+        # Add price data as special indicators
+        data['price'] = data['close']
         calculated_indicators['price'] = data['close']
         
-        return calculated_indicators
+        return calculated_indicators                                                                            
     
     def set_strategy_info(self, name: str, version: str = "1.0.0") -> 'StrategyBuilder':
         """
@@ -342,7 +368,7 @@ class StrategyBuilder:
         # 3. Validate signal rule indicator references
         for rule_name, rule_config in self.signal_rules.items():
             for param_name, indicator_name in rule_config['indicator_refs']:
-                if indicator_name not in self.indicators:
+                if indicator_name not in self.indicators and indicator_name != 'price':
                     available_indicators = list(self.indicators.keys())
                     raise ValueError(
                         f"Signal rule '{rule_name}' references unknown indicator '{indicator_name}'. "
@@ -381,6 +407,159 @@ class StrategyBuilder:
         
         logger.debug("✅ Strategy configuration validation passed")
     
+    def _execute_signal_rules(self, data: pd.DataFrame) -> pd.Series:
+        """
+        Execute all signal rules and return combined signals
+        """
+        all_signals = []
+        
+        for signal_name, signal_rule in self.signal_rules.items():
+            try:
+                signal_func = signal_rule['function']
+                indicator_refs = signal_rule['indicator_refs']
+                signal_params = signal_rule['params']
+                
+                # Prepare arguments for signal function
+                signal_args = {}
+                
+                # Map indicator references to actual pandas Series from DataFrame
+                for param_name, indicator_ref in indicator_refs:
+                    if indicator_ref == 'price':
+                        signal_args[param_name] = data['close']  # Use close price as 'price'
+                    elif indicator_ref in data.columns:
+                        signal_args[param_name] = data[indicator_ref]  # Use DataFrame column
+                    else:
+                        # Try to find the indicator in the calculated indicators
+                        found = False
+                        for col_name in data.columns:
+                            if indicator_ref in col_name or col_name.endswith(indicator_ref):
+                                signal_args[param_name] = data[col_name]
+                                found = True
+                                break
+                        
+                        if not found:
+                            logger.error(f"❌ Indicator '{indicator_ref}' not found in DataFrame for signal '{signal_name}'")
+                            continue
+                
+                # Add signal parameters
+                signal_args.update(signal_params)
+                
+                # Call signal function with correct parameters
+                signal_result = signal_func(**signal_args)
+                
+                # Validate result is pandas Series
+                if isinstance(signal_result, pd.Series):
+                    all_signals.append(signal_result)
+                else:
+                    logger.error(f"❌ Signal function '{signal_name}' returned {type(signal_result)}, expected pandas Series")
+                    
+            except Exception as e:
+                logger.error(f"❌ Error executing signal rule '{signal_name}': {e}")
+        
+        # Combine signals based on combination method
+        if not all_signals:
+            return pd.Series('HOLD', index=data.index)
+        
+        # Implement signal combination logic
+        return self._combine_signals(all_signals, data.index)
+    
+    def _combine_signals(self, signals: List[pd.Series], index) -> pd.Series:
+        """
+        Combine multiple signal series based on the combination method
+        """
+        if not signals:
+            return pd.Series('HOLD', index=index)
+        
+        if self.signal_combination == 'majority_vote':
+            # Implement majority vote logic
+            # Convert all signals to numeric format for easier comparison
+            numeric_signals = []
+            for signal in signals:
+                if signal.dtype == 'object':
+                    # Convert text signals to numeric
+                    numeric = signal.map({'BUY': 1, 'SELL': -1, 'HOLD': 0})
+                    numeric_signals.append(numeric)
+                else:
+                    numeric_signals.append(signal)
+            
+            # Stack signals and find majority
+            if numeric_signals:
+                stacked = pd.concat(numeric_signals, axis=1)
+                # Sum the signals: positive = BUY, negative = SELL, zero = HOLD
+                summed = stacked.sum(axis=1)
+                result = pd.Series('HOLD', index=index)
+                result[summed > 0] = 'BUY'
+                result[summed < 0] = 'SELL'
+                return result
+            else:
+                return pd.Series('HOLD', index=index)
+        
+        elif self.signal_combination == 'weighted':
+            # Implement weighted combination logic
+            numeric_signals = []
+            for signal in signals:
+                if signal.dtype == 'object':
+                    # Convert text signals to numeric
+                    numeric = signal.map({'BUY': 1, 'SELL': -1, 'HOLD': 0})
+                    numeric_signals.append(numeric)
+                else:
+                    numeric_signals.append(signal)
+            
+            if numeric_signals:
+                # Apply weights
+                weighted_sum = pd.Series(0, index=index)
+                for i, signal in enumerate(numeric_signals):
+                    rule_name = list(self.signal_rules.keys())[i]
+                    weight = self.signal_weights.get(rule_name, 1.0)
+                    weighted_sum += signal * weight
+                
+                result = pd.Series('HOLD', index=index)
+                result[weighted_sum > 0] = 'BUY'
+                result[weighted_sum < 0] = 'SELL'
+                return result
+            else:
+                return pd.Series('HOLD', index=index)
+        
+        else:  # unanimous
+            # All signals must agree
+            all_agree = pd.Series(True, index=index)
+            
+            for signal in signals:
+                if signal.dtype == 'object':
+                    # For text signals, check if all values are the same
+                    for i in range(len(signal)):
+                        if i < len(all_agree) and all_agree.iloc[i]:
+                            # Compare with previous signals
+                            for j in range(i):
+                                if signal.iloc[i] != signal.iloc[j]:
+                                    all_agree.iloc[i] = False
+                                    break
+                else:
+                    # For numeric signals, check if all values are the same
+                    for i in range(len(signal)):
+                        if i < len(all_agree) and all_agree.iloc[i]:
+                            # Compare with previous signals
+                            for j in range(i):
+                                if signal.iloc[i] != signal.iloc[j]:
+                                    all_agree.iloc[i] = False
+                                    break
+            
+            # Create result series
+            result = pd.Series('HOLD', index=index)
+            
+            # For positions where all signals agree, use that signal
+            for i in range(len(all_agree)):
+                if all_agree.iloc[i] and i < len(signals[0]):
+                    signal_value = signals[0].iloc[i]
+                    if isinstance(signal_value, str):
+                        result.iloc[i] = signal_value
+                    elif signal_value == 1:
+                        result.iloc[i] = 'BUY'
+                    elif signal_value == -1:
+                        result.iloc[i] = 'SELL'
+            
+            return result
+
     def build(self) -> StrategyBase:
         """
         Build the complete strategy
@@ -396,455 +575,54 @@ class StrategyBuilder:
             
             # Create the strategy class
             class BuiltStrategy(StrategyBase):
-                def __init__(self, name, symbols, timeframes, config):
+                def __init__(self, name, symbols, timeframes, config, builder):
                     super().__init__(name, symbols, timeframes, config)
+                    
+                    # Store reference to builder
+                    self.builder = builder
                     
                     # Set our custom attributes
                     self._custom_strategy_name = name
                     self._custom_version = "1.0.0"
-                    
-                    # Copy all components from builder
-                    self.indicators = {}
-                    self.signal_rules = {}
-                    self.risk_rules = {}
-                    self.signal_combination = 'majority_vote'
-                    self.signal_weights = {}
-                    
-                    # Strategy state
-                    self.calculated_indicators = {}
-                    self.generated_signals = {}
                 
                 def generate_signals(self, data: Dict[str, Dict[str, pd.DataFrame]]) -> Dict[str, Dict[str, str]]:
-                    """Generate trading signals using the building block system"""
-                    signals = {}
-                    
-                    for symbol in self.symbols:
-                        signals[symbol] = {}
-                        
-                        for timeframe in self.timeframes:
-                            if symbol not in data or timeframe not in data[symbol]:
-                                # If data for this symbol/timeframe doesn't exist, use HOLD
-                                signals[symbol][timeframe] = 'HOLD'
-                                continue
-                            
-                            df = data[symbol][timeframe].copy()
-                            
-                            # Calculate all indicators
-                            indicator_results = self._calculate_indicators(df, symbol, timeframe)
-                            
-                            # Generate signals from indicators
-                            signal_results = self._generate_signals_from_indicators(indicator_results)
-                            
-                            # Combine signals
-                            combined_signal = self._combine_signals(signal_results)
-                            
-                            signals[symbol][timeframe] = combined_signal
-                    
-                    return signals
-                
-                def _calculate_indicators(self, df: pd.DataFrame, symbol: str, timeframe: str) -> Dict[str, Any]:
-                    """Calculate all indicators for the given data"""
-                    results = {}
-                    
-                    # Debug: Print data info
-                    print(f"🔧 Calculating indicators for {symbol} {timeframe} with {len(df)} rows of data")
-                    
-                    for name, config in self.indicators.items():
-                        try:
-                            func = config['function']
-                            params = config['params']
-                            
-                            # Handle different indicator functions
-                            if name in ['stochastic', 'srsi', 'macd', 'bollinger_bands']:
-                                # Multi-output indicators
-                                if name == 'stochastic':
-                                    result = func(df['high'], df['low'], df['close'], **params)
-                                elif name == 'srsi':
-                                    result = func(df['close'], **params)
-                                elif name == 'macd':
-                                    result = func(df['close'], **params)
-                                    # MACD returns (macd_line, signal_line, histogram)
-                                    results[name] = result
-                                    # Also store individual components with correct names
-                                    results[f"{name}_macd_line"] = result[0]
-                                    results[f"{name}_signal_line"] = result[1]
-                                    results[f"{name}_histogram"] = result[2]
-                                elif name == 'bollinger_bands':
-                                    result = func(df['close'], **params)
-                                    # Bollinger Bands returns (upper_band, middle_band, lower_band)
-                                    results[name] = result
-                                    # Also store individual components with correct names
-                                    results[f"{name}_upper_band"] = result[0]
-                                    results[f"{name}_middle_band"] = result[1]
-                                    results[f"{name}_lower_band"] = result[2]
-                            else:
-                                # Single-output indicators
-                                if name in ['atr', 'cci', 'williams_r']:
-                                    result = func(df['high'], df['low'], df['close'], **params)
-                                elif name == 'on_balance_volume':
-                                    result = func(df['close'], df['volume'], **params)
-                                elif name == 'volume_sma':
-                                    result = func(df['volume'], **params)
-                                else:
-                                    result = func(df['close'], **params)
-                                results[name] = result
-                            
-                            # Debug: Print indicator result
-                            if hasattr(result, 'iloc'):
-                                print(f"🔧 Indicator {name}: last value = {result.iloc[-1] if len(result) > 0 else 'N/A'}")
-                            else:
-                                print(f"🔧 Indicator {name}: {result}")
-                            
-                        except Exception as e:
-                            print(f"🔧 Error calculating {name}: {e}")
-                    
-                    return results
-                
-                def _generate_signals_from_indicators(self, indicators: Dict[str, Any]) -> Dict[str, pd.Series]:
-                    """Generate signals from calculated indicators"""
-                    signals = {}
-                    
-                    # SPECIAL CASE: If this is the Candle_Test strategy, use simple candle logic
-                    if hasattr(self, '_custom_strategy_name') and self._custom_strategy_name == 'Candle_Test':
-                        print("🔧 Using Candle Test strategy logic")
-                        
-                        # Get the price data
-                        if 'price' in indicators:
-                            prices = indicators['price']
-                        elif any('sma' in key for key in indicators.keys()):
-                            # Use SMA as proxy for price
-                            for key in indicators.keys():
-                                if 'sma' in key:
-                                    prices = indicators[key]
-                                    break
-                        else:
-                            # Create dummy price data
-                            import pandas as pd
-                            prices = pd.Series([150.0] * 100)  # Dummy price
-                        
-                        # Generate signals based on candle color
-                        signal_values = []
-                        
-                        # We need the actual OHLC data to determine candle color
-                        # For now, we'll simulate it
-                        for i in range(len(prices)):
-                            if i == 0:
-                                signal_values.append('HOLD')  # First candle is always HOLD
-                            else:
-                                # Simulate: if price increased, it's a green candle (BUY)
-                                # If price decreased, it's a red candle (SELL)
-                                if i % 5 == 0:  # Every 5th candle
-                                    signal_values.append('BUY')
-                                elif i % 5 == 3:  # Every 5th candle + 3
-                                    signal_values.append('SELL')
-                                else:
-                                    signal_values.append('HOLD')
-                        
-                        # Convert to pandas Series
-                        import pandas as pd
-                        signals['candle_signal'] = pd.Series(signal_values)
-                        
-                        print(f"🔧 Generated {len(signal_values)} candle signals")
-                        print(f"🔧 BUY signals: {signal_values.count('BUY')}")
-                        print(f"🔧 SELL signals: {signal_values.count('SELL')}")
-                        print(f"🔧 HOLD signals: {signal_values.count('HOLD')}")
-                        
-                        return signals
-                    
-                    # SPECIAL CASE: If this is the Absolute_Test strategy, use simple logic
-                    elif hasattr(self, '_custom_strategy_name') and self._custom_strategy_name == 'Absolute_Test':
-                        print("🔧 Using Absolute Test strategy logic")
-                        
-                        # Get the length of the data
-                        data_length = len(list(indicators.values())[0]) if indicators else 100
-                        
-                        # Create simple alternating BUY/SELL signals
-                        signal_values = []
-                        for i in range(data_length):
-                            if i % 10 == 0:  # Every 10th row
-                                signal_values.append('BUY')
-                            elif i % 10 == 5:  # Every 10th row + 5
-                                signal_values.append('SELL')
-                            else:
-                                signal_values.append('HOLD')
-                        
-                        # Convert to pandas Series
-                        import pandas as pd
-                        signals['test_signal'] = pd.Series(signal_values)
-                        
-                        print(f"🔧 Generated {len(signal_values)} signals")
-                        print(f"🔧 BUY signals: {signal_values.count('BUY')}")
-                        print(f"🔧 SELL signals: {signal_values.count('SELL')}")
-                        print(f"🔧 HOLD signals: {signal_values.count('HOLD')}")
-                        
-                        return signals
-                    
-                    # NORMAL STRATEGY LOGIC CONTINUES HERE...
-                    for rule_name, config in self.signal_rules.items():
-                        try:
-                            func = config['function']
-                            indicator_refs = config['indicator_refs']
-                            signal_params = config['params']
-                            
-                            # Prepare arguments for signal function
-                            args = []
-                            
-                            # First, add the indicator arguments in the correct order
-                            for param_name, indicator_name in indicator_refs:
-                                if indicator_name not in indicators:
-                                    print(f"🔧 Indicator '{indicator_name}' not found in calculated indicators")
-                                    continue
-                                
-                                indicator_result = indicators[indicator_name]
-                                
-                                # Handle multi-output indicators
-                                if isinstance(indicator_result, tuple):
-                                    # For most cases, we want the first element
-                                    indicator_result = indicator_result[0]
-                                
-                                # Clean NaN values
-                                if hasattr(indicator_result, 'fillna'):
-                                    indicator_result = indicator_result.fillna(50)  # Neutral value
-                                
-                                args.append(indicator_result)
-                            
-                            # Then add the signal parameters
-                            args.extend(signal_params.values())
-                            
-                            # Generate signal
-                            signal_result = func(*args)
-                            signals[rule_name] = signal_result
-                            
-                            # Debug: Print signal result
-                            last_signal = signal_result.iloc[-1] if len(signal_result) > 0 else 'N/A'
-                            print(f"🔧 Signal {rule_name}: last value = {last_signal}")
-                            
-                        except Exception as e:
-                            print(f"🔧 Error generating {rule_name} signal: {e}")
-                    
-                    return signals
-                
-                def _combine_signals(self, signals: Dict[str, pd.Series]) -> str:
-                    """Combine multiple signals into one final signal"""
-                    if not signals:
-                        return 'HOLD'
-                    
-                    try:
-                        if self.signal_combination == 'majority_vote':
-                            # Count BUY, SELL, and HOLD signals
-                            signal_counts = {'BUY': 0, 'SELL': 0, 'HOLD': 0}
-                            
-                            for signal_series in signals.values():
-                                # Get the last signal value
-                                last_signal = signal_series.iloc[-1] if len(signal_series) > 0 else 'HOLD'
-                                if last_signal in signal_counts:
-                                    signal_counts[last_signal] += 1
-                            
-                            # Debug: Print signal counts
-                            print(f"🔧 Signal counts: {signal_counts}")
-                            
-                            # Return the signal with the most votes
-                            return max(signal_counts, key=signal_counts.get)
-                        
-                        elif self.signal_combination == 'weighted':
-                            # Apply weights to signals and calculate weighted score
-                            weighted_score = 0
-                            
-                            for rule_name, signal_series in signals.items():
-                                if rule_name in self.signal_weights:
-                                    weight = self.signal_weights[rule_name]
-                                    last_signal = signal_series.iloc[-1] if len(signal_series) > 0 else 'HOLD'
-                                    
-                                    # Convert signal to numeric value
-                                    signal_value = 0
-                                    if last_signal == 'BUY':
-                                        signal_value = 1
-                                    elif last_signal == 'SELL':
-                                        signal_value = -1
-                                    
-                                    weighted_score += weight * signal_value
-                            
-                            # Debug: Print weighted score
-                            print(f"🔧 Weighted score: {weighted_score}")
-                            
-                            # Convert weighted score back to signal
-                            if weighted_score > 0:
-                                return 'BUY'
-                            elif weighted_score < 0:
-                                return 'SELL'
-                            else:
-                                return 'HOLD'
-                        
-                        elif self.signal_combination == 'unanimous':
-                            # All signals must agree
-                            all_signals = []
-                            
-                            for signal_series in signals.values():
-                                last_signal = signal_series.iloc[-1] if len(signal_series) > 0 else 'HOLD'
-                                all_signals.append(last_signal)
-                            
-                            # Debug: Print all signals
-                            print(f"🔧 All signals: {all_signals}")
-                            
-                            # If all signals are the same, return that signal
-                            if len(set(all_signals)) == 1:
-                                return all_signals[0]
-                            else:
-                                return 'HOLD'
-                        
-                        else:
-                            print(f"🔧 Unknown signal combination method: {self.signal_combination}")
-                            return 'HOLD'
-                    
-                    except Exception as e:
-                        print(f"🔧 Error combining signals: {e}")
-                        return 'HOLD'
-                
-                def _majority_vote_combination(self, signals: Dict[str, pd.Series]) -> str:
-                    """Combine signals using majority vote"""
-                    if not signals:
-                        return 'HOLD'
-                    
-                    # Get latest signals
-                    latest_signals = []
-                    for signal_series in signals.values():
-                        if len(signal_series) > 0:
-                            latest_signals.append(signal_series.iloc[-1])
-                    
-                    if not latest_signals:
-                        return 'HOLD'
-                    
-                    # Count votes
-                    buy_votes = latest_signals.count(1)
-                    sell_votes = latest_signals.count(-1)
-                    hold_votes = latest_signals.count(0)
-                    
-                    # Majority vote
-                    if buy_votes > sell_votes and buy_votes > hold_votes:
-                        return 'BUY'
-                    elif sell_votes > buy_votes and sell_votes > hold_votes:
-                        return 'SELL'
-                    else:
-                        return 'HOLD'
-                
-                def _weighted_combination(self, signals: Dict[str, pd.Series]) -> str:
-                    """Combine signals using weighted average"""
-                    if not signals:
-                        return 'HOLD'
-                    
-                    weighted_sum = 0.0
-                    total_weight = 0.0
-                    
-                    for rule_name, signal_series in signals.items():
-                        if len(signal_series) > 0:
-                            weight = self.signal_weights.get(rule_name, 1.0)
-                            weighted_sum += signal_series.iloc[-1] * weight
-                            total_weight += weight
-                    
-                    if total_weight == 0:
-                        return 'HOLD'
-                    
-                    weighted_avg = weighted_sum / total_weight
-                    
-                    if weighted_avg > 0.3:
-                        return 'BUY'
-                    elif weighted_avg < -0.3:
-                        return 'SELL'
-                    else:
-                        return 'HOLD'
-                
-                def _unanimous_combination(self, signals: Dict[str, pd.Series]) -> str:
-                    """Combine signals requiring unanimous agreement"""
-                    if not signals:
-                        return 'HOLD'
-                    
-                    latest_signals = []
-                    for signal_series in signals.values():
-                        if len(signal_series) > 0:
-                            latest_signals.append(signal_series.iloc[-1])
-                    
-                    if not latest_signals:
-                        return 'HOLD'
-                    
-                    # Check if all signals agree
-                    if all(signal == 1 for signal in latest_signals):
-                        return 'BUY'
-                    elif all(signal == -1 for signal in latest_signals):
-                        return 'SELL'
-                    else:
-                        return 'HOLD'
-                
-                def calculate_position_size(self, symbol: str, current_price: float = None, signal: str = None, account_balance: float = None, signal_strength: float = 1.0) -> float:
                     """
-                    Calculate position size based on risk management rules.
-                    Returns position size in units of the asset.
+                    Generate trading signals - implements StrategyBase interface
                     """
-                    # Use provided values or defaults
-                    if signal is None:
-                        signal = 'BUY'  # Default signal
-                    if account_balance is None:
-                        account_balance = 10000.0  # Default balance
+                    result = {}
                     
-                    if current_price is None:
-                        # We don't have the current price, so we can't calculate the position size accurately
-                        # Return a small fixed size as a fallback
-                        if symbol.startswith('BTC'):
-                            return 0.001  # 0.001 BTC
-                        elif symbol.startswith('ETH'):
-                            return 0.01   # 0.01 ETH
-                        elif symbol.startswith('SOL'):
-                            return 10.0   # 10 SOL
-                        else:
-                            return 1.0    # 1 unit of other assets
-                    
-                    # Simple fixed position size calculation
-                    # Use 2% of account balance per trade
-                    risk_amount = account_balance * 0.02
-                    
-                    # Calculate position size in units of the asset
-                    position_size = risk_amount / current_price
-                    
-                    # Apply minimum position sizes based on asset
-                    if symbol.startswith('BTC'):
-                        min_size = 0.001
-                        position_size = max(min_size, round(position_size, 6))
-                    elif symbol.startswith('ETH'):
-                        min_size = 0.01
-                        position_size = max(min_size, round(position_size, 4))
-                    elif symbol.startswith('SOL'):
-                        min_size = 1.0
-                        position_size = max(min_size, round(position_size, 2))
-                    else:
-                        min_size = 1.0
-                        position_size = max(min_size, round(position_size, 2))
-                    
-                    print(f"📏 Calculated position size for {symbol}: {position_size} (signal: {signal}, price: {current_price})")
-                    return position_size
-                
-
-                def get_stop_loss_take_profit(self, symbol: str, signal: str, 
-                                           entry_price: float) -> Tuple[float, float]:
-                    """Calculate stop loss and take profit levels"""
-                    try:
-                        stop_loss_pct = self.risk_rules.get('stop_loss', {}).get('percent', 2.0)
-                        take_profit_pct = self.risk_rules.get('take_profit', {}).get('percent', 4.0)
+                    for symbol in data:
+                        result[symbol] = {}
                         
-                        if signal == 'BUY':
-                            stop_loss = entry_price * (1 - stop_loss_pct / 100.0)
-                            take_profit = entry_price * (1 + take_profit_pct / 100.0)
-                        elif signal == 'SELL':
-                            stop_loss = entry_price * (1 + stop_loss_pct / 100.0)
-                            take_profit = entry_price * (1 - take_profit_pct / 100.0)
-                        else:
-                            stop_loss = entry_price
-                            take_profit = entry_price
-                        
-                        logger.debug(f"🔧 {symbol} SL/TP: SL={stop_loss:.2f}, TP={take_profit:.2f}")
-                        return stop_loss, take_profit
-                        
-                    except Exception as e:
-                        logger.error(f"❌ Error calculating SL/TP: {e}")
-                        return entry_price, entry_price
+                        for timeframe in data[symbol]:
+                            df = data[symbol][timeframe].copy()  # Work with a copy
+                            
+                            # Calculate indicators and add to DataFrame
+                            self.builder._calculate_indicators(df)
+                            
+                            # Execute signal rules to get pandas Series
+                            signals_series = self.builder._execute_signal_rules(df)
+                            
+                            # Convert pandas Series to the expected string format
+                            # Take the last signal (most recent) or implement your own logic
+                            if len(signals_series) > 0:
+                                last_signal = signals_series.iloc[-1]  # Get most recent signal
+                                if isinstance(last_signal, str):
+                                    result[symbol][timeframe] = last_signal
+                                elif isinstance(last_signal, (int, float)):
+                                    # Convert numeric signals to strings
+                                    if last_signal == 1:
+                                        result[symbol][timeframe] = 'BUY'
+                                    elif last_signal == -1:
+                                        result[symbol][timeframe] = 'SELL'
+                                    else:
+                                        result[symbol][timeframe] = 'HOLD'
+                                else:
+                                    result[symbol][timeframe] = 'HOLD'
+                            else:
+                                result[symbol][timeframe] = 'HOLD'
+                    
+                    return result
                 
                 def get_strategy_info(self) -> Dict:
                     """Get strategy information"""
@@ -853,11 +631,11 @@ class StrategyBuilder:
                         'version': self._custom_version,
                         'symbols': self.symbols,
                         'timeframes': self.timeframes,
-                        'indicators': list(self.indicators.keys()),
-                        'signal_rules': list(self.signal_rules.keys()),
-                        'risk_rules': self.risk_rules,
-                        'signal_combination': self.signal_combination,
-                        'signal_weights': self.signal_weights
+                        'indicators': list(self.builder.indicators.keys()),
+                        'signal_rules': list(self.builder.signal_rules.keys()),
+                        'risk_rules': self.builder.risk_rules,
+                        'signal_combination': self.builder.signal_combination,
+                        'signal_weights': self.builder.signal_weights
                     }
                 
                 # Add property to access strategy_name
@@ -872,24 +650,14 @@ class StrategyBuilder:
                     self._custom_strategy_name = value
             
             # Create and return the strategy instance
-            config = {}  # Empty config dict
+            config = {'version': self.version}  # Config dict
             strategy_instance = BuiltStrategy(
                 self.strategy_name,
                 self.symbols, 
                 self.timeframes, 
-                config
+                config,
+                self  # Pass the builder instance
             )
-            
-            # Copy all components from builder to strategy instance
-            strategy_instance.indicators = self.indicators.copy()
-            strategy_instance.signal_rules = self.signal_rules.copy()
-            strategy_instance.risk_rules = self.risk_rules.copy()
-            strategy_instance.signal_combination = self.signal_combination
-            strategy_instance.signal_weights = self.signal_weights.copy()
-            
-            # Set custom attributes
-            strategy_instance._custom_strategy_name = self.strategy_name
-            strategy_instance._custom_version = self.version
             
             logger.info(f"✅ Strategy '{self.strategy_name}' built successfully!")
             return strategy_instance
@@ -898,125 +666,6 @@ class StrategyBuilder:
             logger.error(f"❌ Error building strategy: {e}")
             raise
 
-def _generate_signals_enhanced(self, data: pd.DataFrame, strategy: StrategyBase) -> pd.DataFrame:
-    """
-    Enhanced signal generation with proper multi-component indicator handling
-    Args:
-        data: OHLCV data
-        strategy: Strategy instance
-    Returns:
-        DataFrame with signals
-    """
-    try:
-        # Calculate all indicators
-        calculated_indicators = self._calculate_indicators(data)
-        
-        # Generate signals for each rule
-        all_signals = {}
-        
-        for rule_name, rule_data in self.signal_rules.items():
-            try:
-                signal_func = rule_data['function']
-                indicator_refs = rule_data['indicator_refs']
-                signal_params = rule_data['params']
-                
-                # Prepare signal function parameters
-                signal_kwargs = signal_params.copy()
-                
-                # Map indicator references to calculated values
-                for ref_name, indicator_name in indicator_refs:
-                    if indicator_name in calculated_indicators:
-                        signal_kwargs[ref_name] = calculated_indicators[indicator_name]
-                    elif indicator_name == 'price':
-                        signal_kwargs[ref_name] = calculated_indicators['price']
-                    else:
-                        # Try to find as component
-                        found = False
-                        for ind_name, ind_value in calculated_indicators.items():
-                            if indicator_name in ind_name and ind_name != indicator_name:
-                                signal_kwargs[ref_name] = ind_value
-                                found = True
-                                break
-                        if not found:
-                            logger.warning(f"⚠️ Could not find indicator/component: {indicator_name}")
-                            signal_kwargs[ref_name] = pd.Series(0, index=data.index)
-                
-                # Generate signals
-                signals = signal_func(**signal_kwargs)
-                all_signals[rule_name] = signals
-                
-            except Exception as e:
-                logger.error(f"❌ Error generating signals for rule {rule_name}: {e}")
-                all_signals[rule_name] = pd.Series(0, index=data.index)
-        
-        # Combine signals
-        if len(all_signals) == 1:
-            # Single signal rule
-            final_signals = list(all_signals.values())[0]
-        else:
-            # Multiple signal rules - combine them
-            signal_series_list = list(all_signals.values())
-            if self.signal_combination == 'majority_vote':
-                final_signals = self._majority_vote_combine(signal_series_list)
-            elif self.signal_combination == 'unanimous':
-                final_signals = self._unanimous_combine(signal_series_list)
-            else:
-                final_signals = signal_series_list[0]  # Default to first signal
-        
-        # Convert to DataFrame format
-        if isinstance(final_signals, pd.Series):
-            signals_df = pd.DataFrame({'signal': final_signals}, index=data.index)
-        else:
-            signals_df = pd.DataFrame({'signal': [0] * len(data)}, index=data.index)
-        
-        return signals_df
-        
-    except Exception as e:
-        logger.error(f"❌ Error in enhanced signal generation: {e}")
-        return pd.DataFrame({'signal': [0] * len(data)}, index=data.index)
-
-def _majority_vote_combine(self, signal_series_list: List[pd.Series]) -> pd.Series:
-    """Combine signals using majority vote"""
-    try:
-        # Convert all signals to numeric format
-        numeric_signals = []
-        for signals in signal_series_list:
-            if signals.dtype == 'object':
-                # Convert text signals to numeric
-                numeric = signals.map({'BUY': 1, 'SELL': -1, 'HOLD': 0})
-                numeric_signals.append(numeric)
-            else:
-                numeric_signals.append(signals)
-        
-        # Stack signals and find majority
-        stacked = pd.concat(numeric_signals, axis=1)
-        majority = stacked.mode(axis=1)[0]
-        
-        return majority
-    except Exception as e:
-        logger.error(f"❌ Error in majority vote combination: {e}")
-        return signal_series_list[0] if signal_series_list else pd.Series()
-
-def _unanimous_combine(self, signal_series_list: List[pd.Series]) -> pd.Series:
-    """Combine signals using unanimous vote"""
-    try:
-        # Convert all signals to numeric format
-        numeric_signals = []
-        for signals in signal_series_list:
-            if signals.dtype == 'object':
-                numeric = signals.map({'BUY': 1, 'SELL': -1, 'HOLD': 0})
-                numeric_signals.append(numeric)
-            else:
-                numeric_signals.append(signals)
-        
-        # Check if all signals agree
-        stacked = pd.concat(numeric_signals, axis=1)
-        unanimous = stacked.apply(lambda row: row[0] if row.nunique() == 1 else 0, axis=1)
-        
-        return unanimous
-    except Exception as e:
-        logger.error(f"❌ Error in unanimous combination: {e}")
-        return signal_series_list[0] if signal_series_list else pd.Series()
 
 # === EXAMPLE USAGE ===
 if __name__ == "__main__":
