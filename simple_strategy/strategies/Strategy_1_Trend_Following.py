@@ -27,6 +27,29 @@ from simple_strategy.shared.strategy_base import StrategyBase
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+STRATEGY_PARAMETERS = {
+    'fast_period': {
+        'type': 'int',
+        'default': 12,
+        'min': 5,
+        'max': 50,
+        'description': 'Fast moving average period'
+    },
+    'slow_period': {
+        'type': 'int', 
+        'default': 26,
+        'min': 10,
+        'max': 100,
+        'description': 'Slow moving average period'
+    },
+    'ma_type': {
+        'type': 'str',
+        'default': 'ema',
+        'options': ['sma', 'ema'],
+        'description': 'Moving average type'
+    }
+}
+
 def create_strategy(symbols=None, timeframes=None, **params):
     """
     Create Trend Following strategy - FINAL WORKING VERSION
