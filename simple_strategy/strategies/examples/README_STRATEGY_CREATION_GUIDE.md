@@ -1,25 +1,14 @@
 📚 COMPLETE GUIDE: Creating Strategies That Work First Time 
 🎯 File Structure (NON-NEGOTIABLE) 
 Step 1: File Naming 
- 
- 
- 
-1
-2
+
 ✅ CORRECT: Strategy_mystategy.py
 ❌ WRONG: mystategy.py, MyStrategy.py, strategy_mystategy.py
- 
- 
- 
+
 Step 2: File Location 
- 
- 
- 
-1
+
 📁 simple_strategy/strategies/Strategy_mystategy.py
- 
- 
- 
+
 📝 Template Structure (Copy-Paste This) 
 python
  
@@ -49,9 +38,10 @@ from simple_strategy.shared.strategy_base import StrategyBase
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# FIRST STRATEGY_PARAMETERS (empty is fine)
-STRATEGY_PARAMETERS = {
-}
+STRATEGY_PARAMETERS (GUI Configuration)
+---------------------------------------
+This dictionary defines what parameters appear in the GUI for users to configure.
+Place this at the TOP after imports for better code organization.
 
 def create_strategy(symbols=None, timeframes=None, **params):
     """
@@ -241,25 +231,8 @@ def create_your_strategy_instance(symbols=None, timeframes=None, **params):
         logger.error(f"Error creating strategy: {e}")
         raise
 
-# SECOND STRATEGY_PARAMETERS - THIS IS WHAT GUI READS (CRITICAL!)
-STRATEGY_PARAMETERS = {
-    'your_param1': {
-        'type': 'int',
-        'default': 20,
-        'min': 5,
-        'max': 30,
-        'description': 'Your parameter 1 description',
-        'gui_hint': 'Your GUI hint for parameter 1'
-    },
-    'your_param2': {
-        'type': 'int',
-        'default': 80,
-        'min': 70,
-        'max': 95,
-        'description': 'Your parameter 2 description',
-        'gui_hint': 'Your GUI hint for parameter 2'
-    }
-}
+# NOTE: You only need ONE STRATEGY_PARAMETERS dictionary at the TOP of the file
+# The GUI will automatically detect and use these parameters
 
 def simple_test():
     """Simple test to verify the strategy works - MUST EXIST"""
@@ -292,12 +265,13 @@ if __name__ == "__main__":
 ✅ MUST HAVE (GUI Detection): 
 
      File Name: Strategy_*.py
-     First STRATEGY_PARAMETERS: Can be empty {}
+     STRATEGY_PARAMETERS: At TOP (defines GUI parameters)
      create_strategy() function: Must exist and work with StrategyBuilder
-     Strategy Class: Must inherit from StrategyBase
-     Second STRATEGY_PARAMETERS: At bottom (GUI reads this one)
      simple_test() function: Must exist
-     if name == "main": Must exist
+     if name == "main": Must exist 
+
+     ⚠️ OPTIONAL (Advanced Strategies):
+     Strategy Class: Only needed for custom logic beyond StrategyBuilder 
      
 
 ✅ MUST HAVE (Strategy Functionality): 
@@ -318,47 +292,27 @@ if __name__ == "__main__":
      
 
 🚨 Common Mistakes to Avoid 
-❌ File Structure Mistakes: 
-python
- 
- 
- 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-⌄
-⌄
-⌄
-# WRONG - Missing first STRATEGY_PARAMETERS
-def create_strategy():
-    pass
+❌ File Structure Mistakes: python
 
-# WRONG - Missing second STRATEGY_PARAMETERS
-class Strategy:
-    pass
+WRONG - Missing STRATEGY_PARAMETERS
+-----------------------------------
+def create_strategy(): pass
+WRONG - STRATEGY_PARAMETERS in wrong place
+-------------------------------------------
+class Strategy: pass
+def simple_test(): pass
+STRATEGY_PARAMETERS = {}  # Should be at TOP!
 
-def simple_test():
-    pass
- 
- 
- 
+RIGHT - Correct structure:
+---------------------------
+STRATEGY_PARAMETERS = {}  # At TOP after imports
+def create_strategy(): pass
+class Strategy: pass  # Optional
+def simple_test(): pass
+
 ❌ Import Mistakes: 
 python
- 
- 
- 
-1
-2
-3
-4
-5
+
 # WRONG - Don't import indicators that don't exist
 from simple_strategy.strategies.indicators_library import stochastic_rsi  # May not exist
 
@@ -366,21 +320,9 @@ from simple_strategy.strategies.indicators_library import stochastic_rsi  # May 
 from simple_strategy.strategies.indicators_library import sma, ema, rsi
  
  
- 
 ❌ Method Signature Mistakes: 
 python
- 
- 
- 
-1
-2
-3
-4
-5
-6
-7
-⌄
-⌄
+
 # WRONG - Missing required parameters
 def calculate_position_size(self):
     pass
@@ -388,7 +330,6 @@ def calculate_position_size(self):
 # RIGHT - Full signature
 def calculate_position_size(self, symbol: str, current_price: float = None, signal_strength: float = 1.0) -> float:
     pass
- 
  
  
 🎯 Quick Start Template 
