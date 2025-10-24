@@ -1,14 +1,14 @@
 """
 Strategy 2: Mean Reversion Strategy
 Uses RSI to identify overbought/oversold conditions for mean reversion trades.
-FIXED VERSION: STRATEGY_PARAMETERS moved to top for consistency
+STANDARDIZED VERSION - Clean, consistent structure
 """
 import sys
 import os
 import logging
 from typing import Dict, List, Any
 
-# Add parent directories to path
+# Add parent directories to path for proper imports
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, parent_dir)
 
@@ -19,30 +19,30 @@ from .signals_library import overbought_oversold
 # Configure logging
 logger = logging.getLogger(__name__)
 
-# CRITICAL: STRATEGY_PARAMETERS moved to TOP for GUI detection
-# This defines what parameters the GUI will show and allow users to configure
+# STRATEGY_PARAMETERS - GUI Configuration (AT TOP)
+# This defines what parameters appear in the GUI for users to configure
 STRATEGY_PARAMETERS = {
     'rsi_period': {
-        'type': 'int', 
-        'default': 14, 
-        'min': 1, 
-        'max': 50, 
+        'type': 'int',
+        'default': 14,
+        'min': 1,
+        'max': 50,
         'description': 'RSI calculation period',
         'gui_hint': 'Standard values: 14, 21. Lower = more sensitive'
     },
     'rsi_overbought': {
-        'type': 'int', 
-        'default': 70, 
-        'min': 50, 
-        'max': 90, 
+        'type': 'int',
+        'default': 70,
+        'min': 50,
+        'max': 90,
         'description': 'RSI overbought level (sell signal)',
         'gui_hint': 'Higher values = more conservative sell signals'
     },
     'rsi_oversold': {
-        'type': 'int', 
-        'default': 30, 
-        'min': 10, 
-        'max': 50, 
+        'type': 'int',
+        'default': 30,
+        'min': 10,
+        'max': 50,
         'description': 'RSI oversold level (buy signal)',
         'gui_hint': 'Lower values = more conservative buy signals'
     }
@@ -50,7 +50,7 @@ STRATEGY_PARAMETERS = {
 
 def create_strategy(symbols=None, timeframes=None, **params):
     """
-    Create Mean Reversion Strategy - FIXED VERSION
+    Create Mean Reversion Strategy
     Uses RSI to identify overbought/oversold conditions for mean reversion trades.
     
     Parameters:
@@ -121,3 +121,28 @@ def create_strategy(symbols=None, timeframes=None, **params):
         import traceback
         traceback.print_exc()
         raise
+
+def simple_test():
+    """Simple test to verify the strategy works"""
+    try:
+        # Test strategy creation
+        strategy = create_strategy(
+            symbols=['BTCUSDT'],
+            timeframes=['1m'],
+            rsi_period=14,
+            rsi_overbought=70,
+            rsi_oversold=30
+        )
+        
+        print(f"✅ Mean Reversion strategy created successfully: {strategy.name}")
+        print(f"  - Symbols: {strategy.symbols}")
+        print(f"  - Timeframes: {strategy.timeframes}")
+        return True
+    except Exception as e:
+        print(f"❌ Error testing Mean Reversion strategy: {e}")
+        return False
+
+# For testing
+if __name__ == "__main__":
+    simple_test()
+
