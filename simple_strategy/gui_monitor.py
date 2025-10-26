@@ -85,6 +85,20 @@ class SimpleStrategyGUI:
         # Initialize with first strategy
         if strategy_names:
             self.on_strategy_selected()
+
+    def _bind_mouse_wheel(self):
+        """Bind mouse wheel scrolling to the parameter canvas"""
+        def _on_mousewheel(event):
+            # Check if mouse is over the parameter canvas
+            if self.param_canvas.winfo_containing(event.x, event.y):
+                # Scroll the canvas
+                self.param_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        # Bind to all mouse wheel events
+        self.param_canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        # For Linux
+        self.param_canvas.bind_all("<Button-4>", lambda e: self.param_canvas.yview_scroll(-1, "units"))
+        self.param_canvas.bind_all("<Button-5>", lambda e: self.param_canvas.yview_scroll(1, "units"))
     
     def on_strategy_selected(self, event=None):
         """Called when strategy selection changes"""
