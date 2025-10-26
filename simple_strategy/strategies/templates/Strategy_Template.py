@@ -7,6 +7,7 @@ Combines the best of both approaches: Simple to use but powerful.
 """
 import sys
 import os
+import pandas as pd
 import logging
 from typing import Dict, List, Any, Optional
 

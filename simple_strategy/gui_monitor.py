@@ -70,22 +70,44 @@ class SimpleStrategyGUI:
         self.description_text = tk.Text(select_frame, height=3, width=60)
         self.description_text.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
         
-        # Strategy Parameters
+        # Strategy Parameters - with scrolling
         self.param_frame = ttk.LabelFrame(strategy_frame, text="Strategy Parameters", padding=10)
         self.param_frame.pack(fill="both", expand=True, padx=10, pady=5)
         
+        # Create canvas and scrollbar for parameters
+        self.param_canvas = tk.Canvas(self.param_frame)
+        self.param_scrollbar = ttk.Scrollbar(self.param_frame, orient="vertical", command=self.param_canvas.yview)
+        self.param_canvas.configure(yscrollcommand=self.param_scrollbar.set)
+        
+        self.param_canvas.pack(side="left", fill="both", expand=True)
+        self.param_scrollbar.pack(side="right", fill="y")
+        
+        # Create frame inside canvas for parameters
+        self.param_inner_frame = ttk.Frame(self.param_canvas)
+        self.param_canvas_window = self.param_canvas.create_window((0, 0), window=self.param_inner_frame, anchor="nw")
+        
+        # Configure canvas scrollregion when inner frame changes
+        self.param_inner_frame.bind("<Configure>", self._on_param_frame_configure)
+        
         # Create Strategy Button
-        self.create_btn = ttk.Button(self.param_frame, text="🔧 Create Strategy", command=self.create_strategy)
+        self.create_btn = ttk.Button(self.param_inner_frame, text="🔧 Create Strategy", command=self.create_strategy)
         self.create_btn.grid(row=100, column=0, columnspan=2, pady=10)
         
         # Strategy Info
-        self.strategy_info_text = tk.Text(self.param_frame, height=5, width=70)
+        self.strategy_info_text = tk.Text(self.param_inner_frame, height=5, width=70)
         self.strategy_info_text.grid(row=101, column=0, columnspan=2, padx=5, pady=5)
+        
+        # Bind mouse wheel scrolling
+        self._bind_mouse_wheel()
         
         # Initialize with first strategy
         if strategy_names:
             self.on_strategy_selected()
-
+    
+    def _on_param_frame_configure(self, event=None):
+        """Update the scrollregion to encompass the inner frame"""
+        self.param_canvas.configure(scrollregion=self.param_canvas.bbox("all"))
+    
     def _bind_mouse_wheel(self):
         """Bind mouse wheel scrolling to the parameter canvas"""
         def _on_mousewheel(event):
@@ -123,8 +145,8 @@ class SimpleStrategyGUI:
     def update_parameters(self, parameters):
         """Update parameter widgets based on strategy parameters"""
         # Clear existing parameter widgets (except buttons and info text)
-        for widget in self.param_frame.winfo_children():
-            if widget.grid_info() and widget.grid_info()['row'] >= 2 and widget.grid_info()['row'] < 100:
+        for widget in self.param_inner_frame.winfo_children():
+            if widget.grid_info() and widget.grid_info()['row'] >= 0 and widget.grid_info()['row'] < 100:
                 widget.destroy()
         
         self.param_widgets.clear()
@@ -136,7 +158,7 @@ class SimpleStrategyGUI:
             if 'description' in param_info:
                 label_text += f"\n({param_info['description']})"
             
-            ttk.Label(self.param_frame, text=label_text).grid(row=row, column=0, sticky="w", padx=5, pady=5)
+            ttk.Label(self.param_inner_frame, text=label_text).grid(row=row, column=0, sticky="w", padx=5, pady=5)
             
             # Parameter input based on type
             default_value = param_info.get('default', 0)
@@ -145,25 +167,29 @@ class SimpleStrategyGUI:
                 var = tk.IntVar(value=default_value)
                 min_val = param_info.get('min', 1)
                 max_val = param_info.get('max', 100)
-                widget = ttk.Spinbox(self.param_frame, from_=min_val, to=max_val, 
+                widget = ttk.Spinbox(self.param_inner_frame, from_=min_val, to=max_val, 
                                    textvariable=var, width=15)
             elif param_info.get('type') == 'float':
                 var = tk.DoubleVar(value=default_value)
                 min_val = param_info.get('min', 0.1)
                 max_val = param_info.get('max', 10.0)
-                widget = ttk.Spinbox(self.param_frame, from_=min_val, to=max_val, 
+                widget = ttk.Spinbox(self.param_inner_frame, from_=min_val, to=max_val, 
                                    textvariable=var, width=15, increment=0.1)
             elif param_info.get('type') == 'str' and 'options' in param_info:
                 var = tk.StringVar(value=default_value)
-                widget = ttk.Combobox(self.param_frame, textvariable=var, 
+                widget = ttk.Combobox(self.param_inner_frame, textvariable=var, 
                                     values=param_info['options'], state="readonly", width=20)
             else:  # string or other
                 var = tk.StringVar(value=str(default_value))
-                widget = ttk.Entry(self.param_frame, textvariable=var, width=20)
+                widget = ttk.Entry(self.param_inner_frame, textvariable=var, width=20)
             
             widget.grid(row=row, column=1, padx=5, pady=5)
             self.param_widgets[param_name] = var
             row += 1
+        
+        # Update canvas scrollregion after adding all parameters
+        self.param_inner_frame.update_idletasks()
+        self._on_param_frame_configure()
     
     def create_backtest_tab(self):
         # Backtest Configuration Tab
@@ -289,6 +315,29 @@ class SimpleStrategyGUI:
         except Exception as e:
             messagebox.showerror("Error", f"Failed to create strategy: {str(e)}")
     
+    def _extract_metrics(self, results):
+        """Extract metrics from results dictionary, handling different key formats"""
+        metrics = {}
+        
+        # Handle both '_pct' and non-'_pct' versions of keys
+        key_mappings = {
+            'total_return': ['total_return_pct', 'total_return'],
+            'win_rate': ['win_rate_pct', 'win_rate'],
+            'sharpe_ratio': ['sharpe_ratio'],
+            'max_drawdown': ['max_drawdown_pct', 'max_drawdown'],
+            'total_trades': ['total_trades']
+        }
+        
+        for metric_name, possible_keys in key_mappings.items():
+            value = None
+            for key in possible_keys:
+                if key in results:
+                    value = results[key]
+                    break
+            metrics[metric_name] = value if value is not None else 0
+        
+        return metrics
+    
     def run_backtest(self):
         """Run backtest with current strategy and configuration"""
         try:
@@ -382,24 +431,44 @@ class SimpleStrategyGUI:
                     
                     # Check if results contain the expected metrics
                     if results and isinstance(results, dict):
-                        # Handle direct metrics format (your current format)
-                        if 'total_return' in results:
-                            self.results_text.insert(tk.END, f"💰 Total Return: {results.get('total_return', 0):.2f}%\n")
-                            self.results_text.insert(tk.END, f"🎯 Win Rate: {results.get('win_rate', 0):.2f}%\n")
-                            self.results_text.insert(tk.END, f"📈 Sharpe Ratio: {results.get('sharpe_ratio', 0):.2f}\n")
-                            self.results_text.insert(tk.END, f"📉 Max Drawdown: {results.get('max_drawdown', 0):.2f}%\n")
-                            self.results_text.insert(tk.END, f"🔄 Total Trades: {results.get('total_trades', 0)}\n")
-                        # Handle nested metrics format (alternative format)
-                        elif 'performance_metrics' in results:
-                            metrics = results['performance_metrics']
-                            self.results_text.insert(tk.END, f"💰 Total Return: {metrics.get('total_return', 0):.2f}%\n")
-                            self.results_text.insert(tk.END, f"🎯 Win Rate: {metrics.get('win_rate', 0):.2f}%\n")
-                            self.results_text.insert(tk.END, f"📈 Sharpe Ratio: {metrics.get('sharpe_ratio', 0):.2f}\n")
-                            self.results_text.insert(tk.END, f"📉 Max Drawdown: {metrics.get('max_drawdown', 0):.2f}%\n")
-                            self.results_text.insert(tk.END, f"🔄 Total Trades: {metrics.get('total_trades', 0)}\n")
+                        # Extract metrics using flexible key handling
+                        metrics = self._extract_metrics(results)
+                        
+                        # Extract the values
+                        total_return_pct = metrics['total_return']
+                        win_rate_pct = metrics['win_rate']
+                        sharpe_ratio = metrics['sharpe_ratio']
+                        max_drawdown_pct = metrics['max_drawdown']
+                        total_trades = metrics['total_trades']
+                        
+                        # Calculate financial metrics
+                        start_amount = initial_balance
+                        total_pnl = (total_return_pct / 100) * start_amount
+                        end_amount = start_amount + total_pnl
+                        
+                        # Display financial summary
+                        self.results_text.insert(tk.END, f"💰 FINANCIAL SUMMARY\n")
+                        self.results_text.insert(tk.END, f"-" * 30 + "\n")
+                        self.results_text.insert(tk.END, f"💵 Start Amount: ${start_amount:,.2f}\n")
+                        self.results_text.insert(tk.END, f"💵 End Amount: ${end_amount:,.2f}\n")
+                        
+                        # Color code the gain/loss
+                        if total_pnl >= 0:
+                            self.results_text.insert(tk.END, f"📈 Gain/Loss: +${total_pnl:,.2f}\n")
                         else:
-                            self.results_text.insert(tk.END, "❌ No performance metrics returned\n")
-                            self.results_text.insert(tk.END, f"Results: {results}\n")
+                            self.results_text.insert(tk.END, f"📉 Gain/Loss: ${total_pnl:,.2f}\n")
+                        
+                        self.results_text.insert(tk.END, f"-" * 30 + "\n\n")
+                        
+                        # Display performance metrics
+                        self.results_text.insert(tk.END, f"📊 PERFORMANCE METRICS\n")
+                        self.results_text.insert(tk.END, f"-" * 30 + "\n")
+                        self.results_text.insert(tk.END, f"💰 Total Return: {total_return_pct:.2f}%\n")
+                        self.results_text.insert(tk.END, f"🎯 Win Rate: {win_rate_pct:.2f}%\n")
+                        self.results_text.insert(tk.END, f"📈 Sharpe Ratio: {sharpe_ratio:.2f}\n")
+                        self.results_text.insert(tk.END, f"📉 Max Drawdown: {max_drawdown_pct:.2f}%\n")
+                        self.results_text.insert(tk.END, f"🔄 Total Trades: {total_trades}\n")
+                        
                     else:
                         self.results_text.insert(tk.END, "❌ No results returned\n")
                         self.results_text.insert(tk.END, f"Results: {results}\n")
@@ -468,5 +537,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = SimpleStrategyGUI(root)
     root.mainloop()
-
-
