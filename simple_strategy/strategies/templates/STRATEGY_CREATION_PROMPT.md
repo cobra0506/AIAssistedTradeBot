@@ -15,4 +15,4 @@ Create a new trading strategy for my repository by following these steps:
 
 Follow the exact same structure as the examples and templates, with STRATEGY_PARAMETERS at the top, proper logging, error handling, and a simple_test function.
 
-the startegy is :
+the strategy is :
