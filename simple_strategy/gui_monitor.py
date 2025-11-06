@@ -104,6 +104,181 @@ class SimpleStrategyGUI:
         if strategy_names:
             self.on_strategy_selected()
     
+    def optimize_from_backtest_tab(self):
+        """Optimize parameters using backtest tab settings"""
+        strategy_name = self.strategy_var.get()
+        if not strategy_name:
+            messagebox.showwarning("Warning", "Please select a strategy first")
+            self.notebook.select(0)  # Switch to strategy tab
+            return
+        
+        # Create optimization window with current backtest settings
+        opt_window = tk.Toplevel(self.root)
+        opt_window.title(f"Optimize {strategy_name}")
+        opt_window.geometry("500x450")
+        
+        # Optimization settings
+        ttk.Label(opt_window, text="Optimization Settings", font=("Arial", 12, "bold")).pack(pady=10)
+        
+        # Number of trials
+        ttk.Label(opt_window, text="Number of Trials:").pack()
+        trials_var = tk.StringVar(value="20")
+        ttk.Entry(opt_window, textvariable=trials_var).pack()
+        
+        # Use current backtest settings
+        ttk.Label(opt_window, text="Symbol:").pack()
+        symbol_var = tk.StringVar(value=self.symbols_var.get())
+        ttk.Entry(opt_window, textvariable=symbol_var).pack()
+        
+        ttk.Label(opt_window, text="Timeframe:").pack()
+        timeframe_var = tk.StringVar(value=self.timeframes_var.get().rstrip('m'))
+        ttk.Entry(opt_window, textvariable=timeframe_var).pack()
+        
+        ttk.Label(opt_window, text="Start Date:").pack()
+        start_date_var = tk.StringVar(value=self.start_date_var.get())
+        ttk.Entry(opt_window, textvariable=start_date_var).pack()
+        
+        ttk.Label(opt_window, text="End Date:").pack()
+        end_date_var = tk.StringVar(value=self.end_date_var.get())
+        ttk.Entry(opt_window, textvariable=end_date_var).pack()
+        
+        def run_optimization():
+            try:
+                # Debug: Show current parameters before optimization
+                print("=== BEFORE OPTIMIZATION ===")
+                self.debug_current_parameters()
+                
+                # Import optimizer
+                from simple_strategy.optimization import BayesianOptimizer, ParameterSpace
+                from simple_strategy.shared.data_feeder import DataFeeder
+                
+                # Create parameter space DYNAMICALLY based on strategy parameters
+                param_space = ParameterSpace()
+                
+                # DYNAMIC parameter space creation - works with ANY strategy
+                if strategy_name in self.strategies:
+                    strategy_info = self.strategies[strategy_name]
+                    strategy_params = strategy_info.get('parameters', {})
+                    
+                    print(f"🔧 Creating parameter space for {strategy_name} with parameters: {strategy_params}")
+                    
+                    # Add each parameter from the strategy's STRATEGY_PARAMETERS
+                    for param_name, param_def in strategy_params.items():
+                        param_type = param_def.get('type', 'int')
+                        
+                        if param_type == 'int':
+                            min_val = param_def.get('min', 1)
+                            max_val = param_def.get('max', 100)
+                            step = 1
+                            param_space.add_int(param_name, min_val, max_val, step=step)
+                            print(f"   Added int parameter: {param_name} [{min_val}, {max_val}]")
+                            
+                        elif param_type == 'float':
+                            min_val = param_def.get('min', 0.1)
+                            max_val = param_def.get('max', 10.0)
+                            param_space.add_float(param_name, min_val, max_val)
+                            print(f"   Added float parameter: {param_name} [{min_val}, {max_val}]")
+                            
+                        elif param_type == 'str' and 'options' in param_def:
+                            options = param_def['options']
+                            param_space.add_categorical(param_name, options)
+                            print(f"   Added categorical parameter: {param_name} {options}")
+                            
+                        else:
+                            # Default to int for unknown types
+                            min_val = param_def.get('min', 1)
+                            max_val = param_def.get('max', 100)
+                            param_space.add_int(param_name, min_val, max_val)
+                            print(f"   Added default int parameter: {param_name} [{min_val}, {max_val}]")
+                else:
+                    # Fallback if strategy not found
+                    param_space.add_int('period', 5, 50, step=1)
+                    param_space.add_float('threshold', 0.1, 5.0)
+                    print(f"   Using fallback parameters for unknown strategy")
+                
+                # Show progress
+                progress_label = ttk.Label(opt_window, text="🚀 Starting optimization...")
+                progress_label.pack(pady=5)
+                opt_window.update()
+                
+                # Get symbols (support multiple symbols)
+                symbols_input = symbol_var.get()
+                if ',' in symbols_input:
+                    symbols_list = [s.strip() for s in symbols_input.split(',') if s.strip()]
+                else:
+                    symbols_list = [symbols_input]
+                
+                # Run optimization
+                data_feeder = DataFeeder(data_dir=self.data_dir_var.get())
+                optimizer = BayesianOptimizer(
+                    data_feeder=data_feeder,
+                    study_name=f'{strategy_name}_optimization',
+                    direction='maximize',
+                    n_trials=int(trials_var.get()),
+                    timeout=3600
+                )
+                
+                best_params, best_score = optimizer.optimize(
+                    strategy_name=strategy_name,
+                    parameter_space=param_space,
+                    symbols=symbols_list,
+                    timeframes=[timeframe_var.get()],
+                    start_date=start_date_var.get(),
+                    end_date=end_date_var.get(),
+                    metric='sharpe_ratio'
+                )
+                
+                # FIXED: Better string formatting with error handling
+                try:
+                    if best_score == float('-inf'):
+                        score_text = "No valid strategies found"
+                    else:
+                        score_text = f"{best_score:.4f}"
+                except Exception:
+                    score_text = str(best_score)
+                
+                # FIXED: Safe string building without f-strings
+                result_msg = "🎉 Optimization Complete!\n\n"
+                result_msg += "📊 Strategy: " + str(strategy_name) + "\n"
+                result_msg += "📈 Best Sharpe Ratio: " + score_text + "\n\n"
+                result_msg += "⚙️ Best Parameters:\n"
+                for param, value in best_params.items():
+                    result_msg += "   " + str(param) + ": " + str(value) + "\n"
+                
+                result_msg += "\n📊 Optimized over " + str(len(symbols_list)) + " symbols: " + ", ".join(symbols_list)
+                result_msg += "\n✅ Parameters updated in Strategy Configuration tab!"
+                result_msg += "\n💡 Click 'Run Backtest' to test the optimized strategy"
+                
+                messagebox.showinfo("Optimization Results", result_msg)
+                
+                # Update GUI with best parameters
+                self.update_parameters_with_best(best_params)
+                
+                # Debug: Show parameters after update
+                print("=== AFTER PARAMETER UPDATE ===")
+                self.debug_current_parameters()
+                
+                # Save winning summary
+                try:
+                    optimizer.save_optimization_summary()
+                except Exception as save_error:
+                    print(f"Warning: Could not save optimization summary: {save_error}")
+                
+                # Switch to strategy tab to show updated parameters
+                self.notebook.select(0)  # Switch to strategy configuration tab
+                
+                opt_window.destroy()
+                
+            except Exception as e:
+                # FIXED: Better error handling
+                error_msg = "Optimization failed: " + str(e)
+                messagebox.showerror("Error", error_msg)
+                import traceback
+                traceback.print_exc()
+        
+        ttk.Button(opt_window, text="🚀 Run Optimization", 
+                command=run_optimization).pack(pady=20)
+
     def _on_param_frame_configure(self, event=None):
         """Update the scrollregion to encompass the inner frame"""
         self.param_canvas.configure(scrollregion=self.param_canvas.bbox("all"))
@@ -212,7 +387,7 @@ class SimpleStrategyGUI:
         
         # Symbols
         ttk.Label(config_frame, text="Symbols (comma-separated):").grid(row=0, column=0, sticky="w", padx=5, pady=5)
-        self.symbols_var = tk.StringVar(value="BTCUSDT")
+        self.symbols_var = tk.StringVar(value="BTCUSDT, ETHUSDT, SOLUSDT, LINKUSDT, DOGEUSDT, AVAXUSDT, UNIUSDT")
         ttk.Entry(config_frame, textvariable=self.symbols_var, width=40).grid(row=0, column=1, padx=5, pady=5)
         
         # Timeframes
@@ -257,6 +432,11 @@ class SimpleStrategyGUI:
         # Run Backtest Button
         self.run_btn = ttk.Button(config_frame, text="🚀 Run Backtest", command=self.run_backtest)
         self.run_btn.grid(row=4, column=0, columnspan=2, pady=10)
+        
+        # ADD THIS: Optimize Parameters Button
+        self.optimize_btn = ttk.Button(config_frame, text="🎯 Optimize Parameters", 
+                                    command=self.optimize_from_backtest_tab)
+        self.optimize_btn.grid(row=6, column=0, columnspan=2, pady=5)
     
     def create_results_tab(self):
         # Results Tab
@@ -314,6 +494,121 @@ class SimpleStrategyGUI:
                 
         except Exception as e:
             messagebox.showerror("Error", f"Failed to create strategy: {str(e)}")
+    
+    def update_parameters_with_best(self, best_params):
+        """Update GUI parameter fields with optimized values"""
+        try:
+            # Debug: Print what we received
+            print(f"DEBUG: Received best_params: {best_params}")
+            
+            # Get current strategy parameters
+            strategy_name = self.strategy_var.get()
+            if strategy_name in self.strategies:
+                strategy_info = self.strategies[strategy_name]
+                strategy_params = strategy_info.get('parameters', {})
+                
+                # Debug: Print available strategy parameters
+                print(f"DEBUG: Strategy parameters: {strategy_params}")
+                
+                # Map optimization parameters to strategy parameters
+                param_mapping = self.get_parameter_mapping(strategy_name)
+                
+                # Debug: Print parameter mapping
+                print(f"DEBUG: Parameter mapping: {param_mapping}")
+                
+                # Debug: Print available GUI widgets
+                print(f"DEBUG: Available GUI widgets: {list(self.param_widgets.keys())}")
+                
+                # Update each parameter
+                updated_count = 0
+                for opt_param, value in best_params.items():
+                    if opt_param in param_mapping:
+                        strategy_param = param_mapping[opt_param]
+                        if strategy_param in self.param_widgets:
+                            widget = self.param_widgets[strategy_param]
+                            
+                            # Get the old value for debugging
+                            old_value = widget.get()
+                            
+                            # Update based on widget type
+                            if isinstance(widget, tk.IntVar):
+                                widget.set(int(value))
+                                print(f"DEBUG: Updated IntVar {strategy_param}: {old_value} -> {value}")
+                            elif isinstance(widget, tk.DoubleVar):
+                                widget.set(float(value))
+                                print(f"DEBUG: Updated DoubleVar {strategy_param}: {old_value} -> {value}")
+                            elif isinstance(widget, tk.StringVar):
+                                widget.set(str(value))
+                                print(f"DEBUG: Updated StringVar {strategy_param}: {old_value} -> {value}")
+                            elif isinstance(widget, (ttk.Entry, ttk.Combobox)):
+                                # Handle Entry/Combobox widgets
+                                widget.delete(0, tk.END)
+                                widget.insert(0, str(value))
+                                print(f"DEBUG: Updated Entry/Combobox {strategy_param}: {old_value} -> {value}")
+                            else:
+                                print(f"DEBUG: Unknown widget type for {strategy_param}: {type(widget)}")
+                            
+                            updated_count += 1
+                        else:
+                            print(f"DEBUG: Widget not found for parameter: {strategy_param}")
+                    else:
+                        print(f"DEBUG: No mapping for optimization parameter: {opt_param}")
+                
+                print(f"DEBUG: Updated {updated_count} parameters")
+                
+                if updated_count == 0:
+                    print("DEBUG: No parameters were updated - checking for direct matches")
+                    # Try direct parameter name matches
+                    for param_name, value in best_params.items():
+                        if param_name in self.param_widgets:
+                            widget = self.param_widgets[param_name]
+                            old_value = widget.get()
+                            
+                            # Update based on widget type
+                            if isinstance(widget, tk.IntVar):
+                                widget.set(int(value))
+                            elif isinstance(widget, tk.DoubleVar):
+                                widget.set(float(value))
+                            elif isinstance(widget, tk.StringVar):
+                                widget.set(str(value))
+                            elif isinstance(widget, (ttk.Entry, ttk.Combobox)):
+                                widget.delete(0, tk.END)
+                                widget.insert(0, str(value))
+                            
+                            print(f"DEBUG: Direct update {param_name}: {old_value} -> {value}")
+                                
+            else:
+                print(f"DEBUG: Strategy {strategy_name} not found in strategies")
+                                
+        except Exception as e:
+            print(f"DEBUG: Error in update_parameters_with_best: {e}")
+            import traceback
+            traceback.print_exc()
+
+    def get_parameter_mapping(self, strategy_name):
+        """Get mapping from optimization parameters to strategy parameters"""
+        # Define how optimization parameters map to strategy parameters
+        if 'Trend_Following' in strategy_name:
+            return {
+                'fast_period': 'fast_period',
+                'slow_period': 'slow_period', 
+                'ma_type': 'ma_type'
+            }
+        elif 'RSI' in strategy_name and 'Extremes' in strategy_name:
+            return {
+                'rsi_period': 'rsi_period',
+                'rsi_oversold': 'oversold',
+                'rsi_overbought': 'overbought'
+            }
+        elif 'MA_Crossover' in strategy_name or 'Moving Average' in strategy_name:
+            return {
+                'fast_period': 'fast_period',
+                'slow_period': 'slow_period',
+                'ma_type': 'ma_type'
+            }
+        else:
+            # Default mapping - parameter names should match
+            return {k: k for k in ['period', 'threshold', 'fast_period', 'slow_period', 'ma_type']}
     
     def _extract_metrics(self, results):
         """Extract metrics from results dictionary, handling different key formats"""
@@ -532,6 +827,39 @@ class SimpleStrategyGUI:
                 self.results_text.insert(tk.END, f"  - {os.path.basename(file)}\n")
         else:
             self.results_text.insert(tk.END, f"\n✅ All required files found!\n")
+
+    def get_parameter_mapping(self, strategy_name):
+        """Get mapping from optimization parameters to strategy parameters"""
+        # Define how optimization parameters map to strategy parameters
+        if 'Trend_Following' in strategy_name:
+            return {
+                'fast_period': 'fast_period',
+                'slow_period': 'slow_period', 
+                'ma_type': 'ma_type'
+            }
+        elif 'RSI' in strategy_name and 'Extremes' in strategy_name:
+            return {
+                'rsi_period': 'rsi_period',
+                'rsi_oversold': 'oversold',
+                'rsi_overbought': 'overbought'
+            }
+        elif 'MA_Crossover' in strategy_name or 'Moving Average' in strategy_name:
+            return {
+                'fast_period': 'fast_period',
+                'slow_period': 'slow_period',
+                'ma_type': 'ma_type'
+            }
+        else:
+            # Default mapping - parameter names should match
+            return {k: k for k in ['period', 'threshold', 'fast_period', 'slow_period', 'ma_type']}
+
+    def debug_current_parameters(self):
+        """Debug method to show current parameter values"""
+        print("=== DEBUG: Current GUI Parameters ===")
+        for param_name, widget in self.param_widgets.items():
+            value = widget.get()
+            print(f"{param_name}: {value} (widget type: {type(widget).__name__})")
+        print("=== END DEBUG ===")
 
 if __name__ == "__main__":
     root = tk.Tk()
