@@ -1,0 +1,40 @@
+number,value,datetime_start,datetime_complete,duration,params_rsi_overbought,params_rsi_oversold,params_rsi_period,params_sma_long_period,params_sma_short_period,state
+0,0.0,2025-10-27 06:21:39.326535,2025-10-27 06:21:39.458231,0 days 00:00:00.131696,74.6398788362281,39.01428612819832,14,25,14,COMPLETE
+1,18.075872039171514,2025-10-27 06:21:39.458231,2025-10-27 06:21:39.580904,0 days 00:00:00.122673,77.3235229154987,21.161672243363988,9,40,14,COMPLETE
+2,9.82741003873016,2025-10-27 06:21:39.580904,2025-10-27 06:21:39.709630,0 days 00:00:00.128726,76.64885281600843,39.39819704323989,5,25,8,COMPLETE
+3,9.894731533527812,2025-10-27 06:21:39.709630,2025-10-27 06:21:39.856237,0 days 00:00:00.146607,70.49512863264476,26.084844859190753,9,30,11,COMPLETE
+4,11.159782594763712,2025-10-27 06:21:39.856237,2025-10-27 06:21:39.979905,0 days 00:00:00.123668,65.84289297070437,22.789877213040835,20,35,10,COMPLETE
+5,0.0,2025-10-27 06:21:39.979905,2025-10-27 06:21:40.102691,0 days 00:00:00.122786,70.28468876827223,23.993475643167194,25,20,14,COMPLETE
+6,10.993052418639511,2025-10-27 06:21:40.102691,2025-10-27 06:21:40.224977,0 days 00:00:00.122286,61.30103185970559,23.41048247374583,20,50,20,COMPLETE
+7,0.0,2025-10-27 06:21:40.224977,2025-10-27 06:21:40.343663,0 days 00:00:00.118686,61.953442280127675,26.092275383467413,26,35,15,COMPLETE
+8,7.0526226085489725,2025-10-27 06:21:40.343663,2025-10-27 06:21:40.472290,0 days 00:00:00.128627,60.68777042230437,29.903538202225405,8,25,19,COMPLETE
+9,0.0,2025-10-27 06:21:40.472290,2025-10-27 06:21:40.613938,0 days 00:00:00.141648,70.40136042355621,26.23422152178822,22,25,13,COMPLETE
+INFO:backtester.backtester_engine:DEBUG: Trade recording success: True
+INFO:backtester.backtester_engine:DEBUG: Opened SHORT position for BTCUSDT at 111636.8, qty=0.000875
+INFO:backtester.backtester_engine:📊 Executing BUY trade for BTCUSDT at 111456.9
+INFO:backtester.backtester_engine:✅ Executed BUY trade: 0.000882 BTCUSDT at $111456.90
+INFO:backtester.backtester_engine:DEBUG: Closing SHORT position with BUY: entry=111636.8, exit=111456.9, qty=0.000875, pnl=0.15741250000000764
+INFO:simple_strategy.backtester.performance_tracker:DEBUG: Recorded trade BTCUSDT_20251028_051637: BUY BTCUSDT pnl=0.15741250000000764
+INFO:simple_strategy.backtester.performance_tracker:DEBUG: Total trades in tracker: 342
+INFO:backtester.backtester_engine:DEBUG: Opened BUY position for BTCUSDT at 111456.9, qty=0.000882
+INFO:backtester.backtester_engine:🔧 Backtest progress: 100.0%
+INFO:backtester.backtester_engine:🔧 Completed BTCUSDT5m
+INFO:backtester.backtester_engine:DEBUG: Closing final LONG position for BTCUSDT: entry=111456.9, exit=114743.9, qty=0.000882, pnl=2.899134
+INFO:simple_strategy.backtester.performance_tracker:DEBUG: Recorded trade BTCUSDT_20251028_051646: SELL BTCUSDT pnl=2.899134
+INFO:simple_strategy.backtester.performance_tracker:DEBUG: Total trades in tracker: 343
+INFO:backtester.backtester_engine:DEBUG: Calculating metrics with 343 trades
+INFO:backtester.backtester_engine:DEBUG: Processing 343 trades
+INFO:backtester.backtester_engine:DEBUG: Trade 0: SELL BTCUSDT pnl=-0.01702470000000493
+INFO:backtester.backtester_engine:DEBUG: Trade 1: BUY BTCUSDT pnl=-0.05361510000000246
+INFO:backtester.backtester_engine:DEBUG: Trade 2: SELL BTCUSDT pnl=-0.08527680000000246
+INFO:backtester.backtester_engine:DEBUG: Total PnL: -8.470777099999703
+INFO:backtester.backtester_engine:DEBUG: Calculated metrics: {'total_return_pct': -0.08470777099999703, 'win_rate_pct': 25.94752186588921, 'sharpe_ratio': -0.7162609919282936, 'max_drawdown_pct': 0.0, 'total_trades': 343}
+==================================================
+📊 BACKTEST RESULTS
+==================================================
+💰 Total Return: -0.08%
+🎯 Win Rate: 25.95%
+📈 Sharpe Ratio: -0.72
+📉 Max Drawdown: 0.00%
+🔄 Total Trades: 343
+==================================================
