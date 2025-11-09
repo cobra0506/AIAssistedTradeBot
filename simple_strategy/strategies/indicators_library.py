@@ -418,16 +418,28 @@ def bollinger_bands(data: pd.Series, period: int = 20, std_dev: float = 2.0) -> 
         Tuple of (Upper band, Middle band, Lower band)
     """
     try:
+        # Handle edge cases
+        if period <= 0 or period > len(data):
+            logger.warning(f"Invalid Bollinger Bands period {period} for data length {len(data)}")
+            nan_series = pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+            return nan_series, nan_series, nan_series
+        
+        # Handle NaN values in input data
+        if data.isnull().all():
+            logger.warning("All NaN values in Bollinger Bands input data")
+            nan_series = pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+            return nan_series, nan_series, nan_series
+        
         middle_band = sma(data, period)
         std = data.rolling(window=period).std()
         upper_band = middle_band + (std * std_dev)
         lower_band = middle_band - (std * std_dev)
+        
         return upper_band, middle_band, lower_band
     except Exception as e:
         logger.error(f"Error calculating Bollinger Bands: {e}")
-        return (pd.Series(index=data.index, dtype=float), 
-                pd.Series(index=data.index, dtype=float), 
-                pd.Series(index=data.index, dtype=float))
+        nan_series = pd.Series([np.nan] * len(data), index=data.index, dtype=float)
+        return nan_series, nan_series, nan_series
 
 
 def atr(high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14) -> pd.Series:

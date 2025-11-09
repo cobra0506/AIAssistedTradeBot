@@ -48,7 +48,7 @@ STRATEGY_PARAMETERS = {
     # Fast EMA for entry signals
     'fast_ema_period': {
         'type': 'int',
-        'default': 9,
+        'default': 10,
         'min': 5,
         'max': 20,
         'description': 'Fast EMA period for entry signals',
@@ -57,7 +57,7 @@ STRATEGY_PARAMETERS = {
     # Slow EMA for trend direction
     'slow_ema_period': {
         'type': 'int',
-        'default': 21,
+        'default': 49,
         'min': 15,
         'max': 50,
         'description': 'Slow EMA period for trend direction',
@@ -66,7 +66,7 @@ STRATEGY_PARAMETERS = {
     # RSI for momentum confirmation
     'rsi_period': {
         'type': 'int',
-        'default': 14,
+        'default': 17,
         'min': 7,
         'max': 21,
         'description': 'RSI period for momentum confirmation',
@@ -75,7 +75,7 @@ STRATEGY_PARAMETERS = {
     # RSI levels
     'rsi_overbought': {
         'type': 'int',
-        'default': 70,
+        'default': 72,
         'min': 60,
         'max': 80,
         'description': 'RSI overbought level for sell signals',
@@ -83,7 +83,7 @@ STRATEGY_PARAMETERS = {
     },
     'rsi_oversold': {
         'type': 'int',
-        'default': 30,
+        'default': 23,
         'min': 20,
         'max': 40,
         'description': 'RSI oversold level for buy signals',
@@ -92,7 +92,7 @@ STRATEGY_PARAMETERS = {
     # ATR for volatility and risk management
     'atr_period': {
         'type': 'int',
-        'default': 14,
+        'default': 11,
         'min': 10,
         'max': 20,
         'description': 'ATR period for volatility measurement',
@@ -101,7 +101,7 @@ STRATEGY_PARAMETERS = {
     # Risk management parameters
     'atr_multiplier_sl': {
         'type': 'float',
-        'default': 1.5,
+        'default': 0.65,
         'min': 0.5,
         'max': 3.0,
         'description': 'ATR multiplier for stop-loss distance',
@@ -109,7 +109,7 @@ STRATEGY_PARAMETERS = {
     },
     'atr_multiplier_tp': {
         'type': 'float',
-        'default': 2.5,
+        'default': 4.46,
         'min': 1.0,
         'max': 5.0,
         'description': 'ATR multiplier for take-profit distance',
@@ -118,7 +118,7 @@ STRATEGY_PARAMETERS = {
     # Bollinger Bands for volatility breakouts
     'bb_period': {
         'type': 'int',
-        'default': 20,
+        'default': 24,
         'min': 15,
         'max': 30,
         'description': 'Bollinger Bands period for volatility breakouts',
@@ -126,7 +126,7 @@ STRATEGY_PARAMETERS = {
     },
     'bb_std_dev': {
         'type': 'float',
-        'default': 2.0,
+        'default': 2.21,
         'min': 1.5,
         'max': 2.5,
         'description': 'Bollinger Bands standard deviation',
@@ -135,7 +135,7 @@ STRATEGY_PARAMETERS = {
     # Volume confirmation
     'volume_sma_period': {
         'type': 'int',
-        'default': 20,
+        'default': 10,
         'min': 10,
         'max': 50,
         'description': 'Volume SMA period for confirmation',
@@ -152,7 +152,7 @@ STRATEGY_PARAMETERS = {
     # Minimum volatility filter
     'min_atr_threshold': {
         'type': 'float',
-        'default': 0.1,
+        'default': 0.13,
         'min': 0.05,
         'max': 0.5,
         'description': 'Minimum ATR threshold for trading (as % of price)',
@@ -168,7 +168,7 @@ STRATEGY_PARAMETERS = {
     },
     'atr_stop_loss': {
         'type': 'float',
-        'default': 1.0,
+        'default': 0.96,
         'min': 0.5,
         'max': 2.0,
         'description': 'ATR multiplier for stop loss',
@@ -225,6 +225,34 @@ def create_strategy(symbols=None, timeframes=None, **params):
     bb_std_dev = params.get('bb_std_dev', 2.0)
     volume_sma_period = params.get('volume_sma_period', 20)
     min_atr_threshold = params.get('min_atr_threshold', 0.1)
+
+    # ADD THIS CODE AFTER getting parameters (around line 200):
+    # Validate parameters before creating strategy
+    def validate_parameters():
+        """Validate all strategy parameters"""
+        # Check period relationships
+        if fast_ema_period >= slow_ema_period:
+            raise ValueError(f"Fast EMA period ({fast_ema_period}) must be less than slow EMA period ({slow_ema_period})")
+        
+        # Check reasonable period ranges
+        max_period = max(fast_ema_period, slow_ema_period, rsi_period, atr_period, bb_period, volume_sma_period)
+        if max_period > 200:
+            logger.warning(f"Very large period detected: {max_period}. Ensure you have sufficient data.")
+        
+        # Check ATR multiplier values
+        if atr_multiplier_sl <= 0 or atr_multiplier_tp <= 0:
+            raise ValueError("ATR multipliers must be positive values")
+        
+        # Check Bollinger Bands parameters
+        if bb_std_dev <= 0:
+            raise ValueError("Bollinger Bands standard deviation must be positive")
+
+    try:
+        validate_parameters()
+        logger.info("✅ All parameters validated successfully")
+    except ValueError as e:
+        logger.error(f"❌ Parameter validation failed: {e}")
+        raise
     
     logger.info(f"🎯 Creating Multi-Timeframe Scalping strategy with parameters:")
     logger.info(f" - Symbols: {symbols}")
@@ -273,12 +301,12 @@ def create_strategy(symbols=None, timeframes=None, **params):
                                        overbought=rsi_overbought,
                                        oversold=rsi_oversold)
         
-        # 3. Bollinger Bands Breakout Signal - FIXED: Use the main bb indicator
+        # 3. Bollinger Bands Breakout Signal - FIXED: Use correct component names
         strategy_builder.add_signal_rule('bb_breakout', bollinger_bands_signals,
-                                       price='close',  # Will use close price from data
-                                       upper_band=f'bb_{entry_timeframe}',  # Use main indicator name
-                                       lower_band=f'bb_{entry_timeframe}',  # Use main indicator name
-                                       middle_band=f'bb_{entry_timeframe}')  # Use main indicator name
+            price='close', # Will use close price from data
+            upper_band=f'bb_{entry_timeframe}_upper_band', # Use upper band component
+            lower_band=f'bb_{entry_timeframe}_lower_band', # Use lower band component
+            middle_band=f'bb_{entry_timeframe}_middle_band') # Use middle band component
         
         # Set signal combination method
         strategy_builder.set_signal_combination('majority_vote')
@@ -391,8 +419,8 @@ class MultiTimeframeScalpingStrategy(StrategyBase):
                 signals[symbol] = {}
                 
                 for timeframe in data[symbol]:
-                    # Generate signal for each timeframe
-                    signal = self._generate_single_signal(data[symbol][timeframe], symbol, timeframe)
+                    # Generate signal for each timeframe, passing the full data dictionary
+                    signal = self._generate_single_signal(data[symbol][timeframe], symbol, timeframe, data)
                     signals[symbol][timeframe] = signal
             
             return signals
@@ -401,7 +429,7 @@ class MultiTimeframeScalpingStrategy(StrategyBase):
             logger.error(f"Error generating signals: {e}")
             return signals
     
-    def _generate_single_signal(self, df: pd.DataFrame, symbol: str, timeframe: str) -> str:
+    def _generate_single_signal(self, df: pd.DataFrame, symbol: str, timeframe: str, data: Dict[str, Dict[str, pd.DataFrame]] = None) -> str:
         """
         Generate a single trading signal with multi-timeframe confirmation
         """
@@ -419,8 +447,10 @@ class MultiTimeframeScalpingStrategy(StrategyBase):
             if atr_percent < self.min_atr_threshold:
                 return 'HOLD'
             
-            # Get trend direction from higher timeframe
-            trend_signal = self._get_trend_signal(data, symbol, timeframe)
+            # Get trend direction from higher timeframe (only if data is provided)
+            trend_signal = 'NEUTRAL'  # Default value
+            if data is not None:
+                trend_signal = self._get_trend_signal(data, symbol, timeframe)
             
             # Entry timeframe logic (1m or primary timeframe)
             if timeframe == '1m' or timeframe == self.timeframes[0]:
