@@ -387,7 +387,7 @@ class SimpleStrategyGUI:
         
         # Symbols
         ttk.Label(config_frame, text="Symbols (comma-separated):").grid(row=0, column=0, sticky="w", padx=5, pady=5)
-        self.symbols_var = tk.StringVar(value="BTCUSDT, ETHUSDT, SOLUSDT, LINKUSDT, DOGEUSDT, AVAXUSDT, UNIUSDT")
+        self.symbols_var = tk.StringVar(value=  "BNBUSDT, XRPUSDT, ADAUSDT, DOTUSDT, ATOMUSDT, ALGOUSDT, VETUSDT, ICPUSDT, FILUSDT, AAVEUSDT, COMPUSDT, CRVUSDT, SNXUSDT ")#BTCUSDT, SOLUSDT, DOGEUSDT")#, AVAXUSDT, UNIUSDT")
         ttk.Entry(config_frame, textvariable=self.symbols_var, width=40).grid(row=0, column=1, padx=5, pady=5)
         
         # Timeframes

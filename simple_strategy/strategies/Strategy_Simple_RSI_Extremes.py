@@ -45,7 +45,7 @@ STRATEGY_PARAMETERS = {
     # RSI for mean reversion signals
     'rsi_period': {
         'type': 'int',
-        'default': 14,
+        'default': 8,
         'min': 7,
         'max': 21,
         'description': 'RSI period for mean reversion signals',
@@ -54,7 +54,7 @@ STRATEGY_PARAMETERS = {
     # RSI levels - more extreme for higher quality signals
     'rsi_overbought': {
         'type': 'int',
-        'default': 75,
+        'default': 77,
         'min': 70,
         'max': 80,
         'description': 'RSI overbought level for sell signals',
@@ -62,7 +62,7 @@ STRATEGY_PARAMETERS = {
     },
     'rsi_oversold': {
         'type': 'int',
-        'default': 25,
+        'default': 26,
         'min': 20,
         'max': 30,
         'description': 'RSI oversold level for buy signals',
@@ -71,7 +71,7 @@ STRATEGY_PARAMETERS = {
     # Trend filter
     'trend_sma_period': {
         'type': 'int',
-        'default': 200,
+        'default': 233,
         'min': 50,
         'max': 300,
         'description': 'SMA period for trend filter',
@@ -80,7 +80,7 @@ STRATEGY_PARAMETERS = {
     # Volume filter
     'volume_sma_period': {
         'type': 'int',
-        'default': 20,
+        'default': 34,
         'min': 10,
         'max': 50,
         'description': 'Volume SMA period for confirmation',
@@ -89,7 +89,7 @@ STRATEGY_PARAMETERS = {
     # Volume multiplier
     'volume_multiplier': {
         'type': 'float',
-        'default': 1.2,
+        'default': 1.79,
         'min': 1.0,
         'max': 2.0,
         'description': 'Volume multiplier for signal confirmation',

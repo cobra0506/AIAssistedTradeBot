@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 STRATEGY_PARAMETERS = {
     'rsi_period': {
         'type': 'int',
-        'default': 14,
+        'default': 2,
         'min': 1,
         'max': 50,
         'description': 'RSI calculation period',
@@ -32,7 +32,7 @@ STRATEGY_PARAMETERS = {
     },
     'rsi_overbought': {
         'type': 'int',
-        'default': 70,
+        'default': 78,
         'min': 50,
         'max': 90,
         'description': 'RSI overbought level (sell signal)',
@@ -40,7 +40,7 @@ STRATEGY_PARAMETERS = {
     },
     'rsi_oversold': {
         'type': 'int',
-        'default': 30,
+        'default': 22,
         'min': 10,
         'max': 50,
         'description': 'RSI oversold level (buy signal)',
