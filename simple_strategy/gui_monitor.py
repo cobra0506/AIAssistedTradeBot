@@ -6,12 +6,14 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
+
 # Add current directory to path for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
 # Import strategy registry
 from strategies.strategy_registry import StrategyRegistry
+from simple_strategy.trading.parameter_manager import ParameterManager
 
 class SimpleStrategyGUI:
     def __init__(self, root):
@@ -27,11 +29,25 @@ class SimpleStrategyGUI:
             messagebox.showerror("Error", f"Failed to load strategy registry: {e}")
             self.strategies = {}
         
+        # Initialize ParameterManager - ADD THIS
+        self.param_manager = ParameterManager()
+
         # Initialize variables
         self.current_strategy = None
         self.param_widgets = {}
         
         self.create_widgets()
+
+    def load_optimized_parameters(self, strategy_name):
+        """Load optimized parameters if they exist, otherwise use defaults"""
+        # Get optimized parameters
+        optimized_params = self.param_manager.get_parameters(strategy_name)
+        
+        # Remove the 'last_optimized' field as it's not a strategy parameter
+        if 'last_optimized' in optimized_params:
+            del optimized_params['last_optimized']
+        
+        return optimized_params if optimized_params else None
     
     def create_widgets(self):
         # Create notebook for tabs
@@ -297,7 +313,7 @@ class SimpleStrategyGUI:
         self.param_canvas.bind_all("<Button-4>", lambda e: self.param_canvas.yview_scroll(-1, "units"))
         self.param_canvas.bind_all("<Button-5>", lambda e: self.param_canvas.yview_scroll(1, "units"))
     
-    def on_strategy_selected(self, event=None):
+    '''def on_strategy_selected(self, event=None):
         """Called when strategy selection changes"""
         strategy_name = self.strategy_var.get()
         if not strategy_name or strategy_name not in self.strategies:
@@ -315,7 +331,113 @@ class SimpleStrategyGUI:
             self.update_parameters(strategy_info.get('parameters', {}))
             
         except Exception as e:
-            print(f"Error updating strategy info: {e}")
+            print(f"Error updating strategy info: {e}")'''
+    
+    def on_strategy_selected(self, event=None):
+        """Handle strategy selection - load optimized parameters if available"""
+        strategy_name = self.strategy_var.get()
+        if not strategy_name:
+            return
+        
+        # Get strategy info
+        strategy_info = self.strategies.get(strategy_name)
+        if not strategy_info:
+            return
+        
+        # Clear existing parameter widgets
+        for widget in self.param_inner_frame.winfo_children():
+            widget.destroy()
+        
+        self.param_widgets = {}
+        
+        # Load optimized parameters if they exist
+        optimized_params = self.load_optimized_parameters(strategy_name)
+        
+        # Create parameter widgets
+        params = strategy_info.get('parameters', {})
+        row = 0
+        
+        for param_name, param_info in params.items():
+            # Parameter label
+            label_text = f"{param_name} ({param_info.get('description', '')})"
+            ttk.Label(self.param_inner_frame, text=label_text).grid(row=row, column=0, sticky="w", padx=5, pady=2)
+            
+            # Get default value or optimized value
+            default_value = param_info.get('default', 0)
+            if optimized_params and param_name in optimized_params:
+                value = optimized_params[param_name]
+                # Add visual indicator that this is optimized
+                label_text += " ✅"
+                ttk.Label(self.param_inner_frame, text=label_text).grid(row=row, column=0, sticky="w", padx=5, pady=2)
+            else:
+                value = default_value
+            
+            # Create appropriate widget based on parameter type
+            param_type = param_info.get('type', 'int')
+            
+            if param_type == 'int':
+                var = tk.IntVar(value=value)
+                min_val = param_info.get('min', 0)
+                max_val = param_info.get('max', 100)
+                widget = ttk.Scale(self.param_inner_frame, from_=min_val, to=max_val, variable=var, orient="horizontal")
+                widget.grid(row=row, column=1, padx=5, pady=2)
+                
+                # Add value label
+                value_label = ttk.Label(self.param_inner_frame, text=str(value))
+                value_label.grid(row=row, column=2, padx=5, pady=2)
+                
+                # Update value label when scale changes
+                def update_label(val, lbl=value_label, var=var):
+                    lbl.config(text=str(int(float(val))))
+                widget.config(command=update_label)
+                
+            elif param_type == 'float':
+                var = tk.DoubleVar(value=value)
+                min_val = param_info.get('min', 0.0)
+                max_val = param_info.get('max', 1.0)
+                widget = ttk.Scale(self.param_inner_frame, from_=min_val, to=max_val, variable=var, orient="horizontal")
+                widget.grid(row=row, column=1, padx=5, pady=2)
+                
+                # Add value label
+                value_label = ttk.Label(self.param_inner_frame, text=f"{value:.2f}")
+                value_label.grid(row=row, column=2, padx=5, pady=2)
+                
+                # Update value label when scale changes
+                def update_label(val, lbl=value_label, var=var):
+                    lbl.config(text=f"{float(val):.2f}")
+                widget.config(command=update_label)
+                
+            elif param_type == 'str' and 'options' in param_info:
+                var = tk.StringVar(value=value)
+                widget = ttk.Combobox(self.param_inner_frame, textvariable=var, values=param_info['options'], state="readonly")
+                widget.grid(row=row, column=1, padx=5, pady=2)
+            
+            else:
+                var = tk.StringVar(value=str(value))
+                widget = ttk.Entry(self.param_inner_frame, textvariable=var)
+                widget.grid(row=row, column=1, padx=5, pady=2)
+            
+            self.param_widgets[param_name] = var
+            row += 1
+        
+        # Update strategy description
+        description = strategy_info.get('description', 'No description available')
+        self.description_text.delete(1.0, tk.END)
+        self.description_text.insert(1.0, description)
+        
+        # Show optimization status
+        if optimized_params:
+            last_optimized = self.param_manager.get_parameters(strategy_name).get('last_optimized', 'Unknown')
+            status_text = f"✅ Using optimized parameters (Last optimized: {last_optimized})"
+        else:
+            status_text = "⚪ Using default parameters (Not optimized yet)"
+        
+        # Update status or create status label
+        if hasattr(self, 'optimization_status_label'):
+            self.optimization_status_label.config(text=status_text)
+        else:
+            self.optimization_status_label = ttk.Label(self.param_inner_frame, text=status_text, foreground="green")
+            self.optimization_status_label.grid(row=row, column=0, columnspan=3, pady=5)
     
     def update_parameters(self, parameters):
         """Update parameter widgets based on strategy parameters"""
