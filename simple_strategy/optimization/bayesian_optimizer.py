@@ -6,6 +6,7 @@ import logging
 from .parameter_space import ParameterSpace
 from ..backtester.backtester_engine import BacktesterEngine
 from ..shared.data_feeder import DataFeeder
+from simple_strategy.trading.parameter_manager import ParameterManager
 
 class BayesianOptimizer:
     """Bayesian optimization engine for strategy parameters"""
@@ -176,6 +177,21 @@ class BayesianOptimizer:
         self.logger.info(f"Optimization complete. Best score: {self.best_score}")
         self.logger.info(f"Best parameters: {self.best_params}")
         
+        # Save optimized parameters to ParameterManager
+        try:
+            from ..trading.parameter_manager import ParameterManager
+            pm = ParameterManager()
+            
+            # Create parameters dict for saving
+            optimized_params = self.best_params.copy()
+            optimized_params['last_optimized'] = datetime.now().strftime('%Y-%m-%d')
+            
+            # Save to parameter manager
+            pm.update_parameters(strategy_name, optimized_params)
+            print(f"✅ Optimized parameters saved for {strategy_name}")
+        except Exception as e:
+            print(f"⚠️  Failed to save optimized parameters: {e}")
+
         return self.best_params, self.best_score
     
     def get_optimization_history(self):

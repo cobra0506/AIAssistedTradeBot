@@ -4,6 +4,7 @@ from tkinter import ttk, messagebox
 import subprocess
 import sys
 import os
+from simple_strategy.trading.parameter_gui import ParameterGUI
 
 class TradingBotDashboard:
     def __init__(self, root):
@@ -70,6 +71,8 @@ class TradingBotDashboard:
         # No stop button needed since we allow multiple instances
         ttk.Button(button_frame, text="SETTINGS",
                   command=self.open_simple_strategy_settings).pack(side="left", padx=5)
+        ttk.Button(button_frame, text="PARAMETER MANAGER",  
+              command=self.open_parameter_manager).pack(side="left", padx=5)  
         
         # Info label
         info_label = ttk.Label(ss_frame, text="Open multiple backtest windows to test different strategies simultaneously",
@@ -143,6 +146,11 @@ class TradingBotDashboard:
     def open_simple_strategy_settings(self):
         # Open simple strategy settings (could open config file or settings GUI)
         messagebox.showinfo("Settings", "Simple strategy settings would open here")
+
+    def open_parameter_manager(self):  
+        # Open the parameter manager GUI
+        param_window = tk.Toplevel(self.root)
+        ParameterGUI(param_window)
 
 if __name__ == "__main__":
     root = tk.Tk()

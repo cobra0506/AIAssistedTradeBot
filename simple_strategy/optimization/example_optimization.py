@@ -1,4 +1,7 @@
 # example_optimization.py
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from simple_strategy.optimization import BayesianOptimizer, ParameterSpace
 from simple_strategy.strategies.strategy_builder import StrategyBuilder
 from simple_strategy.shared.data_feeder import DataFeeder
