@@ -73,6 +73,8 @@ class TradingBotDashboard:
                   command=self.open_simple_strategy_settings).pack(side="left", padx=5)
         ttk.Button(button_frame, text="PARAMETER MANAGER",  
               command=self.open_parameter_manager).pack(side="left", padx=5)  
+        ttk.Button(button_frame, text="API MANAGER",
+              command=self.open_api_manager).pack(side="left", padx=5)
         
         # Info label
         info_label = ttk.Label(ss_frame, text="Open multiple backtest windows to test different strategies simultaneously",
@@ -151,6 +153,13 @@ class TradingBotDashboard:
         # Open the parameter manager GUI
         param_window = tk.Toplevel(self.root)
         ParameterGUI(param_window)
+
+    def open_api_manager(self):
+        # Open API manager GUI
+        api_window = tk.Toplevel(self.root)
+        api_window.title("API Account Manager")
+        from simple_strategy.trading.api_gui import APIGUI
+        APIGUI(api_window)
 
 if __name__ == "__main__":
     root = tk.Tk()

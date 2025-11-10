@@ -1,0 +1,16 @@
+{
+    "demo_accounts": {
+        "tes demo account": {
+            "api_key": "123456789",
+            "api_secret": "987654321",
+            "description": "just testing demo account"
+        }
+    },
+    "live_accounts": {
+        "testing real account": {
+            "api_key": "123456789",
+            "api_secret": "987654321",
+            "description": "test real account"
+        }
+    }
+}
