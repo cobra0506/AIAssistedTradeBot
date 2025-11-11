@@ -307,7 +307,7 @@ class WebSocketHandler:
             
             # DEBUG: Log the candle details to see what we're getting
             candle_time = datetime.fromtimestamp(candle['timestamp'] / 1000).strftime('%Y-%m-%d %H:%M:%S')
-            logger.info(f"[DEBUG] {symbol}_{timeframe} candle at {candle_time}: confirm={candle['confirm']}")
+            #logger.info(f"[DEBUG] {symbol}_{timeframe} candle at {candle_time}: confirm={candle['confirm']}")
             
             # Store candle in memory
             key = f"{symbol}_{timeframe}"

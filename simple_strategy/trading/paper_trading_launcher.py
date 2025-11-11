@@ -148,6 +148,9 @@ class PaperTradingLauncher:
                 self.strategy_name, 
                 self.simulated_balance
             )
+
+            # Start performance update timer
+            self.update_performance_timer()
             
             # Start trading in a separate thread (simplified for now)
             self.log_message("Starting paper trading...")
@@ -199,18 +202,53 @@ class PaperTradingLauncher:
     
     def update_performance(self):
         """Update performance display"""
-        perf_text = f"""Initial Balance: ${self.simulated_balance}
-Current Balance: ${self.simulated_balance + random.uniform(-50, 100):.2f}
-Total Trades: {random.randint(0, 20)}
-Win Rate: {random.uniform(30, 70):.1f}%
-Profit/Loss: ${random.uniform(-100, 200):.2f}"""
-        
-        self.perf_text.delete(1.0, "end")
-        self.perf_text.insert(1.0, perf_text)
+        try:
+            if hasattr(self, 'trading_engine') and self.trading_engine:
+                # Get real performance data from the trading engine
+                performance = self.trading_engine.get_performance_summary()
+                
+                initial_balance = performance['initial_balance']
+                current_balance = performance['current_balance']
+                total_trades = len(performance['trades'])
+                
+                # Calculate win rate
+                winning_trades = [t for t in performance['trades'] if t.get('pnl', 0) > 0]
+                win_rate = (len(winning_trades) / total_trades * 100) if total_trades > 0 else 0
+                
+                # Calculate profit/loss
+                pnl = current_balance - initial_balance
+                
+                perf_text = f"""Initial Balance: ${initial_balance:.2f}
+                    Current Balance: ${current_balance:.2f}
+                    Total Trades: {total_trades}
+                    Win Rate: {win_rate:.1f}%
+                    Profit/Loss: ${pnl:.2f}"""
+            else:
+                # Fallback to dummy data if engine not available
+                perf_text = f"""Initial Balance: $1000.00
+                    Current Balance: $1000.00
+                    Total Trades: 0
+                    Win Rate: 0.0%
+                    Profit/Loss: $0.00"""
+            
+            self.perf_text.delete(1.0, "end")
+            self.perf_text.insert(1.0, perf_text)
+            
+        except Exception as e:
+            print(f"Error updating performance: {e}")
     
     def run(self):
         """Run the paper trading window"""
         self.root.mainloop()
+
+    def update_performance_timer(self):
+        """Update performance display every 5 seconds"""
+        try:
+            self.update_performance()
+            # Schedule next update
+            self.root.after(5000, self.update_performance_timer)
+        except Exception as e:
+            print(f"Error in performance timer: {e}")
 
 if __name__ == "__main__":
     # Get parameters from command line or use defaults

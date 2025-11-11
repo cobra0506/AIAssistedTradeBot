@@ -19,7 +19,7 @@ class TestPaperTradingBasic(unittest.TestCase):
     def test_initialization(self):
         """Test that the engine initializes correctly"""
         self.assertEqual(self.engine.api_account, "Demo Account 1")
-        self.assertEqual(self.engine.strategy_name, "Strategy_Simple_RSI")
+        self.assertEqual(self.engine.strategy_name, "Strategy_Mean_Reversion")
         self.assertEqual(self.engine.simulated_balance, 1000.0)
         self.assertEqual(self.engine.initial_balance, 1000.0)
         self.assertFalse(self.engine.is_running)
