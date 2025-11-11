@@ -4,6 +4,16 @@
             "api_key": "123456789",
             "api_secret": "987654321",
             "description": "just testing demo account"
+        },
+        "thyssw Demo": {
+            "api_key": "bj35EM6JSytet1x7lD",
+            "api_secret": "KgUN9xtZwJc9FcJNi48vL2KUwDgcwMe53u5s",
+            "description": "thyssw demo account"
+        },
+        "Demo Account 1": {
+            "api_key": "bj35EM6JSytet1x7lD",
+            "api_secret": "KgUN9xtZwJc9FcJNi48vL2KUwDgcwMe53u5s",
+            "description": "Main Demo Account"
         }
     },
     "live_accounts": {
