@@ -29,12 +29,24 @@ class TestAPIKeys(unittest.TestCase):
             print(f"\nTesting: {account_name}")
             
             try:
-                # Initialize Bybit exchange
-                exchange = ccxt.bybit({
+                # Initialize Bybit exchange with V5 demo configuration
+                exchange_config = {
                     'apiKey': account_info['api_key'],
                     'secret': account_info['api_secret'],
                     'enableRateLimit': True,
-                })
+                    'options': {
+                        'defaultType': 'spot',
+                    },
+                    # Use the correct demo domain for Bybit V5
+                    'urls': {
+                        'api': {
+                            'public': 'https://api-demo.bybit.com',
+                            'private': 'https://api-demo.bybit.com',
+                        }
+                    }
+                }
+
+                exchange = ccxt.bybit(exchange_config)
                 
                 # Test connection by fetching balance
                 balance = exchange.fetch_balance()
@@ -43,6 +55,13 @@ class TestAPIKeys(unittest.TestCase):
                 
             except Exception as e:
                 print(f"❌ FAILED: {str(e)}")
+                
+                # Provide helpful error message
+                if "API key is invalid" in str(e):
+                    print("   💡 TIP: Make sure you created this API key from the 'Demo Trading' interface")
+                    print("   💡 TIP: Go to Bybit → Switch to Demo Trading → Create API key from there")
+                elif "Demo trading are not supported" in str(e):
+                    print("   💡 TIP: You need to use the demo domain: https://api-demo.bybit.com")
     
     def test_live_accounts(self):
         """Test all live API keys"""
@@ -58,12 +77,17 @@ class TestAPIKeys(unittest.TestCase):
             print(f"\nTesting: {account_name}")
             
             try:
-                # Initialize Bybit exchange
-                exchange = ccxt.bybit({
+                # Initialize Bybit exchange for live trading
+                exchange_config = {
                     'apiKey': account_info['api_key'],
                     'secret': account_info['api_secret'],
                     'enableRateLimit': True,
-                })
+                    'options': {
+                        'defaultType': 'spot',
+                    }
+                }
+
+                exchange = ccxt.bybit(exchange_config)
                 
                 # Test connection by fetching balance
                 balance = exchange.fetch_balance()
