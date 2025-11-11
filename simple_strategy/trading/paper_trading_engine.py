@@ -18,7 +18,7 @@ class PaperTradingEngine:
         self.strategy = None
         self.is_running = False
         self.trades = []
-        self.current_positions = {}
+        self.current_positions = {}  # Format: {'symbol': {'quantity': float, 'entry_price': float, 'stop_loss': float, 'take_profit': float}}
         self.exchange = None
         self.bybit_balance = None
         
@@ -53,12 +53,14 @@ class PaperTradingEngine:
                 print(f"Error: Account '{self.api_account}' not found")
                 return False
             
-            # Initialize Bybit exchange
+            # Initialize Bybit exchange (using mainnet with demo API keys)
             self.exchange = ccxt.bybit({
                 'apiKey': api_key,
                 'secret': api_secret,
                 'enableRateLimit': True,
-                'sandbox': True  # Use testnet for paper trading
+                'options': {
+                    'defaultType': 'linear',  # Use linear contracts (perpetual)
+                },
             })
             
             # Test connection
@@ -148,11 +150,14 @@ class PaperTradingEngine:
                         data = self.data_feeder.get_latest_data(symbol, '1m')
                         
                         if data is not None and len(data) > 0:
-                            # Generate trading signals using strategy
-                            signals = self.generate_signals_for_symbol(symbol, data)
-                            
                             # Get current price from the data
                             current_price = data['close'].iloc[-1]
+                            
+                            # Check stop loss and take profit first
+                            self.check_stop_loss_take_profit(symbol, current_price)
+                            
+                            # Generate trading signals using strategy
+                            signals = self.generate_signals_for_symbol(symbol, data)
                             
                             # Process signals
                             if signals:
@@ -212,13 +217,18 @@ class PaperTradingEngine:
                 self.execute_sell(symbol, current_price)
     
     def execute_buy(self, symbol, current_price):
-        """Execute a buy trade"""
+        """Execute a buy trade with stop loss and take profit"""
         try:
             # Calculate trade amount (10% of simulated balance)
             trade_amount_usd = self.simulated_balance * 0.1
             quantity = trade_amount_usd / current_price
             
+            # Set stop loss (2% below entry) and take profit (3% above entry)
+            stop_loss = current_price * 0.98
+            take_profit = current_price * 1.03
+            
             print(f"BUY {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f})")
+            print(f"  Stop Loss: ${stop_loss:.2f}, Take Profit: ${take_profit:.2f}")
             
             # Record the trade
             trade = {
@@ -227,6 +237,8 @@ class PaperTradingEngine:
                 'quantity': quantity,
                 'price': current_price,
                 'amount_usd': trade_amount_usd,
+                'stop_loss': stop_loss,
+                'take_profit': take_profit,
                 'timestamp': datetime.now().isoformat(),
                 'balance_before': self.simulated_balance,
                 'balance_after': self.simulated_balance  # No change for paper trading
@@ -235,24 +247,48 @@ class PaperTradingEngine:
             
             # Update position
             if symbol not in self.current_positions:
-                self.current_positions[symbol] = 0
-            self.current_positions[symbol] += quantity
+                self.current_positions[symbol] = {
+                    'quantity': 0,
+                    'entry_price': current_price,
+                    'stop_loss': stop_loss,
+                    'take_profit': take_profit
+                }
+            else:
+                # If already have a position, average the entry price and update SL/TP
+                old_quantity = self.current_positions[symbol]['quantity']
+                old_entry_price = self.current_positions[symbol]['entry_price']
+                new_quantity = old_quantity + quantity
+                new_entry_price = (old_quantity * old_entry_price + quantity * current_price) / new_quantity
+                
+                self.current_positions[symbol] = {
+                    'quantity': new_quantity,
+                    'entry_price': new_entry_price,
+                    'stop_loss': stop_loss,  # Use new SL for the entire position
+                    'take_profit': take_profit  # Use new TP for the entire position
+                }
             
         except Exception as e:
             print(f"Error executing buy for {symbol}: {e}")
     
-    def execute_sell(self, symbol, current_price):
-        """Execute a sell trade"""
+    def execute_sell(self, symbol, current_price, reason='Market'):
+        """Execute a sell trade to close position"""
         try:
             # Check if we have a position to sell
-            if symbol not in self.current_positions or self.current_positions[symbol] <= 0:
+            if symbol not in self.current_positions or self.current_positions[symbol]['quantity'] <= 0:
                 print(f"No position to sell for {symbol}")
                 return
             
-            quantity = self.current_positions[symbol]
+            position = self.current_positions[symbol]
+            quantity = position['quantity']
+            entry_price = position['entry_price']
             trade_amount_usd = quantity * current_price
             
-            print(f"SELL {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f})")
+            # Calculate profit/loss
+            pnl = (current_price - entry_price) * quantity
+            pnl_percent = ((current_price - entry_price) / entry_price) * 100
+            
+            print(f"SELL {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f}) [{reason}]")
+            print(f"  P&L: ${pnl:.2f} ({pnl_percent:+.2f}%)")
             
             # Record the trade
             trade = {
@@ -261,17 +297,44 @@ class PaperTradingEngine:
                 'quantity': quantity,
                 'price': current_price,
                 'amount_usd': trade_amount_usd,
+                'pnl': pnl,
+                'pnl_percent': pnl_percent,
+                'reason': reason,
                 'timestamp': datetime.now().isoformat(),
                 'balance_before': self.simulated_balance,
-                'balance_after': self.simulated_balance  # No change for paper trading
+                'balance_after': self.simulated_balance + pnl  # Update balance with P&L
             }
             self.trades.append(trade)
             
-            # Update position
-            self.current_positions[symbol] = 0
+            # Update balance
+            self.simulated_balance += pnl
+            
+            # Close position
+            self.current_positions[symbol]['quantity'] = 0
             
         except Exception as e:
             print(f"Error executing sell for {symbol}: {e}")
+
+    def check_stop_loss_take_profit(self, symbol, current_price):
+        """Check if stop loss or take profit conditions are met"""
+        if symbol not in self.current_positions or self.current_positions[symbol]['quantity'] <= 0:
+            return
+        
+        position = self.current_positions[symbol]
+        stop_loss = position['stop_loss']
+        take_profit = position['take_profit']
+        
+        # Check stop loss
+        if current_price <= stop_loss:
+            self.execute_sell(symbol, current_price, 'Stop Loss')
+            return True
+        
+        # Check take profit
+        if current_price >= take_profit:
+            self.execute_sell(symbol, current_price, 'Take Profit')
+            return True
+        
+        return False
     
     def get_performance_summary(self):
         """Get performance summary"""

@@ -1,0 +1,21 @@
+2025-11-11 08:02:01 - websockets.client - ERROR - data transfer failed
+Traceback (most recent call last):
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\framing.py", line 98, in read
+    data = await reader(length)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\streams.py", line 731, in readexactly
+    self._maybe_resume_transport()
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\streams.py", line 461, in _maybe_resume_transport
+    self._transport.resume_reading()
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 343, in resume_reading
+    self._ssl_protocol._transport.resume_reading()
+AttributeError: 'NoneType' object has no attribute 'resume_reading'
+2025-11-11 08:02:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] WebSocket connection closed: no close frame received or sent
+2025-11-11 22:49:21 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] WebSocket connection closed: no close frame received or sent
