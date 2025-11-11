@@ -40,7 +40,8 @@ class APIManager:
         accounts["demo_accounts"][name] = {
             "api_key": api_key,
             "api_secret": api_secret,
-            "description": description
+            "description": description,
+            "testnet": True
         }
         self._save_accounts(accounts)
         return True
@@ -51,7 +52,8 @@ class APIManager:
         accounts["live_accounts"][name] = {
             "api_key": api_key,
             "api_secret": api_secret,
-            "description": description
+            "description": description,
+            "testnet": False
         }
         self._save_accounts(accounts)
         return True
@@ -63,7 +65,8 @@ class APIManager:
             accounts["demo_accounts"][name] = {
                 "api_key": api_key,
                 "api_secret": api_secret,
-                "description": description
+                "description": description,
+                "testnet": True
             }
             self._save_accounts(accounts)
             return True
@@ -76,7 +79,8 @@ class APIManager:
             accounts["live_accounts"][name] = {
                 "api_key": api_key,
                 "api_secret": api_secret,
-                "description": description
+                "description": description,
+                "testnet": False
             }
             self._save_accounts(accounts)
             return True
