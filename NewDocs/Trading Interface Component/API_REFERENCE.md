@@ -337,16 +337,11 @@ Example:
 from simple_strategy.trading.parameter_manager import ParameterManager
 param_manager = ParameterManager()
 
-save_optimized_parameters(self, strategy_name, parameters, optimization_date) 
-
-Description: Save optimized parameters for a strategy.
-Parameters: 
-
-     strategy_name (str): Name of the strategy
-     parameters (dict): Optimized parameter values
-     optimization_date (str): Date of optimization (YYYY-MM-DD format)
-     
-
+update_parameters(self, strategy_name, params)
+Description: Update parameters for a specific strategy.
+Parameters:
+strategy_name (str): Name of the strategy
+params (dict): Parameter values to update
 Returns: bool - True if successful 
 
 Example: 
@@ -364,28 +359,15 @@ success = param_manager.save_optimized_parameters(
     "2025-11-10"
 )
 
-load_optimized_parameters(self, strategy_name) 
-
-Description: Load optimized parameters for a strategy.
-Parameters: 
-
-     strategy_name (str): Name of the strategy
-     
-
-Returns: dict or None - Parameter data if found, None otherwise 
-
-Structure: 
-
+get_parameters(self, strategy_name)
+Description: Get parameters for a specific strategy.
+Parameters:
+strategy_name (str): Name of the strategy
+Returns: dict or None - Parameter data if found, None otherwise
+Structure:
 {
-    "parameters": {
-        "param_name": "value"
-    },
-    "optimization_date": "2025-11-10",
-    "performance_metrics": {
-        "total_return": 15.3,
-        "win_rate": 68.5,
-        "sharpe_ratio": 1.8
-    }
+"param_name": "value",
+"last_optimized": "2025-11-10"
 }
 
 Example:
@@ -395,9 +377,8 @@ if params:
     print(f"Optimized on: {params['optimization_date']}")
     print(f"RSI period: {params['parameters']['rsi_period']}")
 
-get_all_optimized_strategies(self) 
-
-Description: Get list of all strategies with optimized parameters.
+get_all_strategies(self)
+Description: Get all strategy names that have optimized parameters.
 Parameters: None
 Returns: list - List of strategy names 
 
