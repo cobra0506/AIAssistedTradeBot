@@ -6,6 +6,9 @@
 
 Main optimization engine using Optuna framework for Bayesian optimization.
 
+**Current Implementation Status**: ✅ BAYESIAN OPTIMATION FULLY IMPLEMENTED
+- Grid search and random search methods are planned for future implementation
+
 #### Class Definition
 
 ```python
@@ -16,6 +19,8 @@ class BayesianOptimizer:
                  direction: str = 'maximize',
                  n_trials: int = 100,
                  timeout: int = None)
+
+**Note**: Current implementation uses Bayesian optimization via Optuna's TPE sampler. Grid search and random search methods are planned for future implementation.
 
 Parameters 
 
@@ -28,6 +33,8 @@ Parameters
 
 Methods 
 optimize() 
+
+**Current Implementation**: Uses Bayesian optimization. Grid search and random search methods are planned for future implementation.
 
 def optimize(self,
             strategy_name: str,
@@ -628,3 +635,27 @@ data_feeder = DataFeeder(data_dir='data')
 # Use in optimization
 optimizer = BayesianOptimizer(data_feeder=data_feeder)
 
+## Future Implementation Plans
+
+### Additional Optimization Methods (📋 PLANNED)
+The following optimization methods are planned for future implementation:
+
+#### Grid Search Optimization
+- Exhaustive search through all parameter combinations
+- Guaranteed to find global optimum within parameter space
+- Computationally expensive for large parameter spaces
+
+#### Random Search Optimization
+- Random sampling of parameter combinations
+- More efficient than grid search for high-dimensional spaces
+- Simple implementation with good performance in practice
+
+#### Parallel Processing
+- Support for parallel execution of optimization trials
+- Significant performance improvement for computationally intensive strategies
+- Integration with multiprocessing and distributed computing frameworks
+
+#### Early Stopping
+- Intelligent stopping criteria based on convergence detection
+- Prevention of over-optimization and wasted computational resources
+- Configurable sensitivity and patience parameters
