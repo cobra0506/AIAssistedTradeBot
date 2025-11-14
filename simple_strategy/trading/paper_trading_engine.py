@@ -53,13 +53,14 @@ class PaperTradingEngine:
                 print(f"Error: Account '{self.api_account}' not found")
                 return False
             
-            # Initialize Bybit exchange (using mainnet with demo API keys)
+            # Initialize Bybit exchange for demo trading
             self.exchange = ccxt.bybit({
                 'apiKey': api_key,
                 'secret': api_secret,
                 'enableRateLimit': True,
                 'options': {
-                    'defaultType': 'linear',  # Use linear contracts (perpetual)
+                    'defaultType': 'spot',
+                    'test': True,  # This enables demo/testnet mode
                 },
             })
             
@@ -230,25 +231,29 @@ class PaperTradingEngine:
             print(f"BUY {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f})")
             print(f"  Stop Loss: ${stop_loss:.2f}, Take Profit: ${take_profit:.2f}")
             
+            # Update balance for paper trading
+            new_balance = self.simulated_balance - trade_amount_usd
+
             # Record the trade
             trade = {
-                'symbol': symbol,
-                'type': 'BUY',
-                'quantity': quantity,
-                'price': current_price,
-                'amount_usd': trade_amount_usd,
-                'stop_loss': stop_loss,
-                'take_profit': take_profit,
                 'timestamp': datetime.now().isoformat(),
+                'type': 'BUY',
+                'symbol': symbol,
+                'price': current_price,
+                'quantity': quantity,
                 'balance_before': self.simulated_balance,
-                'balance_after': self.simulated_balance  # No change for paper trading
+                'balance_after': new_balance
             }
+
+            # Update the simulated balance
+            self.simulated_balance = new_balance
             self.trades.append(trade)
             
             # Update position
             if symbol not in self.current_positions:
+                # Create new position
                 self.current_positions[symbol] = {
-                    'quantity': 0,
+                    'quantity': quantity,  # Fixed: Use the calculated quantity
                     'entry_price': current_price,
                     'stop_loss': stop_loss,
                     'take_profit': take_profit
@@ -267,8 +272,12 @@ class PaperTradingEngine:
                     'take_profit': take_profit  # Use new TP for the entire position
                 }
             
+            # Return the trade object (this is what the test expects)
+            return trade
+            
         except Exception as e:
             print(f"Error executing buy for {symbol}: {e}")
+            return None  # Return None on failure
     
     def execute_sell(self, symbol, current_price, reason='Market'):
         """Execute a sell trade to close position"""
@@ -276,7 +285,7 @@ class PaperTradingEngine:
             # Check if we have a position to sell
             if symbol not in self.current_positions or self.current_positions[symbol]['quantity'] <= 0:
                 print(f"No position to sell for {symbol}")
-                return
+                return None  # Return None on failure
             
             position = self.current_positions[symbol]
             quantity = position['quantity']
@@ -292,15 +301,11 @@ class PaperTradingEngine:
             
             # Record the trade
             trade = {
-                'symbol': symbol,
-                'type': 'SELL',
-                'quantity': quantity,
-                'price': current_price,
-                'amount_usd': trade_amount_usd,
-                'pnl': pnl,
-                'pnl_percent': pnl_percent,
-                'reason': reason,
                 'timestamp': datetime.now().isoformat(),
+                'type': 'SELL',
+                'symbol': symbol,
+                'price': current_price,
+                'quantity': quantity,
                 'balance_before': self.simulated_balance,
                 'balance_after': self.simulated_balance + pnl  # Update balance with P&L
             }
@@ -312,8 +317,12 @@ class PaperTradingEngine:
             # Close position
             self.current_positions[symbol]['quantity'] = 0
             
+            # Return the trade object (this is what the test expects)
+            return trade
+            
         except Exception as e:
             print(f"Error executing sell for {symbol}: {e}")
+            return None  # Return None on failure
 
     def check_stop_loss_take_profit(self, symbol, current_price):
         """Check if stop loss or take profit conditions are met"""
@@ -344,3 +353,54 @@ class PaperTradingEngine:
             'total_trades': len(self.trades),
             'trades': self.trades
         }
+    
+    def calculate_performance_metrics(self):
+        """Calculate comprehensive performance metrics"""
+        try:
+            if not self.trades:
+                return {
+                    'total_trades': 0,
+                    'winning_trades': 0,
+                    'win_rate': 0.0,
+                    'total_pnl': 0.0,
+                    'total_return': 0.0,
+                    'avg_profit': 0.0,
+                    'avg_loss': 0.0,
+                    'profit_factor': 0.0,
+                    'current_balance': self.simulated_balance,
+                    'initial_balance': self.initial_balance
+                }
+            
+            # Calculate P&L for each trade
+            sell_trades = [t for t in self.trades if t['type'] == 'SELL']
+            winning_trades = [t for t in sell_trades if t.get('balance_after', 0) > t.get('balance_before', 0)]
+            
+            total_trades = len(self.trades)
+            win_rate = (len(winning_trades) / len(sell_trades) * 100) if sell_trades else 0.0
+            
+            total_return = ((self.simulated_balance - self.initial_balance) / self.initial_balance) * 100
+            total_pnl = self.simulated_balance - self.initial_balance
+            
+            profits = [t['balance_after'] - t['balance_before'] for t in sell_trades if t['balance_after'] > t['balance_before']]
+            losses = [t['balance_after'] - t['balance_before'] for t in sell_trades if t['balance_after'] < t['balance_before']]
+            
+            avg_profit = sum(profits) / len(profits) if profits else 0.0
+            avg_loss = sum(losses) / len(losses) if losses else 0.0
+            profit_factor = abs(sum(profits) / sum(losses)) if losses else 0.0
+            
+            return {
+                'total_trades': total_trades,
+                'winning_trades': len(winning_trades),
+                'win_rate': win_rate,
+                'total_pnl': total_pnl,
+                'total_return': total_return,
+                'avg_profit': avg_profit,
+                'avg_loss': avg_loss,
+                'profit_factor': profit_factor,
+                'current_balance': self.simulated_balance,
+                'initial_balance': self.initial_balance
+            }
+            
+        except Exception as e:
+            print(f"Error calculating performance metrics: {e}")
+            return None
