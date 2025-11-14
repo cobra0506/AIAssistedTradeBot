@@ -10,8 +10,6 @@ class PaperTradingEngine:
     def __init__(self, api_account, strategy_name, simulated_balance=1000):
         self.api_account = api_account
         self.strategy_name = strategy_name
-        self.simulated_balance = float(simulated_balance)
-        self.initial_balance = self.simulated_balance
         
         # Initialize components
         self.data_feeder = DataFeeder(data_dir='data')
@@ -53,15 +51,22 @@ class PaperTradingEngine:
                 print(f"Error: Account '{self.api_account}' not found")
                 return False
             
-            # Initialize Bybit exchange for demo trading
+            # Initialize Bybit exchange for V5 demo trading
             self.exchange = ccxt.bybit({
                 'apiKey': api_key,
                 'secret': api_secret,
                 'enableRateLimit': True,
                 'options': {
                     'defaultType': 'spot',
-                    'test': True,  # This enables demo/testnet mode
                 },
+                'sandbox': True,  # This enables V5 demo mode
+                # Override the default URLs to use the working demo endpoint
+                'urls': {
+                    'api': {
+                        'public': 'https://api-demo.bybit.com',
+                        'private': 'https://api-demo.bybit.com',
+                    }
+                }
             })
             
             # Test connection
@@ -78,6 +83,24 @@ class PaperTradingEngine:
         except Exception as e:
             print(f"Error initializing exchange: {e}")
             return False
+        
+    def get_real_balance(self):
+        """Get REAL balance from Bybit DEMO account"""
+        try:
+            if not self.exchange:
+                print("❌ Exchange not initialized")
+                return 0
+                
+            # Fetch real balance from Bybit
+            balance = self.exchange.fetch_balance()
+            real_balance = balance['total']['USDT']
+            
+            print(f"💰 REAL Bybit Balance: ${real_balance}")
+            return float(real_balance)
+            
+        except Exception as e:
+            print(f"❌ Error getting real balance: {e}")
+            return 0
     
     def load_strategy(self):
         """Load the selected strategy with optimized parameters"""
@@ -218,74 +241,91 @@ class PaperTradingEngine:
                 self.execute_sell(symbol, current_price)
     
     def execute_buy(self, symbol, current_price):
-        """Execute a buy trade with stop loss and take profit"""
+        """Execute a REAL buy trade using Bybit DEMO API"""
         try:
-            # Calculate trade amount (10% of simulated balance)
-            trade_amount_usd = self.simulated_balance * 0.1
+            # Get REAL balance from Bybit
+            real_balance = self.get_real_balance()
+            if real_balance <= 0:
+                print(f"❌ No real balance available for {symbol}")
+                return None
+                
+            # Calculate trade amount (10% of real balance)
+            trade_amount_usd = real_balance * 0.1
             quantity = trade_amount_usd / current_price
             
             # Set stop loss (2% below entry) and take profit (3% above entry)
             stop_loss = current_price * 0.98
             take_profit = current_price * 1.03
             
-            print(f"BUY {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f})")
-            print(f"  Stop Loss: ${stop_loss:.2f}, Take Profit: ${take_profit:.2f}")
+            print(f"🚀 REAL BUY {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f})")
+            print(f" Stop Loss: ${stop_loss:.2f}, Take Profit: ${take_profit:.2f}")
             
-            # Update balance for paper trading
-            new_balance = self.simulated_balance - trade_amount_usd
-
-            # Record the trade
-            trade = {
-                'timestamp': datetime.now().isoformat(),
-                'type': 'BUY',
-                'symbol': symbol,
-                'price': current_price,
-                'quantity': quantity,
-                'balance_before': self.simulated_balance,
-                'balance_after': new_balance
-            }
-
-            # Update the simulated balance
-            self.simulated_balance = new_balance
-            self.trades.append(trade)
-            
-            # Update position
-            if symbol not in self.current_positions:
-                # Create new position
-                self.current_positions[symbol] = {
-                    'quantity': quantity,  # Fixed: Use the calculated quantity
-                    'entry_price': current_price,
-                    'stop_loss': stop_loss,
-                    'take_profit': take_profit
-                }
-            else:
-                # If already have a position, average the entry price and update SL/TP
-                old_quantity = self.current_positions[symbol]['quantity']
-                old_entry_price = self.current_positions[symbol]['entry_price']
-                new_quantity = old_quantity + quantity
-                new_entry_price = (old_quantity * old_entry_price + quantity * current_price) / new_quantity
+            # EXECUTE REAL API ORDER
+            try:
+                # Create real market buy order on Bybit DEMO
+                order = self.exchange.create_market_buy_order(
+                    symbol=symbol,
+                    amount=quantity
+                )
                 
-                self.current_positions[symbol] = {
-                    'quantity': new_quantity,
-                    'entry_price': new_entry_price,
-                    'stop_loss': stop_loss,  # Use new SL for the entire position
-                    'take_profit': take_profit  # Use new TP for the entire position
+                print(f"✅ REAL ORDER PLACED: {order['id']}")
+                
+                # Record the REAL trade
+                trade = {
+                    'timestamp': datetime.now().isoformat(),
+                    'type': 'BUY',
+                    'symbol': symbol,
+                    'price': current_price,
+                    'quantity': quantity,
+                    'order_id': order['id'],
+                    'real_execution': True,
+                    'balance_before': real_balance,
+                    'balance_after': real_balance - trade_amount_usd
                 }
-            
-            # Return the trade object (this is what the test expects)
-            return trade
-            
+                
+                self.trades.append(trade)
+                
+                # Update position
+                if symbol not in self.current_positions:
+                    # Create new position
+                    self.current_positions[symbol] = {
+                        'quantity': quantity,
+                        'entry_price': current_price,
+                        'stop_loss': stop_loss,
+                        'take_profit': take_profit,
+                        'order_id': order['id']
+                    }
+                else:
+                    # If already have a position, average the entry price
+                    old_quantity = self.current_positions[symbol]['quantity']
+                    old_entry_price = self.current_positions[symbol]['entry_price']
+                    new_quantity = old_quantity + quantity
+                    new_entry_price = (old_quantity * old_entry_price + quantity * current_price) / new_quantity
+                    self.current_positions[symbol] = {
+                        'quantity': new_quantity,
+                        'entry_price': new_entry_price,
+                        'stop_loss': stop_loss,
+                        'take_profit': take_profit,
+                        'order_id': order['id']
+                    }
+                
+                return trade
+                
+            except Exception as api_error:
+                print(f"❌ API ERROR: {api_error}")
+                return None
+                
         except Exception as e:
             print(f"Error executing buy for {symbol}: {e}")
-            return None  # Return None on failure
+            return None
     
     def execute_sell(self, symbol, current_price, reason='Market'):
-        """Execute a sell trade to close position"""
+        """Execute a REAL sell trade using Bybit DEMO API"""
         try:
             # Check if we have a position to sell
             if symbol not in self.current_positions or self.current_positions[symbol]['quantity'] <= 0:
-                print(f"No position to sell for {symbol}")
-                return None  # Return None on failure
+                print(f"❌ No position to sell for {symbol}")
+                return None
             
             position = self.current_positions[symbol]
             quantity = position['quantity']
@@ -296,33 +336,52 @@ class PaperTradingEngine:
             pnl = (current_price - entry_price) * quantity
             pnl_percent = ((current_price - entry_price) / entry_price) * 100
             
-            print(f"SELL {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f}) [{reason}]")
-            print(f"  P&L: ${pnl:.2f} ({pnl_percent:+.2f}%)")
+            print(f"🚀 REAL SELL {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f}) [{reason}]")
+            print(f" P&L: ${pnl:.2f} ({pnl_percent:+.2f}%)")
             
-            # Record the trade
-            trade = {
-                'timestamp': datetime.now().isoformat(),
-                'type': 'SELL',
-                'symbol': symbol,
-                'price': current_price,
-                'quantity': quantity,
-                'balance_before': self.simulated_balance,
-                'balance_after': self.simulated_balance + pnl  # Update balance with P&L
-            }
-            self.trades.append(trade)
-            
-            # Update balance
-            self.simulated_balance += pnl
-            
-            # Close position
-            self.current_positions[symbol]['quantity'] = 0
-            
-            # Return the trade object (this is what the test expects)
-            return trade
-            
+            # EXECUTE REAL API ORDER
+            try:
+                # Create real market sell order on Bybit DEMO
+                order = self.exchange.create_market_sell_order(
+                    symbol=symbol,
+                    amount=quantity
+                )
+                
+                print(f"✅ REAL ORDER PLACED: {order['id']}")
+                
+                # Get REAL balance after trade
+                real_balance_after = self.get_real_balance()
+                
+                # Record the REAL trade
+                trade = {
+                    'timestamp': datetime.now().isoformat(),
+                    'type': 'SELL',
+                    'symbol': symbol,
+                    'price': current_price,
+                    'quantity': quantity,
+                    'order_id': order['id'],
+                    'real_execution': True,
+                    'pnl': pnl,
+                    'pnl_percent': pnl_percent,
+                    'reason': reason,
+                    'balance_before': self.get_real_balance() + pnl,  # Estimate before
+                    'balance_after': real_balance_after
+                }
+                
+                self.trades.append(trade)
+                
+                # Close position
+                self.current_positions[symbol]['quantity'] = 0
+                
+                return trade
+                
+            except Exception as api_error:
+                print(f"❌ API ERROR: {api_error}")
+                return None
+                
         except Exception as e:
             print(f"Error executing sell for {symbol}: {e}")
-            return None  # Return None on failure
+            return None
 
     def check_stop_loss_take_profit(self, symbol, current_price):
         """Check if stop loss or take profit conditions are met"""

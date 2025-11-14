@@ -158,8 +158,8 @@ class PaperTradingLauncher:
             self.start_btn.config(state="disabled")
             self.stop_btn.config(state="normal")
             
-            # For now, just simulate trading
-            self.simulate_trading()
+            # Start REAL trading
+            self.start_real_trading()
             
         except Exception as e:
             self.log_message(f"Error starting trading: {e}")
@@ -175,27 +175,24 @@ class PaperTradingLauncher:
         self.start_btn.config(state="normal")
         self.stop_btn.config(state="disabled")
     
-    def simulate_trading(self):
-        """Simulate trading for demonstration"""
-        import random
+    def start_real_trading(self):
+        """Start REAL trading using the trading engine"""
         import threading
         
         def trading_loop():
-            while self.status_var.get() == "🟢 RUNNING":
-                # Simulate a trade
-                if random.random() < 0.3:  # 30% chance of trade
-                    trade_type = random.choice(['BUY', 'SELL'])
-                    symbol = random.choice(['BTCUSDT', 'ETHUSDT'])
-                    amount = random.uniform(10, 100)
-                    
-                    self.log_message(f"{trade_type} {symbol}: ${amount:.2f}")
-                    self.update_performance()
-                
-                # Wait random time
-                import time
-                time.sleep(random.uniform(2, 5))
+            try:
+                # Start the real trading engine
+                success = self.trading_engine.start_trading()
+                if success:
+                    self.log_message("✅ Real trading started successfully")
+                else:
+                    self.log_message("❌ Failed to start real trading")
+                    self.stop_trading()
+            except Exception as e:
+                self.log_message(f"❌ Error in real trading: {e}")
+                self.stop_trading()
         
-        # Start trading in separate thread
+        # Start real trading in separate thread
         thread = threading.Thread(target=trading_loop)
         thread.daemon = True
         thread.start()
