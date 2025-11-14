@@ -1,16 +1,16 @@
 {
     "demo_accounts": {
         "bybit_demo": {
-            "api_key": "P2VBJHLm2S7oPM48Hz",
-            "api_secret": "I2UjzvuzzmHqsSb4PKgd4dvLkiWgInSuw5uk",
+            "api_key": "CislfOd3zKu9n2nKOk",
+            "api_secret": "aRAixnLWEchI5o18vAfsDfH3Fx3a6cnAPlDC",
             "description": "Bybit Demo Trading Account",
             "testnet": true
         }
     },
     "live_accounts": {
         "testing real account": {
-            "api_key": "Anc1aRAmcefaUl7xJ6",
-            "api_secret": "bzBXU6fQvLNGy1AKqYgxILuAvFNaK8DKNTAx",
+            "api_key": "KF9NAXywpP6pqpGqoG",
+            "api_secret": "WkCAgXqWnv6Oel2VkgxYJVZHJKsWUqCwrFHq",
             "description": "test real account",
             "testnet": false
         }
