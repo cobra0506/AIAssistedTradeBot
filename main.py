@@ -127,12 +127,19 @@ class TradingBotDashboard:
         # Start button (changed to OPEN like backtesting)
         button_frame = ttk.Frame(paper_frame)
         button_frame.pack(fill="x", pady=10)
-        
-        ttk.Button(button_frame, text="OPEN PAPER TRADER", 
-                command=self.open_paper_trader).pack(side="left", padx=5)
+        ttk.Button(button_frame, text="OPEN PAPER TRADER",
+                  command=self.open_paper_trader).pack(side="left", padx=5)
+        ttk.Button(button_frame, text="START TRADING",
+                  command=self.start_paper_trading).pack(side="left", padx=5)
+        ttk.Button(button_frame, text="STOP TRADING",
+                  command=self.stop_paper_trading).pack(side="left", padx=5)
         
         # Load accounts and strategies when tab is created
         self.load_paper_trading_options()
+
+        # Initialize trading engine
+        self.paper_trading_engine = None
+        self.trading_running = False
 
     def create_live_trading_tab(self):
         # Live Trading Tab
@@ -362,6 +369,54 @@ class TradingBotDashboard:
         api_window.title("API Account Manager")
         from simple_strategy.trading.api_gui import APIGUI
         APIGUI(api_window)
+
+    def start_paper_trading(self):
+        """Start paper trading with the new engine"""
+        try:
+            if self.trading_running:
+                messagebox.showinfo("Already Running", "Paper trading is already running!")
+                return
+            
+            # Get selected options
+            account = self.paper_account_var.get()
+            strategy = self.paper_strategy_var.get()
+            balance = self.paper_balance_var.get()
+            
+            if not account or not strategy:
+                messagebox.showerror("Error", "Please select both account and strategy!")
+                return
+            
+            # Initialize and start trading engine
+            from simple_strategy.trading.paper_trading_engine import PaperTradingEngine
+            self.paper_trading_engine = PaperTradingEngine(account, strategy, balance)
+            
+            # Start trading in a separate thread to avoid freezing GUI
+            import threading
+            self.trading_thread = threading.Thread(target=self.paper_trading_engine.start_trading)
+            self.trading_thread.daemon = True
+            self.trading_thread.start()
+            
+            self.trading_running = True
+            messagebox.showinfo("Success", f"Paper trading started for {strategy}!")
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to start paper trading: {str(e)}")
+    
+    def stop_paper_trading(self):
+        """Stop paper trading"""
+        try:
+            if not self.trading_running or not self.paper_trading_engine:
+                messagebox.showinfo("Not Running", "Paper trading is not running!")
+                return
+            
+            # Stop the trading engine
+            self.paper_trading_engine.is_running = False
+            self.trading_running = False
+            
+            messagebox.showinfo("Success", "Paper trading stopped!")
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to stop paper trading: {str(e)}")
 
 if __name__ == "__main__":
     root = tk.Tk()
