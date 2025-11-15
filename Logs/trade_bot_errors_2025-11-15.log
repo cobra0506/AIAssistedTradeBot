@@ -1,0 +1,98 @@
+2025-11-15 04:56:17 - asyncio - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<WebSocketHandler.connect() running at c:\Projects\AIAssistedTradeBot\shared_modules\data_collection\websocket_handler.py:60> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x0000029E2CDCC820>()]>>
+2025-11-15 04:56:17 - simple_strategy.strategies.Strategy_1_Trend_Following - WARNING - ⚠️ No symbols provided, using default: ['BTCUSDT']
+2025-11-15 04:56:17 - simple_strategy.strategies.Strategy_1_Trend_Following - WARNING - ⚠️ No timeframes provided, using default: ['1m']
+2025-11-15 04:56:17 - simple_strategy.strategies.Strategy_1_Trend_Following - WARNING - ⚠️ No symbols provided, using default: ['BTCUSDT']
+2025-11-15 04:56:17 - simple_strategy.strategies.Strategy_1_Trend_Following - WARNING - ⚠️ No timeframes provided, using default: ['1m']
+2025-11-15 04:57:43 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000029E2CDCC790>
+2025-11-15 04:57:43 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x0000029E2CDCA700>, 261849.39)])']
+connector: <aiohttp.connector.TCPConnector object at 0x0000029E2CDB8850>
+2025-11-15 04:57:43 - asyncio - ERROR - Fatal error on SSL transport
+protocol: <asyncio.sslproto.SSLProtocol object at 0x0000029E2CDCCD60>
+transport: <_ProactorSocketTransport fd=2084 read=<_OverlappedFuture cancelled>>
+Traceback (most recent call last):
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 690, in _process_write_backlog
+    self._transport.write(chunk)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 359, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 395, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+AttributeError: 'NoneType' object has no attribute 'send'
+2025-11-15 04:57:43 - asyncio - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-6' coro=<WebSocketCommonProtocol.transfer_data() running at c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py:970> wait_for=<Future pending cb=[shield.<locals>._outer_done_callback() at C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\tasks.py:907, <TaskWakeupMethWrapper object at 0x0000029E2DF309D0>()]> cb=[<TaskWakeupMethWrapper object at 0x0000029E2DF30790>()]>
+2025-11-15 04:57:43 - asyncio - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-8' coro=<WebSocketCommonProtocol.close_connection() running at c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py:1302> wait_for=<Task pending name='Task-6' coro=<WebSocketCommonProtocol.transfer_data() running at c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py:970> wait_for=<Future pending cb=[shield.<locals>._outer_done_callback() at C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\tasks.py:907, <TaskWakeupMethWrapper object at 0x0000029E2DF309D0>()]> cb=[<TaskWakeupMethWrapper object at 0x0000029E2DF30790>()]>>
+2025-11-15 04:57:43 - asyncio - ERROR - Fatal error on SSL transport
+protocol: <asyncio.sslproto.SSLProtocol object at 0x0000029E2DF304F0>
+transport: <_ProactorSocketTransport fd=2136>
+Traceback (most recent call last):
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 690, in _process_write_backlog
+    self._transport.write(chunk)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 359, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 395, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+AttributeError: 'NoneType' object has no attribute 'send'
+2025-11-15 05:02:18 - asyncio - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<WebSocketHandler.connect() running at C:\Projects\AIAssistedTradeBot\shared_modules\data_collection\websocket_handler.py:60> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x0000028187F6E580>()]>>
+2025-11-15 05:02:18 - simple_strategy.strategies.Strategy_1_Trend_Following - WARNING - ⚠️ No symbols provided, using default: ['BTCUSDT']
+2025-11-15 05:02:18 - simple_strategy.strategies.Strategy_1_Trend_Following - WARNING - ⚠️ No timeframes provided, using default: ['1m']
+2025-11-15 05:02:18 - simple_strategy.strategies.Strategy_1_Trend_Following - WARNING - ⚠️ No symbols provided, using default: ['BTCUSDT']
+2025-11-15 05:02:18 - simple_strategy.strategies.Strategy_1_Trend_Following - WARNING - ⚠️ No timeframes provided, using default: ['1m']
+2025-11-15 05:03:48 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000028186EA3DF0>
+2025-11-15 05:03:48 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x0000028186F10340>, 262210.953)])']
+connector: <aiohttp.connector.TCPConnector object at 0x0000028186E8F820>
+2025-11-15 05:03:48 - asyncio - ERROR - Fatal error on SSL transport
+protocol: <asyncio.sslproto.SSLProtocol object at 0x0000028187F6E100>
+transport: <_ProactorSocketTransport fd=2168>
+Traceback (most recent call last):
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 690, in _process_write_backlog
+    self._transport.write(chunk)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 359, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 395, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+AttributeError: 'NoneType' object has no attribute 'send'
+2025-11-15 05:03:48 - asyncio - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-6' coro=<WebSocketCommonProtocol.transfer_data() running at C:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py:970> wait_for=<Future pending cb=[shield.<locals>._outer_done_callback() at C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\tasks.py:907, <TaskWakeupMethWrapper object at 0x0000028187F6E910>()]> cb=[<TaskWakeupMethWrapper object at 0x0000028187F6E6D0>()]>
+2025-11-15 05:03:48 - asyncio - ERROR - Task was destroyed but it is pending!
+task: <Task pending name='Task-8' coro=<WebSocketCommonProtocol.close_connection() running at C:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py:1302> wait_for=<Task pending name='Task-6' coro=<WebSocketCommonProtocol.transfer_data() running at C:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py:970> wait_for=<Future pending cb=[shield.<locals>._outer_done_callback() at C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\tasks.py:907, <TaskWakeupMethWrapper object at 0x0000028187F6E910>()]> cb=[<TaskWakeupMethWrapper object at 0x0000028187F6E6D0>()]>>
+2025-11-15 05:03:48 - asyncio - ERROR - Fatal error on SSL transport
+protocol: <asyncio.sslproto.SSLProtocol object at 0x0000028186EA36A0>
+transport: <_ProactorSocketTransport fd=2112 read=<_OverlappedFuture cancelled>>
+Traceback (most recent call last):
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\sslproto.py", line 690, in _process_write_backlog
+    self._transport.write(chunk)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 359, in write
+    self._loop_writing(data=bytes(data))
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 395, in _loop_writing
+    self._write_fut = self._loop._proactor.send(self._sock, data)
+AttributeError: 'NoneType' object has no attribute 'send'
+2025-11-15 05:07:24 - websockets.client - ERROR - data transfer failed
+Traceback (most recent call last):
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+  File "c:\Projects\AIAssistedTradeBot\venv\lib\site-packages\websockets\legacy\framing.py", line 98, in read
+    data = await reader(length)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\streams.py", line 723, in readexactly
+    await self._wait_for_data('readexactly')
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\streams.py", line 517, in _wait_for_data
+    await self._waiter
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\proactor_events.py", line 280, in _loop_reading
+    data = fut.result()
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\windows_events.py", line 817, in _poll
+    value = callback(transferred, key, ov)
+  File "C:\Users\Thys\AppData\Local\Programs\Python\Python39\lib\asyncio\windows_events.py", line 462, in finish_recv
+    return ov.getresult()
+OSError: [WinError 121] The semaphore timeout period has expired
+2025-11-15 05:07:24 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] WebSocket connection closed: no close frame received or sent

@@ -24,9 +24,15 @@ def test_complete_trading_loop():
         initial_balance = engine.get_balance()
         print(f"🏦 Initial Balance: ${initial_balance}")
         
-        # Get symbols we'll be monitoring
-        symbols = engine.get_all_perpetual_symbols()
-        test_symbols = symbols[:5]  # Test with first 5 symbols for speed
+        # Get symbols we'll be monitoring from data config
+        if engine.data_config.FETCH_ALL_SYMBOLS:
+            # Get a subset of all available symbols for testing
+            all_symbols = engine.get_all_perpetual_symbols()
+            test_symbols = all_symbols[:5]  # Test with first 5 symbols for speed
+        else:
+            # Use symbols from config
+            test_symbols = engine.data_config.SYMBOLS[:5]  # Test with first 5 symbols for speed
+            
         print(f"📊 Monitoring {len(test_symbols)} symbols: {test_symbols}")
         
         # Load strategy

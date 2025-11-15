@@ -21,7 +21,7 @@ class DataCollectionConfig:
     # Fetch all symbols from Bybit
     # True = Get all available symbols from Bybit
     # False = Use only symbols in SYMBOLS list
-    FETCH_ALL_SYMBOLS = True
+    FETCH_ALL_SYMBOLS = False
     
     # WebSocket settings
     # True = Start WebSocket and continue collecting live data
