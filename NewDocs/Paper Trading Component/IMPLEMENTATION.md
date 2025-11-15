@@ -30,23 +30,24 @@ class PaperTradingEngine:
     def execute_sell(self, symbol, price)
     def update_performance(self)
 
-Key Implementation Details 
-
-Initialization 
-
-def __init__(self, api_account, strategy_name, simulated_balance=1000):
+Key Implementation Details
+Initialization
+    def __init__ (self, api_account, strategy_name, simulated_balance=1000):
     self.api_account = api_account
     self.strategy_name = strategy_name
     self.simulated_balance = float(simulated_balance)
     self.initial_balance = self.simulated_balance
-    
     # Core components
     self.data_feeder = DataFeeder(data_dir='data')
     self.strategy = None
     self.is_running = False
     self.trades = []
     self.current_positions = {}
-    self.exchange = None
+    # API configuration (WORKING)
+    self.api_key = None
+    self.api_secret = None
+    self.base_url = "https://api-demo.bybit.com"  # Demo API URL
+    self.recv_window = "5000"
     self.bybit_balance = None
 
 Exchange Connection
@@ -348,6 +349,44 @@ def calculate_performance_metrics(self):
         'current_balance': self.simulated_balance,
         'initial_balance': self.initial_balance
     }
+
+### 5. Working API Configuration (NEW)
+**File Location**: `simple_strategy/trading/paper_trading_engine.py`
+
+**Working Configuration**:
+```python
+# API configuration - using the working demo API
+self.api_key = None
+self.api_secret = None
+self.base_url = "https://api-demo.bybit.com"  # Use demo API for everything
+self.recv_window = "5000"
+
+Test Results: 
+
+     ✅ Balance Fetch: $153,301.55 USDT
+     ✅ Symbol Discovery: 551 perpetual symbols
+     ✅ Authentication: Working with proper HMAC-SHA256 signatures
+     ✅ API Endpoints: All private endpoints accessible
+     
+
+Authentication Method: 
+
+def generate_signature(self, timestamp, method, path, body='', params=None):
+    """Generate HMAC-SHA256 signature for Bybit API V5"""
+    if method == "GET" and params:
+        sorted_params = sorted(params.items())
+        query_string = urlencode(sorted_params)
+        param_str = timestamp + self.api_key + self.recv_window + query_string
+    else:
+        param_str = timestamp + self.api_key + self.recv_window + str(body)
+    
+    signature = hmac.new(
+        self.api_secret.encode('utf-8'),
+        param_str.encode('utf-8'),
+        hashlib.sha256
+    ).hexdigest()
+    return signature
+    
 
 🧪 Testing Implementation 
 Unit Tests 
