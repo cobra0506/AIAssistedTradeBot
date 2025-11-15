@@ -1,0 +1,18 @@
+2025-11-16 00:03:56 - root - INFO - Logging system initialized
+2025-11-16 00:03:56 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-11-16 00:03:56 - root - INFO - Logging system initialized
+2025-11-16 00:03:56 - root - INFO - Logging system initialized
+2025-11-16 00:03:56 - root - INFO - Logging system initialized
+2025-11-16 00:03:57 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-11-16 00:03:57 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-11-16 00:03:57 - shared_modules.data_collection.shared_websocket_manager - INFO - [SHARED] WebSocket disabled by configuration
+2025-11-16 00:03:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [CLEANUP] aiohttp session closed
+2025-11-16 00:03:57 - shared_modules.data_collection.hybrid_system - INFO - [CLEANUP] HybridTradingSystem resources cleaned up
+2025-11-16 00:03:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [CLEANUP] aiohttp session closed
+2025-11-16 00:03:57 - shared_modules.data_collection.hybrid_system - INFO - [CLEANUP] HybridTradingSystem resources cleaned up
+2025-11-16 00:03:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [CLEANUP] aiohttp session closed
+2025-11-16 00:03:57 - shared_modules.data_collection.hybrid_system - INFO - [CLEANUP] HybridTradingSystem resources cleaned up
+2025-11-16 00:03:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [CLEANUP] aiohttp session closed
+2025-11-16 00:03:57 - shared_modules.data_collection.hybrid_system - INFO - [CLEANUP] HybridTradingSystem resources cleaned up
+2025-11-16 00:03:57 - shared_modules.data_collection.optimized_data_fetcher - INFO - [CLEANUP] aiohttp session closed
+2025-11-16 00:03:57 - shared_modules.data_collection.hybrid_system - INFO - [CLEANUP] HybridTradingSystem resources cleaned up

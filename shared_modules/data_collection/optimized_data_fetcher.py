@@ -37,6 +37,12 @@ class OptimizedDataFetcher:
             connector=aiohttp.TCPConnector(limit=100)  # High connection limit
         )
 
+    async def cleanup(self):
+        """Cleanup aiohttp session"""
+        if self.session and not self.session.closed:
+            await self.session.close()
+            logger.info("[CLEANUP] aiohttp session closed")
+
     async def _get_all_symbols(self) -> List[str]:
         """Get all available linear symbols from Bybit with pagination"""
         url = f"{self.config.API_BASE_URL}/v5/market/instruments-info"

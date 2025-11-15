@@ -96,3 +96,13 @@ Traceback (most recent call last):
     return ov.getresult()
 OSError: [WinError 121] The semaphore timeout period has expired
 2025-11-15 05:07:24 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] WebSocket connection closed: no close frame received or sent
+2025-11-15 23:49:32 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001BBFD9CE190>
+2025-11-15 23:49:32 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001BBFF454090>
+2025-11-15 23:49:32 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001BBFF454090>
+2025-11-15 23:49:32 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001BBFF454850>
+2025-11-15 23:49:32 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001BBFF454850>
