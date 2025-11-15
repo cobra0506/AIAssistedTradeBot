@@ -36,6 +36,9 @@ class PaperTradingEngine:
         self.data_feeder = DataFeeder(data_dir='data')
         # NEW: Data collection system integration
         self.data_config = DataCollectionConfig()
+        # Use shared WebSocket manager
+        from shared_modules.data_collection.shared_websocket_manager import SharedWebSocketManager
+        self.shared_ws_manager = SharedWebSocketManager()
         self.data_system = HybridTradingSystem(self.data_config)
         self.data_system_initialized = False
         # Use symbols from data collection config
@@ -546,6 +549,13 @@ class PaperTradingEngine:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             
+            # Initialize shared WebSocket if not already initialized
+            if not self.shared_ws_manager.get_websocket_handler():
+                loop.run_until_complete(self.shared_ws_manager.initialize(self.data_config))
+            
+            # Get the shared WebSocket handler
+            self.data_system.websocket_handler = self.shared_ws_manager.get_websocket_handler()
+            
             # Initialize the data system
             loop.run_until_complete(self.data_system.initialize())
             
@@ -561,7 +571,7 @@ class PaperTradingEngine:
             ))
             
             self.data_system_initialized = True
-            print("✅ Data collection system initialized!")
+            print("✅ Data collection system initialized with shared WebSocket!")
             loop.close()
             
         except Exception as e:

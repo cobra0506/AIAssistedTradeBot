@@ -18,14 +18,20 @@ class HybridTradingSystem:
     def __init__(self, config):
         self.config = config
         self.data_fetcher = OptimizedDataFetcher(config)
-        self.websocket_handler = WebSocketHandler(config)
         self.csv_manager = CSVManager(config)
         self.is_initialized = False
+        # Use shared WebSocket manager
+        from .shared_websocket_manager import SharedWebSocketManager
+        self.shared_ws_manager = SharedWebSocketManager()
+        self.websocket_handler = None  # Will be set during initialization
 
     async def initialize(self):
         """Initialize both fetchers"""
         if not self.is_initialized:
             await self.data_fetcher.initialize()
+            # Initialize shared WebSocket
+            await self.shared_ws_manager.initialize(self.config)
+            self.websocket_handler = self.shared_ws_manager.get_websocket_handler()
             self.is_initialized = True
 
     async def fetch_data_hybrid(self, symbols: List[str] = None, timeframes: List[str] = None,
@@ -56,28 +62,20 @@ class HybridTradingSystem:
             symbols_to_use = symbols
             logger.info(f"[DATA] Using {len(symbols_to_use)} symbols from configuration")
         
-        # Start WebSocket FIRST to avoid gaps between historical and live data
-        # Only start if ENABLE_WEBSOCKET is True
-        if self.config.ENABLE_WEBSOCKET:
-            logger.info(f"[WS] Starting WebSocket for real-time updates...")
-            
+        # Use shared WebSocket connection if available
+        if self.config.ENABLE_WEBSOCKET and self.websocket_handler:
+            logger.info(f"[WS] Using shared WebSocket for real-time updates...")
             # Update symbols in the WebSocket handler
             self.websocket_handler.symbols = symbols_to_use
             self.websocket_handler.config.TIMEFRAMES = timeframes
-            
-            # Start WebSocket in background
-            ws_task = asyncio.create_task(self.websocket_handler.connect())
-            
-            # Wait a bit for connection to establish
-            await asyncio.sleep(3)
-            
+            # Check if WebSocket is already running
             if self.websocket_handler.running:
-                logger.info(f"[OK] WebSocket connected successfully")
-                logger.info(f"[OK] Subscribed to {len(symbols_to_use)} symbols and {len(timeframes)} timeframes")
+                logger.info(f"[OK] Using existing shared WebSocket connection")
+                logger.info(f"[OK] Monitoring {len(symbols_to_use)} symbols and {len(timeframes)} timeframes")
             else:
-                logger.error(f"[FAIL] WebSocket connection failed")
+                logger.error(f"[FAIL] Shared WebSocket connection not available")
         else:
-            logger.info(f"[WS] WebSocket disabled (ENABLE_WEBSOCKET=False)")
+            logger.info(f"[WS] WebSocket disabled (ENABLE_WEBSOCKET=False) or not available")
         
         # Then, fetch historical data if needed
         if mode in ["full", "recent"]:
