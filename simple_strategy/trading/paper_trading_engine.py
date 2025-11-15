@@ -1,106 +1,307 @@
 import os
 import json
 import time
+import requests
+import hmac
+import hashlib
+from urllib.parse import urlencode
 from datetime import datetime
-import ccxt  # For Bybit API connection
 from simple_strategy.shared.data_feeder import DataFeeder
-from simple_strategy.strategies.strategy_builder import StrategyBuilder
 
 class PaperTradingEngine:
     def __init__(self, api_account, strategy_name, simulated_balance=1000):
         self.api_account = api_account
         self.strategy_name = strategy_name
+        self.simulated_balance = float(simulated_balance)
+        self.initial_balance = self.simulated_balance
         
-        # Initialize components
-        self.data_feeder = DataFeeder(data_dir='data')
-        self.strategy = None
+        # API configuration - using the EXACT working configuration
+        self.api_key = None
+        self.api_secret = None
+        self.base_url = "https://api-demo.bybit.com"
+        self.recv_window = "5000"
+        
+        # Trading state
         self.is_running = False
         self.trades = []
-        self.current_positions = {}  # Format: {'symbol': {'quantity': float, 'entry_price': float, 'stop_loss': float, 'take_profit': float}}
-        self.exchange = None
-        self.bybit_balance = None
+        self.current_positions = {}
+        self.strategy = None
+        
+        # Data feeder for strategy integration
+        self.data_feeder = DataFeeder(data_dir='data')
         
         print(f"Paper Trading Engine initialized:")
-        print(f"  Account: {api_account}")
-        print(f"  Strategy: {strategy_name}")
-        print(f"  Simulated Balance: ${simulated_balance}")
+        print(f" Account: {api_account}")
+        print(f" Strategy: {strategy_name}")
+        print(f" Simulated Balance: ${simulated_balance}")
         
-        # Initialize Bybit connection
-        self.initialize_exchange()
-
-    def initialize_exchange(self):
-        """Initialize Bybit exchange connection for trade execution"""
+        # Load credentials and test connection
+        self.load_credentials()
+        self.test_connection()
+    
+    def load_credentials(self):
+        """Load API credentials from file"""
         try:
-            # Load API accounts
-            api_accounts_file = os.path.join(os.path.dirname(__file__), 
-                                            'api_accounts.json')
+            api_accounts_file = os.path.join(os.path.dirname(__file__), 'api_accounts.json')
             with open(api_accounts_file, 'r') as f:
                 accounts = json.load(f)
             
             # Find the selected account
-            account_found = False
             for account_type in ['demo_accounts', 'live_accounts']:
                 if self.api_account in accounts.get(account_type, {}):
                     account_info = accounts[account_type][self.api_account]
-                    api_key = account_info['api_key']
-                    api_secret = account_info['api_secret']
-                    account_found = True
-                    break
+                    self.api_key = account_info['api_key']
+                    self.api_secret = account_info['api_secret']
+                    print(f"✅ API credentials loaded for {self.api_account}")
+                    return True
             
-            if not account_found:
-                print(f"Error: Account '{self.api_account}' not found")
-                return False
+            print(f"❌ Account '{self.api_account}' not found")
+            return False
             
-            # Initialize Bybit exchange for V5 demo trading
-            self.exchange = ccxt.bybit({
-                'apiKey': api_key,
-                'secret': api_secret,
-                'enableRateLimit': True,
-                'options': {
-                    'defaultType': 'spot',
-                },
-                'sandbox': True,  # This enables V5 demo mode
-                # Override the default URLs to use the working demo endpoint
-                'urls': {
-                    'api': {
-                        'public': 'https://api-demo.bybit.com',
-                        'private': 'https://api-demo.bybit.com',
-                    }
-                }
+        except Exception as e:
+            print(f"❌ Error loading API credentials: {e}")
+            return False
+    
+    def generate_signature(self, timestamp, method, path, body='', params=None):
+        """Generate HMAC-SHA256 signature - EXACT working method"""
+        if method == "GET" and params:
+            sorted_params = sorted(params.items())
+            query_string = urlencode(sorted_params)
+            param_str = timestamp + self.api_key + self.recv_window + query_string
+        elif method == "POST" and body:
+            if isinstance(body, dict):
+                import json
+                body_str = json.dumps(body, separators=(',', ':'), sort_keys=True)
+                param_str = timestamp + self.api_key + self.recv_window + body_str
+            else:
+                param_str = timestamp + self.api_key + self.recv_window + str(body)
+        else:
+            param_str = timestamp + self.api_key + self.recv_window + str(body)
+        
+        signature = hmac.new(
+            self.api_secret.encode('utf-8'),
+            param_str.encode('utf-8'),
+            hashlib.sha256
+        ).hexdigest()
+        return signature
+    
+    def make_request(self, method, path, params=None, data=None):
+        """Make authenticated request - EXACT working method"""
+        try:
+            # Handle query parameters
+            if params:
+                query_string = urlencode(params)
+                url = f"{self.base_url}{path}?{query_string}"
+            else:
+                url = f"{self.base_url}{path}"
+            
+            headers = {"Content-Type": "application/json"}
+            
+            # Add authentication
+            timestamp = str(int(time.time() * 1000))
+            signature = self.generate_signature(timestamp, method, path, body=data, params=params)
+            
+            headers.update({
+                "X-BAPI-API-KEY": self.api_key,
+                "X-BAPI-TIMESTAMP": timestamp,
+                "X-BAPI-RECV-WINDOW": self.recv_window,
+                "X-BAPI-SIGN": signature
             })
             
-            # Test connection
-            balance = self.exchange.fetch_balance()
-            self.bybit_balance = balance['total']['USDT']
+            # Make request
+            if method == "GET":
+                response = requests.get(url, headers=headers)
+            elif method == "POST":
+                if isinstance(data, dict):
+                    import json
+                    body_str = json.dumps(data, separators=(',', ':'), sort_keys=True)
+                    response = requests.post(url, headers=headers, data=body_str)
+                else:
+                    response = requests.post(url, headers=headers, json=data)
             
-            print(f"Bybit connection successful")
-            print(f"  Bybit balance: ${self.bybit_balance}")
-            print(f"  Simulated balance: ${self.simulated_balance}")
-            print(f"  Balance offset: ${self.bybit_balance - self.simulated_balance}")
+            result = response.json()
             
-            return True
-            
+            if response.status_code == 200 and result.get('retCode') == 0:
+                return result['result'], None
+            else:
+                error_msg = result.get('retMsg', 'Unknown error')
+                return None, error_msg
+                
         except Exception as e:
-            print(f"Error initializing exchange: {e}")
-            return False
-        
-    def get_real_balance(self):
-        """Get REAL balance from Bybit DEMO account"""
+            return None, str(e)
+    
+    def test_connection(self):
+        """Test the connection - EXACT working method"""
         try:
-            if not self.exchange:
-                print("❌ Exchange not initialized")
+            print("Testing connection...")
+            result, error = self.make_request("GET", "/v5/account/wallet-balance", params={"accountType": "UNIFIED"})
+            
+            if error:
+                print(f"❌ Connection test failed: {error}")
+                return False
+            
+            if result and 'list' in result and result['list']:
+                wallet_data = result['list'][0]
+                balance = float(wallet_data.get('totalAvailableBalance', '0'))
+                print(f"✅ Connection successful! Balance: ${balance}")
+                return True
+            else:
+                print("❌ Connection test failed: Invalid response format")
+                return False
+                
+        except Exception as e:
+            print(f"❌ Connection test error: {e}")
+            return False
+    
+    def get_balance(self):
+        """Get current balance"""
+        try:
+            result, error = self.make_request("GET", "/v5/account/wallet-balance", params={"accountType": "UNIFIED"})
+            
+            if error:
+                print(f"❌ Error getting balance: {error}")
+                return 0
+            
+            if result and 'list' in result and result['list']:
+                wallet_data = result['list'][0]
+                balance = float(wallet_data.get('totalAvailableBalance', '0'))
+                return balance
+            else:
                 return 0
                 
-            # Fetch real balance from Bybit
-            balance = self.exchange.fetch_balance()
-            real_balance = balance['total']['USDT']
+        except Exception as e:
+            print(f"❌ Error getting balance: {e}")
+            return 0
+    
+    def get_all_perpetual_symbols(self):
+        """Get all perpetual symbols"""
+        try:
+            result, error = self.make_request("GET", "/v5/market/instruments-info", params={"category": "linear", "limit": 1000})
             
-            print(f"💰 REAL Bybit Balance: ${real_balance}")
-            return float(real_balance)
+            if error:
+                print(f"❌ Error getting symbols: {error}")
+                return []
+            
+            symbols = []
+            excluded_symbols = ['USDC', 'USDE', 'USTC']
+            
+            for instrument in result['list']:
+                symbol = instrument.get('symbol', '')
+                if (not any(excl in symbol for excl in excluded_symbols) and
+                    "-" not in symbol and
+                    symbol.endswith('USDT') and
+                    instrument.get('contractType') == 'LinearPerpetual' and
+                    instrument.get('status') == 'Trading'):
+                    symbols.append(symbol)
+            
+            print(f"✅ Found {len(symbols)} perpetual symbols")
+            return sorted(symbols)
+                
+        except Exception as e:
+            print(f"❌ Error getting symbols: {e}")
+            return []
+    
+    def execute_buy(self, symbol, quantity=None):
+        """Execute a buy order"""
+        if quantity is None:
+            quantity = self.calculate_position_size(symbol)
+        
+        try:
+            order_data = {
+                "category": "linear",
+                "symbol": symbol,
+                "side": "Buy",
+                "orderType": "Market",
+                "qty": str(quantity),
+                "timeInForce": "GTC"
+            }
+            
+            print(f"📈 Placing BUY order for {quantity} {symbol}...")
+            result, error = self.make_request("POST", "/v5/order/create", data=order_data)
+            
+            if error:
+                print(f"❌ Buy order failed: {error}")
+                return None
+            
+            # Record the trade
+            trade = {
+                'timestamp': datetime.now().isoformat(),
+                'type': 'BUY',
+                'symbol': symbol,
+                'quantity': quantity,
+                'order_id': result.get('orderId'),
+                'status': result.get('orderStatus', 'Unknown'),
+                'balance_before': self.get_balance(),
+                'balance_after': None
+            }
+            
+            self.trades.append(trade)
+            self.current_positions[symbol] = {
+                'quantity': quantity,
+                'order_id': result.get('orderId'),
+                'entry_time': datetime.now().isoformat()
+            }
+            
+            print(f"✅ Buy order successful! Order ID: {result.get('orderId')}")
+            return trade
             
         except Exception as e:
-            print(f"❌ Error getting real balance: {e}")
-            return 0
+            print(f"❌ Error executing buy order: {e}")
+            return None
+    
+    def execute_sell(self, symbol, quantity=None):
+        """Execute a sell order"""
+        if symbol not in self.current_positions:
+            print(f"❌ No position found for {symbol}")
+            return None
+        
+        if quantity is None:
+            quantity = self.current_positions[symbol]['quantity']
+        
+        try:
+            order_data = {
+                "category": "linear",
+                "symbol": symbol,
+                "side": "Sell",
+                "orderType": "Market",
+                "qty": str(quantity),
+                "timeInForce": "GTC"
+            }
+            
+            print(f"📉 Placing SELL order for {quantity} {symbol}...")
+            result, error = self.make_request("POST", "/v5/order/create", data=order_data)
+            
+            if error:
+                print(f"❌ Sell order failed: {error}")
+                return None
+            
+            # Record the trade
+            trade = {
+                'timestamp': datetime.now().isoformat(),
+                'type': 'SELL',
+                'symbol': symbol,
+                'quantity': quantity,
+                'order_id': result.get('orderId'),
+                'status': result.get('orderStatus', 'Unknown'),
+                'balance_before': self.get_balance(),
+                'balance_after': None
+            }
+            
+            self.trades.append(trade)
+            del self.current_positions[symbol]
+            
+            print(f"✅ Sell order successful! Order ID: {result.get('orderId')}")
+            return trade
+            
+        except Exception as e:
+            print(f"❌ Error executing sell order: {e}")
+            return None
+    
+    def calculate_position_size(self, symbol):
+        """Calculate position size based on available balance"""
+        # Simple position sizing - use 1% of simulated balance
+        position_value = self.simulated_balance * 0.01
+        return 0.001  # Fixed small size for testing
     
     def load_strategy(self):
         """Load the selected strategy with optimized parameters"""
@@ -134,332 +335,152 @@ class PaperTradingEngine:
             print(f"Error loading strategy: {e}")
             return False
     
+    def generate_trading_signal(self, symbol, current_price):
+        """Generate trading signal - simple test strategy"""
+        try:
+            # Simple test strategy: 
+            # - Buy if price is below $50,000 (for BTC-like symbols)
+            # - Sell if we have a position and price is above $60,000
+            # - For other symbols, use scaled thresholds
+            
+            # Determine price threshold based on symbol
+            if symbol == 'BTCUSDT':
+                buy_threshold = 50000
+                sell_threshold = 60000
+            elif symbol == 'ETHUSDT':
+                buy_threshold = 3000
+                sell_threshold = 3500
+            else:
+                # For other symbols, use a simple percentage-based approach
+                buy_threshold = current_price * 0.99  # Buy if 1% below current
+                sell_threshold = current_price * 1.01  # Sell if 1% above current
+            
+            # Generate signals
+            if symbol not in self.current_positions:
+                if current_price < buy_threshold:
+                    return 'BUY'
+            else:
+                if current_price > sell_threshold:
+                    return 'SELL'
+            
+            return 'HOLD'  # Hold current position
+            
+        except Exception as e:
+            print(f"Error generating signal for {symbol}: {e}")
+            return None
+    
     def start_trading(self):
-        """Start paper trading"""
+        """Start paper trading with real API calls"""
         if not self.load_strategy():
             return False
-            
-        if not self.exchange:
-            print("Error: Exchange not initialized")
+        
+        if not self.api_key or not self.api_secret:
+            print("Error: API credentials not loaded")
             return False
-            
+        
         self.is_running = True
         print(f"Paper trading started for {self.strategy_name}")
         
-        # Get available symbols from your data collection system
-        try:
-            # Use your existing data collection system
-            data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
-            
-            # Get list of symbols that have data files
-            symbol_files = [f for f in os.listdir(data_dir) if f.endswith('.csv')]
-            available_symbols = [f.replace('.csv', '') for f in symbol_files]
-            
-            print(f"Found {len(available_symbols)} symbols with data")
-            
-            # Limit to first 5 symbols for testing
-            symbols_to_monitor = available_symbols[:5]
-            
-        except Exception as e:
-            print(f"Error loading symbols from data collection: {e}")
-            return False
+        # Get all perpetual symbols
+        symbols = self.get_all_perpetual_symbols()
+        print(f"Monitoring {len(symbols)} symbols")
+        
+        # For testing, start with a smaller subset
+        test_symbols = symbols[:10]  # Start with 10 symbols for testing
+        print(f"Testing with first {len(test_symbols)} symbols: {test_symbols}")
         
         # Main trading loop
+        loop_count = 0
         while self.is_running:
+            loop_count += 1
+            print(f"\n=== Trading Loop #{loop_count} ===")
+            
             try:
-                # Monitor each symbol using your data collection system
-                for symbol in symbols_to_monitor:
+                # Get real-time data for all test symbols
+                for symbol in test_symbols:
                     try:
-                        # Get latest data from your data collection system
-                        data = self.data_feeder.get_latest_data(symbol, '1m')
+                        # Fetch latest ticker data
+                        result, error = self.make_request("GET", "/v5/market/tickers", params={"category": "linear", "symbol": symbol})
                         
-                        if data is not None and len(data) > 0:
-                            # Get current price from the data
-                            current_price = data['close'].iloc[-1]
-                            
-                            # Check stop loss and take profit first
-                            self.check_stop_loss_take_profit(symbol, current_price)
-                            
-                            # Generate trading signals using strategy
-                            signals = self.generate_signals_for_symbol(symbol, data)
-                            
-                            # Process signals
-                            if signals:
-                                self.process_signals(signals, current_price)
-                                
+                        if error:
+                            print(f"Error fetching ticker for {symbol}: {error}")
+                            continue
+                        
+                        # Extract current price from result
+                        ticker_data = result['list'][0] if result['list'] else None
+                        if not ticker_data:
+                            continue
+                        
+                        current_price = float(ticker_data.get('lastPrice', 0))
+                        if current_price == 0:
+                            continue
+                        
+                        print(f"{symbol}: ${current_price}")
+                        
+                        # Generate trading signal using your strategy
+                        signal = self.generate_trading_signal(symbol, current_price)
+                        
+                        # Execute trade if signal is strong enough
+                        if signal == 'BUY' and symbol not in self.current_positions:
+                            print(f"📈 BUY signal for {symbol} at ${current_price}")
+                            self.execute_buy(symbol)
+                        elif signal == 'SELL' and symbol in self.current_positions:
+                            print(f"📉 SELL signal for {symbol} at ${current_price}")
+                            self.execute_sell(symbol)
+                        elif signal:
+                            print(f"📊 Signal for {symbol}: {signal}")
+                        
                     except Exception as e:
                         print(f"Error processing {symbol}: {e}")
                         continue
                 
-                # Wait for next iteration
-                time.sleep(10)  # Check every 10 seconds
+                # Update balance and performance
+                self.update_performance()
+                
+                # Print current status
+                print(f"Open positions: {len(self.current_positions)}")
+                print(f"Total trades: {len(self.trades)}")
+                
+                # Check if we should stop (for testing)
+                if loop_count >= 3:  # Stop after 3 loops for testing
+                    print("🛑 Stopping after 3 test loops")
+                    self.is_running = False
+                    break
+                
+                # Sleep to avoid rate limits
+                print("⏳ Waiting 30 seconds before next loop...")
+                time.sleep(30)
                 
             except Exception as e:
                 print(f"Error in trading loop: {e}")
                 time.sleep(5)
         
-        return True
-    
-    def generate_signals_for_symbol(self, symbol, data):
-        """Generate trading signals for a specific symbol using your data"""
-        try:
-            # Use the data directly from your data collection system
-            # It should already be in the right format for your strategy
-            
-            signals = {}
-            
-            # Generate signals using the loaded strategy
-            if hasattr(self.strategy, 'generate_signals'):
-                signals = self.strategy.generate_signals(data)
-            else:
-                # Fallback simple logic
-                last_close = data['close'].iloc[-1]
-                prev_close = data['close'].iloc[-2]
-                
-                if last_close > prev_close:
-                    signals[symbol] = 'BUY'
-                elif last_close < prev_close:
-                    signals[symbol] = 'SELL'
-            
-            return signals
-            
-        except Exception as e:
-            print(f"Error generating signals for {symbol}: {e}")
-            return {}
-    
-    def stop_trading(self):
-        """Stop paper trading"""
-        self.is_running = False
         print("Paper trading stopped")
+        print(f"Final stats:")
+        print(f"  Total loops: {loop_count}")
+        print(f"  Total trades: {len(self.trades)}")
+        print(f"  Open positions: {len(self.current_positions)}")
     
-    def process_signals(self, signals, current_price):
-        """Process trading signals"""
-        for symbol, signal in signals.items():
-            if signal == 'BUY':
-                self.execute_buy(symbol, current_price)
-            elif signal == 'SELL':
-                self.execute_sell(symbol, current_price)
-    
-    def execute_buy(self, symbol, current_price):
-        """Execute a REAL buy trade using Bybit DEMO API"""
+    def update_performance(self):
+        """Update performance metrics with real data from Bybit"""
         try:
-            # Get REAL balance from Bybit
-            real_balance = self.get_real_balance()
-            if real_balance <= 0:
-                print(f"❌ No real balance available for {symbol}")
-                return None
-                
-            # Calculate trade amount (10% of real balance)
-            trade_amount_usd = real_balance * 0.1
-            quantity = trade_amount_usd / current_price
+            # Get real balance from Bybit
+            real_balance = self.get_balance()
             
-            # Set stop loss (2% below entry) and take profit (3% above entry)
-            stop_loss = current_price * 0.98
-            take_profit = current_price * 1.03
+            # Calculate P&L
+            total_pnl = real_balance - self.initial_balance
             
-            print(f"🚀 REAL BUY {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f})")
-            print(f" Stop Loss: ${stop_loss:.2f}, Take Profit: ${take_profit:.2f}")
-            
-            # EXECUTE REAL API ORDER
-            try:
-                # Create real market buy order on Bybit DEMO
-                order = self.exchange.create_market_buy_order(
-                    symbol=symbol,
-                    amount=quantity
-                )
-                
-                print(f"✅ REAL ORDER PLACED: {order['id']}")
-                
-                # Record the REAL trade
-                trade = {
-                    'timestamp': datetime.now().isoformat(),
-                    'type': 'BUY',
-                    'symbol': symbol,
-                    'price': current_price,
-                    'quantity': quantity,
-                    'order_id': order['id'],
-                    'real_execution': True,
-                    'balance_before': real_balance,
-                    'balance_after': real_balance - trade_amount_usd
-                }
-                
-                self.trades.append(trade)
-                
-                # Update position
-                if symbol not in self.current_positions:
-                    # Create new position
-                    self.current_positions[symbol] = {
-                        'quantity': quantity,
-                        'entry_price': current_price,
-                        'stop_loss': stop_loss,
-                        'take_profit': take_profit,
-                        'order_id': order['id']
-                    }
-                else:
-                    # If already have a position, average the entry price
-                    old_quantity = self.current_positions[symbol]['quantity']
-                    old_entry_price = self.current_positions[symbol]['entry_price']
-                    new_quantity = old_quantity + quantity
-                    new_entry_price = (old_quantity * old_entry_price + quantity * current_price) / new_quantity
-                    self.current_positions[symbol] = {
-                        'quantity': new_quantity,
-                        'entry_price': new_entry_price,
-                        'stop_loss': stop_loss,
-                        'take_profit': take_profit,
-                        'order_id': order['id']
-                    }
-                
-                return trade
-                
-            except Exception as api_error:
-                print(f"❌ API ERROR: {api_error}")
-                return None
-                
-        except Exception as e:
-            print(f"Error executing buy for {symbol}: {e}")
-            return None
-    
-    def execute_sell(self, symbol, current_price, reason='Market'):
-        """Execute a REAL sell trade using Bybit DEMO API"""
-        try:
-            # Check if we have a position to sell
-            if symbol not in self.current_positions or self.current_positions[symbol]['quantity'] <= 0:
-                print(f"❌ No position to sell for {symbol}")
-                return None
-            
-            position = self.current_positions[symbol]
-            quantity = position['quantity']
-            entry_price = position['entry_price']
-            trade_amount_usd = quantity * current_price
-            
-            # Calculate profit/loss
-            pnl = (current_price - entry_price) * quantity
-            pnl_percent = ((current_price - entry_price) / entry_price) * 100
-            
-            print(f"🚀 REAL SELL {symbol}: {quantity:.6f} units at ${current_price:.2f} (${trade_amount_usd:.2f}) [{reason}]")
-            print(f" P&L: ${pnl:.2f} ({pnl_percent:+.2f}%)")
-            
-            # EXECUTE REAL API ORDER
-            try:
-                # Create real market sell order on Bybit DEMO
-                order = self.exchange.create_market_sell_order(
-                    symbol=symbol,
-                    amount=quantity
-                )
-                
-                print(f"✅ REAL ORDER PLACED: {order['id']}")
-                
-                # Get REAL balance after trade
-                real_balance_after = self.get_real_balance()
-                
-                # Record the REAL trade
-                trade = {
-                    'timestamp': datetime.now().isoformat(),
-                    'type': 'SELL',
-                    'symbol': symbol,
-                    'price': current_price,
-                    'quantity': quantity,
-                    'order_id': order['id'],
-                    'real_execution': True,
-                    'pnl': pnl,
-                    'pnl_percent': pnl_percent,
-                    'reason': reason,
-                    'balance_before': self.get_real_balance() + pnl,  # Estimate before
-                    'balance_after': real_balance_after
-                }
-                
-                self.trades.append(trade)
-                
-                # Close position
-                self.current_positions[symbol]['quantity'] = 0
-                
-                return trade
-                
-            except Exception as api_error:
-                print(f"❌ API ERROR: {api_error}")
-                return None
-                
-        except Exception as e:
-            print(f"Error executing sell for {symbol}: {e}")
-            return None
-
-    def check_stop_loss_take_profit(self, symbol, current_price):
-        """Check if stop loss or take profit conditions are met"""
-        if symbol not in self.current_positions or self.current_positions[symbol]['quantity'] <= 0:
-            return
-        
-        position = self.current_positions[symbol]
-        stop_loss = position['stop_loss']
-        take_profit = position['take_profit']
-        
-        # Check stop loss
-        if current_price <= stop_loss:
-            self.execute_sell(symbol, current_price, 'Stop Loss')
-            return True
-        
-        # Check take profit
-        if current_price >= take_profit:
-            self.execute_sell(symbol, current_price, 'Take Profit')
-            return True
-        
-        return False
-    
-    def get_performance_summary(self):
-        """Get performance summary"""
-        return {
-            'initial_balance': self.initial_balance,
-            'current_balance': self.simulated_balance,
-            'total_trades': len(self.trades),
-            'trades': self.trades
-        }
-    
-    def calculate_performance_metrics(self):
-        """Calculate comprehensive performance metrics"""
-        try:
-            if not self.trades:
-                return {
-                    'total_trades': 0,
-                    'winning_trades': 0,
-                    'win_rate': 0.0,
-                    'total_pnl': 0.0,
-                    'total_return': 0.0,
-                    'avg_profit': 0.0,
-                    'avg_loss': 0.0,
-                    'profit_factor': 0.0,
-                    'current_balance': self.simulated_balance,
-                    'initial_balance': self.initial_balance
-                }
-            
-            # Calculate P&L for each trade
-            sell_trades = [t for t in self.trades if t['type'] == 'SELL']
-            winning_trades = [t for t in sell_trades if t.get('balance_after', 0) > t.get('balance_before', 0)]
-            
-            total_trades = len(self.trades)
-            win_rate = (len(winning_trades) / len(sell_trades) * 100) if sell_trades else 0.0
-            
-            total_return = ((self.simulated_balance - self.initial_balance) / self.initial_balance) * 100
-            total_pnl = self.simulated_balance - self.initial_balance
-            
-            profits = [t['balance_after'] - t['balance_before'] for t in sell_trades if t['balance_after'] > t['balance_before']]
-            losses = [t['balance_after'] - t['balance_before'] for t in sell_trades if t['balance_after'] < t['balance_before']]
-            
-            avg_profit = sum(profits) / len(profits) if profits else 0.0
-            avg_loss = sum(losses) / len(losses) if losses else 0.0
-            profit_factor = abs(sum(profits) / sum(losses)) if losses else 0.0
-            
-            return {
-                'total_trades': total_trades,
-                'winning_trades': len(winning_trades),
-                'win_rate': win_rate,
+            # Update performance metrics
+            performance = {
+                'real_balance': real_balance,
                 'total_pnl': total_pnl,
-                'total_return': total_return,
-                'avg_profit': avg_profit,
-                'avg_loss': avg_loss,
-                'profit_factor': profit_factor,
-                'current_balance': self.simulated_balance,
-                'initial_balance': self.initial_balance
+                'total_trades': len(self.trades),
+                'open_positions': len(self.current_positions)
             }
             
+            print(f"Performance: Balance=${real_balance:.2f}, PNL=${total_pnl:.2f}")
+            return performance
+            
         except Exception as e:
-            print(f"Error calculating performance metrics: {e}")
+            print(f"Error updating performance: {e}")
             return None
