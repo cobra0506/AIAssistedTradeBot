@@ -66,9 +66,9 @@ The Paper Trading Component provides a realistic trading simulation environment 
 
 ### System Dependencies
 
-Paper Trading Component
-├── Data Collection System (✅ COMPLETE)
-│   ├── Real-time market data
+Paper Trading Component ├── Data Collection System (✅ COMPLETE)
+│   ├── **NEW** Shared real-time market data (single WebSocket connection)
+│   ├── **NEW** Direct access to SharedWebSocketManager
 │   └── Historical data access
 ├── Strategy Builder System (✅ COMPLETE)
 │   ├── Strategy loading and execution
@@ -82,10 +82,10 @@ Paper Trading Component
 
 
 ### Data Flow
-
 Market Data → Strategy Analysis → Trading Signals → Paper Execution → Performance Tracking
-     ↓              ↓                ↓              ↓                ↓
-Real-time API   Technical Indicators  Buy/Sell Orders  Position Mgmt  P&L Analysis
+↓           ↓                ↓                ↓                ↓
+**Shared WebSocket** Technical Indicators Buy/Sell Orders Position Mgmt P&L Analysis
+**Connection**
 
 
 ## 🎯 Key Features
@@ -94,6 +94,12 @@ Real-time API   Technical Indicators  Buy/Sell Orders  Position Mgmt  P&L Analys
 - **Balance Offset**: Handles Bybit's large fake money amounts by simulating realistic balances
 - **Real-time Execution**: Processes trades with actual market conditions
 - **Position Management**: Tracks open positions and margin requirements
+
+### 1.5. **NEW** Shared WebSocket Integration
+* **Single Connection**: Uses shared WebSocket manager for efficient resource usage
+* **Data Consistency**: Receives identical real-time data as data collection system
+* **Performance**: Eliminates duplicate WebSocket connections and reduces overhead
+* **Reliability**: Benefits from shared connection management and auto-recovery
 
 ### 2. Strategy Integration
 - **Same Strategy Files**: Uses identical strategy files as backtesting and live trading

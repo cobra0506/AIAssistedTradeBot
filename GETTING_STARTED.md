@@ -14,7 +14,7 @@ Testing
  	
 Description
  
- Data Collection System	✅ COMPLETE	8/8 tests passing	Historical and real-time data fetching from Bybit 
+Data Collection System ✅ COMPLETE 8/8 tests passing Historical and real-time data fetching from Bybit with **NEW** shared WebSocket architecture
 Backtesting Engine	✅ COMPLETE	All tests passing	Comprehensive backtesting with performance analytics 
 API Management System	✅ COMPLETE	All tests passing	Secure API credential management 
 Parameter Management	✅ COMPLETE	All tests passing	Strategy parameter optimization and storage 
@@ -55,6 +55,27 @@ pip install -r requirements.txt
 # 3. Set up environment variables (optional, for live trading)
 set BYBIT_API_KEY=your_api_key_here
 set BYBIT_API_SECRET=your_api_secret_here
+
+## 🔄 **NEW** Shared WebSocket Architecture
+
+The system now implements a **shared WebSocket architecture** that eliminates duplicate connections and ensures data consistency:
+
+### Key Benefits:
+- **Resource Efficiency**: Single WebSocket connection shared between data collection and paper trading
+- **Data Consistency**: Both systems receive identical real-time data streams
+- **Performance**: Reduced overhead and improved resource management
+- **Reliability**: Centralized connection management with auto-recovery
+
+### How It Works:
+1. **SharedWebSocketManager**: Singleton pattern ensures only one WebSocket connection exists
+2. **Data Collection**: Uses shared connection for historical and real-time data
+3. **Paper Trading**: Uses the same shared connection for trading decisions
+4. **Resource Management**: Automatic cleanup prevents memory leaks and unclosed sessions
+
+### Testing:
+- Comprehensive test suite validates shared WebSocket functionality
+- All tests pass (7/7) with proper resource cleanup
+- No duplicate WebSocket connections or memory leaks
 
 Running the Application 
 Method 1: Using the Dashboard GUI (Recommended) 

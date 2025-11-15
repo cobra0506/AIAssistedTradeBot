@@ -41,22 +41,24 @@ The Data Management Component encompasses:
 - Data filtering and access methods
 
 ### Data Flow
-
 Bybit API → OptimizedDataFetcher → CSVManager → CSV Files
-     ↓
-Bybit WebSocket → WebSocketHandler → CSVManager → CSV Files
-     ↓
+↓
+Bybit WebSocket → SharedWebSocketManager → WebSocketHandler → CSVManager → CSV Files
+↓
 Configuration → HybridTradingSystem → All Components
-     ↓
+↓
 DataFeeder ← Strategy Builder ← Backtest Engine
-
+↓
+Paper Trading Engine ← SharedWebSocketManager (Real-time Data)
 
 ## Key Features
 
 ### 1. Multi-Source Data Integration
-- **Historical Data**: Async/await based concurrent fetching with rate limiting
-- **Real-time Data**: WebSocket streaming with auto-reconnection and recovery
-- **Unified Interface**: Seamless access to both historical and live data
+* **Historical Data**: Async/await based concurrent fetching with rate limiting
+* **Real-time Data**: **NEW** Shared WebSocket streaming with auto-reconnection and recovery
+* **Unified Interface**: Seamless access to both historical and live data
+* **Resource Efficiency**: **NEW** Single shared WebSocket connection eliminates duplicates
+* **Data Consistency**: **NEW** All components receive identical real-time data streams
 
 ### 2. Performance Optimization
 - **Concurrent Processing**: Batch processing with configurable size and delays

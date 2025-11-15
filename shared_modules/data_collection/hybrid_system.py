@@ -129,6 +129,20 @@ class HybridTradingSystem:
             historical = list(self.data_fetcher.get_memory_data().get(key, []))
             real_time = list(self.websocket_handler.get_real_time_data(symbol, timeframe))
             return historical + real_time
+        
+    async def cleanup(self):
+        """Cleanup resources"""
+        if self.is_initialized:
+            # Cleanup data fetcher
+            if hasattr(self.data_fetcher, 'cleanup'):
+                await self.data_fetcher.cleanup()
+            
+            # Cleanup websocket manager
+            if hasattr(self.shared_ws_manager, 'shutdown'):
+                await self.shared_ws_manager.shutdown()
+            
+            self.is_initialized = False
+            logger.info("[CLEANUP] HybridTradingSystem resources cleaned up")
 
     async def save_to_csv(self, directory: str = "data"):
         """Save all data to CSV using CSV manager"""

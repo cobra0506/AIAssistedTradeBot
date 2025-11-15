@@ -84,51 +84,62 @@ The AI Assisted TradeBot implements a **modular, plug-in architecture** designed
 #### Architecture
 
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Data Collection System                      │
+│                    Data Collection System                       │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
-│  │   Historical    │  │   Real-time     │  │   Data          │ │
-│  │   Data Fetcher  │  │   WebSocket     │  │   Management    │ │
-│  │                 │  │   Handler       │  │                 │ │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
-│           │                     │                     │             │
-│           └─────────────────────┼─────────────────────┘             │
-│                                 │                                   │
-│  ┌─────────────────────────────────┼─────────────────────────────────┐ │
-│  │                    Data Processing Layer                        │ │
-│  │                                                                 │ │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │ │
-│  │  │    CSV      │  │   Data      │  │   Hybrid    │             │ │
-│  │  │   Manager   │  │   Integrity  │  │   System    │             │ │
-│  │  └─────────────┘  └─────────────┘  └─────────────┘             │ │
-│  │                                                                 │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
+|┌────────────────┐ ┌───────────────────────────┐ ┌─────────────┐ |
+|│   Historical   │ │  Shared WebSocket System  │ │   Data      │ |
+|│   Data Fetcher │ │                           │ │ Management  │ |
+|│                │ │  ┌─────────────────┐      │ │             │ |
+|│                │ │  │ Shared WebSocket │     │ │             │ |
+|│                │ │  │    Manager      │      │ │             │ |
+|│                │ │  └─────────────────┘      │ │             │ |
+|│                │ │  ┌─────────────────┐      │ │             │ | 
+|│                │ │  │ WebSocket       │      │ │             │ |
+|│                │ │  │    Handler      │      │ │             │ |
+|│                │ │  └─────────────────┘      │ │             │ |
+|└────────────────┘ └───────────────────────────┘ └─────────────┘ |
+│           │                     │                     │         │
+│           └─────────────────────┼─────────────────────┘         │
+│                                 │                               │
+│  ┌─────────────────────────────────┼──────────────────────────┐ │
+│  │                    Data Processing Layer                   │ │
+│  │                                                            │ │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │ │
+│  │  │    CSV      │  │   Data      │  │   Hybrid    │         │ │
+│  │  │   Manager   │  │   Integrity │  │   System    │         │ │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘         │ │
+│  │                                                            │ │
+│  └────────────────────────────────────────────────────────────┘ │
 │                                                                 │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │                      User Interface                              │ │
-│  │                                                                 │ │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │ │
-│  │  │    GUI      │  │   Console   │  │   Launch    │             │ │
-│  │  │   Monitor   │  │   Interface  │  │   System    │             │ │
-│  │  └─────────────┘  └─────────────┘  └─────────────┘             │ │
-│  │                                                                 │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
+│  ┌────────────────────────────────────────────────────────────┐ │
+│  │                      User Interface                        │ │
+│  │                                                            │ │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │ │
+│  │  │    GUI      │  │   Console   │  │   Launch    │         │ │
+│  │  │   Monitor   │  │   Interface │  │   System    │         │ │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘         │ │
+│  │                                                            │ │
+│  └────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────┘
 
 
 #### Key Components
-- **Historical Data Fetcher** (`optimized_data_fetcher.py`)
-  - Async/await concurrent processing
-  - Rate limiting and retry logic
-  - Batch processing optimization
-  - Integration: Provides data to CSV Manager and Strategy Builder
-
-- **WebSocket Handler** (`websocket_handler.py`)
-  - Real-time data streaming
-  - Connection auto-recovery
-  - Multi-symbol subscription management
-  - Integration: Feeds real-time data to Strategy Builder and Backtest Engine
+* **Historical Data Fetcher** (`optimized_data_fetcher.py`)
+  * Async/await concurrent processing
+  * Rate limiting and retry logic
+  * Batch processing optimization
+  * Integration: Provides data to CSV Manager and Strategy Builder
+* **Shared WebSocket Manager** (`shared_websocket_manager.py`)
+  * **NEW**: Singleton pattern implementation for single websocket connection
+  * **NEW**: Shared resource between data collector and paper trading systems
+  * Real-time data streaming with connection auto-recovery
+  * Multi-symbol subscription management
+  * Integration: Feeds real-time data to Strategy Builder, Backtest Engine, and Paper Trading Engine
+* **WebSocket Handler** (`websocket_handler.py`)
+  * Core websocket functionality managed by Shared WebSocket Manager
+  * Connection management and message processing
+  * Integration: Works through Shared WebSocket Manager for all components
 
 - **CSV Manager** (`csv_manager.py`)
   - Data persistence and file operations
