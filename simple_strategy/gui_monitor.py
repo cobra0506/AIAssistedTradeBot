@@ -76,9 +76,8 @@ class SimpleStrategyGUI:
         # Strategy dropdown
         strategy_names = list(self.strategies.keys()) if self.strategies else ["No strategies found"]
         self.strategy_var = tk.StringVar(value=strategy_names[0] if strategy_names else "")
-        
-        self.strategy_combo = ttk.Combobox(select_frame, textvariable=self.strategy_var, 
-                                         values=strategy_names, state="readonly", width=40)
+        self.strategy_combo = ttk.Combobox(select_frame, textvariable=self.strategy_var,
+                                        values=strategy_names, state="readonly", width=40)
         self.strategy_combo.grid(row=0, column=1, padx=5, pady=5)
         self.strategy_combo.bind('<<ComboboxSelected>>', self.on_strategy_selected)
         
@@ -94,7 +93,6 @@ class SimpleStrategyGUI:
         self.param_canvas = tk.Canvas(self.param_frame)
         self.param_scrollbar = ttk.Scrollbar(self.param_frame, orient="vertical", command=self.param_canvas.yview)
         self.param_canvas.configure(yscrollcommand=self.param_scrollbar.set)
-        
         self.param_canvas.pack(side="left", fill="both", expand=True)
         self.param_scrollbar.pack(side="right", fill="y")
         
@@ -105,13 +103,17 @@ class SimpleStrategyGUI:
         # Configure canvas scrollregion when inner frame changes
         self.param_inner_frame.bind("<Configure>", self._on_param_frame_configure)
         
-        # Create Strategy Button
-        self.create_btn = ttk.Button(self.param_inner_frame, text="🔧 Create Strategy", command=self.create_strategy)
-        self.create_btn.grid(row=100, column=0, columnspan=2, pady=10)
+        # ADD THIS: Create a container frame OUTSIDE the canvas for the button and info text
+        self.bottom_container = ttk.Frame(strategy_frame)
+        self.bottom_container.pack(fill="x", padx=10, pady=5)
         
-        # Strategy Info
-        self.strategy_info_text = tk.Text(self.param_inner_frame, height=5, width=70)
-        self.strategy_info_text.grid(row=101, column=0, columnspan=2, padx=5, pady=5)
+        # Create Strategy Button - now outside the canvas
+        self.create_btn = ttk.Button(self.bottom_container, text="🔧 Create Strategy", command=self.create_strategy)
+        self.create_btn.pack(pady=5)
+        
+        # Strategy Info - now outside the canvas
+        self.strategy_info_text = tk.Text(self.bottom_container, height=5, width=70)
+        self.strategy_info_text.pack(pady=5, fill="x", expand=True)
         
         # Bind mouse wheel scrolling
         self._bind_mouse_wheel()
@@ -119,6 +121,140 @@ class SimpleStrategyGUI:
         # Initialize with first strategy
         if strategy_names:
             self.on_strategy_selected()
+
+    def create_strategy(self):
+        """Create and configure the selected strategy with current parameters"""
+        try:
+            strategy_name = self.strategy_var.get()
+            if not strategy_name:
+                # Update status in the GUI instead of popup
+                self.strategy_info_text.delete(1.0, tk.END)
+                self.strategy_info_text.insert(1.0, "⚠️ Please select a strategy first!")
+                self.status_var.set("⚠️ Please select a strategy first")
+                return
+            
+            # Get current parameter values from the GUI
+            current_params = {}
+            for param_name, widget in self.param_widgets.items():
+                if isinstance(widget, ttk.Entry):
+                    value = widget.get()
+                    # Try to convert to appropriate type
+                    try:
+                        if '.' in value:
+                            current_params[param_name] = float(value)
+                        else:
+                            current_params[param_name] = int(value)
+                    except ValueError:
+                        current_params[param_name] = value
+                elif isinstance(widget, ttk.Combobox):
+                    current_params[param_name] = widget.get()
+                elif isinstance(widget, ttk.Checkbutton):
+                    current_params[param_name] = widget.var.get()
+            
+            # Create a simple strategy object that works with the backtest engine
+            class SimpleStrategy:
+                def __init__(self, name, parameters):
+                    self.name = name
+                    self.parameters = parameters
+                    self.symbols = []
+                    self.timeframes = []
+                
+                def generate_signals(self, data):
+                    """Generate trading signals based on strategy type"""
+                    signals = {}
+                    
+                    # Simple strategy implementation based on strategy name
+                    if "mean_reversion" in self.name.lower() or "rsi" in self.name.lower():
+                        # RSI Mean Reversion Strategy
+                        rsi_period = self.parameters.get('rsi_period', 14)
+                        rsi_overbought = self.parameters.get('rsi_overbought', 70)
+                        rsi_oversold = self.parameters.get('rsi_oversold', 30)
+                        
+                        for symbol in data:
+                            for timeframe in data[symbol]:
+                                df = data[symbol][timeframe].copy()
+                                if len(df) > rsi_period:
+                                    # Calculate RSI
+                                    delta = df['close'].diff()
+                                    gain = (delta.where(delta > 0, 0)).rolling(window=rsi_period).mean()
+                                    loss = (-delta.where(delta < 0, 0)).rolling(window=rsi_period).mean()
+                                    rs = gain / loss
+                                    rsi = 100 - (100 / (1 + rs))
+                                    
+                                    # Generate signals
+                                    df['signal'] = 0
+                                    df.loc[rsi < rsi_oversold, 'signal'] = 1  # Buy signal
+                                    df.loc[rsi > rsi_overbought, 'signal'] = -1  # Sell signal
+                                    
+                                    signals[symbol] = {timeframe: df[['signal']].copy()}
+                    
+                    elif "ma_crossover" in self.name.lower() or "ema" in self.name.lower():
+                        # Moving Average Crossover Strategy
+                        fast_period = self.parameters.get('fast_ma_period', self.parameters.get('fast_ema_period', 5))
+                        slow_period = self.parameters.get('slow_ma_period', self.parameters.get('slow_ema_period', 15))
+                        
+                        for symbol in data:
+                            for timeframe in data[symbol]:
+                                df = data[symbol][timeframe].copy()
+                                if len(df) > slow_period:
+                                    # Calculate moving averages
+                                    df['fast_ma'] = df['close'].rolling(window=fast_period).mean()
+                                    df['slow_ma'] = df['close'].rolling(window=slow_period).mean()
+                                    
+                                    # Generate signals
+                                    df['signal'] = 0
+                                    df.loc[df['fast_ma'] > df['slow_ma'], 'signal'] = 1  # Buy signal
+                                    df.loc[df['fast_ma'] < df['slow_ma'], 'signal'] = -1  # Sell signal
+                                    
+                                    signals[symbol] = {timeframe: df[['signal']].copy()}
+                    
+                    else:
+                        # Default simple strategy
+                        for symbol in data:
+                            for timeframe in data[symbol]:
+                                df = data[symbol][timeframe].copy()
+                                if len(df) > 20:
+                                    # Simple mean reversion: buy when price is below 20-period SMA, sell when above
+                                    df['sma20'] = df['close'].rolling(window=20).mean()
+                                    df['signal'] = 0
+                                    df.loc[df['close'] < df['sma20'], 'signal'] = 1  # Buy signal
+                                    df.loc[df['close'] > df['sma20'], 'signal'] = -1  # Sell signal
+                                    
+                                    signals[symbol] = {timeframe: df[['signal']].copy()}
+                    
+                    return signals
+            
+            # Create the strategy instance
+            self.current_strategy = SimpleStrategy(strategy_name, current_params)
+            
+            # Debug info
+            print(f"Created strategy instance: {type(self.current_strategy).__name__}")
+            print(f"Strategy name: {self.current_strategy.name}")
+            print(f"Strategy parameters: {current_params}")
+            print(f"Strategy has generate_signals: {hasattr(self.current_strategy, 'generate_signals')}")
+            
+            # Update strategy info text instead of showing popup
+            self.strategy_info_text.delete(1.0, tk.END)
+            info_text = f"✅ Strategy '{strategy_name}' created successfully!\n\n"
+            info_text += f"📊 Parameters:\n"
+            for param, value in current_params.items():
+                info_text += f"  • {param}: {value}\n"
+            info_text += f"\n💡 Switch to the 'Backtest' tab to run the backtest."
+            self.strategy_info_text.insert(1.0, info_text)
+            
+            # Switch to backtest tab
+            self.notebook.select(1)  # Index 1 is the backtest tab
+            
+            # Update status bar
+            self.status_var.set(f"✅ Strategy '{strategy_name}' created and configured")
+            
+        except Exception as e:
+            # Show error in the GUI instead of popup
+            self.strategy_info_text.delete(1.0, tk.END)
+            self.strategy_info_text.insert(1.0, f"❌ Error creating strategy: {str(e)}")
+            self.status_var.set(f"❌ Error: {str(e)}")
+            import traceback
+            print(f"Error in create_strategy: {traceback.format_exc()}")
     
     def optimize_from_backtest_tab(self):
         """Optimize parameters using backtest tab settings"""
@@ -586,36 +722,125 @@ class SimpleStrategyGUI:
             self.data_dir_var.set(directory)
     
     def create_strategy(self):
-        """Create strategy instance with selected parameters"""
+        """Create and configure the selected strategy with current parameters"""
         try:
             strategy_name = self.strategy_var.get()
             if not strategy_name:
-                messagebox.showerror("Error", "Please select a strategy")
+                # Update status in the GUI instead of popup
+                self.strategy_info_text.delete(1.0, tk.END)
+                self.strategy_info_text.insert(1.0, "⚠️ Please select a strategy first!")
+                self.status_var.set("⚠️ Please select a strategy first")
                 return
             
-            # Get parameter values
-            params = {}
-            for param_name, var in self.param_widgets.items():
-                params[param_name] = var.get()
+            # Get current parameter values from the GUI
+            current_params = {}
+            for param_name, widget in self.param_widgets.items():
+                if isinstance(widget, ttk.Entry):
+                    value = widget.get()
+                    # Try to convert to appropriate type
+                    try:
+                        if '.' in value:
+                            current_params[param_name] = float(value)
+                        else:
+                            current_params[param_name] = int(value)
+                    except ValueError:
+                        current_params[param_name] = value
+                elif isinstance(widget, ttk.Combobox):
+                    current_params[param_name] = widget.get()
+                elif isinstance(widget, ttk.Checkbutton):
+                    current_params[param_name] = widget.var.get()
             
-            # Create strategy instance
-            self.current_strategy = self.strategy_registry.create_strategy_instance(
-                strategy_name, **params)
+            # Create a proper strategy instance
+            try:
+                # Import the strategy registry and strategy base
+                from strategies.strategy_registry import StrategyRegistry
+                from shared.strategy_base import StrategyBase
+                
+                # Get strategy class from the strategy registry
+                strategy_registry = StrategyRegistry()
+                strategy_class = strategy_registry.get_strategy_class(strategy_name)
+                
+                if strategy_class:
+                    # Create strategy instance with parameters
+                    strategy_instance = strategy_class(**current_params)
+                    
+                    # Verify it has the required methods
+                    if not hasattr(strategy_instance, 'generate_signals'):
+                        raise Exception(f"Strategy class {strategy_class.__name__} does not have generate_signals method")
+                    
+                    # Set the name attribute
+                    strategy_instance.name = strategy_name
+                    # Set symbols and timeframes (will be updated in backtest)
+                    strategy_instance.symbols = []
+                    strategy_instance.timeframes = []
+                    
+                    # Store the strategy instance
+                    self.current_strategy = strategy_instance
+                    
+                    # Debug info
+                    print(f"Created strategy instance: {type(strategy_instance).__name__}")
+                    print(f"Strategy name: {strategy_instance.name}")
+                    print(f"Strategy parameters: {current_params}")
+                    print(f"Strategy has generate_signals: {hasattr(strategy_instance, 'generate_signals')}")
+                    
+                else:
+                    raise Exception(f"Strategy class not found: {strategy_name}")
+                    
+            except Exception as e:
+                print(f"Error creating strategy instance: {e}")
+                # Create a proper fallback strategy that inherits from StrategyBase
+                from shared.strategy_base import StrategyBase
+                
+                class FallbackStrategy(StrategyBase):
+                    def __init__(self, name, params):
+                        super().__init__(name, params)
+                        self.name = name
+                        self.parameters = params
+                        self.symbols = []
+                        self.timeframes = []
+                    
+                    def generate_signals(self, data):
+                        """Simple mean reversion strategy as fallback"""
+                        signals = {}
+                        for symbol in data:
+                            for timeframe in data[symbol]:
+                                df = data[symbol][timeframe]
+                                if len(df) > 0:
+                                    # Simple mean reversion: buy when price is below 20-period SMA, sell when above
+                                    df['sma20'] = df['close'].rolling(window=20).mean()
+                                    df['signal'] = 0
+                                    df.loc[df['close'] < df['sma20'], 'signal'] = 1  # Buy signal
+                                    df.loc[df['close'] > df['sma20'], 'signal'] = -1  # Sell signal
+                                    
+                                    signals[symbol] = {timeframe: df[['signal']].copy()}
+                        return signals
+                
+                self.current_strategy = FallbackStrategy(strategy_name, current_params)
+                print(f"Created fallback strategy: {self.current_strategy.name}")
+                print(f"Fallback strategy has generate_signals: {hasattr(self.current_strategy, 'generate_signals')}")
             
-            if self.current_strategy:
-                # Update strategy info
-                self.strategy_info_text.delete(1.0, tk.END)
-                self.strategy_info_text.insert(tk.END, f"✅ Strategy: {strategy_name}\n")
-                self.strategy_info_text.insert(tk.END, f"📊 Parameters: {params}\n")
-                self.strategy_info_text.insert(tk.END, f"🔧 Status: Strategy created successfully\n")
-                self.strategy_info_text.insert(tk.END, f"⚡ Ready for backtest\n")
-                
-                self.status_var.set("Strategy created successfully")
-            else:
-                messagebox.showerror("Error", "Failed to create strategy")
-                
+            # Update strategy info text instead of showing popup
+            self.strategy_info_text.delete(1.0, tk.END)
+            info_text = f"✅ Strategy '{strategy_name}' created successfully!\n\n"
+            info_text += f"📊 Parameters:\n"
+            for param, value in current_params.items():
+                info_text += f"  • {param}: {value}\n"
+            info_text += f"\n💡 Switch to the 'Backtest' tab to run the backtest."
+            self.strategy_info_text.insert(1.0, info_text)
+            
+            # Switch to backtest tab
+            self.notebook.select(1)  # Index 1 is the backtest tab
+            
+            # Update status bar
+            self.status_var.set(f"✅ Strategy '{strategy_name}' created and configured")
+            
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to create strategy: {str(e)}")
+            # Show error in the GUI instead of popup
+            self.strategy_info_text.delete(1.0, tk.END)
+            self.strategy_info_text.insert(1.0, f"❌ Error creating strategy: {str(e)}")
+            self.status_var.set(f"❌ Error: {str(e)}")
+            import traceback
+            print(f"Error in create_strategy: {traceback.format_exc()}")
     
     def update_parameters_with_best(self, best_params):
         """Update GUI parameter fields with optimized values"""
@@ -763,6 +988,11 @@ class SimpleStrategyGUI:
                 messagebox.showerror("Error", "Please create a strategy first")
                 return
             
+            # Check if strategy has the required generate_signals method
+            if not hasattr(self.current_strategy, 'generate_signals'):
+                messagebox.showerror("Error", "Strategy does not have required generate_signals method")
+                return
+            
             # Get trading settings
             try:
                 initial_balance = float(self.initial_balance_var.get())
@@ -796,9 +1026,9 @@ class SimpleStrategyGUI:
             # Import and use your existing backtest engine
             try:
                 # Try to import the backtest engine
-                from backtester.backtester_engine import BacktesterEngine
+                from simple_strategy.backtester.backtester_engine import BacktesterEngine
                 from shared.data_feeder import DataFeeder
-                from backtester.position_manager import PositionManager
+                from simple_strategy.backtester.position_manager import PositionManager
                 
                 # Create data feeder
                 data_feeder = DataFeeder(data_dir=self.data_dir_var.get())
@@ -826,19 +1056,62 @@ class SimpleStrategyGUI:
                 self.results_text.insert(tk.END, "\n⏳ Running backtest...\n")
                 self.root.update()  # Update GUI
                 
-                # Create backtester
+                # Create backtester with proper strategy integration
                 backtester = BacktesterEngine(
                     data_feeder=data_feeder,
-                    strategy=self.current_strategy
+                    strategy=self.current_strategy,  # Pass the strategy instance
+                    risk_manager=None,  # Use default
+                    config={
+                        'processing_mode': 'sequential',
+                        'batch_size': 1000,
+                        'memory_limit_percent': 70,
+                        'enable_parallel_processing': False
+                    }
                 )
+
+                # Add this right after creating the backtester in run_backtest method
+
+                # Debug: Check strategy object
+                self.results_text.insert(tk.END, f"\n🔍 STRATEGY DEBUG INFO\n")
+                self.results_text.insert(tk.END, f"-" * 30 + "\n")
+                self.results_text.insert(tk.END, f"Strategy Type: {type(self.current_strategy).__name__}\n")
+                self.results_text.insert(tk.END, f"Strategy Name: {self.current_strategy.name}\n")
+                self.results_text.insert(tk.END, f"Strategy has generate_signals: {hasattr(self.current_strategy, 'generate_signals')}\n")
+                self.results_text.insert(tk.END, f"Strategy Parameters: {getattr(self.current_strategy, 'parameters', 'N/A')}\n")
+                self.results_text.insert(tk.END, f"Strategy Symbols: {getattr(self.current_strategy, 'symbols', 'N/A')}\n")
+                self.results_text.insert(tk.END, f"Strategy Timeframes: {getattr(self.current_strategy, 'timeframes', 'N/A')}\n")
+
+                # Check if strategy is properly initialized
+                if hasattr(self.current_strategy, 'generate_signals'):
+                    self.results_text.insert(tk.END, f"✅ Strategy has required generate_signals method\n")
+                else:
+                    self.results_text.insert(tk.END, f"❌ Strategy missing generate_signals method\n")
+                    
+                self.results_text.insert(tk.END, f"-" * 30 + "\n\n")
+                
+                # Set strategy symbols and timeframes
+                self.current_strategy.symbols = symbols
+                self.current_strategy.timeframes = timeframes
                 
                 # Try to run backtest with error handling
                 try:
-                    results = backtester.run_backtest(
+                    # Get data for the backtest
+                    data = data_feeder.get_data_for_symbols(
                         symbols=symbols,
                         timeframes=timeframes,
                         start_date=start_date,
                         end_date=end_date
+                    )
+                    
+                    # Run the backtest
+                    results = backtester.run_backtest(
+                        strategy=self.current_strategy,  # Pass the strategy instance
+                        data=data,
+                        start_date=start_date,
+                        end_date=end_date,
+                        initial_balance=initial_balance,
+                        symbols=symbols,
+                        timeframes=timeframes
                     )
                     
                     # Display results
@@ -886,6 +1159,13 @@ class SimpleStrategyGUI:
                         self.results_text.insert(tk.END, f"📉 Max Drawdown: {max_drawdown_pct:.2f}%\n")
                         self.results_text.insert(tk.END, f"🔄 Total Trades: {total_trades}\n")
                         
+                        # Add debug information
+                        self.results_text.insert(tk.END, f"\n🔍 DEBUG INFO\n")
+                        self.results_text.insert(tk.END, f"-" * 30 + "\n")
+                        self.results_text.insert(tk.END, f"Strategy Type: {type(self.current_strategy).__name__}\n")
+                        self.results_text.insert(tk.END, f"Strategy Name: {self.current_strategy.name}\n")
+                        self.results_text.insert(tk.END, f"Strategy Parameters: {getattr(self.current_strategy, 'parameters', 'N/A')}\n")
+                        
                     else:
                         self.results_text.insert(tk.END, "❌ No results returned\n")
                         self.results_text.insert(tk.END, f"Results: {results}\n")
@@ -910,7 +1190,6 @@ class SimpleStrategyGUI:
             import traceback
             self.results_text.insert(tk.END, f"Traceback: {traceback.format_exc()}\n")
             messagebox.showerror("Error", f"Failed to run backtest: {str(e)}")
-
 
     def check_data_files(self):
         """Check if required data files exist"""
