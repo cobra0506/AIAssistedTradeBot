@@ -1,0 +1,1058 @@
+2025-11-22 08:40:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_1.csv'
+2025-11-22 08:40:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 08:40:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_5.csv'
+2025-11-22 08:40:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_5
+2025-11-22 08:40:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_1.csv'
+2025-11-22 08:40:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 08:40:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_5.csv'
+2025-11-22 08:40:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_5
+2025-11-22 08:40:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_1.csv'
+2025-11-22 08:40:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 08:40:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_5.csv'
+2025-11-22 08:40:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_5.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_5
+2025-11-22 08:40:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_1.csv'
+2025-11-22 08:40:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 08:41:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_1.csv'
+2025-11-22 08:41:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 08:41:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_1.csv'
+2025-11-22 08:41:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 08:41:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_1.csv'
+2025-11-22 08:41:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 08:41:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_1.csv'
+2025-11-22 08:41:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 08:42:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_1.csv'
+2025-11-22 08:42:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 08:42:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_1.csv'
+2025-11-22 08:42:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 08:42:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_1.csv'
+2025-11-22 08:42:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 08:42:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_1.csv'
+2025-11-22 08:42:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 08:42:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_1.csv'
+2025-11-22 08:42:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 08:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_1.csv'
+2025-11-22 08:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 08:43:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_1.csv'
+2025-11-22 08:43:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 08:43:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_1.csv'
+2025-11-22 08:43:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 08:43:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_1.csv'
+2025-11-22 08:43:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 08:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_1.csv'
+2025-11-22 08:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 08:44:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_1.csv'
+2025-11-22 08:44:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 08:44:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_1.csv'
+2025-11-22 08:44:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 08:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_1.csv'
+2025-11-22 08:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_15.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_15
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_5.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_5
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_1.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_5.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_5
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_15.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_15
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_1.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_1.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_15.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_15
+2025-11-22 08:45:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_5.csv'
+2025-11-22 08:45:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_5
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_1.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_15.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_15
+2025-11-22 08:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_5.csv'
+2025-11-22 08:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_5
+2025-11-22 08:46:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\BNBUSDT_1.csv'
+2025-11-22 08:46:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 08:46:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\DOTUSDT_1.csv'
+2025-11-22 08:46:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 08:46:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\GRTUSDT_1.csv'
+2025-11-22 08:46:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ALGOUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SUSHIUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\COMPUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ADAUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\XRPUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\NEARUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\AAVEUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\VETUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\FILUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\SNXUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ATOMUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\CRVUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\OPUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ARBUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 08:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: [Errno 2] No such file or directory: 'data\\ICPUSDT_1.csv'
+2025-11-22 08:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 09:06:24 - websockets.client - ERROR - data transfer failed
+Traceback (most recent call last):
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+            ^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\framing.py", line 68, in read
+    data = await reader(2)
+           ^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\streams.py", line 750, in readexactly
+    await self._wait_for_data('readexactly')
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\streams.py", line 543, in _wait_for_data
+    await self._waiter
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 286, in _loop_reading
+    length = fut.result()
+             ^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 854, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 494, in finish_recv
+    return ov.getresult()
+           ^^^^^^^^^^^^^^
+OSError: [WinError 121] The semaphore timeout period has expired
+2025-11-22 09:06:25 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] WebSocket connection closed: no close frame received or sent
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch BNBUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch BNBUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch BNBUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch BNBUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch BNBUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for BNBUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch BNBUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch XRPUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch XRPUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch XRPUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch XRPUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch XRPUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for XRPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch XRPUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ADAUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ADAUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ADAUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ADAUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ADAUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ADAUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ADAUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch DOTUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch DOTUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch DOTUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch DOTUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch DOTUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for DOTUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch DOTUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ATOMUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ATOMUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ATOMUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ATOMUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ATOMUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ATOMUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ATOMUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ALGOUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ALGOUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ALGOUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ALGOUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ALGOUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ALGOUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ALGOUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch VETUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch VETUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch VETUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch VETUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch VETUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for VETUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch VETUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ICPUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ICPUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ICPUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ICPUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ICPUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ICPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ICPUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch FILUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch FILUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch FILUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch FILUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch FILUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for FILUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch FILUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch AAVEUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch AAVEUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch AAVEUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch AAVEUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch AAVEUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for AAVEUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch AAVEUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch COMPUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch COMPUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch COMPUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch COMPUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch COMPUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for COMPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch COMPUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch CRVUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch CRVUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch CRVUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch CRVUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch CRVUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for CRVUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch CRVUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SNXUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SNXUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SNXUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SNXUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SNXUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SNXUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SNXUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SUSHIUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SUSHIUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SUSHIUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SUSHIUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SUSHIUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for SUSHIUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch SUSHIUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ARBUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ARBUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ARBUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ARBUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ARBUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for ARBUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch ARBUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch OPUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch OPUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch OPUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch OPUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch OPUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for OPUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch OPUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch NEARUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch NEARUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch NEARUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch NEARUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch NEARUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for NEARUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch NEARUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_1: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_1: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch GRTUSDT_1
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_5: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_5: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch GRTUSDT_5
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_15: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_15: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch GRTUSDT_15
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_60: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_60: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch GRTUSDT_60
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_120: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_120: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch GRTUSDT_120
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_240: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed] (attempt 1/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 2/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 3/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 4/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for GRTUSDT_240: cannot access local variable 'retry_delay' where it is not associated with a value (attempt 5/5)
+2025-11-22 09:06:29 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch GRTUSDT_240
+2025-11-22 09:06:29 - shared_modules.data_collection.hybrid_system - ERROR - [FAIL] Failed to fetch historical data
+2025-11-22 14:57:58 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000154FE957950>
+2025-11-22 14:57:58 - asyncio - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x0000015480AADF60>, 28571.406), (<aiohttp.client_proto.ResponseHandler object at 0x0000015480AAF3F0>, 28574.5), (<aiohttp.client_proto.ResponseHandler object at 0x0000015482DF1C50>, 28574.5), (<aiohttp.client_proto.ResponseHandler object at 0x0000015480AAE6D0>, 28581.75), (<aiohttp.client_proto.ResponseHandler object at 0x0000015482DF27B0>, 28590.859), (<aiohttp.client_proto.ResponseHandler object at 0x0000015482DF0C90>, 28597.046)]']
+connector: <aiohttp.connector.TCPConnector object at 0x00000154FE957810>
+2025-11-22 14:57:59 - shared_modules.data_collection.hybrid_system - ERROR - [FAIL] Shared WebSocket connection not available
+2025-11-22 17:44:49 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] WebSocket connection closed: no close frame received or sent
+2025-11-22 18:04:52 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000021F4CD77750>
+2025-11-22 18:04:52 - asyncio - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x0000021F4FD4AA50>, 38954.421), (<aiohttp.client_proto.ResponseHandler object at 0x0000021F4FD487C0>, 38961.843), (<aiohttp.client_proto.ResponseHandler object at 0x0000021F4FC36900>, 38964.921)]']
+connector: <aiohttp.connector.TCPConnector object at 0x0000021F4CD77610>
+2025-11-22 18:12:09 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000021FDC620850>
+2025-11-22 18:12:09 - asyncio - ERROR - Unclosed connector
+connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x0000021FE2FC40C0>, 40167.5), (<aiohttp.client_proto.ResponseHandler object at 0x0000021FEB2F8590>, 40178.953)]']
+connector: <aiohttp.connector.TCPConnector object at 0x0000021FDC620790>

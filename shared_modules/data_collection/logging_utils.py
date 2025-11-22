@@ -1,29 +1,29 @@
-# logging_utils.py - Centralized logging configuration with Unicode support
+# logging_utils.py - Centralized logging configuration with Windows-compatible file handling
 import os
 import sys
 import logging
 from datetime import datetime
-from logging.handlers import RotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 import codecs
 
 def setup_logging():
-    """Setup logging configuration with file and console handlers with Unicode support"""
+    """Setup logging configuration with Windows-compatible file handlers"""
     # Create Logs directory if it doesn't exist
     logs_dir = "Logs"
     os.makedirs(logs_dir, exist_ok=True)
     
-    # Generate log filename with current date
-    current_date = datetime.now().strftime("%Y-%m-%d")
-    full_log_file = os.path.join(logs_dir, f"trade_bot_{current_date}.log")
-    error_log_file = os.path.join(logs_dir, f"trade_bot_errors_{current_date}.log")
+    # Generate log filename with current date and time (to avoid conflicts)
+    current_time = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    full_log_file = os.path.join(logs_dir, f"trade_bot_{current_time}.log")
+    error_log_file = os.path.join(logs_dir, f"trade_bot_errors_{current_time}.log")
     
     # Configure root logger
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)  # Capture all levels
     
-    # Clear existing handlers
+    # Clear existing handlers - THIS IS THE FIXED PART
     for handler in logger.handlers[:]:
-        logger.removeHandler(handler)
+        logger.removeHandler(handler)  # Fixed: Call removeHandler on logger, not handler
     
     # Create formatter
     formatter = logging.Formatter(
@@ -31,22 +31,24 @@ def setup_logging():
         datefmt='%Y-%m-%d %H:%M:%S'
     )
     
-    # Full log file handler (DEBUG and above)
-    full_file_handler = RotatingFileHandler(
-        full_log_file, 
-        maxBytes=10*1024*1024,  # 10MB
-        backupCount=5,
+    # Full log file handler (DEBUG and above) - Using TimedRotatingFileHandler for Windows compatibility
+    full_file_handler = TimedRotatingFileHandler(
+        full_log_file,
+        when='midnight',  # Rotate at midnight
+        interval=1,       # Every 1 day
+        backupCount=7,    # Keep 7 days of logs
         encoding='utf-8'
     )
     full_file_handler.setLevel(logging.DEBUG)
     full_file_handler.setFormatter(formatter)
     logger.addHandler(full_file_handler)
     
-    # Error log file handler (WARNING and above)
-    error_file_handler = RotatingFileHandler(
-        error_log_file, 
-        maxBytes=10*1024*1024,  # 10MB
-        backupCount=5,
+    # Error log file handler (WARNING and above) - Using TimedRotatingFileHandler for Windows compatibility
+    error_file_handler = TimedRotatingFileHandler(
+        error_log_file,
+        when='midnight',  # Rotate at midnight
+        interval=1,       # Every 1 day
+        backupCount=7,    # Keep 7 days of logs
         encoding='utf-8'
     )
     error_file_handler.setLevel(logging.WARNING)
@@ -97,6 +99,10 @@ def setup_logging():
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
+    
+    # Reduce WebSocket logging to avoid excessive output
+    websocket_logger = logging.getLogger('websockets')
+    websocket_logger.setLevel(logging.INFO)
     
     logger.info("Logging system initialized")
     return logger

@@ -1,0 +1,1074 @@
+2025-11-22 19:39:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:39:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:40:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:40:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:40:15 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:40:15 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:40:21 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:40:21 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:40:22 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:40:22 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:40:22 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:40:22 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:41:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:41:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:41:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:41:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:41:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:41:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:41:16 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:41:16 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:41:17 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:41:17 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:41:17 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:41:17 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:41:18 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:41:18 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:42:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:42:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:42:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:42:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:42:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:42:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:42:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:42:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:42:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:42:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:42:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:42:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:42:14 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:42:14 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:42:14 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:42:14 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:42:15 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:42:15 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:43:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:43:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:43:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:43:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:43:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:43:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:43:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:43:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:43:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:43:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:43:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:43:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:43:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:43:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:43:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:43:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:43:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:43:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:43:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:43:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:43:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:43:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:43:15 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:43:15 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:44:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:44:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:44:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:44:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:44:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:44:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:44:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:44:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:44:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:44:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:44:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:44:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:44:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:44:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:44:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:44:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:44:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:44:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:44:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:44:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:44:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:44:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:44:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:44:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:45:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:45:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:45:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:45:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:45:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:45:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:45:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.08963'
+2025-11-22 19:45:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_5
+2025-11-22 19:45:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:45:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:45:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1 09:45:00'
+2025-11-22 19:45:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_5
+2025-11-22 19:45:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:45:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:45:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '714.7'
+2025-11-22 19:45:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_5
+2025-11-22 19:45:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:45:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:45:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:45:00'
+2025-11-22 19:45:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_5
+2025-11-22 19:45:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.1177'
+2025-11-22 19:45:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_5
+2025-11-22 19:45:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:45:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:45:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:45:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:45:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '25-07-03 15:35:00'
+2025-11-22 19:45:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_5
+2025-11-22 19:45:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:45:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_5
+2025-11-22 19:45:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:45:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:45:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:45:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:45:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:45:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:45:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 19:45:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_5
+2025-11-22 19:45:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:45:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:45:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0
+2025-11-22 19:45:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_5
+2025-11-22 19:45:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:45:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:45:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0:00'
+2025-11-22 19:45:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_5
+2025-11-22 19:45:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:45:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:45:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:45:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:45:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 19:45:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_5
+2025-11-22 19:45:14 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:45:14 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:45:15 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:45:15 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:46:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:46:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:46:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:46:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:46:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:46:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:46:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:46:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:46:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:46:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:46:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:46:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:46:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:46:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:46:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:46:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:46:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:46:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:46:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:46:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:46:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:46:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:46:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:46:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:46:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:46:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:46:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:46:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:46:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:46:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:46:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:46:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:47:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:47:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:47:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:47:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:47:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:47:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:47:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:47:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:47:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:47:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:47:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:47:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:47:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:47:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:47:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:47:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:47:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:47:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:47:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:47:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:47:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:47:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:47:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:47:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:47:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:47:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:47:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:47:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:47:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:47:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:47:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:47:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:47:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:47:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:48:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:48:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:48:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:48:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:48:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:48:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:48:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:48:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:48:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:48:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:48:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:48:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:48:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:48:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:48:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:48:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:48:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:48:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:48:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:48:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:48:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:48:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:48:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:48:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:48:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:48:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:48:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:48:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:48:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:48:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:48:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:48:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:48:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:48:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:49:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:49:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:49:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:49:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:49:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:49:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:49:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:49:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:49:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:49:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:49:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:49:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:49:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:49:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:49:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:49:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:49:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:49:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:49:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:49:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:49:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:49:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:49:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:49:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:49:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:49:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:49:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:49:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:49:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:49:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:49:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:49:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:49:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:49:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:49:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:49:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:50:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:50:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:50:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:50:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:50:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:50:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:50:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.08963'
+2025-11-22 19:50:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_5
+2025-11-22 19:50:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:50:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:50:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1 09:45:00'
+2025-11-22 19:50:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_5
+2025-11-22 19:50:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '714.7'
+2025-11-22 19:50:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_5
+2025-11-22 19:50:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:50:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:50:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:50:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:50:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:50:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:50:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:45:00'
+2025-11-22 19:50:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_5
+2025-11-22 19:50:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.1177'
+2025-11-22 19:50:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_5
+2025-11-22 19:50:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:50:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:50:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:50:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:50:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '25-07-03 15:35:00'
+2025-11-22 19:50:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_5
+2025-11-22 19:50:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:50:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:50:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:50:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_5
+2025-11-22 19:50:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:50:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:50:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:50:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:50:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 19:50:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_5
+2025-11-22 19:50:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:50:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:50:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0
+2025-11-22 19:50:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_5
+2025-11-22 19:50:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:50:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:50:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0:00'
+2025-11-22 19:50:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_5
+2025-11-22 19:50:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:50:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:50:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:50:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:50:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 19:50:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_5
+2025-11-22 19:50:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:50:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:50:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:50:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:51:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:51:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:51:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:51:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:51:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:51:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:51:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:51:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:51:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:51:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:51:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:51:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:51:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:51:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:51:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:51:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:51:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:51:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:51:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:51:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:51:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:51:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:51:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:51:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:51:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:51:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:51:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:51:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:51:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:51:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:51:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:51:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:51:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:51:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:51:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:51:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:52:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:52:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:52:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:52:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:52:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:52:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:52:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:52:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:52:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:52:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:52:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:52:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:52:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:52:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:52:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:52:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:52:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:52:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:52:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:52:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:52:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:52:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:52:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:52:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:52:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:52:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:52:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:52:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:52:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:52:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:52:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:52:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:52:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:52:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:52:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:52:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:53:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:53:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:53:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:53:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:53:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:53:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:53:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:53:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:53:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:53:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:53:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:53:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:53:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:53:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:53:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:53:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:53:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:53:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:53:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:53:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:53:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:53:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:53:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:53:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:53:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:53:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:53:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:53:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:53:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:53:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:53:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:53:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:53:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:53:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:53:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:53:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:54:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:54:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:54:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:54:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:54:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:54:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:54:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:54:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:54:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:54:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:54:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:54:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:54:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:54:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:54:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:54:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:54:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:54:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:54:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:54:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:54:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:54:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:54:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:54:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:54:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:54:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:54:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:54:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:54:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:54:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:54:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:54:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:54:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:54:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:54:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:54:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:55:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:55:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:55:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:55:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:55:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-17 10:25:00'
+2025-11-22 19:55:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_5
+2025-11-22 19:55:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.08963'
+2025-11-22 19:55:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_5
+2025-11-22 19:55:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:55:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:55:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:55:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:55:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1 09:45:00'
+2025-11-22 19:55:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_5
+2025-11-22 19:55:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:55:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:55:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '714.7'
+2025-11-22 19:55:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_5
+2025-11-22 19:55:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:55:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:55:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:55:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:55:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:45:00'
+2025-11-22 19:55:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_5
+2025-11-22 19:55:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.1177'
+2025-11-22 19:55:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_5
+2025-11-22 19:55:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:55:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:55:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:55:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:55:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '25-07-03 15:35:00'
+2025-11-22 19:55:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_5
+2025-11-22 19:55:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:55:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_5
+2025-11-22 19:55:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:55:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:55:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:55:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:55:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:55:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:55:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 19:55:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_5
+2025-11-22 19:55:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:55:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:55:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0
+2025-11-22 19:55:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_5
+2025-11-22 19:55:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:55:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:55:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0:00'
+2025-11-22 19:55:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_5
+2025-11-22 19:55:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:55:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:55:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:55:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:55:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 19:55:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_5
+2025-11-22 19:55:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:55:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:55:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:55:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:56:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:56:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:56:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:56:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:56:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:56:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:56:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:56:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:56:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:56:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:56:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:56:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:56:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:56:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:56:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:56:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:56:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:56:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:56:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:56:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:56:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:56:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:56:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:56:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:56:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:56:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:56:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:56:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:56:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:56:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:56:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:56:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:56:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:56:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:56:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:56:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:57:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:57:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:57:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:57:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:57:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:57:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:57:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:57:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:57:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:57:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:57:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:57:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:57:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:57:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:57:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:57:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:57:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:57:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:57:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:57:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:57:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:57:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:57:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:57:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:57:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:57:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:57:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:57:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:57:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:57:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:57:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:57:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:57:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:57:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:57:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:57:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:58:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:58:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:58:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:58:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:58:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:58:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:58:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:58:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:58:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:58:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:58:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:58:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:58:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:58:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:58:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:58:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:58:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:58:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:58:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:58:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:58:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:58:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:58:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:58:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:58:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:58:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:58:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:58:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:58:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:58:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:58:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:58:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:58:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:58:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:58:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:58:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 19:59:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 19:59:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 19:59:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 19:59:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 19:59:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 19:59:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 19:59:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 19:59:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 19:59:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 19:59:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 19:59:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 19:59:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 19:59:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 19:59:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 19:59:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 19:59:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 19:59:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 19:59:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 19:59:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 19:59:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 19:59:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 19:59:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 19:59:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 19:59:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 19:59:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 19:59:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 19:59:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 19:59:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 19:59:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 19:59:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 19:59:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 19:59:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 19:59:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 19:59:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 19:59:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 19:59:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:00:00 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:00:00 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_15
+2025-11-22 20:00:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:00:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:00:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:00:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:00:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-17 10:25:00'
+2025-11-22 20:00:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_5
+2025-11-22 20:00:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:00:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:00:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 20:00:00'
+2025-11-22 20:00:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_15
+2025-11-22 20:00:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.08963'
+2025-11-22 20:00:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_5
+2025-11-22 20:00:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:00:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:00:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1 09:45:00'
+2025-11-22 20:00:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_5
+2025-11-22 20:00:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.1738'
+2025-11-22 20:00:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_15
+2025-11-22 20:00:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:00:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:00:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '714.7'
+2025-11-22 20:00:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_5
+2025-11-22 20:00:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:00:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:00:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0
+2025-11-22 20:00:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_15
+2025-11-22 20:00:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:00:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:00:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:45:00'
+2025-11-22 20:00:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_5
+2025-11-22 20:00:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.1177'
+2025-11-22 20:00:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_5
+2025-11-22 20:00:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:00:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:00:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:00:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:00:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '25-07-03 15:35:00'
+2025-11-22 20:00:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_5
+2025-11-22 20:00:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:00:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:00:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:00:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_5
+2025-11-22 20:00:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:00:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:00:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 20:00:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_5
+2025-11-22 20:00:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:00:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:00:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:00:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:00:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:00:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:00:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0
+2025-11-22 20:00:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_5
+2025-11-22 20:00:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:00:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:00:12 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0:00'
+2025-11-22 20:00:12 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_5
+2025-11-22 20:00:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:00:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:00:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 20:00:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_5
+2025-11-22 20:00:14 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:00:14 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:00:15 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:00:15 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:01:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:01:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:01:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:01:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:01:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:01:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:01:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:01:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:01:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:01:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:01:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:01:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:01:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:01:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:01:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:01:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:01:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:01:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:01:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:01:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:01:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:01:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:01:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:01:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:01:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:01:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:01:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:01:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:01:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:01:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:01:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:01:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:01:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:01:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:01:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:01:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:02:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:02:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:02:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:02:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:02:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:02:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:02:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:02:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:02:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:02:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:02:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:02:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:02:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:02:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:02:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:02:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:02:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:02:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:02:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:02:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:02:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:02:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:02:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:02:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:02:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:02:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:02:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:02:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:02:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:02:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:02:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:02:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:02:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:02:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:02:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:02:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:03:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:03:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:03:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:03:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:03:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:03:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:03:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:03:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:03:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:03:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:03:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:03:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:03:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:03:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:03:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:03:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:03:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:03:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:03:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:03:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:03:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:03:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:03:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:03:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:03:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:03:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:03:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:03:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:03:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:03:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:03:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:03:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:03:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:03:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:03:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:03:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:04:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:04:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:04:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:04:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:04:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:04:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:04:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:04:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:04:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:04:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:04:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:04:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:04:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:04:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:04:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:04:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:04:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:04:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:04:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:04:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:04:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:04:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:04:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:04:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:04:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:04:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:04:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:04:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:04:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:04:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:04:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:04:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:04:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:04:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:04:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:04:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:05:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:05:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:05:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-17 10:25:00'
+2025-11-22 20:05:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_5
+2025-11-22 20:05:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:05:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:05:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.08963'
+2025-11-22 20:05:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_5
+2025-11-22 20:05:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:05:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:05:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:05:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:05:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1 09:45:00'
+2025-11-22 20:05:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_5
+2025-11-22 20:05:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:05:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:05:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '714.7'
+2025-11-22 20:05:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_5
+2025-11-22 20:05:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:05:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:05:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:05:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:05:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:45:00'
+2025-11-22 20:05:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_5
+2025-11-22 20:05:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.1177'
+2025-11-22 20:05:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_5
+2025-11-22 20:05:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:05:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:05:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:05:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:05:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '25-07-03 15:35:00'
+2025-11-22 20:05:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_5
+2025-11-22 20:05:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:05:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:05:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:05:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_5
+2025-11-22 20:05:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:05:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:05:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:05:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:05:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 20:05:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_5
+2025-11-22 20:05:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:05:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:05:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0
+2025-11-22 20:05:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_5
+2025-11-22 20:05:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:05:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:05:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0:00'
+2025-11-22 20:05:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_5
+2025-11-22 20:05:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:05:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:05:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:05:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:05:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: field larger than field limit (131072)
+2025-11-22 20:05:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_5
+2025-11-22 20:05:11 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:05:11 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:05:13 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:05:13 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:06:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:06:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:06:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:06:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:06:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:06:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:06:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:06:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:06:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:06:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:06:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:06:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:06:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:06:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:06:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:06:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:06:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:06:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:06:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:06:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:06:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:06:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:06:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:06:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:06:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:06:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:06:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:06:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:06:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:06:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:06:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:06:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:06:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:06:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:06:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:06:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:07:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:07:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:07:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:07:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:07:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:07:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:07:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:07:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:07:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:07:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:07:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:07:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:07:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:07:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:07:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:07:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:07:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:07:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:07:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:07:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:07:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:07:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:07:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:07:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:07:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:07:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:07:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:07:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:07:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:07:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:07:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:07:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:07:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:07:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:07:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:07:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
+2025-11-22 20:08:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ''
+2025-11-22 20:08:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for BNBUSDT_1
+2025-11-22 20:08:01 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-10-22 07:52:00'
+2025-11-22 20:08:01 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for DOTUSDT_1
+2025-11-22 20:08:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':29:00'
+2025-11-22 20:08:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for GRTUSDT_1
+2025-11-22 20:08:02 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ' 04:18:00'
+2025-11-22 20:08:02 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ALGOUSDT_1
+2025-11-22 20:08:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: ':03:00'
+2025-11-22 20:08:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SUSHIUSDT_1
+2025-11-22 20:08:03 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11-21 01:10:00'
+2025-11-22 20:08:03 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for COMPUSDT_1
+2025-11-22 20:08:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '025-09-05 23:11:00'
+2025-11-22 20:08:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ADAUSDT_1
+2025-11-22 20:08:04 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '17:32:00'
+2025-11-22 20:08:04 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for XRPUSDT_1
+2025-11-22 20:08:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '12.3'
+2025-11-22 20:08:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for NEARUSDT_1
+2025-11-22 20:08:05 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-21 18:49:00'
+2025-11-22 20:08:05 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for AAVEUSDT_1
+2025-11-22 20:08:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '5:00'
+2025-11-22 20:08:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for VETUSDT_1
+2025-11-22 20:08:06 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '1:10:00'
+2025-11-22 20:08:06 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for FILUSDT_1
+2025-11-22 20:08:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '0.6949'
+2025-11-22 20:08:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for SNXUSDT_1
+2025-11-22 20:08:07 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.855'
+2025-11-22 20:08:07 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ATOMUSDT_1
+2025-11-22 20:08:08 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '-11 18:39:00'
+2025-11-22 20:08:08 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for CRVUSDT_1
+2025-11-22 20:08:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '2025-11-16 12:54:00'
+2025-11-22 20:08:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for OPUSDT_1
+2025-11-22 20:08:09 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.3207'
+2025-11-22 20:08:09 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ARBUSDT_1
+2025-11-22 20:08:10 - shared_modules.data_collection.csv_manager - ERROR - Error updating candle in CSV: invalid literal for int() with base 10: '.823'
+2025-11-22 20:08:10 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] Failed to update CSV for ICPUSDT_1
