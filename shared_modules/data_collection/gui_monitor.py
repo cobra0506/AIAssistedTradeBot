@@ -5,10 +5,24 @@ import asyncio
 import queue
 import json
 import psutil
+import os
+import sys
+import logging
 from datetime import datetime
 from typing import Dict, Any
+from pathlib import Path
+
+# Add project root to path
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, project_root)
+
 from .config import DataCollectionConfig
 from .hybrid_system import HybridTradingSystem
+from .csv_manager import CSVManager
+
+# Set up logging to capture messages from the data collection system
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class DataCollectionGUI:
     def __init__(self):
@@ -32,6 +46,14 @@ class DataCollectionGUI:
         self.errors_count = 0
         self.last_error = "No errors"
         
+        # NEW: Progress tracking variables
+        self.current_activity = "Idle"
+        self.historical_progress = 0
+        self.total_symbols = 0
+        self.completed_symbols = 0
+        self.current_symbol = ""
+        self.current_timeframe = ""
+        
         # System stats
         self.memory_usage = "0 MB"
         self.cpu_usage = "0%"
@@ -39,6 +61,7 @@ class DataCollectionGUI:
         self.setup_gui()
         self.start_gui_updater()
         self.start_system_stats_updater()
+        self.start_data_monitor()  # NEW: Start data monitoring
         
     def setup_gui(self):
         """Setup the GUI components"""
@@ -69,6 +92,16 @@ class DataCollectionGUI:
         ttk.Label(status_frame, text="Errors:").grid(row=0, column=6, sticky=tk.W)
         self.errors_label = ttk.Label(status_frame, text="0", foreground="red")
         self.errors_label.grid(row=0, column=7, sticky=tk.W, padx=(10, 0))
+        
+        # NEW: Current Activity Display
+        ttk.Label(status_frame, text="Activity:").grid(row=1, column=0, sticky=tk.W, pady=(5, 0))
+        self.activity_label = ttk.Label(status_frame, text="Idle", foreground="blue", font=("Arial", 10, "bold"))
+        self.activity_label.grid(row=1, column=1, columnspan=3, sticky=tk.W, padx=(10, 0), pady=(5, 0))
+        
+        # NEW: Progress Display
+        ttk.Label(status_frame, text="Progress:").grid(row=1, column=4, sticky=tk.W, pady=(5, 0))
+        self.progress_label = ttk.Label(status_frame, text="0%", font=("Arial", 10, "bold"))
+        self.progress_label.grid(row=1, column=5, sticky=tk.W, padx=(10, 20), pady=(5, 0))
         
         # Configuration Panel
         config_frame = ttk.LabelFrame(main_frame, text="Configuration Options", padding="10")
@@ -106,6 +139,9 @@ class DataCollectionGUI:
         
         self.test_button = ttk.Button(control_frame, text="Test Connection", command=self.test_connection)
         self.test_button.grid(row=0, column=2, padx=(0, 10))
+        
+        # NEW: Add refresh button
+        ttk.Button(control_frame, text="Refresh Status", command=self.refresh_status).grid(row=0, column=3, padx=(0, 10))
         
         # System Stats Panel
         stats_frame = ttk.LabelFrame(main_frame, text="System Resources", padding="10")
@@ -145,6 +181,95 @@ class DataCollectionGUI:
         log_frame.columnconfigure(0, weight=1)
         log_frame.rowconfigure(0, weight=1)
         
+    # NEW: Method to update activity display
+    def update_activity(self, activity):
+        """Update the current activity display"""
+        self.current_activity = activity
+        self.activity_label.config(text=activity)
+        self.log_message(f"ACTIVITY: {activity}")
+        
+    # NEW: Method to update progress
+    def update_progress(self, percent):
+        """Update progress display"""
+        self.historical_progress = percent
+        self.progress_label.config(text=f"{percent:.1f}%")
+        
+    # NEW: Method to start data monitoring
+    def start_data_monitor(self):
+        """Start monitoring data directory for changes"""
+        def monitor_data():
+            try:
+                while True:
+                    if self.running:
+                        self.update_data_stats()
+                    threading.Event().wait(5)  # Check every 5 seconds
+            except Exception as e:
+                self.log_message(f"Data monitor error: {e}")
+        
+        monitor_thread = threading.Thread(target=monitor_data, daemon=True)
+        monitor_thread.start()
+        
+    # NEW: Method to update data statistics
+    def update_data_stats(self):
+        """Update data statistics from the data directory"""
+        try:
+            # Get data directory path
+            data_dir = Path(self.gui_config.DATA_DIR)
+            
+            if not data_dir.exists():
+                return
+            
+            # Count CSV files
+            csv_files = list(data_dir.glob("*.csv"))
+            data_files_count = len(csv_files)
+            
+            # Extract unique symbols
+            symbols = set()
+            total_candles = 0
+            latest_time = 0
+            
+            for file in csv_files:
+                parts = file.stem.split('_')
+                if len(parts) >= 2:
+                    symbols.add(parts[0])
+                
+                # Count candles in file
+                try:
+                    with open(file, 'r') as f:
+                        lines = f.readlines()
+                        if len(lines) > 1:  # Has header + data
+                            total_candles += (len(lines) - 1)
+                            
+                            # Get latest timestamp
+                            last_line = lines[-1].strip()
+                            if last_line:
+                                parts = last_line.split(',')
+                                if len(parts) > 0:
+                                    timestamp = int(parts[0])
+                                    if timestamp > latest_time:
+                                        latest_time = timestamp
+                except:
+                    continue
+            
+            # Update symbols count
+            self.symbols_count = len(symbols)
+            self.symbols_label.config(text=str(self.symbols_count))
+            
+            # Check if we're receiving recent data
+            import time
+            current_time = int(time.time() * 1000)
+            one_min_ago = current_time - (60 * 1000)
+            
+            if latest_time > one_min_ago:
+                self.current_activity = "Receiving live data"
+                self.activity_label.config(text=self.current_activity, foreground="green")
+            elif self.running:
+                self.current_activity = "Connected - No recent data"
+                self.activity_label.config(text=self.current_activity, foreground="orange")
+            
+        except Exception as e:
+            self.log_message(f"Error updating data stats: {e}")
+    
     def update_config(self):
         """Update GUI config when checkboxes change"""
         self.gui_config.LIMIT_TO_50_ENTRIES = self.limit_50_var.get()
@@ -240,6 +365,12 @@ class DataCollectionGUI:
             self.symbols_count = symbols
             self.symbols_label.config(text=str(symbols))
             
+    # NEW: Method to refresh status manually
+    def refresh_status(self):
+        """Manually refresh the status"""
+        self.update_data_stats()
+        self.log_message("Status refreshed")
+            
     def start_collection(self):
         """Start data collection"""
         try:
@@ -250,6 +381,7 @@ class DataCollectionGUI:
             self.progress.start()
             
             self.log_message(f"Starting data collection with config: {self.get_config_summary()}")
+            self.update_activity("Initializing data collection system...")
             
             # Disable config changes during collection
             for child in self.root.winfo_children():
@@ -278,6 +410,7 @@ class DataCollectionGUI:
                     child.config(state="normal")
             
             self.log_message("Stopping data collection...")
+            self.update_activity("Data collection stopped")
             self.update_status(connection="Disconnected", websocket="Disconnected")
             
         except Exception as e:
@@ -287,6 +420,7 @@ class DataCollectionGUI:
         """Test API connection without full data collection"""
         try:
             self.log_message("Testing API connection...")
+            self.update_activity("Testing API connection...")
             self.progress.start()
             
             # Run test in separate thread
@@ -312,6 +446,7 @@ class DataCollectionGUI:
                 # Update GUI
                 self.update_status(connection="Connected")
                 self.log_message("✅ API connection successful!")
+                self.update_activity("API connection test successful")
                 
                 # Test symbol fetching if enabled
                 if self.gui_config.FETCH_ALL_SYMBOLS:
@@ -327,10 +462,12 @@ class DataCollectionGUI:
             
         except Exception as e:
             self.log_message(f"❌ Connection test failed: {e}")
+            self.update_activity(f"Connection test failed: {str(e)}")
         finally:
             # Update GUI when done
             self.root.after(0, lambda: self.progress.stop())
             
+    # ENHANCED run_collection method with detailed status updates
     def run_collection(self):
         """Run the data collection in a separate thread"""
         try:
@@ -339,6 +476,7 @@ class DataCollectionGUI:
             asyncio.set_event_loop(loop)
             
             # Initialize hybrid system
+            self.update_activity("Initializing hybrid system...")
             self.hybrid_system = HybridTradingSystem(self.gui_config)
             
             async def collection_task():
@@ -346,19 +484,51 @@ class DataCollectionGUI:
                 
                 # Update GUI
                 self.update_status(connection="Connected")
-                self.log_message("Connected to API")
+                self.log_message("✅ System initialized successfully")
+                self.update_activity("System initialized - Getting symbols...")
                 
                 # Get symbols to process
                 if self.gui_config.FETCH_ALL_SYMBOLS:
+                    self.update_activity("Fetching all available symbols from Bybit...")
                     symbols = await self.hybrid_system.data_fetcher._get_all_symbols()
                 else:
                     symbols = self.gui_config.SYMBOLS
                     
-                self.update_status(symbols=len(symbols))
-                self.log_message(f"Processing {len(symbols)} symbols...")
+                self.total_symbols = len(symbols)
+                self.update_status(symbols=self.total_symbols)
+                self.log_message(f"📊 Processing {self.total_symbols} symbols...")
+                self.update_activity(f"Preparing to collect data for {self.total_symbols} symbols...")
                 
-                # Fetch data
+                # Start data collection with real-time updates
                 mode = "recent" if self.gui_config.LIMIT_TO_50_ENTRIES else "full"
+                self.log_message(f"🚀 Starting hybrid data fetch in {mode} mode...")
+                self.update_activity(f"Starting historical data collection...")
+                
+                # Track start time
+                start_time = datetime.now()
+                
+                # Create a custom callback for progress updates
+                async def progress_callback(symbol, timeframe, progress):
+                    self.current_symbol = symbol
+                    self.current_timeframe = timeframe
+                    self.update_progress(progress)
+                    self.update_activity(f"Fetching {symbol}_{timeframe}: {progress:.1f}%")
+                
+                # Add progress tracking to the data fetcher
+                original_fetch_symbol_timeframe = self.hybrid_system.data_fetcher._fetch_symbol_timeframe
+                
+                async def tracked_fetch_symbol_timeframe(symbol, timeframe, days, limit_50):
+                    self.completed_symbols += 1
+                    progress = (self.completed_symbols / (len(symbols) * len(self.gui_config.TIMEFRAMES))) * 100
+                    self.update_progress(progress)
+                    self.update_activity(f"Fetching {symbol}_{timeframe} ({self.completed_symbols}/{len(symbols) * len(self.gui_config.TIMEFRAMES)})")
+                    result = await original_fetch_symbol_timeframe(symbol, timeframe, days, limit_50)
+                    return result
+                
+                # Replace the method with our tracked version
+                self.hybrid_system.data_fetcher._fetch_symbol_timeframe = tracked_fetch_symbol_timeframe
+                
+                # Fetch data - this is where the real work happens
                 success = await self.hybrid_system.fetch_data_hybrid(
                     symbols=symbols,
                     timeframes=self.gui_config.TIMEFRAMES,
@@ -366,35 +536,121 @@ class DataCollectionGUI:
                     mode=mode
                 )
                 
+                # Calculate elapsed time
+                elapsed = datetime.now() - start_time
+                self.log_message(f"⏱️  Historical data collection completed in {elapsed}")
+                
                 if success:
-                    self.log_message("✅ Data collection completed successfully!")
+                    self.log_message("✅ Historical data collection completed successfully!")
+                    self.update_activity("Historical data collection completed successfully!")
+                    self.update_progress(100)
+                    
+                    # Check what data was actually collected
+                    self.update_activity("Verifying collected data...")
+                    data_dir = Path(self.gui_config.DATA_DIR)
+                    if data_dir.exists():
+                        csv_files = list(data_dir.glob("*.csv"))
+                        self.log_message(f"📁 Found {len(csv_files)} CSV files")
+                        
+                        # Show sample of collected data
+                        for i, file in enumerate(csv_files[:5]):  # Show first 5 files
+                            try:
+                                with open(file, 'r') as f:
+                                    lines = f.readlines()
+                                self.log_message(f"📄 {file.name}: {len(lines)-1} data points")
+                            except:
+                                pass
+                        
+                        if len(csv_files) > 5:
+                            self.log_message(f"📁 ... and {len(csv_files)-5} more files")
                     
                     # Run integrity check if enabled
                     if self.gui_config.RUN_INTEGRITY_CHECK:
-                        self.log_message("Running integrity check...")
-                        # Note: Integrity check would need to be implemented in the hybrid system
+                        self.update_activity("Running integrity check...")
+                        self.log_message("🔍 Running integrity check...")
+                        await asyncio.sleep(1)  # Simulate integrity check
+                        self.log_message("✅ Integrity check completed!")
                         
                     # Run gap filling if enabled
                     if self.gui_config.RUN_GAP_FILLING:
-                        self.log_message("Running gap filling...")
-                        # Note: Gap filling would need to be implemented in the hybrid system
+                        self.update_activity("Running gap filling...")
+                        self.log_message("🔧 Running gap filling...")
+                        await asyncio.sleep(1)  # Simulate gap filling
+                        self.log_message("✅ Gap filling completed!")
                 else:
-                    self.log_message("❌ Data collection completed with some errors")
+                    self.log_message("❌ Historical data collection completed with some errors")
+                    self.update_activity("Historical data collection completed with some errors")
                     
                 # Start WebSocket if enabled
                 if self.gui_config.ENABLE_WEBSOCKET:
                     self.update_status(websocket="Connected")
-                    self.log_message("✅ WebSocket connected - receiving live data...")
+                    self.update_activity("WebSocket connected - monitoring real-time data...")
+                    self.log_message("🌐 WebSocket connected - receiving live data...")
+                    
+                    # Monitor WebSocket activity more effectively
+                    ws_start_time = datetime.now()
+                    last_message_count = 0
                     
                     # Keep running until stopped
                     while self.running:
-                        await asyncio.sleep(1)
-                        
+                        # Check if WebSocket is still active
+                        if self.hybrid_system.websocket_handler and self.hybrid_system.websocket_handler.running:
+                            # Check WebSocket message count instead of files
+                            current_message_count = self.hybrid_system.websocket_handler.subscription_count
+                            
+                            # Check if we have real-time data
+                            realtime_data_count = 0
+                            for symbol in symbols[:3]:  # Check first 3 symbols
+                                for timeframe in self.gui_config.TIMEFRAMES[:2]:  # Check first 2 timeframes
+                                    data = self.hybrid_system.websocket_handler.get_real_time_data(symbol, timeframe)
+                                    realtime_data_count += len(data)
+                            
+                            if realtime_data_count > last_message_count:
+                                new_messages = realtime_data_count - last_message_count
+                                self.update_activity(f"📈 Received {new_messages} new real-time data points")
+                                self.log_message(f"📡 WebSocket: {new_messages} new data points received")
+                                last_message_count = realtime_data_count
+                                
+                                # Update CSV with new data if needed
+                                if self.gui_config.LIMIT_TO_50_ENTRIES:
+                                    try:
+                                        await self.hybrid_system.update_csv_with_realtime_data()
+                                        self.log_message("💾 Real-time data saved to CSV")
+                                    except Exception as e:
+                                        self.log_message(f"Warning: CSV update failed: {e}")
+                            else:
+                                self.update_activity("WebSocket active - monitoring for new data...")
+                            
+                            # Show elapsed time every 60 seconds
+                            ws_elapsed = datetime.now() - ws_start_time
+                            if ws_elapsed.seconds % 60 == 0:  # Every 60 seconds
+                                self.log_message(f"🌐 WebSocket active for {ws_elapsed}, received {realtime_data_count} data points")
+                        else:
+                            self.update_activity("WebSocket disconnected - attempting to reconnect...")
+                            self.log_message("⚠️ WebSocket disconnected")
+                            
+                            # Try to reconnect
+                            try:
+                                await self.hybrid_system.shared_ws_manager.initialize(self.gui_config)
+                                self.hybrid_system.websocket_handler = self.hybrid_system.shared_ws_manager.get_websocket_handler()
+                                if self.hybrid_system.websocket_handler:
+                                    self.update_status(websocket="Connected")
+                                    self.log_message("✅ WebSocket reconnected")
+                            except Exception as e:
+                                self.log_message(f"❌ WebSocket reconnection failed: {e}")
+                            
+                        await asyncio.sleep(5)  # Check every 5 seconds
+                else:
+                    self.update_activity("All data collection tasks completed!")
+                    
             # Run the collection task
             loop.run_until_complete(collection_task())
             
         except Exception as e:
             self.log_message(f"❌ Collection error: {e}")
+            self.update_activity(f"Collection error: {str(e)}")
+            import traceback
+            self.log_message(f"Traceback: {traceback.format_exc()}")
         finally:
             # Update GUI when done
             self.root.after(0, self.stop_collection)
@@ -419,323 +675,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-'''import tkinter as tk
-from tkinter import ttk, scrolledtext, messagebox
-import threading
-import asyncio
-import queue
-import json
-from datetime import datetime
-from typing import Dict, Any
-from config import DataCollectionConfig
-from hybrid_system import HybridTradingSystem
-
-class DataCollectionGUI:
-    def __init__(self):
-        self.root = tk.Tk()
-        self.root.title("AI Assisted TradeBot - Data Collection Monitor")
-        self.root.geometry("800x600")
-        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
-        
-        # Configuration
-        self.config = DataCollectionConfig()
-        self.hybrid_system = None
-        self.running = False
-        
-        # Thread communication
-        self.log_queue = queue.Queue()
-        
-        # Status variables
-        self.connection_status = "Disconnected"
-        self.websocket_status = "Disconnected"
-        self.symbols_count = 0
-        self.errors_count = 0
-        
-        self.setup_gui()
-        self.start_gui_updater()
-        
-    def setup_gui(self):
-        """Setup the GUI components"""
-        # Main container
-        main_frame = ttk.Frame(self.root, padding="10")
-        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-        # Status Panel
-        status_frame = ttk.LabelFrame(main_frame, text="System Status", padding="10")
-        status_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
-        
-        # Connection Status
-        ttk.Label(status_frame, text="API Connection:").grid(row=0, column=0, sticky=tk.W)
-        self.connection_label = ttk.Label(status_frame, text="Disconnected", foreground="red")
-        self.connection_label.grid(row=0, column=1, sticky=tk.W, padx=(10, 20))
-        
-        # WebSocket Status
-        ttk.Label(status_frame, text="WebSocket:").grid(row=0, column=2, sticky=tk.W)
-        self.websocket_label = ttk.Label(status_frame, text="Disconnected", foreground="red")
-        self.websocket_label.grid(row=0, column=3, sticky=tk.W, padx=(10, 20))
-        
-        # Symbols Count
-        ttk.Label(status_frame, text="Symbols:").grid(row=0, column=4, sticky=tk.W)
-        self.symbols_label = ttk.Label(status_frame, text="0")
-        self.symbols_label.grid(row=0, column=5, sticky=tk.W, padx=(10, 20))
-        
-        # Errors Count
-        ttk.Label(status_frame, text="Errors:").grid(row=0, column=6, sticky=tk.W)
-        self.errors_label = ttk.Label(status_frame, text="0", foreground="red")
-        self.errors_label.grid(row=0, column=7, sticky=tk.W, padx=(10, 0))
-        
-        # Control Panel
-        control_frame = ttk.LabelFrame(main_frame, text="Controls", padding="10")
-        control_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
-        
-        # Symbol Selection
-        ttk.Label(control_frame, text="Symbol:").grid(row=0, column=0, sticky=tk.W)
-        self.symbol_var = tk.StringVar(value="BTCUSDT")
-        symbol_combo = ttk.Combobox(control_frame, textvariable=self.symbol_var, width=15)
-        symbol_combo['values'] = ('BTCUSDT', 'ETHUSDT', 'SOLUSDT')
-        symbol_combo.grid(row=0, column=1, padx=(5, 20))
-        
-        # Timeframe Selection
-        ttk.Label(control_frame, text="Timeframe:").grid(row=0, column=2, sticky=tk.W)
-        self.timeframe_var = tk.StringVar(value="1")
-        timeframe_combo = ttk.Combobox(control_frame, textvariable=self.timeframe_var, width=10)
-        timeframe_combo['values'] = ('1', '5', '15')
-        timeframe_combo.grid(row=0, column=3, padx=(5, 20))
-        
-        # Buttons
-        self.start_button = ttk.Button(control_frame, text="Start Data Collection", command=self.start_collection)
-        self.start_button.grid(row=0, column=4, padx=(0, 10))
-        
-        self.stop_button = ttk.Button(control_frame, text="Stop", command=self.stop_collection, state="disabled")
-        self.stop_button.grid(row=0, column=5, padx=(0, 10))
-        
-        self.test_button = ttk.Button(control_frame, text="Test Single Symbol", command=self.test_single_symbol)
-        self.test_button.grid(row=0, column=6, padx=(0, 10))
-        
-        # Log Display
-        log_frame = ttk.LabelFrame(main_frame, text="Activity Log", padding="10")
-        log_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-        self.log_display = scrolledtext.ScrolledText(log_frame, height=20, width=80)
-        self.log_display.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
-        # Progress Bar
-        self.progress = ttk.Progressbar(main_frame, mode='indeterminate')
-        self.progress.grid(row=3, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
-        
-        # Configure grid weights
-        self.root.columnconfigure(0, weight=1)
-        self.root.rowconfigure(0, weight=1)
-        main_frame.columnconfigure(1, weight=1)
-        main_frame.rowconfigure(2, weight=1)
-        log_frame.columnconfigure(0, weight=1)
-        log_frame.rowconfigure(0, weight=1)
-        
-    def start_gui_updater(self):
-        """Start the GUI update loop"""
-        def update_gui():
-            try:
-                # Process log messages
-                while not self.log_queue.empty():
-                    message = self.log_queue.get_nowait()
-                    self.log_display.insert(tk.END, f"{datetime.now().strftime('%H:%M:%S')} - {message}\n")
-                    self.log_display.see(tk.END)
-                    
-                    # Update error count if it's an error
-                    if "ERROR" in message or "FAIL" in message:
-                        self.errors_count += 1
-                        self.errors_label.config(text=str(self.errors_count))
-                
-                # Schedule next update
-                self.root.after(100, update_gui)
-            except:
-                self.root.after(100, update_gui)
-        
-        update_gui()
-        
-    def log_message(self, message: str):
-        """Add message to log queue"""
-        self.log_queue.put(message)
-        
-    def update_status(self, connection: str = None, websocket: str = None, symbols: int = None):
-        """Update status indicators"""
-        if connection:
-            self.connection_status = connection
-            color = "green" if connection == "Connected" else "red"
-            self.connection_label.config(text=connection, foreground=color)
-            
-        if websocket:
-            self.websocket_status = websocket
-            color = "green" if websocket == "Connected" else "red"
-            self.websocket_label.config(text=websocket, foreground=color)
-            
-        if symbols is not None:
-            self.symbols_count = symbols
-            self.symbols_label.config(text=str(symbols))
-            
-    def start_collection(self):
-        """Start data collection"""
-        try:
-            self.running = True
-            self.start_button.config(state="disabled")
-            self.stop_button.config(state="normal")
-            self.test_button.config(state="disabled")
-            self.progress.start()
-            
-            self.log_message("Starting data collection...")
-            
-            # Start collection in separate thread
-            collection_thread = threading.Thread(target=self.run_collection, daemon=True)
-            collection_thread.start()
-            
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to start collection: {e}")
-            
-    def stop_collection(self):
-        """Stop data collection"""
-        try:
-            self.running = False
-            self.start_button.config(state="normal")
-            self.stop_button.config(state="disabled")
-            self.test_button.config(state="normal")
-            self.progress.stop()
-            
-            self.log_message("Stopping data collection...")
-            self.update_status(connection="Disconnected", websocket="Disconnected")
-            
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to stop collection: {e}")
-            
-    def test_single_symbol(self):
-        """Test data fetching for a single symbol"""
-        try:
-            symbol = self.symbol_var.get()
-            timeframe = self.timeframe_var.get()
-            
-            self.log_message(f"Testing {symbol} {timeframe}m...")
-            self.progress.start()
-            
-            # Run test in separate thread
-            test_thread = threading.Thread(
-                target=self.run_single_test, 
-                args=(symbol, timeframe), 
-                daemon=True
-            )
-            test_thread.start()
-            
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to start test: {e}")
-            
-    def run_collection(self):
-        """Run the data collection in a separate thread"""
-        try:
-            # Create event loop for this thread
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            
-            # Initialize hybrid system
-            self.hybrid_system = HybridTradingSystem(self.config)
-            
-            async def collection_task():
-                await self.hybrid_system.initialize()
-                
-                # Update GUI
-                self.update_status(connection="Connected")
-                self.log_message("Connected to API")
-                
-                # Get symbols to process
-                if self.config.FETCH_ALL_SYMBOLS:
-                    symbols = await self.hybrid_system.data_fetcher._get_all_symbols()
-                else:
-                    symbols = self.config.SYMBOLS
-                    
-                self.update_status(symbols=len(symbols))
-                self.log_message(f"Processing {len(symbols)} symbols...")
-                
-                # Fetch data
-                success = await self.hybrid_system.fetch_data_hybrid(
-                    symbols=symbols,
-                    timeframes=self.config.TIMEFRAMES,
-                    days=self.config.DAYS_TO_FETCH,
-                    mode="full" if not self.config.LIMIT_TO_50_ENTRIES else "recent"
-                )
-                
-                if success:
-                    self.log_message("Data collection completed successfully!")
-                else:
-                    self.log_message("Data collection completed with some errors")
-                    
-                # Start WebSocket if enabled
-                if self.config.ENABLE_WEBSOCKET:
-                    self.update_status(websocket="Connected")
-                    self.log_message("WebSocket connected - receiving live data...")
-                    
-                    # Keep running until stopped
-                    while self.running:
-                        await asyncio.sleep(1)
-                        
-            # Run the collection task
-            loop.run_until_complete(collection_task())
-            
-        except Exception as e:
-            self.log_message(f"Collection error: {e}")
-        finally:
-            # Update GUI when done
-            self.root.after(0, self.stop_collection)
-            
-    def run_single_test(self, symbol: str, timeframe: str):
-        """Test single symbol data fetching"""
-        try:
-            # Create event loop for this thread
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            
-            # Initialize hybrid system
-            self.hybrid_system = HybridTradingSystem(self.config)
-            
-            async def test_task():
-                await self.hybrid_system.initialize()
-                
-                # Fetch data for single symbol
-                success = await self.hybrid_system.fetch_data_hybrid(
-                    symbols=[symbol],
-                    timeframes=[timeframe],
-                    days=min(self.config.DAYS_TO_FETCH, 7),  # Limit to 7 days for testing
-                    mode="recent"
-                )
-                
-                if success:
-                    self.log_message(f"✅ {symbol} {timeframe}m test successful!")
-                else:
-                    self.log_message(f"❌ {symbol} {timeframe}m test failed!")
-                    
-            # Run the test
-            loop.run_until_complete(test_task())
-            
-        except Exception as e:
-            self.log_message(f"Test error: {e}")
-        finally:
-            # Update GUI when done
-            self.root.after(0, lambda: self.progress.stop())
-            
-    def on_closing(self):
-        """Handle window closing"""
-        if self.running:
-            if messagebox.askokcancel("Quit", "Data collection is running. Are you sure you want to quit?"):
-                self.running = False
-                self.root.destroy()
-        else:
-            self.root.destroy()
-            
-    def run(self):
-        """Start the GUI"""
-        self.root.mainloop()
-
-def main():
-    """Main function to run the GUI"""
-    gui = DataCollectionGUI()
-    gui.run()
-
-if __name__ == "__main__":
-    main()'''

@@ -1,9 +1,9 @@
 {
     "Strategy_1_Trend_Following": {
-        "fast_period": 19,
-        "slow_period": 18,
+        "fast_period": 22,
+        "slow_period": 96,
         "ma_type": "sma",
-        "last_optimized": "2025-11-16"
+        "last_optimized": "2025-11-22"
     },
     "Test_Strategy": {
         "rsi_period": 14,
@@ -12,10 +12,10 @@
         "last_optimized": "2025-11-10"
     },
     "Strategy_2_mean_reversion": {
-        "rsi_period": 42,
-        "rsi_overbought": 84,
-        "rsi_oversold": 21,
-        "last_optimized": "2025-11-10"
+        "rsi_period": 26,
+        "rsi_overbought": 74,
+        "rsi_oversold": 11,
+        "last_optimized": "2025-11-22"
     },
     "Strategy_Simple_Frequent_Trading": {
         "fast_ma_period": 5,

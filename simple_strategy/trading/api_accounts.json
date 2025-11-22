@@ -1,4 +1,11 @@
 {
-    "demo_accounts": {},
+    "demo_accounts": {
+        "demo test": {
+            "api_key": "ysf51oPGcyNo98TevT",
+            "api_secret": "ojdqKewi6qw2jVW6JOMwXBAa7pu8BfgeG8gz",
+            "description": "demo test",
+            "testnet": true
+        }
+    },
     "live_accounts": {}
 }

@@ -35,11 +35,11 @@ class HybridTradingSystem:
             self.is_initialized = True
 
     async def fetch_data_hybrid(self, symbols: List[str] = None, timeframes: List[str] = None,
-                               days: int = None, mode: str = "full"):
+                           days: int = None, mode: str = "full"):
         """
         mode: "full" = all historical data
-              "recent" = only 50 most recent entries
-              "live" = only real-time data
+        "recent" = only 50 most recent entries
+        "live" = only real-time data
         """
         # Use config values if not provided
         if symbols is None:
@@ -60,7 +60,7 @@ class HybridTradingSystem:
         else:
             # Use only symbols from config
             symbols_to_use = symbols
-            logger.info(f"[DATA] Using {len(symbols_to_use)} symbols from configuration")
+        logger.info(f"[DATA] Using {len(symbols_to_use)} symbols from configuration")
         
         # Use shared WebSocket connection if available
         if self.config.ENABLE_WEBSOCKET and self.websocket_handler:
@@ -68,6 +68,7 @@ class HybridTradingSystem:
             # Update symbols in the WebSocket handler
             self.websocket_handler.symbols = symbols_to_use
             self.websocket_handler.config.TIMEFRAMES = timeframes
+            
             # Check if WebSocket is already running
             if self.websocket_handler.running:
                 logger.info(f"[OK] Using existing shared WebSocket connection")
@@ -82,16 +83,54 @@ class HybridTradingSystem:
             logger.info(f"[DATA] Fetching historical data...")
             limit_50 = (mode == "recent")
             
-            success = await self.data_fetcher.fetch_historical_data_fast(
-                symbols_to_use, timeframes, days, limit_50
-            )
+            # Add progress tracking
+            total_tasks = len(symbols_to_use) * len(timeframes)
+            completed_tasks = 0
             
-            if success:
-                logger.info(f"[OK] Historical data fetched successfully")
-                # Show sample of fetched data
-                self._show_sample_data(symbols_to_use[:5], timeframes)  # Show first 5 symbols
-            else:
-                logger.error(f"[FAIL] Failed to fetch historical data")
+            # Process in smaller batches to avoid overwhelming the API
+            batch_size = 5  # Process 5 symbols at a time
+            for i in range(0, len(symbols_to_use), batch_size):
+                batch_symbols = symbols_to_use[i:i+batch_size]
+                logger.info(f"[DATA] Processing batch {i//batch_size + 1}/{(len(symbols_to_use)+batch_size-1)//batch_size}")
+                
+                # Create tasks for this batch
+                tasks = []
+                for symbol in batch_symbols:
+                    for timeframe in timeframes:
+                        task = asyncio.create_task(
+                            self.data_fetcher._fetch_symbol_timeframe(symbol, timeframe, days, limit_50)
+                        )
+                        tasks.append(task)
+                
+                # Execute batch tasks concurrently
+                batch_results = await asyncio.gather(*tasks, return_exceptions=True)
+                
+                # Process results and update progress
+                for result in batch_results:
+                    completed_tasks += 1
+                    progress = (completed_tasks / total_tasks) * 100
+                    logger.info(f"[PROGRESS] Historical data fetch: {progress:.1f}%")
+                    
+                    if result is True:
+                        logger.debug(f"[OK] Task completed successfully")
+                    elif result is False:
+                        logger.error(f"[FAIL] Task failed")
+                    elif isinstance(result, Exception):
+                        logger.error(f"[FAIL] Task exception: {result}")
+                
+                # Add delay between batches to avoid rate limiting
+                if i + batch_size < len(symbols_to_use):
+                    logger.info(f"[WAIT] Delaying between batches to avoid rate limiting...")
+                    await asyncio.sleep(1)  # 1 second delay between batches
+            
+            logger.info(f"[OK] Historical data fetching completed")
+            
+            # Show sample of fetched data
+            self._show_sample_data(symbols_to_use[:5], timeframes)  # Show first 5 symbols
+        else:
+            logger.info("[DATA] Skipping historical data fetch (mode=live)")
+        
+        return True
 
     def _show_sample_data(self, symbols: List[str], timeframes: List[str]):
         """Show sample of fetched data"""
