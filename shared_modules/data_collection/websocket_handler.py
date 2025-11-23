@@ -43,7 +43,7 @@ class WebSocketHandler:
             return
 
     async def connect(self):
-        """Connect to WebSocket and start listening"""
+        """Connect to WebSocket and start listening in a separate task"""
         if not self.config.ENABLE_WEBSOCKET:
             logger.info("WebSocket connection skipped (ENABLE_WEBSOCKET=False)")
             return
@@ -52,20 +52,25 @@ class WebSocketHandler:
         logger.info(f"[CONNECT] Connecting to WebSocket: {self.ws_url}")
         
         try:
-            # Since URL is wss://, we only need SSL connection
+            # Establish connection
             connection = await self._connect_with_ssl()
             if connection:
                 self.connection = connection
                 logger.info("[OK] WebSocket connection established!")
-                await self._listen_for_messages(connection)
+                
+                # CRITICAL FIX: Start listener in a separate task
+                self.listener_task = asyncio.create_task(self._listen_for_messages(connection))
+                logger.info("[OK] WebSocket listener started in background task")
+                
+                # Return immediately instead of blocking
                 return
+                
         except Exception as e:
             logger.error(f"[FAIL] Connection attempt failed: {e}")
             await asyncio.sleep(1)
-        
-        # If connection failed
-        logger.error("[FAIL] All connection attempts failed.")
-        await self._reconnect()
+            # If connection failed
+            logger.error("[FAIL] All connection attempts failed.")
+            await self._reconnect()
 
     async def _connect_with_ssl(self):
         try:
@@ -417,3 +422,22 @@ class WebSocketHandler:
         else:
             # Get all real-time data
             return self.real_time_data
+
+    async def disconnect(self):
+        """Properly shutdown the WebSocket connection"""
+        self.running = False
+        
+        # Cancel the listener task if it exists
+        if hasattr(self, 'listener_task') and self.listener_task:
+            self.listener_task.cancel()
+            try:
+                await self.listener_task
+            except asyncio.CancelledError:
+                pass
+        
+        # Close the connection if it exists
+        if self.connection:
+            await self.connection.close()
+            self.connection = None
+        
+        logger.info("[OK] WebSocket disconnected properly")

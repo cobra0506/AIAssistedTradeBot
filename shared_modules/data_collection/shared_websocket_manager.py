@@ -53,6 +53,6 @@ class SharedWebSocketManager:
     
     async def shutdown(self):
         """Shutdown the shared WebSocket connection"""
-        if self.websocket_handler and self.websocket_handler.running:
-            self.websocket_handler.running = False
-            logger.info("[SHARED] Shared WebSocket connection shutdown")
+        if self.websocket_handler:
+            await self.websocket_handler.disconnect()
+        logger.info("[SHARED] Shared WebSocket connection shutdown")
