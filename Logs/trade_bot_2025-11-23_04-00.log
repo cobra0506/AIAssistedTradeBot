@@ -1,0 +1,565 @@
+2025-11-23 04:00:00 - root - INFO - Logging system initialized
+2025-11-23 04:00:00 - shared_modules.data_collection.websocket_handler - INFO - WebSocket disabled by configuration
+2025-11-23 04:00:00 - shared_modules.data_collection.shared_websocket_manager - INFO - [SHARED] WebSocket disabled by configuration
+2025-11-23 04:00:00 - shared_modules.data_collection.hybrid_system - INFO - [DEBUG] Starting data fetch in mode: recent
+2025-11-23 04:00:00 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Using 18 symbols from configuration
+2025-11-23 04:00:00 - shared_modules.data_collection.hybrid_system - INFO - [WS] WebSocket disabled (ENABLE_WEBSOCKET=False) or not available
+2025-11-23 04:00:00 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Fetching historical data...
+2025-11-23 04:00:00 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Processing batch 1/4
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BNBUSDT_1...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BNBUSDT_5...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BNBUSDT_15...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BNBUSDT_60...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BNBUSDT_120...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching BNBUSDT_240...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching XRPUSDT_1...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching XRPUSDT_5...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching XRPUSDT_15...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching XRPUSDT_60...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching XRPUSDT_120...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching XRPUSDT_240...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_1...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_5...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_15...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_60...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_120...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ADAUSDT_240...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching DOTUSDT_1...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching DOTUSDT_5...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching DOTUSDT_15...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching DOTUSDT_60...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching DOTUSDT_120...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching DOTUSDT_240...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ATOMUSDT_1...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ATOMUSDT_5...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ATOMUSDT_15...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ATOMUSDT_60...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ATOMUSDT_120...
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ATOMUSDT_240...
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\BNBUSDT_15.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for BNBUSDT_15
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\BNBUSDT_5.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for BNBUSDT_5
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\XRPUSDT_5.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for XRPUSDT_5
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\BNBUSDT_1.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for BNBUSDT_1
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 13 entries to data\BNBUSDT_120.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 13 candles for BNBUSDT_120
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ADAUSDT_1.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ADAUSDT_1
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ADAUSDT_15.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ADAUSDT_15
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\XRPUSDT_240.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for XRPUSDT_240
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\ATOMUSDT_120.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for ATOMUSDT_120
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\DOTUSDT_240.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for DOTUSDT_240
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 25 entries to data\BNBUSDT_60.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 25 candles for BNBUSDT_60
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ATOMUSDT_15.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ATOMUSDT_15
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\DOTUSDT_15.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for DOTUSDT_15
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ATOMUSDT_5.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ATOMUSDT_5
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\DOTUSDT_5.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for DOTUSDT_5
+2025-11-23 04:00:00 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\ADAUSDT_240.csv
+2025-11-23 04:00:00 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for ADAUSDT_240
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\XRPUSDT_15.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for XRPUSDT_15
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\XRPUSDT_1.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for XRPUSDT_1
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 13 entries to data\XRPUSDT_120.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 13 candles for XRPUSDT_120
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 25 entries to data\XRPUSDT_60.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 25 candles for XRPUSDT_60
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\DOTUSDT_1.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for DOTUSDT_1
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 25 entries to data\DOTUSDT_60.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 25 candles for DOTUSDT_60
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 13 entries to data\ADAUSDT_120.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 13 candles for ADAUSDT_120
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\BNBUSDT_240.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for BNBUSDT_240
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\ATOMUSDT_240.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for ATOMUSDT_240
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 25 entries to data\ADAUSDT_60.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 25 candles for ADAUSDT_60
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 13 entries to data\DOTUSDT_120.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 13 candles for DOTUSDT_120
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ADAUSDT_5.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ADAUSDT_5
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 25 entries to data\ATOMUSDT_60.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 25 candles for ATOMUSDT_60
+2025-11-23 04:00:01 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ATOMUSDT_1.csv
+2025-11-23 04:00:01 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ATOMUSDT_1
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 0.9%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 1.9%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 2.8%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 3.7%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 4.6%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 5.6%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 6.5%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 7.4%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 8.3%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 9.3%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 10.2%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 11.1%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 12.0%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 13.0%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 13.9%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 14.8%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 15.7%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 16.7%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 17.6%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 18.5%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 19.4%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 20.4%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 21.3%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 22.2%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 23.1%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 24.1%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 25.0%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 25.9%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 26.9%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 27.8%
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:01 - shared_modules.data_collection.hybrid_system - INFO - [WAIT] Delaying between batches to avoid rate limiting...
+2025-11-23 04:00:02 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Processing batch 2/4
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ALGOUSDT_1...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ALGOUSDT_5...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ALGOUSDT_15...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ALGOUSDT_60...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ALGOUSDT_120...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ALGOUSDT_240...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching VETUSDT_1...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching VETUSDT_5...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching VETUSDT_15...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching VETUSDT_60...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching VETUSDT_120...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching VETUSDT_240...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ICPUSDT_1...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ICPUSDT_5...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ICPUSDT_15...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ICPUSDT_60...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ICPUSDT_120...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ICPUSDT_240...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching FILUSDT_1...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching FILUSDT_5...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching FILUSDT_15...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching FILUSDT_60...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching FILUSDT_120...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching FILUSDT_240...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching AAVEUSDT_1...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching AAVEUSDT_5...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching AAVEUSDT_15...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching AAVEUSDT_60...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching AAVEUSDT_120...
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching AAVEUSDT_240...
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ALGOUSDT_1.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ALGOUSDT_1
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ALGOUSDT_5.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ALGOUSDT_5
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ALGOUSDT_15.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ALGOUSDT_15
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\VETUSDT_5.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for VETUSDT_5
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\ALGOUSDT_120.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for ALGOUSDT_120
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\ALGOUSDT_240.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for ALGOUSDT_240
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\VETUSDT_1.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for VETUSDT_1
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\ALGOUSDT_60.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for ALGOUSDT_60
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\VETUSDT_15.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for VETUSDT_15
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\VETUSDT_60.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for VETUSDT_60
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\VETUSDT_120.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for VETUSDT_120
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ICPUSDT_1.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ICPUSDT_1
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ICPUSDT_5.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ICPUSDT_5
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\ICPUSDT_60.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for ICPUSDT_60
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\ICPUSDT_240.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for ICPUSDT_240
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\FILUSDT_5.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for FILUSDT_5
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\FILUSDT_15.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for FILUSDT_15
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\AAVEUSDT_1.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for AAVEUSDT_1
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\AAVEUSDT_5.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for AAVEUSDT_5
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\AAVEUSDT_60.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for AAVEUSDT_60
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\AAVEUSDT_240.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for AAVEUSDT_240
+2025-11-23 04:00:03 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\FILUSDT_240.csv
+2025-11-23 04:00:03 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for FILUSDT_240
+2025-11-23 04:00:04 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\VETUSDT_240.csv
+2025-11-23 04:00:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for VETUSDT_240
+2025-11-23 04:00:04 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ICPUSDT_15.csv
+2025-11-23 04:00:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ICPUSDT_15
+2025-11-23 04:00:04 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\FILUSDT_1.csv
+2025-11-23 04:00:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for FILUSDT_1
+2025-11-23 04:00:04 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\ICPUSDT_120.csv
+2025-11-23 04:00:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for ICPUSDT_120
+2025-11-23 04:00:04 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\FILUSDT_60.csv
+2025-11-23 04:00:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for FILUSDT_60
+2025-11-23 04:00:04 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\FILUSDT_120.csv
+2025-11-23 04:00:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for FILUSDT_120
+2025-11-23 04:00:04 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\AAVEUSDT_120.csv
+2025-11-23 04:00:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for AAVEUSDT_120
+2025-11-23 04:00:04 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\AAVEUSDT_15.csv
+2025-11-23 04:00:04 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for AAVEUSDT_15
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 28.7%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 29.6%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 30.6%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 31.5%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 32.4%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 33.3%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 34.3%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 35.2%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 36.1%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 37.0%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 38.0%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 38.9%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 39.8%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 40.7%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 41.7%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 42.6%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 43.5%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 44.4%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 45.4%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 46.3%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 47.2%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 48.1%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 49.1%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 50.0%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 50.9%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 51.9%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 52.8%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 53.7%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 54.6%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 55.6%
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:04 - shared_modules.data_collection.hybrid_system - INFO - [WAIT] Delaying between batches to avoid rate limiting...
+2025-11-23 04:00:05 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Processing batch 3/4
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching COMPUSDT_1...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching COMPUSDT_5...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching COMPUSDT_15...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching COMPUSDT_60...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching COMPUSDT_120...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching COMPUSDT_240...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching CRVUSDT_1...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching CRVUSDT_5...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching CRVUSDT_15...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching CRVUSDT_60...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching CRVUSDT_120...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching CRVUSDT_240...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SNXUSDT_1...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SNXUSDT_5...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SNXUSDT_15...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SNXUSDT_60...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SNXUSDT_120...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SNXUSDT_240...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SUSHIUSDT_1...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SUSHIUSDT_5...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SUSHIUSDT_15...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SUSHIUSDT_60...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SUSHIUSDT_120...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching SUSHIUSDT_240...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ARBUSDT_1...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ARBUSDT_5...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ARBUSDT_15...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ARBUSDT_60...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ARBUSDT_120...
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching ARBUSDT_240...
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\COMPUSDT_1.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for COMPUSDT_1
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\COMPUSDT_15.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for COMPUSDT_15
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\COMPUSDT_5.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for COMPUSDT_5
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\COMPUSDT_60.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for COMPUSDT_60
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\COMPUSDT_240.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for COMPUSDT_240
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\COMPUSDT_120.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for COMPUSDT_120
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\CRVUSDT_1.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for CRVUSDT_1
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\CRVUSDT_5.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for CRVUSDT_5
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\CRVUSDT_15.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for CRVUSDT_15
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\CRVUSDT_60.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for CRVUSDT_60
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\SNXUSDT_5.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for SNXUSDT_5
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\SNXUSDT_1.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for SNXUSDT_1
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\CRVUSDT_240.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for CRVUSDT_240
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\SNXUSDT_15.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for SNXUSDT_15
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\SNXUSDT_240.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for SNXUSDT_240
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\SUSHIUSDT_1.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for SUSHIUSDT_1
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\SNXUSDT_120.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for SNXUSDT_120
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\SUSHIUSDT_5.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for SUSHIUSDT_5
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\SNXUSDT_60.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for SNXUSDT_60
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\SUSHIUSDT_15.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for SUSHIUSDT_15
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\SUSHIUSDT_60.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for SUSHIUSDT_60
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\SUSHIUSDT_120.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for SUSHIUSDT_120
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ARBUSDT_1.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ARBUSDT_1
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\SUSHIUSDT_240.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for SUSHIUSDT_240
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ARBUSDT_15.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ARBUSDT_15
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\ARBUSDT_60.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for ARBUSDT_60
+2025-11-23 04:00:05 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\ARBUSDT_240.csv
+2025-11-23 04:00:05 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for ARBUSDT_240
+2025-11-23 04:00:06 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\CRVUSDT_120.csv
+2025-11-23 04:00:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for CRVUSDT_120
+2025-11-23 04:00:06 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\ARBUSDT_5.csv
+2025-11-23 04:00:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for ARBUSDT_5
+2025-11-23 04:00:06 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\ARBUSDT_120.csv
+2025-11-23 04:00:06 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for ARBUSDT_120
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 56.5%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 57.4%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 58.3%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 59.3%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 60.2%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 61.1%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 62.0%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 63.0%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 63.9%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 64.8%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 65.7%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 66.7%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 67.6%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 68.5%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 69.4%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 70.4%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 71.3%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 72.2%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 73.1%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 74.1%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 75.0%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 75.9%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 76.9%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 77.8%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 78.7%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 79.6%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 80.6%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 81.5%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 82.4%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 83.3%
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:06 - shared_modules.data_collection.hybrid_system - INFO - [WAIT] Delaying between batches to avoid rate limiting...
+2025-11-23 04:00:07 - shared_modules.data_collection.hybrid_system - INFO - [DATA] Processing batch 4/4
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching OPUSDT_1...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching OPUSDT_5...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching OPUSDT_15...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching OPUSDT_60...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching OPUSDT_120...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching OPUSDT_240...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching NEARUSDT_1...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching NEARUSDT_5...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching NEARUSDT_15...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching NEARUSDT_60...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching NEARUSDT_120...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching NEARUSDT_240...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching GRTUSDT_1...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching GRTUSDT_5...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching GRTUSDT_15...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching GRTUSDT_60...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching GRTUSDT_120...
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [PROCESS] Fetching GRTUSDT_240...
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\OPUSDT_15.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for OPUSDT_15
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\OPUSDT_1.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for OPUSDT_1
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\OPUSDT_5.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for OPUSDT_5
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\OPUSDT_60.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for OPUSDT_60
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\NEARUSDT_5.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for NEARUSDT_5
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\OPUSDT_240.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for OPUSDT_240
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\NEARUSDT_1.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for NEARUSDT_1
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\NEARUSDT_60.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for NEARUSDT_60
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\NEARUSDT_15.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for NEARUSDT_15
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\OPUSDT_120.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for OPUSDT_120
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\NEARUSDT_240.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for NEARUSDT_240
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\GRTUSDT_1.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for GRTUSDT_1
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\GRTUSDT_5.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for GRTUSDT_5
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 50 entries to data\GRTUSDT_15.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 50 candles for GRTUSDT_15
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 6 entries to data\GRTUSDT_240.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 6 candles for GRTUSDT_240
+2025-11-23 04:00:07 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\GRTUSDT_120.csv
+2025-11-23 04:00:07 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for GRTUSDT_120
+2025-11-23 04:00:08 - shared_modules.data_collection.csv_manager - INFO - Wrote 12 entries to data\NEARUSDT_120.csv
+2025-11-23 04:00:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 12 candles for NEARUSDT_120
+2025-11-23 04:00:08 - shared_modules.data_collection.csv_manager - INFO - Wrote 24 entries to data\GRTUSDT_60.csv
+2025-11-23 04:00:08 - shared_modules.data_collection.optimized_data_fetcher - INFO - [OK] Fetched 24 candles for GRTUSDT_60
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 84.3%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 85.2%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 86.1%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 87.0%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 88.0%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 88.9%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 89.8%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 90.7%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 91.7%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 92.6%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 93.5%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 94.4%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 95.4%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 96.3%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 97.2%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 98.1%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 99.1%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [PROGRESS] Historical data fetch: 100.0%
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - DEBUG - [OK] Task completed successfully
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - [OK] Historical data fetching completed
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO - 
+[INFO] Sample of fetched historical data:
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO -  BNBUSDT_1: 50 candles
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-11-23 03:11:00 - O:837.4 H:837.5 L:837.2 C:837.5
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO -  BNBUSDT_5: 50 candles
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-11-22 23:55:00 - O:829.2 H:829.6 L:829.0 C:829.4
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO -  XRPUSDT_1: 50 candles
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-11-23 03:11:00 - O:1.965 H:1.965 L:1.9624 C:1.9642
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO -  XRPUSDT_5: 50 candles
+2025-11-23 04:00:08 - shared_modules.data_collection.hybrid_system - INFO -  Latest: 2025-11-22 23:50:00 - O:1.9316 H:1.9359 L:1.9296 C:1.9337

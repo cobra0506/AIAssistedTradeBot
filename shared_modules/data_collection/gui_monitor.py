@@ -497,52 +497,125 @@ class DataCollectionGUI:
                 self.total_symbols = len(symbols)
                 self.update_status(symbols=self.total_symbols)
                 self.log_message(f"📊 Processing {self.total_symbols} symbols...")
-                self.update_activity(f"Preparing to collect data for {self.total_symbols} symbols...")
                 
-                # Start data collection with real-time updates
-                mode = "recent" if self.gui_config.LIMIT_TO_50_ENTRIES else "full"
-                self.log_message(f"🚀 Starting hybrid data fetch in {mode} mode...")
-                self.update_activity(f"Starting historical data collection...")
+                # START WEBSOCKET FIRST (if enabled) to avoid gaps
+                websocket_task = None
+                if self.gui_config.ENABLE_WEBSOCKET:
+                    self.update_activity("Starting WebSocket first to avoid data gaps...")
+                    self.log_message("🌐 Starting WebSocket FIRST to ensure no data gaps...")
+                    
+                    try:
+                        # Initialize WebSocket connection
+                        await self.hybrid_system.shared_ws_manager.initialize(self.gui_config)
+                        self.hybrid_system.websocket_handler = self.hybrid_system.shared_ws_manager.get_websocket_handler()
+                        
+                        if self.hybrid_system.websocket_handler:
+                            self.update_status(websocket="Connected")
+                            self.log_message("✅ WebSocket connected - ready for real-time data")
+                            
+                            # Start WebSocket monitoring as a background task
+                            async def websocket_monitor():
+                                ws_start_time = datetime.now()
+                                last_update_time = datetime.now()
+                                
+                                while self.running:
+                                    if (self.hybrid_system.websocket_handler and 
+                                        self.hybrid_system.websocket_handler.running):
+                                        
+                                        current_time = datetime.now()
+                                        # Update status every 30 seconds
+                                        if (current_time - last_update_time).seconds >= 30:
+                                            ws_elapsed = current_time - ws_start_time
+                                            self.update_activity(f"WebSocket active for {ws_elapsed.seconds}s + fetching historical")
+                                            self.log_message(f"🌐 WebSocket active for {ws_elapsed.seconds}s - receiving real-time data")
+                                            last_update_time = current_time
+                                        
+                                        # Update CSV with real-time data periodically
+                                        if self.gui_config.LIMIT_TO_50_ENTRIES:
+                                            try:
+                                                updated = await self.hybrid_system.update_csv_with_realtime_data()
+                                                if updated:
+                                                    self.log_message("💾 Real-time data saved to CSV")
+                                            except Exception as e:
+                                                self.log_message(f"Warning: CSV update failed: {e}")
+                                    else:
+                                        self.update_activity("WebSocket disconnected - attempting to reconnect...")
+                                        self.log_message("⚠️ WebSocket disconnected")
+                                        
+                                        # Try to reconnect
+                                        try:
+                                            await self.hybrid_system.shared_ws_manager.initialize(self.gui_config)
+                                            self.hybrid_system.websocket_handler = self.hybrid_system.shared_ws_manager.get_websocket_handler()
+                                            if self.hybrid_system.websocket_handler:
+                                                self.update_status(websocket="Connected")
+                                                self.log_message("✅ WebSocket reconnected")
+                                        except Exception as e:
+                                            self.log_message(f"❌ WebSocket reconnection failed: {e}")
+                                    
+                                    await asyncio.sleep(5)  # Check every 5 seconds
+                            
+                            # Start WebSocket monitoring as background task
+                            websocket_task = asyncio.create_task(websocket_monitor())
+                            
+                        else:
+                            self.update_status(websocket="Failed")
+                            self.log_message("❌ WebSocket initialization failed")
+                            
+                    except Exception as e:
+                        self.update_status(websocket="Error")
+                        self.log_message(f"❌ WebSocket error: {e}")
+                
+                # NOW START HISTORICAL DATA COLLECTION CONCURRENTLY WITH WEBSOCKET
+                self.update_activity("Starting historical data collection (concurrent with WebSocket)...")
+                self.log_message("🚀 Starting historical data collection CONCURRENTLY with WebSocket...")
                 
                 # Track start time
                 start_time = datetime.now()
                 
-                # Create a custom callback for progress updates
-                async def progress_callback(symbol, timeframe, progress):
+                # Add progress tracking
+                self.completed_symbols = 0
+                self.total_tasks = len(symbols) * len(self.gui_config.TIMEFRAMES)
+
+                # Create a wrapper function for progress tracking
+                async def fetch_with_progress(symbol, timeframe, days, limit_50):
                     self.current_symbol = symbol
                     self.current_timeframe = timeframe
-                    self.update_progress(progress)
-                    self.update_activity(f"Fetching {symbol}_{timeframe}: {progress:.1f}%")
-                
-                # Add progress tracking to the data fetcher
-                original_fetch_symbol_timeframe = self.hybrid_system.data_fetcher._fetch_symbol_timeframe
-                
-                async def tracked_fetch_symbol_timeframe(symbol, timeframe, days, limit_50):
                     self.completed_symbols += 1
-                    progress = (self.completed_symbols / (len(symbols) * len(self.gui_config.TIMEFRAMES))) * 100
+                    progress = (self.completed_symbols / self.total_tasks) * 100
                     self.update_progress(progress)
-                    self.update_activity(f"Fetching {symbol}_{timeframe} ({self.completed_symbols}/{len(symbols) * len(self.gui_config.TIMEFRAMES)})")
-                    result = await original_fetch_symbol_timeframe(symbol, timeframe, days, limit_50)
+                    self.update_activity(f"Fetching {symbol}_{timeframe} ({self.completed_symbols}/{self.total_tasks}) + WebSocket active")
+                    
+                    result = await self.hybrid_system.data_fetcher._fetch_symbol_timeframe(symbol, timeframe, days, limit_50)
                     return result
                 
-                # Replace the method with our tracked version
-                self.hybrid_system.data_fetcher._fetch_symbol_timeframe = tracked_fetch_symbol_timeframe
+                # ALWAYS FETCH HISTORICAL DATA - concurrent with WebSocket
+                limit_50 = self.gui_config.LIMIT_TO_50_ENTRIES
                 
-                # Fetch data - this is where the real work happens
-                success = await self.hybrid_system.fetch_data_hybrid(
-                    symbols=symbols,
-                    timeframes=self.gui_config.TIMEFRAMES,
-                    days=self.gui_config.DAYS_TO_FETCH,
-                    mode=mode
-                )
+                # Process with progress tracking
+                tasks = []
+                for symbol in symbols:
+                    for timeframe in self.gui_config.TIMEFRAMES:
+                        task = asyncio.create_task(
+                            fetch_with_progress(symbol, timeframe, self.gui_config.DAYS_TO_FETCH, limit_50)
+                        )
+                        tasks.append(task)
+                
+                # Execute all historical data tasks CONCURRENTLY with WebSocket
+                self.log_message(f"📥 Fetching historical data for {len(tasks)} symbol/timeframe combinations...")
+                results = await asyncio.gather(*tasks, return_exceptions=True)
+                
+                # Check results
+                successful_fetches = sum(1 for result in results if result is True)
+                failed_fetches = sum(1 for result in results if isinstance(result, Exception))
                 
                 # Calculate elapsed time
                 elapsed = datetime.now() - start_time
                 self.log_message(f"⏱️  Historical data collection completed in {elapsed}")
+                self.log_message(f"✅ Successful: {successful_fetches}, ❌ Failed: {failed_fetches}")
                 
-                if success:
+                if successful_fetches > 0:
                     self.log_message("✅ Historical data collection completed successfully!")
-                    self.update_activity("Historical data collection completed successfully!")
+                    self.update_activity("Historical data completed + WebSocket active")
                     self.update_progress(100)
                     
                     # Check what data was actually collected
@@ -550,19 +623,16 @@ class DataCollectionGUI:
                     data_dir = Path(self.gui_config.DATA_DIR)
                     if data_dir.exists():
                         csv_files = list(data_dir.glob("*.csv"))
-                        self.log_message(f"📁 Found {len(csv_files)} CSV files")
+                        self.log_message(f"📁 Found {len(csv_files)} CSV files after historical data collection")
                         
                         # Show sample of collected data
-                        for i, file in enumerate(csv_files[:5]):  # Show first 5 files
+                        for i, file in enumerate(csv_files[:3]):  # Show first 3 files
                             try:
                                 with open(file, 'r') as f:
                                     lines = f.readlines()
                                 self.log_message(f"📄 {file.name}: {len(lines)-1} data points")
                             except:
                                 pass
-                        
-                        if len(csv_files) > 5:
-                            self.log_message(f"📁 ... and {len(csv_files)-5} more files")
                     
                     # Run integrity check if enabled
                     if self.gui_config.RUN_INTEGRITY_CHECK:
@@ -578,70 +648,22 @@ class DataCollectionGUI:
                         await asyncio.sleep(1)  # Simulate gap filling
                         self.log_message("✅ Gap filling completed!")
                 else:
-                    self.log_message("❌ Historical data collection completed with some errors")
-                    self.update_activity("Historical data collection completed with some errors")
+                    self.log_message("❌ Historical data collection failed for all symbols")
+                    self.update_activity("Historical data failed + WebSocket active")
                     
-                # Start WebSocket if enabled
-                if self.gui_config.ENABLE_WEBSOCKET:
-                    self.update_status(websocket="Connected")
-                    self.update_activity("WebSocket connected - monitoring real-time data...")
-                    self.log_message("🌐 WebSocket connected - receiving live data...")
+                # If WebSocket is running, keep the monitor going
+                if self.gui_config.ENABLE_WEBSOCKET and websocket_task:
+                    self.update_activity("All systems running: WebSocket + Historical data complete")
+                    self.log_message("✅ System fully operational: WebSocket running + Historical data collected")
                     
-                    # Monitor WebSocket activity more effectively
-                    ws_start_time = datetime.now()
-                    last_message_count = 0
-                    
-                    # Keep running until stopped
-                    while self.running:
-                        # Check if WebSocket is still active
-                        if self.hybrid_system.websocket_handler and self.hybrid_system.websocket_handler.running:
-                            # Check WebSocket message count instead of files
-                            current_message_count = self.hybrid_system.websocket_handler.subscription_count
-                            
-                            # Check if we have real-time data
-                            realtime_data_count = 0
-                            for symbol in symbols[:3]:  # Check first 3 symbols
-                                for timeframe in self.gui_config.TIMEFRAMES[:2]:  # Check first 2 timeframes
-                                    data = self.hybrid_system.websocket_handler.get_real_time_data(symbol, timeframe)
-                                    realtime_data_count += len(data)
-                            
-                            if realtime_data_count > last_message_count:
-                                new_messages = realtime_data_count - last_message_count
-                                self.update_activity(f"📈 Received {new_messages} new real-time data points")
-                                self.log_message(f"📡 WebSocket: {new_messages} new data points received")
-                                last_message_count = realtime_data_count
-                                
-                                # Update CSV with new data if needed
-                                if self.gui_config.LIMIT_TO_50_ENTRIES:
-                                    try:
-                                        await self.hybrid_system.update_csv_with_realtime_data()
-                                        self.log_message("💾 Real-time data saved to CSV")
-                                    except Exception as e:
-                                        self.log_message(f"Warning: CSV update failed: {e}")
-                            else:
-                                self.update_activity("WebSocket active - monitoring for new data...")
-                            
-                            # Show elapsed time every 60 seconds
-                            ws_elapsed = datetime.now() - ws_start_time
-                            if ws_elapsed.seconds % 60 == 0:  # Every 60 seconds
-                                self.log_message(f"🌐 WebSocket active for {ws_elapsed}, received {realtime_data_count} data points")
-                        else:
-                            self.update_activity("WebSocket disconnected - attempting to reconnect...")
-                            self.log_message("⚠️ WebSocket disconnected")
-                            
-                            # Try to reconnect
-                            try:
-                                await self.hybrid_system.shared_ws_manager.initialize(self.gui_config)
-                                self.hybrid_system.websocket_handler = self.hybrid_system.shared_ws_manager.get_websocket_handler()
-                                if self.hybrid_system.websocket_handler:
-                                    self.update_status(websocket="Connected")
-                                    self.log_message("✅ WebSocket reconnected")
-                            except Exception as e:
-                                self.log_message(f"❌ WebSocket reconnection failed: {e}")
-                            
-                        await asyncio.sleep(5)  # Check every 5 seconds
+                    # Wait for the WebSocket monitor to continue running
+                    try:
+                        await websocket_task
+                    except asyncio.CancelledError:
+                        pass
                 else:
                     self.update_activity("All data collection tasks completed!")
+                    self.log_message("✅ Data collection completed")
                     
             # Run the collection task
             loop.run_until_complete(collection_task())
@@ -654,6 +676,9 @@ class DataCollectionGUI:
         finally:
             # Update GUI when done
             self.root.after(0, self.stop_collection)
+
+
+
             
     def on_closing(self):
         """Handle window closing"""

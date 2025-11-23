@@ -250,8 +250,7 @@ class OptimizedDataFetcher:
             logger.error(f"[FAIL] Failed to fetch {symbol}_{timeframe}")
             return False
 
-    async def _fetch_full_historical_data(self, symbol: str, timeframe: str, 
-                                         days: int, end_time: int) -> bool:
+    async def _fetch_full_historical_data(self, symbol: str, timeframe: str, days: int, end_time: int) -> bool:
         """Fetch full historical data using optimized chunking"""
         start_time = end_time - (days * 24 * 60 * 60 * 1000)
         all_candles = []
@@ -261,6 +260,7 @@ class OptimizedDataFetcher:
             self._calculate_chunk_parameters(timeframe, days)
         
         logger.info(f"[DATA] Fetching {symbol}_{timeframe} using {num_chunks} chunks...")
+        logger.info(f"[DATA] Time range: {datetime.fromtimestamp(start_time/1000)} to {datetime.fromtimestamp(end_time/1000)}")
         
         successful_chunks = 0
         failed_chunks = 0
@@ -273,10 +273,10 @@ class OptimizedDataFetcher:
             # Stop if we've reached the start time
             if chunk_start_time >= chunk_end_time:
                 break
-            
+                
             logger.info(f"[DATA] Fetching chunk {chunk_index + 1}/{num_chunks}: "
-                       f"{datetime.fromtimestamp(chunk_start_time/1000)} to "
-                       f"{datetime.fromtimestamp(chunk_end_time/1000)}")
+                    f"{datetime.fromtimestamp(chunk_start_time/1000)} to "
+                    f"{datetime.fromtimestamp(chunk_end_time/1000)}")
             
             # Make rate-limited request for this chunk with retry mechanism
             chunk_candles = await self._make_chunk_request_with_retry(
@@ -291,40 +291,43 @@ class OptimizedDataFetcher:
                 failed_chunks += 1
                 logger.error(f"[FAIL] Failed to fetch chunk {chunk_index + 1}")
                 
-                # If we fail too many chunks, break early
-                if failed_chunks >= 3:
-                    logger.error(f"[FAIL] Too many failed chunks ({failed_chunks}), stopping early")
-                    break
-            
+            # If we fail too many chunks, break early
+            if failed_chunks >= 3:
+                logger.error(f"[FAIL] Too many failed chunks ({failed_chunks}), stopping early")
+                break
+                
             # Add delay between chunks
             await asyncio.sleep(self.config.BULK_REQUEST_DELAY_MS / 1000)
         
-        # Store in memory and CSV
+        # Store in memory and CSV - FIXED VERSION
         if all_candles:
             key = f"{symbol}_{timeframe}"
+            
+            # For memory storage, we still limit to prevent memory issues
             if key not in self.memory_data:
-                self.memory_data[key] = deque()
+                self.memory_data[key] = deque(maxlen=1000)  # Increased from 50 to 1000
             
-            # Sort by timestamp (ascending order for chronological)
-            all_candles.sort(key=lambda x: x['timestamp'])
+            # Sort by timestamp (newest first)
+            all_candles.sort(key=lambda x: x['timestamp'], reverse=True)
             
-            # Add to memory storage
-            self.memory_data[key].extend(all_candles)
+            # Add to memory storage (limited)
+            memory_candles = all_candles.copy()  # Don't modify the original list
+            self.memory_data[key].extend(memory_candles)
             
-            # Save to CSV using CSV manager
+            # Save ALL candles to CSV (not truncated)
             success = self.csv_manager.write_csv_data(symbol, timeframe, all_candles)
             
             if success:
-                logger.info(f"[OK] Fetched {len(all_candles)} candles for {symbol}_{timeframe} "
-                           f"({successful_chunks} successful, {failed_chunks} failed)")
+                logger.info(f"[OK] Fetched {len(all_candles)} candles for {symbol}_{timeframe}")
+                logger.info(f"[OK] Saved {len(all_candles)} candles to CSV")
                 return True
             else:
                 logger.error(f"[FAIL] Failed to save CSV for {symbol}_{timeframe}")
                 return False
         else:
-            logger.error(f"[FAIL] No data fetched for {symbol}_{timeframe}")
+            logger.error(f"[FAIL] Failed to fetch {symbol}_{timeframe}")
             return False
-
+        
     async def _make_chunk_request_with_retry(self, symbol: str, timeframe: str,
                                            start_time: int, end_time: int, 
                                            limit: int, max_retries: int = 3) -> List[Dict]:

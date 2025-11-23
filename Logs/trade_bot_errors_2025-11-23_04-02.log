@@ -1,0 +1,32 @@
+2025-11-23 04:05:14 - websockets.client - ERROR - data transfer failed
+Traceback (most recent call last):
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\protocol.py", line 959, in transfer_data
+    message = await self.read_message()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\protocol.py", line 1029, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\protocol.py", line 1104, in read_data_frame
+    frame = await self.read_frame(max_size)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\protocol.py", line 1161, in read_frame
+    frame = await Frame.read(
+            ^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\site-packages\websockets\legacy\framing.py", line 68, in read
+    data = await reader(2)
+           ^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\streams.py", line 750, in readexactly
+    await self._wait_for_data('readexactly')
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\streams.py", line 543, in _wait_for_data
+    await self._waiter
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 286, in _loop_reading
+    length = fut.result()
+             ^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 854, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\cobra\AppData\Local\Programs\Python\Python311\Lib\asyncio\windows_events.py", line 494, in finish_recv
+    return ov.getresult()
+           ^^^^^^^^^^^^^^
+OSError: [WinError 121] The semaphore timeout period has expired
+2025-11-23 04:05:14 - shared_modules.data_collection.websocket_handler - ERROR - [FAIL] WebSocket connection closed: no close frame received or sent
