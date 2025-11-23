@@ -78,59 +78,62 @@ class HybridTradingSystem:
         else:
             logger.info(f"[WS] WebSocket disabled (ENABLE_WEBSOCKET=False) or not available")
         
-        # Then, fetch historical data if needed
-        if mode in ["full", "recent"]:
-            logger.info(f"[DATA] Fetching historical data...")
-            limit_50 = (mode == "recent")
-            
-            # Add progress tracking
-            total_tasks = len(symbols_to_use) * len(timeframes)
-            completed_tasks = 0
-            
-            # Process in smaller batches to avoid overwhelming the API
-            batch_size = 5  # Process 5 symbols at a time
-            for i in range(0, len(symbols_to_use), batch_size):
-                batch_symbols = symbols_to_use[i:i+batch_size]
-                logger.info(f"[DATA] Processing batch {i//batch_size + 1}/{(len(symbols_to_use)+batch_size-1)//batch_size}")
-                
-                # Create tasks for this batch
-                tasks = []
-                for symbol in batch_symbols:
-                    for timeframe in timeframes:
-                        task = asyncio.create_task(
-                            self.data_fetcher._fetch_symbol_timeframe(symbol, timeframe, days, limit_50)
-                        )
-                        tasks.append(task)
-                
-                # Execute batch tasks concurrently
-                batch_results = await asyncio.gather(*tasks, return_exceptions=True)
-                
-                # Process results and update progress
-                for result in batch_results:
-                    completed_tasks += 1
-                    progress = (completed_tasks / total_tasks) * 100
-                    logger.info(f"[PROGRESS] Historical data fetch: {progress:.1f}%")
-                    
-                    if result is True:
-                        logger.debug(f"[OK] Task completed successfully")
-                    elif result is False:
-                        logger.error(f"[FAIL] Task failed")
-                    elif isinstance(result, Exception):
-                        logger.error(f"[FAIL] Task exception: {result}")
-                
-                # Add delay between batches to avoid rate limiting
-                if i + batch_size < len(symbols_to_use):
-                    logger.info(f"[WAIT] Delaying between batches to avoid rate limiting...")
-                    await asyncio.sleep(1)  # 1 second delay between batches
-            
-            logger.info(f"[OK] Historical data fetching completed")
-            
-            # Show sample of fetched data
-            self._show_sample_data(symbols_to_use[:5], timeframes)  # Show first 5 symbols
+        # CRITICAL FIX: Always fetch historical data based on LIMIT_TO_50_ENTRIES setting
+        # NOT based on WebSocket setting
+        if self.config.LIMIT_TO_50_ENTRIES:
+            logger.info("[DATA] Fetching recent historical data (50 entries)...")
+            limit_50 = True
         else:
-            logger.info("[DATA] Skipping historical data fetch (mode=live)")
+            logger.info(f"[DATA] Fetching full historical data ({days} days)...")
+            limit_50 = False
+        
+        # Add progress tracking
+        total_tasks = len(symbols_to_use) * len(timeframes)
+        completed_tasks = 0
+        
+        # Process in smaller batches to avoid overwhelming the API
+        batch_size = 5  # Process 5 symbols at a time
+        for i in range(0, len(symbols_to_use), batch_size):
+            batch_symbols = symbols_to_use[i:i+batch_size]
+            logger.info(f"[DATA] Processing batch {i//batch_size + 1}/{(len(symbols_to_use)+batch_size-1)//batch_size}")
+            
+            # Create tasks for this batch
+            tasks = []
+            for symbol in batch_symbols:
+                for timeframe in timeframes:
+                    task = asyncio.create_task(
+                        self.data_fetcher._fetch_symbol_timeframe(symbol, timeframe, days, limit_50)
+                    )
+                    tasks.append(task)
+            
+            # Execute batch tasks concurrently
+            batch_results = await asyncio.gather(*tasks, return_exceptions=True)
+            
+            # Process results and update progress
+            for result in batch_results:
+                completed_tasks += 1
+                progress = (completed_tasks / total_tasks) * 100
+                logger.info(f"[PROGRESS] Historical data fetch: {progress:.1f}%")
+                
+                if result is True:
+                    logger.debug(f"[OK] Task completed successfully")
+                elif result is False:
+                    logger.error(f"[FAIL] Task failed")
+                elif isinstance(result, Exception):
+                    logger.error(f"[FAIL] Task exception: {result}")
+            
+            # Add delay between batches to avoid rate limiting
+            if i + batch_size < len(symbols_to_use):
+                logger.info(f"[WAIT] Delaying between batches to avoid rate limiting...")
+                await asyncio.sleep(1)  # 1 second delay between batches
+        
+        logger.info(f"[OK] Historical data fetching completed")
+        
+        # Show sample of fetched data
+        self._show_sample_data(symbols_to_use[:5], timeframes)  # Show first 5 symbols
         
         return True
+
 
     def _show_sample_data(self, symbols: List[str], timeframes: List[str]):
         """Show sample of fetched data"""
