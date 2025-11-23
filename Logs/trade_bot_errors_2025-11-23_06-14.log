@@ -1,0 +1,2 @@
+2025-11-23 06:14:58 - simple_strategy.strategies.Strategy_2_mean_reversion - WARNING - ⚠️ No symbols provided, using default: ['BTCUSDT']
+2025-11-23 06:14:58 - simple_strategy.strategies.Strategy_2_mean_reversion - WARNING - ⚠️ No timeframes provided, using default: ['1m']

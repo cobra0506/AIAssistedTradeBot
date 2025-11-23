@@ -117,6 +117,10 @@ class PaperTradingLauncher:
         timestamp = datetime.now().strftime("%H:%M:%S")
         self.log_text.insert("end", f"[{timestamp}] {message}\n")
         self.log_text.see("end")
+
+    def update_status(self, status):
+        """Update status display"""
+        self.status_var.set(status)
     
     def start_trading(self):
         """Start paper trading"""
@@ -135,19 +139,23 @@ class PaperTradingLauncher:
                     f"Yes = Use default parameters\n"
                     f"No = Cancel and optimize first"
                 )
-                
                 if not result:
                     self.log_message("Trading cancelled - no optimized parameters")
                     return
             
             # Import and create trading engine
             from simple_strategy.trading.paper_trading_engine import PaperTradingEngine
-            
             self.trading_engine = PaperTradingEngine(
-                self.api_account, 
-                self.strategy_name, 
-                self.simulated_balance
+                self.api_account,
+                self.strategy_name,
+                self.simulated_balance,
+                log_callback=self.log_message,
+                status_callback=self.update_status,
+                performance_callback=self.update_performance
             )
+            
+            # Initialize shared data access after engine creation
+            self.trading_engine.initialize_shared_data_access()
 
             # Start performance update timer
             self.update_performance_timer()

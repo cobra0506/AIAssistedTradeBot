@@ -1,0 +1,5 @@
+2025-11-23 06:38:08 - root - INFO - Logging system initialized
+2025-11-23 06:38:08 - root - INFO - Logging system initialized
+2025-11-23 06:38:08 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-11-23 06:38:08 - root - INFO - Logging system initialized
+2025-11-23 06:38:08 - simple_strategy.shared.data_feeder - INFO - DataFeeder initialized with data_dir=data, memory_limit=90%
