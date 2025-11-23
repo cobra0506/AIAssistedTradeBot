@@ -1,8 +1,8 @@
 {
     "demo_accounts": {
         "demo test": {
-            "api_key": "ysf51oPGcyNo98TevT",
-            "api_secret": "ojdqKewi6qw2jVW6JOMwXBAa7pu8BfgeG8gz",
+            "api_key": "X7uL1XexvKB3ivL13W",
+            "api_secret": "gqVLFDHy9yLRavKyxe16t6yZAAeo5VposuIE",
             "description": "demo test",
             "testnet": true
         }

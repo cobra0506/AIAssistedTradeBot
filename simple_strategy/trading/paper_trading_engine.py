@@ -7,12 +7,13 @@ import hashlib
 from urllib.parse import urlencode
 from datetime import datetime
 from simple_strategy.shared.data_feeder import DataFeeder
+# Removed unused imports to avoid circular dependencies
 import asyncio
-from shared_modules.data_collection.hybrid_system import HybridTradingSystem
-from shared_modules.data_collection.config import DataCollectionConfig
+#from shared_modules.data_collection.hybrid_system import HybridTradingSystem
+#from shared_modules.data_collection.config import DataCollectionConfig
 
 class PaperTradingEngine:
-    def __init__(self, api_account, strategy_name, simulated_balance=1000):
+    def __init__(self, api_account, strategy_name, simulated_balance=1000, log_callback=None, status_callback=None, performance_callback=None):
         self.api_account = api_account
         self.strategy_name = strategy_name
         self.simulated_balance = float(simulated_balance)
@@ -34,32 +35,58 @@ class PaperTradingEngine:
         
         # Data feeder for strategy integration (keep for compatibility)
         self.data_feeder = DataFeeder(data_dir='data')
-        # NEW: Data collection system integration
-        self.data_config = DataCollectionConfig()
-        # Use shared WebSocket manager
-        from shared_modules.data_collection.shared_websocket_manager import SharedWebSocketManager
-        self.shared_ws_manager = SharedWebSocketManager()
-        self.data_system = HybridTradingSystem(self.data_config)
-        self.data_system_initialized = False
-        # Use symbols from data collection config
-        self.symbols_to_collect = self.data_config.SYMBOLS if not self.data_config.FETCH_ALL_SYMBOLS else None
         
-        print(f"Paper Trading Engine initialized:")
-        print(f" Account: {api_account}")
-        print(f" Strategy: {strategy_name}")
-        print(f" Simulated Balance: ${simulated_balance}")
+        # GUI callback functions
+        self.log_callback = log_callback
+        self.status_callback = status_callback
+        self.performance_callback = performance_callback
+        
+        # NEW: Use shared data access instead of creating new data collection
+        # Initialize this later to avoid recursion issues
+        self.shared_data_access = None
+        
+        # Use symbols from data collection config
+        #from shared_modules.data_collection.config import DataCollectionConfig
+        #self.data_config = DataCollectionConfig()
+        #self.symbols_to_collect = self.data_config.SYMBOLS if not self.data_config.FETCH_ALL_SYMBOLS else None
+        
+        self.log_message(f"Paper Trading Engine initialized:")
+        self.log_message(f"  Account: {api_account}")
+        self.log_message(f"  Strategy: {strategy_name}")
+        self.log_message(f"  Simulated Balance: ${simulated_balance}")
         
         # Load credentials and test connection
         self.load_credentials()
         self.test_connection()
+        
         # Get real balance and calculate offset
         self.real_balance = self.get_real_balance()
         self.balance_offset = self.real_balance - self.simulated_balance
-        print(f" Real Balance: ${self.real_balance}")
-        print(f" Balance Offset: ${self.balance_offset}")
+        self.log_message(f"  Real Balance: ${self.real_balance}")
+        self.log_message(f"  Balance Offset: ${self.balance_offset}")
 
-        # Initialize data collection system
-        self.initialize_data_system()
+    def log_message(self, message):
+        """Log message to both console and GUI if available"""
+        self.log_message(message)  # Keep console logging for debugging
+        if self.log_callback:
+            self.log_callback(message)
+
+    def initialize_shared_data_access(self):
+        """Initialize shared data access safely"""
+        try:
+            from shared_modules.data_collection.shared_data_access import SharedDataAccess
+            self.shared_data_access = SharedDataAccess()
+            
+            # Check if data collection is running
+            if self.shared_data_access.is_data_collection_running():
+                self.log_message("✅ Using existing data collection process")
+            else:
+                self.log_message("⚠️ Data collection not running - will use existing CSV files")
+                
+            return True
+        except Exception as e:
+            self.log_message(f"❌ Error initializing shared data access: {e}")
+            return False
     
     def load_credentials(self):
         """Load API credentials from file"""
@@ -74,14 +101,14 @@ class PaperTradingEngine:
                     account_info = accounts[account_type][self.api_account]
                     self.api_key = account_info['api_key']
                     self.api_secret = account_info['api_secret']
-                    print(f"✅ API credentials loaded for {self.api_account}")
+                    self.log_message(f"✅ API credentials loaded for {self.api_account}")
                     return True
             
-            print(f"❌ Account '{self.api_account}' not found")
+            self.log_message(f"❌ Account '{self.api_account}' not found")
             return False
             
         except Exception as e:
-            print(f"❌ Error loading API credentials: {e}")
+            self.log_message(f"❌ Error loading API credentials: {e}")
             return False
     
     def generate_signature(self, timestamp, method, path, body='', params=None):
@@ -151,28 +178,37 @@ class PaperTradingEngine:
                 
         except Exception as e:
             return None, str(e)
+        
+    def get_market_data(self, symbol, timeframe, limit=100):
+        """Get market data from shared data access"""
+        if self.shared_data_access:
+            return self.shared_data_access.get_latest_data(symbol, timeframe, limit=limit)
+        else:
+            # Fallback to empty list if shared data access not available
+            self.log_message(f"⚠️ Shared data access not available for {symbol}_{timeframe}")
+            return []
     
     def test_connection(self):
         """Test the connection - EXACT working method"""
         try:
-            print("Testing connection...")
+            self.log_message("Testing connection...")
             result, error = self.make_request("GET", "/v5/account/wallet-balance", params={"accountType": "UNIFIED"})
             
             if error:
-                print(f"❌ Connection test failed: {error}")
+                self.log_message(f"❌ Connection test failed: {error}")
                 return False
             
             if result and 'list' in result and result['list']:
                 wallet_data = result['list'][0]
                 balance = float(wallet_data.get('totalAvailableBalance', '0'))
-                print(f"✅ Connection successful! Balance: ${balance}")
+                self.log_message(f"✅ Connection successful! Balance: ${balance}")
                 return True
             else:
-                print("❌ Connection test failed: Invalid response format")
+                self.log_message("❌ Connection test failed: Invalid response format")
                 return False
                 
         except Exception as e:
-            print(f"❌ Connection test error: {e}")
+            self.log_message(f"❌ Connection test error: {e}")
             return False
     
     def get_balance(self):
@@ -184,7 +220,7 @@ class PaperTradingEngine:
         try:
             result, error = self.make_request("GET", "/v5/account/wallet-balance", params={"accountType": "UNIFIED"})
             if error:
-                print(f"❌ Error getting real balance: {error}")
+                self.log_message(f"❌ Error getting real balance: {error}")
                 return 0
             if result and 'list' in result and result['list']:
                 wallet_data = result['list'][0]
@@ -193,7 +229,7 @@ class PaperTradingEngine:
             else:
                 return 0
         except Exception as e:
-            print(f"❌ Error getting real balance: {e}")
+            self.log_message(f"❌ Error getting real balance: {e}")
             return 0
 
     def get_display_balance(self):
@@ -206,7 +242,7 @@ class PaperTradingEngine:
             result, error = self.make_request("GET", "/v5/market/instruments-info", params={"category": "linear", "limit": 1000})
             
             if error:
-                print(f"❌ Error getting symbols: {error}")
+                self.log_message(f"❌ Error getting symbols: {error}")
                 return []
             
             symbols = []
@@ -221,11 +257,11 @@ class PaperTradingEngine:
                     instrument.get('status') == 'Trading'):
                     symbols.append(symbol)
             
-            print(f"✅ Found {len(symbols)} perpetual symbols")
+            self.log_message(f"✅ Found {len(symbols)} perpetual symbols")
             return sorted(symbols)
                 
         except Exception as e:
-            print(f"❌ Error getting symbols: {e}")
+            self.log_message(f"❌ Error getting symbols: {e}")
             return []
     
     def execute_buy(self, symbol, quantity=None):
@@ -243,11 +279,11 @@ class PaperTradingEngine:
                 "timeInForce": "GTC"
             }
             
-            print(f"📈 Placing BUY order for {quantity} {symbol}...")
+            self.log_message(f"📈 Placing BUY order for {quantity} {symbol}...")
             result, error = self.make_request("POST", "/v5/order/create", data=order_data)
             
             if error:
-                print(f"❌ Buy order failed: {error}")
+                self.log_message(f"❌ Buy order failed: {error}")
                 return None
             
             # Record the trade
@@ -270,20 +306,20 @@ class PaperTradingEngine:
                 'entry_time': datetime.now().isoformat()
             }
             
-            print(f"✅ Buy order successful! Order ID: {result.get('orderId')}")
+            self.log_message(f"✅ Buy order successful! Order ID: {result.get('orderId')}")
             # Update balance (simple simulation - deduct estimated cost)
             estimated_cost = quantity * 50000  # Simple estimate for testing
             self.update_balance_after_trade(-estimated_cost)
             return trade
             
         except Exception as e:
-            print(f"❌ Error executing buy order: {e}")
+            self.log_message(f"❌ Error executing buy order: {e}")
             return None
     
     def execute_sell(self, symbol, quantity=None):
         """Execute a sell order"""
         if symbol not in self.current_positions:
-            print(f"❌ No position found for {symbol}")
+            self.log_message(f"❌ No position found for {symbol}")
             return None
         
         if quantity is None:
@@ -299,11 +335,11 @@ class PaperTradingEngine:
                 "timeInForce": "GTC"
             }
             
-            print(f"📉 Placing SELL order for {quantity} {symbol}...")
+            self.log_message(f"📉 Placing SELL order for {quantity} {symbol}...")
             result, error = self.make_request("POST", "/v5/order/create", data=order_data)
             
             if error:
-                print(f"❌ Sell order failed: {error}")
+                self.log_message(f"❌ Sell order failed: {error}")
                 return None
             
             # Record the trade
@@ -322,15 +358,55 @@ class PaperTradingEngine:
             self.trades.append(trade)
             del self.current_positions[symbol]
             
-            print(f"✅ Sell order successful! Order ID: {result.get('orderId')}")
+            self.log_message(f"✅ Sell order successful! Order ID: {result.get('orderId')}")
             # Update balance (simple simulation - add estimated revenue)
             estimated_revenue = quantity * 55000  # Simple estimate for testing
             self.update_balance_after_trade(estimated_revenue)
             return trade
             
         except Exception as e:
-            print(f"❌ Error executing sell order: {e}")
+            self.log_message(f"❌ Error executing sell order: {e}")
             return None
+        
+    def get_performance_summary(self):
+        """Get a summary of trading performance"""
+        try:
+            # Calculate win rate
+            winning_trades = 0
+            for trade in self.trades:
+                # Simple check: if it's a sell trade and balance increased, count as win
+                if trade['type'] == 'SELL' and trade.get('balance_after') and trade.get('balance_before'):
+                    if trade['balance_after'] > trade['balance_before']:
+                        winning_trades += 1
+            
+            total_sell_trades = sum(1 for trade in self.trades if trade['type'] == 'SELL')
+            win_rate = (winning_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
+            
+            summary = {
+                'initial_balance': self.initial_balance,
+                'current_balance': self.simulated_balance,
+                'total_pnl': self.simulated_balance - self.initial_balance,
+                'trades': self.trades,
+                'total_trades': len(self.trades),
+                'win_rate': win_rate,
+                'open_positions': len(self.current_positions),
+                'status': 'Running' if self.is_running else 'Stopped'
+            }
+            
+            return summary
+        except Exception as e:
+            self.log_message(f"Error generating performance summary: {e}")
+            return {
+                'error': str(e),
+                'status': 'Error',
+                'initial_balance': self.initial_balance,
+                'current_balance': self.simulated_balance,
+                'total_pnl': 0,
+                'trades': [],
+                'total_trades': 0,
+                'win_rate': 0,
+                'open_positions': 0
+            }
     
     def calculate_position_size(self, symbol):
         """Calculate position size based on available simulated balance"""
@@ -355,20 +431,20 @@ class PaperTradingEngine:
                 if optimized_params:
                     # Use optimized parameters
                     self.strategy = strategy_module.create_strategy(**optimized_params)
-                    print(f"Strategy '{self.strategy_name}' loaded with optimized parameters")
-                    print(f"Last optimized: {optimized_params.get('last_optimized', 'Unknown')}")
+                    self.log_message(f"Strategy '{self.strategy_name}' loaded with optimized parameters")
+                    self.log_message(f"Last optimized: {optimized_params.get('last_optimized', 'Unknown')}")
                 else:
                     # Use default parameters
                     self.strategy = strategy_module.create_strategy()
-                    print(f"Strategy '{self.strategy_name}' loaded with default parameters")
-                    print("⚠️ Warning: No optimized parameters found")
+                    self.log_message(f"Strategy '{self.strategy_name}' loaded with default parameters")
+                    self.log_message("⚠️ Warning: No optimized parameters found")
                 return True
             else:
-                print(f"Error: Strategy '{self.strategy_name}' missing create_strategy function")
+                self.log_message(f"Error: Strategy '{self.strategy_name}' missing create_strategy function")
                 return False
                 
         except Exception as e:
-            print(f"Error loading strategy: {e}")
+            self.log_message(f"Error loading strategy: {e}")
             return False
     
     def generate_trading_signal(self, symbol, current_price=None):
@@ -376,7 +452,7 @@ class PaperTradingEngine:
         # Get current price from data system if not provided
         if current_price is None:
             current_price = self.get_current_price_from_data_system(symbol)
-            print(f"💰 Current price for {symbol}: ${current_price}")
+            self.log_message(f"💰 Current price for {symbol}: ${current_price}")
         """Generate trading signal - simple test strategy"""
         try:
             # Simple test strategy: 
@@ -407,13 +483,13 @@ class PaperTradingEngine:
             return 'HOLD'  # Hold current position
             
         except Exception as e:
-            print(f"Error generating signal for {symbol}: {e}")
+            self.log_message(f"Error generating signal for {symbol}: {e}")
             return None
         
     def update_balance_after_trade(self, pnl_amount):
         """Update simulated balance after trade"""
         self.simulated_balance += pnl_amount
-        print(f"💰 Balance updated: ${self.simulated_balance:.2f} (P&L: ${pnl_amount:.2f})")
+        self.log_message(f"💰 Balance updated: ${self.simulated_balance:.2f} (P&L: ${pnl_amount:.2f})")
 
     def get_balance_info(self):
         """Get complete balance information"""
@@ -431,25 +507,25 @@ class PaperTradingEngine:
             return False
         
         if not self.api_key or not self.api_secret:
-            print("Error: API credentials not loaded")
+            self.log_message("Error: API credentials not loaded")
             return False
         
         self.is_running = True
-        print(f"Paper trading started for {self.strategy_name}")
+        self.log_message(f"Paper trading started for {self.strategy_name}")
         
         # Get all perpetual symbols
         symbols = self.get_all_perpetual_symbols()
-        print(f"Monitoring {len(symbols)} symbols")
+        self.log_message(f"Monitoring {len(symbols)} symbols")
         
         # For testing, start with a smaller subset
         test_symbols = symbols[:10]  # Start with 10 symbols for testing
-        print(f"Testing with first {len(test_symbols)} symbols: {test_symbols}")
+        self.log_message(f"Testing with first {len(test_symbols)} symbols: {test_symbols}")
         
         # Main trading loop
         loop_count = 0
         while self.is_running:
             loop_count += 1
-            print(f"\n=== Trading Loop #{loop_count} ===")
+            self.log_message(f"\n=== Trading Loop #{loop_count} ===")
             
             try:
                 # Get real-time data for all test symbols
@@ -459,7 +535,7 @@ class PaperTradingEngine:
                         result, error = self.make_request("GET", "/v5/market/tickers", params={"category": "linear", "symbol": symbol})
                         
                         if error:
-                            print(f"Error fetching ticker for {symbol}: {error}")
+                            self.log_message(f"Error fetching ticker for {symbol}: {error}")
                             continue
                         
                         # Extract current price from result
@@ -471,51 +547,51 @@ class PaperTradingEngine:
                         if current_price == 0:
                             continue
                         
-                        print(f"{symbol}: ${current_price}")
+                        self.log_message(f"{symbol}: ${current_price}")
                         
                         # Generate trading signal (let data system get the price)
                         signal = self.generate_trading_signal(symbol)  # Don't pass current_price
                         
                         # Execute trade if signal is strong enough
                         if signal == 'BUY' and symbol not in self.current_positions:
-                            print(f"📈 BUY signal for {symbol} at ${current_price}")
+                            self.log_message(f"📈 BUY signal for {symbol} at ${current_price}")
                             self.execute_buy(symbol)
                         elif signal == 'SELL' and symbol in self.current_positions:
-                            print(f"📉 SELL signal for {symbol} at ${current_price}")
+                            self.log_message(f"📉 SELL signal for {symbol} at ${current_price}")
                             self.execute_sell(symbol)
                         elif signal:
-                            print(f"📊 Signal for {symbol}: {signal}")
+                            self.log_message(f"📊 Signal for {symbol}: {signal}")
                         
                     except Exception as e:
-                        print(f"Error processing {symbol}: {e}")
+                        self.log_message(f"Error processing {symbol}: {e}")
                         continue
                 
                 # Update balance and performance
                 self.update_performance()
                 
-                # Print current status
-                print(f"Open positions: {len(self.current_positions)}")
-                print(f"Total trades: {len(self.trades)}")
+                # self.log_message current status
+                self.log_message(f"Open positions: {len(self.current_positions)}")
+                self.log_message(f"Total trades: {len(self.trades)}")
                 
                 # Check if we should stop (for testing)
                 if loop_count >= 3:  # Stop after 3 loops for testing
-                    print("🛑 Stopping after 3 test loops")
+                    self.log_message("🛑 Stopping after 3 test loops")
                     self.is_running = False
                     break
                 
                 # Sleep to avoid rate limits
-                print("⏳ Waiting 30 seconds before next loop...")
+                self.log_message("⏳ Waiting 30 seconds before next loop...")
                 time.sleep(30)
                 
             except Exception as e:
-                print(f"Error in trading loop: {e}")
+                self.log_message(f"Error in trading loop: {e}")
                 time.sleep(5)
         
-        print("Paper trading stopped")
-        print(f"Final stats:")
-        print(f"  Total loops: {loop_count}")
-        print(f"  Total trades: {len(self.trades)}")
-        print(f"  Open positions: {len(self.current_positions)}")
+        self.log_message("Paper trading stopped")
+        self.log_message(f"Final stats:")
+        self.log_message(f"  Total loops: {loop_count}")
+        self.log_message(f"  Total trades: {len(self.trades)}")
+        self.log_message(f"  Open positions: {len(self.current_positions)}")
     
     def update_performance(self):
         """Update performance metrics with real data from Bybit"""
@@ -534,17 +610,17 @@ class PaperTradingEngine:
                 'open_positions': len(self.current_positions)
             }
             
-            print(f"Performance: Balance=${real_balance:.2f}, PNL=${total_pnl:.2f}")
+            self.log_message(f"Performance: Balance=${real_balance:.2f}, PNL=${total_pnl:.2f}")
             return performance
             
         except Exception as e:
-            print(f"Error updating performance: {e}")
+            self.log_message(f"Error updating performance: {e}")
             return None
         
     def initialize_data_system(self):
         """Initialize the data collection system"""
         try:
-            print("📊 Initializing data collection system...")
+            self.log_message("📊 Initializing data collection system...")
             # Create a simple event loop for initialization
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
@@ -561,9 +637,9 @@ class PaperTradingEngine:
             
             # Start data collection - get BOTH historical and real-time
             if self.data_config.FETCH_ALL_SYMBOLS:
-                print(f"📊 Collecting data for ALL available symbols...")
+                self.log_message(f"📊 Collecting data for ALL available symbols...")
             else:
-                print(f"📊 Collecting data for {len(self.symbols_to_collect)} symbols...")
+                self.log_message(f"📊 Collecting data for {len(self.symbols_to_collect)} symbols...")
                 
             loop.run_until_complete(self.data_system.fetch_data_hybrid(
                 symbols=self.symbols_to_collect,  # None if FETCH_ALL_SYMBOLS is True
@@ -571,17 +647,17 @@ class PaperTradingEngine:
             ))
             
             self.data_system_initialized = True
-            print("✅ Data collection system initialized with shared WebSocket!")
+            self.log_message("✅ Data collection system initialized with shared WebSocket!")
             loop.close()
             
         except Exception as e:
-            print(f"❌ Error initializing data system: {e}")
-            self.data_system_initialized = False
+            self.log_message(f"❌ Error initializing data system: {e}")
+            #self.data_system_initialized = False
 
     def get_current_price_from_data_system(self, symbol):
         """Get current price from data collection system"""
         if not self.data_system_initialized:
-            print("⚠️ Data system not initialized, using API fallback")
+            self.log_message("⚠️ Data system not initialized, using API fallback")
             return self.get_current_price_from_api(symbol)
         
         try:
@@ -599,11 +675,11 @@ class PaperTradingEngine:
                     latest_candle = data[-1]
                     return float(latest_candle['close'])
                 else:
-                    print(f"⚠️ No data found for {symbol}, using API fallback")
+                    self.log_message(f"⚠️ No data found for {symbol}, using API fallback")
                     return self.get_current_price_from_api(symbol)
                     
         except Exception as e:
-            print(f"❌ Error getting price from data system: {e}")
+            self.log_message(f"❌ Error getting price from data system: {e}")
             return self.get_current_price_from_api(symbol)
 
     def get_current_price_from_api(self, symbol):
@@ -615,5 +691,39 @@ class PaperTradingEngine:
                 return float(result['list'][0].get('lastPrice', 0))
             return 0
         except Exception as e:
-            print(f"❌ Error getting price from API: {e}")
+            self.log_message(f"❌ Error getting price from API: {e}")
             return 0
+        
+    def get_performance_summary(self):
+        """Get a summary of trading performance"""
+        try:
+            balance_info = self.get_balance_info()
+            
+            # Calculate win rate
+            winning_trades = 0
+            for trade in self.trades:
+                # Simple check: if it's a sell trade and balance increased, count as win
+                if trade['type'] == 'SELL' and trade.get('balance_after') and trade.get('balance_before'):
+                    if trade['balance_after'] > trade['balance_before']:
+                        winning_trades += 1
+            
+            total_sell_trades = sum(1 for trade in self.trades if trade['type'] == 'SELL')
+            win_rate = (winning_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
+            
+            summary = {
+                'initial_balance': balance_info['initial_balance'],
+                'current_balance': balance_info['simulated_balance'],
+                'total_pnl': balance_info['total_pnl'],
+                'total_trades': len(self.trades),
+                'win_rate': win_rate,
+                'open_positions': len(self.current_positions),
+                'status': 'Running' if self.is_running else 'Stopped'
+            }
+            
+            return summary
+        except Exception as e:
+            self.log_message(f"Error generating performance summary: {e}")
+            return {
+                'error': str(e),
+                'status': 'Error'
+            }

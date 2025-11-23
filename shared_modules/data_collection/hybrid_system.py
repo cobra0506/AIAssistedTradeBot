@@ -1,5 +1,6 @@
 # hybrid_system.py - Updated with fixed WebSocket handling
 import asyncio
+import json
 import os
 import logging
 from typing import Dict, List, Any
@@ -43,6 +44,10 @@ class HybridTradingSystem:
             "recent" = only 50 most recent entries  
             "live" = only real-time data
         """
+
+        # Update status to show data collection is running
+        self.update_collection_status(running=True)
+
         # Use config values if not provided
         if symbols is None:
             symbols = self.config.SYMBOLS
@@ -150,6 +155,10 @@ class HybridTradingSystem:
                         logger.info(f" {symbol}_{timeframe} - File not found")
         
         logger.info(f"[COMPLETE] Hybrid data fetch completed")
+        
+        # Update status to show data collection is stopping
+        self.update_collection_status(running=False)
+
         return True
 
     def _show_sample_data(self, symbols: List[str], timeframes: List[str]):
@@ -292,4 +301,21 @@ class HybridTradingSystem:
         
         logger.info("[TEST] WebSocket setup completed normally")
         return False
+    
+    def update_collection_status(self, running=True):
+        """Update the data collection status file"""
+        # Create data directory if it doesn't exist
+        if not os.path.exists(self.config.DATA_DIR):
+            os.makedirs(self.config.DATA_DIR)
+        
+        status_file = os.path.join(self.config.DATA_DIR, "collection_status.json")
+        
+        status = {
+            'running': running,
+            'last_updated': datetime.now().isoformat(),
+            'pid': os.getpid()
+        }
+        
+        with open(status_file, 'w') as f:
+            json.dump(status, f)
 
