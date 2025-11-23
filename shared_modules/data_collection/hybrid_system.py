@@ -4,6 +4,7 @@ import os
 import logging
 from typing import Dict, List, Any
 from datetime import datetime
+import time
 from .config import DataCollectionConfig  # Relative import
 from .optimized_data_fetcher import OptimizedDataFetcher
 from .websocket_handler import WebSocketHandler
@@ -37,9 +38,10 @@ class HybridTradingSystem:
     async def fetch_data_hybrid(self, symbols: List[str] = None, timeframes: List[str] = None,
                            days: int = None, mode: str = "full"):
         """
+        Fetch data in hybrid mode - WebSocket + Historical
         mode: "full" = all historical data
-        "recent" = only 50 most recent entries
-        "live" = only real-time data
+            "recent" = only 50 most recent entries  
+            "live" = only real-time data
         """
         # Use config values if not provided
         if symbols is None:
@@ -48,92 +50,107 @@ class HybridTradingSystem:
             timeframes = self.config.TIMEFRAMES
         if days is None:
             days = self.config.DAYS_TO_FETCH
-            
+        
         logger.info(f"[DEBUG] Starting data fetch in mode: {mode}")
         
         # Get symbols to use
         if self.config.FETCH_ALL_SYMBOLS:
-            # Fetch all symbols from Bybit
             logger.info("[DATA] Fetching all symbols from Bybit...")
             all_symbols = await self.data_fetcher._get_all_symbols()
             symbols_to_use = all_symbols
         else:
-            # Use only symbols from config
             symbols_to_use = symbols
-        logger.info(f"[DATA] Using {len(symbols_to_use)} symbols from configuration")
+            logger.info(f"[DATA] Using {len(symbols_to_use)} symbols from configuration")
         
-        # Use shared WebSocket connection if available
+        # Setup WebSocket if enabled (NON-BLOCKING NOW)
         if self.config.ENABLE_WEBSOCKET and self.websocket_handler:
-            logger.info(f"[WS] Using shared WebSocket for real-time updates...")
+            logger.info(f"[WS] Setting up WebSocket for real-time updates...")
+            
             # Update symbols in the WebSocket handler
             self.websocket_handler.symbols = symbols_to_use
             self.websocket_handler.config.TIMEFRAMES = timeframes
             
-            # Check if WebSocket is already running
+            # Start WebSocket connection (this will now return immediately)
+            await self.websocket_handler.connect()
+            
+            # Give WebSocket a moment to establish connection
+            await asyncio.sleep(1)
+            
             if self.websocket_handler.running:
-                logger.info(f"[OK] Using existing shared WebSocket connection")
+                logger.info(f"[OK] WebSocket connection established and running")
                 logger.info(f"[OK] Monitoring {len(symbols_to_use)} symbols and {len(timeframes)} timeframes")
             else:
-                logger.error(f"[FAIL] Shared WebSocket connection not available")
+                logger.error(f"[FAIL] WebSocket connection failed")
         else:
             logger.info(f"[WS] WebSocket disabled (ENABLE_WEBSOCKET=False) or not available")
         
-        # CRITICAL FIX: Always fetch historical data based on LIMIT_TO_50_ENTRIES setting
-        # NOT based on WebSocket setting
-        if self.config.LIMIT_TO_50_ENTRIES:
-            logger.info("[DATA] Fetching recent historical data (50 entries)...")
-            limit_50 = True
-        else:
-            logger.info(f"[DATA] Fetching full historical data ({days} days)...")
-            limit_50 = False
-        
-        # Add progress tracking
-        total_tasks = len(symbols_to_use) * len(timeframes)
-        completed_tasks = 0
-        
-        # Process in smaller batches to avoid overwhelming the API
-        batch_size = 5  # Process 5 symbols at a time
-        for i in range(0, len(symbols_to_use), batch_size):
-            batch_symbols = symbols_to_use[i:i+batch_size]
-            logger.info(f"[DATA] Processing batch {i//batch_size + 1}/{(len(symbols_to_use)+batch_size-1)//batch_size}")
+        # CRITICAL: This will now execute because WebSocket setup is non-blocking
+        if mode in ["full", "recent"]:
+            logger.info(f"[DATA] Fetching historical data...")
+            limit_50 = (mode == "recent")
             
-            # Create tasks for this batch
-            tasks = []
-            for symbol in batch_symbols:
-                for timeframe in timeframes:
-                    task = asyncio.create_task(
-                        self.data_fetcher._fetch_symbol_timeframe(symbol, timeframe, days, limit_50)
-                    )
-                    tasks.append(task)
+            # Add progress tracking
+            total_tasks = len(symbols_to_use) * len(timeframes)
+            completed_tasks = 0
             
-            # Execute batch tasks concurrently
-            batch_results = await asyncio.gather(*tasks, return_exceptions=True)
-            
-            # Process results and update progress
-            for result in batch_results:
-                completed_tasks += 1
-                progress = (completed_tasks / total_tasks) * 100
-                logger.info(f"[PROGRESS] Historical data fetch: {progress:.1f}%")
+            # Process in smaller batches to avoid overwhelming the API
+            batch_size = 5  # Process 5 symbols at a time
+            for i in range(0, len(symbols_to_use), batch_size):
+                batch_symbols = symbols_to_use[i:i+batch_size]
+                logger.info(f"[DATA] Processing batch {i//batch_size+1}/{(len(symbols_to_use)+batch_size-1)//batch_size}")
                 
-                if result is True:
-                    logger.debug(f"[OK] Task completed successfully")
-                elif result is False:
-                    logger.error(f"[FAIL] Task failed")
-                elif isinstance(result, Exception):
-                    logger.error(f"[FAIL] Task exception: {result}")
+                # Create tasks for this batch
+                tasks = []
+                for symbol in batch_symbols:
+                    for timeframe in timeframes:
+                        task = asyncio.create_task(
+                            self.data_fetcher._fetch_symbol_timeframe(symbol, timeframe, days, limit_50)
+                        )
+                        tasks.append(task)
+                
+                # Execute batch tasks concurrently
+                batch_results = await asyncio.gather(*tasks, return_exceptions=True)
+                
+                # Process results and update progress
+                for result in batch_results:
+                    completed_tasks += 1
+                    progress = (completed_tasks / total_tasks) * 100
+                    logger.info(f"[PROGRESS] Historical data fetch: {progress:.1f}%")
+                    
+                    if result is True:
+                        logger.debug(f"[OK] Task completed successfully")
+                    elif result is False:
+                        logger.error(f"[FAIL] Task failed")
+                    elif isinstance(result, Exception):
+                        logger.error(f"[FAIL] Task exception: {result}")
+                
+                # Add delay between batches to avoid rate limiting
+                if i + batch_size < len(symbols_to_use):
+                    logger.info(f"[DATA] Pausing between batches to avoid rate limiting...")
+                    await asyncio.sleep(2)
             
-            # Add delay between batches to avoid rate limiting
-            if i + batch_size < len(symbols_to_use):
-                logger.info(f"[WAIT] Delaying between batches to avoid rate limiting...")
-                await asyncio.sleep(1)  # 1 second delay between batches
+            logger.info(f"[COMPLETE] Historical data fetching completed")
+            
+            # Display sample data for verification
+            logger.info(f"[SAMPLE] Displaying sample data for verification:")
+            for symbol in symbols_to_use[:2]:  # Show first 2 symbols
+                for timeframe in timeframes[:1]:  # Show first timeframe
+                    filename = f"{self.config.DATA_DIR}/{symbol}_{timeframe}.csv"
+                    if os.path.exists(filename):
+                        data = self.csv_manager.load_csv(filename)
+                        if len(data) > 0:
+                            latest = data[-1]
+                            # Convert timestamp to datetime
+                            dt = datetime.fromtimestamp(latest['timestamp'] / 1000)
+                            datetime_str = dt.strftime('%Y-%m-%d %H:%M:%S')
+                            logger.info(f" {symbol}_{timeframe} - Latest: {datetime_str} - O:{latest['open']} H:{latest['high']} L:{latest['low']} C:{latest['close']}")
+                        else:
+                            logger.info(f" {symbol}_{timeframe} - No data found")
+                    else:
+                        logger.info(f" {symbol}_{timeframe} - File not found")
         
-        logger.info(f"[OK] Historical data fetching completed")
-        
-        # Show sample of fetched data
-        self._show_sample_data(symbols_to_use[:5], timeframes)  # Show first 5 symbols
-        
+        logger.info(f"[COMPLETE] Hybrid data fetch completed")
         return True
-
 
     def _show_sample_data(self, symbols: List[str], timeframes: List[str]):
         """Show sample of fetched data"""
@@ -253,4 +270,26 @@ class HybridTradingSystem:
     async def close(self):
         """Clean up resources"""
         await self.data_fetcher.close()
+
+    # Add this test method to your hybrid_system.py
+    async def test_websocket_blocking(self):
+        """Test to confirm WebSocket is blocking historical data fetch"""
+        logger.info("[TEST] Starting WebSocket blocking test...")
+        
+        # Test 1: Check if WebSocket setup returns
+        logger.info("[TEST] Testing WebSocket setup...")
+        start_time = time.time()
+        
+        if self.config.ENABLE_WEBSOCKET and self.websocket_handler:
+            logger.info("[TEST] WebSocket enabled, testing connection...")
+            # This should hang if our diagnosis is correct
+            try:
+                await asyncio.wait_for(self.websocket_handler.connect(), timeout=5.0)
+                logger.info("[TEST] WebSocket setup completed (unexpected)")
+            except asyncio.TimeoutError:
+                logger.info("[TEST] CONFIRMED: WebSocket setup is blocking (timeout after 5 seconds)")
+                return True
+        
+        logger.info("[TEST] WebSocket setup completed normally")
+        return False
 
