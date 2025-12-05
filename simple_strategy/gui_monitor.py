@@ -43,10 +43,7 @@ class SimpleStrategyGUI:
         # Get optimized parameters
         optimized_params = self.param_manager.get_parameters(strategy_name)
         
-        # Remove the 'last_optimized' field as it's not a strategy parameter
-        if 'last_optimized' in optimized_params:
-            del optimized_params['last_optimized']
-        
+        # Return the parameters as-is (including last_optimized)
         return optimized_params if optimized_params else None
     
     def create_widgets(self):
@@ -103,13 +100,17 @@ class SimpleStrategyGUI:
         # Configure canvas scrollregion when inner frame changes
         self.param_inner_frame.bind("<Configure>", self._on_param_frame_configure)
         
-        # ADD THIS: Create a container frame OUTSIDE the canvas for the button and info text
+        # Create a container frame OUTSIDE the canvas for the button and info text
         self.bottom_container = ttk.Frame(strategy_frame)
         self.bottom_container.pack(fill="x", padx=10, pady=5)
         
         # Create Strategy Button - now outside the canvas
         self.create_btn = ttk.Button(self.bottom_container, text="🔧 Create Strategy", command=self.create_strategy)
         self.create_btn.pack(pady=5)
+
+        # Add optimization button that calls the same function as backtest tab
+        self.optimize_strategy_btn = ttk.Button(self.bottom_container, text="🚀 Run Optimization", command=self.optimize_from_backtest_tab)
+        self.optimize_strategy_btn.pack(pady=5)
         
         # Strategy Info - now outside the canvas
         self.strategy_info_text = tk.Text(self.bottom_container, height=5, width=70)
@@ -121,274 +122,88 @@ class SimpleStrategyGUI:
         # Initialize with first strategy
         if strategy_names:
             self.on_strategy_selected()
-
-    '''def create_strategy(self):
-        """Create and configure the selected strategy with current parameters"""
-        try:
-            strategy_name = self.strategy_var.get()
-            if not strategy_name:
-                # Update status in the GUI instead of popup
-                self.strategy_info_text.delete(1.0, tk.END)
-                self.strategy_info_text.insert(1.0, "⚠️ Please select a strategy first!")
-                self.status_var.set("⚠️ Please select a strategy first")
-                return
-            
-            # Get current parameter values from the GUI
-            current_params = {}
-            for param_name, widget in self.param_widgets.items():
-                if isinstance(widget, ttk.Entry):
-                    value = widget.get()
-                    # Try to convert to appropriate type
-                    try:
-                        if '.' in value:
-                            current_params[param_name] = float(value)
-                        else:
-                            current_params[param_name] = int(value)
-                    except ValueError:
-                        current_params[param_name] = value
-                elif isinstance(widget, ttk.Combobox):
-                    current_params[param_name] = widget.get()
-                elif isinstance(widget, ttk.Checkbutton):
-                    current_params[param_name] = widget.var.get()
-            
-            # Create a simple strategy object that works with the backtest engine
-            class SimpleStrategy:
-                def __init__(self, name, parameters):
-                    self.name = name
-                    self.parameters = parameters
-                    self.symbols = []
-                    self.timeframes = []
-                
-                def generate_signals(self, data):
-                    """Generate trading signals based on strategy type"""
-                    signals = {}
-                    
-                    # Simple strategy implementation based on strategy name
-                    if "mean_reversion" in self.name.lower() or "rsi" in self.name.lower():
-                        # RSI Mean Reversion Strategy
-                        rsi_period = self.parameters.get('rsi_period', 14)
-                        rsi_overbought = self.parameters.get('rsi_overbought', 70)
-                        rsi_oversold = self.parameters.get('rsi_oversold', 30)
-                        
-                        for symbol in data:
-                            for timeframe in data[symbol]:
-                                df = data[symbol][timeframe].copy()
-                                if len(df) > rsi_period:
-                                    # Calculate RSI
-                                    delta = df['close'].diff()
-                                    gain = (delta.where(delta > 0, 0)).rolling(window=rsi_period).mean()
-                                    loss = (-delta.where(delta < 0, 0)).rolling(window=rsi_period).mean()
-                                    rs = gain / loss
-                                    rsi = 100 - (100 / (1 + rs))
-                                    
-                                    # Generate signals
-                                    df['signal'] = 0
-                                    df.loc[rsi < rsi_oversold, 'signal'] = 1  # Buy signal
-                                    df.loc[rsi > rsi_overbought, 'signal'] = -1  # Sell signal
-                                    
-                                    signals[symbol] = {timeframe: df[['signal']].copy()}
-                    
-                    elif "ma_crossover" in self.name.lower() or "ema" in self.name.lower():
-                        # Moving Average Crossover Strategy
-                        fast_period = self.parameters.get('fast_ma_period', self.parameters.get('fast_ema_period', 5))
-                        slow_period = self.parameters.get('slow_ma_period', self.parameters.get('slow_ema_period', 15))
-                        
-                        for symbol in data:
-                            for timeframe in data[symbol]:
-                                df = data[symbol][timeframe].copy()
-                                if len(df) > slow_period:
-                                    # Calculate moving averages
-                                    df['fast_ma'] = df['close'].rolling(window=fast_period).mean()
-                                    df['slow_ma'] = df['close'].rolling(window=slow_period).mean()
-                                    
-                                    # Generate signals
-                                    df['signal'] = 0
-                                    df.loc[df['fast_ma'] > df['slow_ma'], 'signal'] = 1  # Buy signal
-                                    df.loc[df['fast_ma'] < df['slow_ma'], 'signal'] = -1  # Sell signal
-                                    
-                                    signals[symbol] = {timeframe: df[['signal']].copy()}
-                    
-                    else:
-                        # Default simple strategy
-                        for symbol in data:
-                            for timeframe in data[symbol]:
-                                df = data[symbol][timeframe].copy()
-                                if len(df) > 20:
-                                    # Simple mean reversion: buy when price is below 20-period SMA, sell when above
-                                    df['sma20'] = df['close'].rolling(window=20).mean()
-                                    df['signal'] = 0
-                                    df.loc[df['close'] < df['sma20'], 'signal'] = 1  # Buy signal
-                                    df.loc[df['close'] > df['sma20'], 'signal'] = -1  # Sell signal
-                                    
-                                    signals[symbol] = {timeframe: df[['signal']].copy()}
-                    
-                    return signals
-            
-            # Create the strategy instance
-            self.current_strategy = SimpleStrategy(strategy_name, current_params)
-            
-            # Debug info
-            print(f"Created strategy instance: {type(self.current_strategy).__name__}")
-            print(f"Strategy name: {self.current_strategy.name}")
-            print(f"Strategy parameters: {current_params}")
-            print(f"Strategy has generate_signals: {hasattr(self.current_strategy, 'generate_signals')}")
-            
-            # Update strategy info text instead of showing popup
-            self.strategy_info_text.delete(1.0, tk.END)
-            info_text = f"✅ Strategy '{strategy_name}' created successfully!\n\n"
-            info_text += f"📊 Parameters:\n"
-            for param, value in current_params.items():
-                info_text += f"  • {param}: {value}\n"
-            info_text += f"\n💡 Switch to the 'Backtest' tab to run the backtest."
-            self.strategy_info_text.insert(1.0, info_text)
-            
-            # Switch to backtest tab
-            self.notebook.select(1)  # Index 1 is the backtest tab
-            
-            # Update status bar
-            self.status_var.set(f"✅ Strategy '{strategy_name}' created and configured")
-            
-        except Exception as e:
-            # Show error in the GUI instead of popup
-            self.strategy_info_text.delete(1.0, tk.END)
-            self.strategy_info_text.insert(1.0, f"❌ Error creating strategy: {str(e)}")
-            self.status_var.set(f"❌ Error: {str(e)}")
-            import traceback
-            print(f"Error in create_strategy: {traceback.format_exc()}")'''
-    
-    def create_strategy(self):
-        """Create and configure the selected strategy with current parameters"""
-        try:
-            strategy_name = self.strategy_var.get()
-            if not strategy_name:
-                # Update status in the GUI instead of popup
-                self.strategy_info_text.delete(1.0, tk.END)
-                self.strategy_info_text.insert(1.0, "⚠️ Please select a strategy first")
-                return
-            
-            # Get current parameters from GUI
-            current_params = {}
-            for param_name, widget in self.param_widgets.items():
-                if isinstance(widget, ttk.Entry):
-                    current_params[param_name] = widget.get()
-                elif isinstance(widget, ttk.Combobox):
-                    current_params[param_name] = widget.get()
-            
-            # Add default symbols and timeframes if not provided by strategy
-            current_params['symbols'] = ['BTCUSDT']  # Default symbol
-            current_params['timeframes'] = ['1m']  # Default timeframe
-            
-            self.strategy_info_text.delete(1.0, tk.END)
-            self.strategy_info_text.insert(1.0, f"🔧 Creating strategy: {strategy_name}...\n")
-            self.strategy_info_text.insert(tk.END, f"📋 Parameters: {current_params}\n")
-            
-            # FIXED: Use the correct method from StrategyRegistry
-            if hasattr(self.strategy_registry, 'create_strategy_instance'):
-                # Use the existing method that actually exists
-                strategy = self.strategy_registry.create_strategy_instance(strategy_name, **current_params)
-            else:
-                # Fallback: get the strategy info and call create_strategy directly
-                strategy_info = self.strategy_registry.get_strategy(strategy_name)
-                if strategy_info and 'create_func' in strategy_info:
-                    strategy = strategy_info['create_func'](**current_params)
-                else:
-                    raise Exception(f"Strategy {strategy_name} not found or missing create_function")
-            
-            if strategy:
-                self.current_strategy = strategy
-                self.strategy_info_text.insert(tk.END, f"✅ Strategy created successfully!\n")
-                self.strategy_info_text.insert(tk.END, f"📊 Strategy Name: {strategy.name}\n")
-                self.strategy_info_text.insert(tk.END, f"💱 Symbols: {strategy.symbols}\n")
-                self.strategy_info_text.insert(tk.END, f"⏱️ Timeframes: {strategy.timeframes}\n")
-                
-                # Enable backtest button
-                if hasattr(self, 'backtest_btn'):
-                    self.backtest_btn.config(state='normal')
-            else:
-                self.strategy_info_text.insert(tk.END, "❌ Failed to create strategy\n")
-                
-        except Exception as e:
-            error_msg = f"❌ Error creating strategy: {str(e)}"
-            self.strategy_info_text.delete(1.0, tk.END)
-            self.strategy_info_text.insert(1.0, error_msg)
-            
-            # FIXED: Create a proper fallback strategy instead of the broken one
-            try:
-                # Create a minimal working strategy as fallback
-                from simple_strategy.shared.strategy_base import StrategyBase
-                
-                class WorkingFallbackStrategy(StrategyBase):
-                    def __init__(self, name, params):
-                        # Provide required arguments to StrategyBase
-                        super().__init__(
-                            name=name,
-                            symbols=['BTCUSDT'],  # Default symbols
-                            timeframes=['1m'],   # Default timeframes
-                            config={'initial_balance': 10000.0}  # Default config
-                        )
-                        self.params = params
-                    
-                    def generate_signals(self, data):
-                        # Simple fallback signal generation
-                        signals = {}
-                        for symbol in data:
-                            signals[symbol] = {}
-                            for timeframe in data[symbol]:
-                                signals[symbol][timeframe] = 'HOLD'
-                        return signals
-                
-                # Create the fallback strategy with proper arguments
-                current_params = {}
-                for param_name, widget in self.param_widgets.items():
-                    if isinstance(widget, ttk.Entry):
-                        current_params[param_name] = widget.get()
-                    elif isinstance(widget, ttk.Combobox):
-                        current_params[param_name] = widget.get()
-                
-                self.current_strategy = WorkingFallbackStrategy(strategy_name, current_params)
-                self.strategy_info_text.insert(tk.END, f"⚠️ Created fallback strategy due to error\n")
-                self.strategy_info_text.insert(tk.END, f"📊 Fallback Strategy Name: {self.current_strategy.name}\n")
-                
-            except Exception as fallback_error:
-                self.strategy_info_text.insert(tk.END, f"❌ Even fallback strategy failed: {str(fallback_error)}\n")
     
     def optimize_from_backtest_tab(self):
-        """Optimize parameters using backtest tab settings"""
+        """Optimize parameters using current strategy parameters as starting point"""
         strategy_name = self.strategy_var.get()
         if not strategy_name:
             messagebox.showwarning("Warning", "Please select a strategy first")
             self.notebook.select(0)  # Switch to strategy tab
             return
         
-        # Create optimization window with current backtest settings
+        # Check if strategy is created first
+        if not hasattr(self, 'current_strategy') or self.current_strategy is None:
+            messagebox.showwarning("Warning", "Please create the strategy first before optimizing")
+            self.notebook.select(0)  # Switch to strategy tab
+            return
+        
+        # Create optimization window with scrolling
         opt_window = tk.Toplevel(self.root)
         opt_window.title(f"Optimize {strategy_name}")
-        opt_window.geometry("500x450")
+        opt_window.geometry("500x600")  # Increased height to accommodate scrolling
+        
+        # Create a main frame with scrollbar
+        main_frame = ttk.Frame(opt_window)
+        main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        # Create canvas and scrollbar
+        canvas = tk.Canvas(main_frame)
+        scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=canvas.yview)
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Pack scrollbar and canvas
+        scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
+        
+        # Create frame inside canvas for content
+        content_frame = ttk.Frame(canvas)
+        canvas_window = canvas.create_window((0, 0), window=content_frame, anchor="nw")
         
         # Optimization settings
-        ttk.Label(opt_window, text="Optimization Settings", font=("Arial", 12, "bold")).pack(pady=10)
+        ttk.Label(content_frame, text="Optimization Settings", font=("Arial", 12, "bold")).pack(pady=10)
         
         # Number of trials
-        ttk.Label(opt_window, text="Number of Trials:").pack()
+        ttk.Label(content_frame, text="Number of Trials:").pack()
         trials_var = tk.StringVar(value="20")
-        ttk.Entry(opt_window, textvariable=trials_var).pack()
+        ttk.Entry(content_frame, textvariable=trials_var).pack()
         
         # Use current backtest settings
-        ttk.Label(opt_window, text="Symbol:").pack()
+        ttk.Label(content_frame, text="Symbol:").pack()
         symbol_var = tk.StringVar(value=self.symbols_var.get())
-        ttk.Entry(opt_window, textvariable=symbol_var).pack()
+        ttk.Entry(content_frame, textvariable=symbol_var).pack()
         
-        ttk.Label(opt_window, text="Timeframe:").pack()
+        ttk.Label(content_frame, text="Timeframe:").pack()
         timeframe_var = tk.StringVar(value=self.timeframes_var.get().rstrip('m'))
-        ttk.Entry(opt_window, textvariable=timeframe_var).pack()
+        ttk.Entry(content_frame, textvariable=timeframe_var).pack()
         
-        ttk.Label(opt_window, text="Start Date:").pack()
+        ttk.Label(content_frame, text="Start Date:").pack()
         start_date_var = tk.StringVar(value=self.start_date_var.get())
-        ttk.Entry(opt_window, textvariable=start_date_var).pack()
+        ttk.Entry(content_frame, textvariable=start_date_var).pack()
         
-        ttk.Label(opt_window, text="End Date:").pack()
+        ttk.Label(content_frame, text="End Date:").pack()
         end_date_var = tk.StringVar(value=self.end_date_var.get())
-        ttk.Entry(opt_window, textvariable=end_date_var).pack()
+        ttk.Entry(content_frame, textvariable=end_date_var).pack()
+        
+        # Add info about current parameters
+        info_frame = ttk.LabelFrame(content_frame, text="Current Strategy Parameters", padding=10)
+        info_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Display current parameters in a scrollable text widget
+        params_text = tk.Text(info_frame, height=8, width=50, wrap="word")
+        params_text.pack(side="left", fill="both", expand=True)
+        
+        params_scrollbar = ttk.Scrollbar(info_frame, orient="vertical", command=params_text.yview)
+        params_scrollbar.pack(side="right", fill="y")
+        params_text.config(yscrollcommand=params_scrollbar.set)
+        
+        # Insert current parameters
+        current_params_text = "Current parameters:\n"
+        for param_name, var in self.param_widgets.items():
+            if hasattr(var, 'get'):
+                current_params_text += f"  {param_name}: {var.get()}\n"
+        
+        params_text.insert("1.0", current_params_text)
+        params_text.config(state="disabled")  # Make it read-only
         
         def run_optimization():
             try:
@@ -445,7 +260,7 @@ class SimpleStrategyGUI:
                     print(f"   Using fallback parameters for unknown strategy")
                 
                 # Show progress
-                progress_label = ttk.Label(opt_window, text="🚀 Starting optimization...")
+                progress_label = ttk.Label(content_frame, text="🚀 Starting optimization...")
                 progress_label.pack(pady=5)
                 opt_window.update()
                 
@@ -495,12 +310,12 @@ class SimpleStrategyGUI:
                 
                 result_msg += "\n📊 Optimized over " + str(len(symbols_list)) + " symbols: " + ", ".join(symbols_list)
                 result_msg += "\n✅ Parameters updated in Strategy Configuration tab!"
-                result_msg += "\n💡 Click 'Run Backtest' to test the optimized strategy"
+                result_msg += "\n💡 Click 'Create Strategy' then 'Run Backtest' to test the optimized strategy"
                 
                 messagebox.showinfo("Optimization Results", result_msg)
                 
-                # Update GUI with best parameters
-                self.update_parameters_with_best(best_params)
+                # FIXED: Refresh the entire parameter display to show optimized values
+                self.on_strategy_selected()
                 
                 # Debug: Show parameters after update
                 print("=== AFTER PARAMETER UPDATE ===")
@@ -515,7 +330,14 @@ class SimpleStrategyGUI:
                 # Switch to strategy tab to show updated parameters
                 self.notebook.select(0)  # Switch to strategy configuration tab
                 
+                # Close the optimization popup
                 opt_window.destroy()
+                
+                # FIXED: Bring the backtest window to front and set focus
+                self.root.deiconify()  # Ensure window is not minimized
+                self.root.lift()        # Bring window to front
+                self.root.focus_force() # Set focus to the window
+                self.root.grab_set()   # Grab focus to ensure it's the active window
                 
             except Exception as e:
                 # FIXED: Better error handling
@@ -524,8 +346,17 @@ class SimpleStrategyGUI:
                 import traceback
                 traceback.print_exc()
         
-        ttk.Button(opt_window, text="🚀 Run Optimization", 
-                command=run_optimization).pack(pady=20)
+        # Add run optimization button at the bottom
+        run_button = ttk.Button(content_frame, text="🚀 Run Optimization", command=run_optimization)
+        run_button.pack(pady=20)
+        
+        # Update canvas scrollregion when content is added
+        def update_scrollregion(event=None):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+        
+        content_frame.bind("<Configure>", update_scrollregion)
+        update_scrollregion()  # Initial update
+    
 
     def _on_param_frame_configure(self, event=None):
         """Update the scrollregion to encompass the inner frame"""
@@ -545,28 +376,8 @@ class SimpleStrategyGUI:
         self.param_canvas.bind_all("<Button-4>", lambda e: self.param_canvas.yview_scroll(-1, "units"))
         self.param_canvas.bind_all("<Button-5>", lambda e: self.param_canvas.yview_scroll(1, "units"))
     
-    '''def on_strategy_selected(self, event=None):
-        """Called when strategy selection changes"""
-        strategy_name = self.strategy_var.get()
-        if not strategy_name or strategy_name not in self.strategies:
-            return
-        
-        try:
-            # Get strategy info
-            strategy_info = self.strategies[strategy_name]
-            
-            # Update description
-            self.description_text.delete(1.0, tk.END)
-            self.description_text.insert(1.0, strategy_info.get('description', 'No description available'))
-            
-            # Update parameters
-            self.update_parameters(strategy_info.get('parameters', {}))
-            
-        except Exception as e:
-            print(f"Error updating strategy info: {e}")'''
-    
     def on_strategy_selected(self, event=None):
-        """Handle strategy selection - load optimized parameters if available"""
+        """Handle strategy selection change"""
         strategy_name = self.strategy_var.get()
         if not strategy_name:
             return
@@ -576,100 +387,151 @@ class SimpleStrategyGUI:
         if not strategy_info:
             return
         
-        # Clear existing parameter widgets
+        # Clear previous parameter widgets
         for widget in self.param_inner_frame.winfo_children():
             widget.destroy()
+        self.param_widgets.clear()
         
-        self.param_widgets = {}
-        
-        # Load optimized parameters if they exist
+        # Load optimized parameters if available
         optimized_params = self.load_optimized_parameters(strategy_name)
         
-        # Create parameter widgets
-        params = strategy_info.get('parameters', {})
-        row = 0
+        # Get default parameters from strategy info
+        parameters_def = strategy_info.get('parameters', {})
+        default_params = {}
+        for param_name, param_info in parameters_def.items():
+            default_params[param_name] = param_info.get('default', 0)
         
-        for param_name, param_info in params.items():
-            # Parameter label
-            label_text = f"{param_name} ({param_info.get('description', '')})"
-            ttk.Label(self.param_inner_frame, text=label_text).grid(row=row, column=0, sticky="w", padx=5, pady=2)
+        # If no default parameters found, try alternative approach
+        if not default_params:
+            default_params = strategy_info.get('default_params', {})
+        
+        # Use optimized parameters if available, otherwise use defaults
+        current_params = optimized_params if optimized_params else default_params
+        
+        # Store current parameters for later use
+        self.current_params = current_params.copy()
+        
+        # Update description
+        self.description_text.delete(1.0, tk.END)
+        description = strategy_info.get('description', 'No description available')
+        self.description_text.insert(tk.END, description)
+        
+        # Create parameter widgets with SLIDERS
+        row = 0
+        for param_name, param_value in current_params.items():
+            # Parameter name label
+            ttk.Label(self.param_inner_frame, text=f"{param_name}:").grid(row=row, column=0, sticky="w", padx=5, pady=5)
             
-            # Get default value or optimized value
-            default_value = param_info.get('default', 0)
-            if optimized_params and param_name in optimized_params:
-                value = optimized_params[param_name]
-                # Add visual indicator that this is optimized
-                label_text += " ✅"
-                ttk.Label(self.param_inner_frame, text=label_text).grid(row=row, column=0, sticky="w", padx=5, pady=2)
+            # Get parameter range from strategy definition
+            param_def = parameters_def.get(param_name, {})
+            min_val = param_def.get('min', 0)
+            max_val = param_def.get('max', 100)
+            
+            if isinstance(param_value, bool):
+                # Boolean parameter - use checkbox
+                var = tk.BooleanVar(value=param_value)
+                widget = ttk.Checkbutton(self.param_inner_frame, variable=var)
+                widget.var = var
+            elif isinstance(param_value, (int, float)):
+                # Numeric parameter - use SLIDER with clickable value display
+                slider_frame = ttk.Frame(self.param_inner_frame)
+                slider_frame.grid(row=row, column=1, padx=5, pady=5, sticky="ew")
+                
+                # Create variable for this parameter
+                if isinstance(param_value, int):
+                    var = tk.IntVar(value=int(param_value))
+                    widget = ttk.Scale(slider_frame, from_=min_val, to=max_val, 
+                                    variable=var, orient="horizontal", length=200)
+                else:
+                    var = tk.DoubleVar(value=float(param_value))
+                    widget = ttk.Scale(slider_frame, from_=min_val, to=max_val, 
+                                    variable=var, orient="horizontal", length=200)
+                
+                widget.pack(side="left", fill="x", expand=True)
+                
+                # Add clickable value label that opens input dialog
+                value_label = ttk.Label(slider_frame, text=str(param_value), width=10, 
+                                    cursor="hand2", foreground="blue")
+                value_label.pack(side="right", padx=5)
+                
+                # Create a custom update function for this specific parameter
+                def make_update_func(label, variable):
+                    def update_value_label(x):
+                        label.config(text=f"{variable.get():.2f}" if isinstance(variable.get(), float) else str(variable.get()))
+                    return update_value_label
+                
+                # Create a custom click function for this specific parameter
+                def make_click_func(param_name, variable, label, min_val, max_val):
+                    def on_label_click(event):
+                        # Create a dialog to input custom value
+                        dialog = tk.Toplevel(self.root)
+                        dialog.title(f"Set {param_name}")
+                        dialog.geometry("300x150")
+                        dialog.transient(self.root)
+                        dialog.grab_set()
+                        
+                        ttk.Label(dialog, text=f"Enter value for {param_name} ({min_val} - {max_val}):").pack(pady=10)
+                        
+                        entry_var = tk.StringVar(value=str(variable.get()))
+                        entry = ttk.Entry(dialog, textvariable=entry_var)
+                        entry.pack(pady=5, padx=20, fill="x")
+                        entry.select_range(0, tk.END)
+                        entry.focus()
+                        
+                        def apply_value():
+                            try:
+                                new_value = float(entry_var.get())
+                                if min_val <= new_value <= max_val:
+                                    variable.set(new_value)
+                                    label.config(text=f"{new_value:.2f}" if isinstance(new_value, float) else str(new_value))
+                                    dialog.destroy()
+                                else:
+                                    messagebox.showerror("Error", f"Value must be between {min_val} and {max_val}")
+                            except ValueError:
+                                messagebox.showerror("Error", "Please enter a valid number")
+                        
+                        button_frame = ttk.Frame(dialog)
+                        button_frame.pack(pady=10)
+                        
+                        ttk.Button(button_frame, text="Apply", command=apply_value).pack(side="left", padx=5)
+                        ttk.Button(button_frame, text="Cancel", command=dialog.destroy).pack(side="left", padx=5)
+                        
+                        # Bind Enter key to apply
+                        entry.bind('<Return>', lambda e: apply_value())
+                    
+                    return on_label_click
+                
+                # Set up the slider update and label click
+                widget.config(command=make_update_func(value_label, var))
+                value_label.bind('<Button-1>', make_click_func(param_name, var, value_label, min_val, max_val))
+                
             else:
-                value = default_value
-            
-            # Create appropriate widget based on parameter type
-            param_type = param_info.get('type', 'int')
-            
-            if param_type == 'int':
-                var = tk.IntVar(value=value)
-                min_val = param_info.get('min', 0)
-                max_val = param_info.get('max', 100)
-                widget = ttk.Scale(self.param_inner_frame, from_=min_val, to=max_val, variable=var, orient="horizontal")
-                widget.grid(row=row, column=1, padx=5, pady=2)
-                
-                # Add value label
-                value_label = ttk.Label(self.param_inner_frame, text=str(value))
-                value_label.grid(row=row, column=2, padx=5, pady=2)
-                
-                # Update value label when scale changes
-                def update_label(val, lbl=value_label, var=var):
-                    lbl.config(text=str(int(float(val))))
-                widget.config(command=update_label)
-                
-            elif param_type == 'float':
-                var = tk.DoubleVar(value=value)
-                min_val = param_info.get('min', 0.0)
-                max_val = param_info.get('max', 1.0)
-                widget = ttk.Scale(self.param_inner_frame, from_=min_val, to=max_val, variable=var, orient="horizontal")
-                widget.grid(row=row, column=1, padx=5, pady=2)
-                
-                # Add value label
-                value_label = ttk.Label(self.param_inner_frame, text=f"{value:.2f}")
-                value_label.grid(row=row, column=2, padx=5, pady=2)
-                
-                # Update value label when scale changes
-                def update_label(val, lbl=value_label, var=var):
-                    lbl.config(text=f"{float(val):.2f}")
-                widget.config(command=update_label)
-                
-            elif param_type == 'str' and 'options' in param_info:
-                var = tk.StringVar(value=value)
-                widget = ttk.Combobox(self.param_inner_frame, textvariable=var, values=param_info['options'], state="readonly")
-                widget.grid(row=row, column=1, padx=5, pady=2)
-            
-            else:
-                var = tk.StringVar(value=str(value))
-                widget = ttk.Entry(self.param_inner_frame, textvariable=var)
-                widget.grid(row=row, column=1, padx=5, pady=2)
+                # String parameter - use entry
+                widget = ttk.Entry(self.param_inner_frame, width=15)
+                widget.insert(0, str(param_value))
+                var = widget  # For string parameters, the widget itself is the var
             
             self.param_widgets[param_name] = var
             row += 1
         
-        # Update strategy description
-        description = strategy_info.get('description', 'No description available')
-        self.description_text.delete(1.0, tk.END)
-        self.description_text.insert(1.0, description)
+        # Update strategy info text
+        self.strategy_info_text.delete(1.0, tk.END)
+        info_text = f"Strategy: {strategy_name}\n\n"
         
-        # Show optimization status
         if optimized_params:
-            last_optimized = self.param_manager.get_parameters(strategy_name).get('last_optimized', 'Unknown')
-            status_text = f"✅ Using optimized parameters (Last optimized: {last_optimized})"
+            info_text += "✅ Using Optimized Parameters\n"
+            info_text += f"Last Optimized: {self.param_manager.get_parameters(strategy_name).get('last_optimized', 'Unknown')}\n\n"
         else:
-            status_text = "⚪ Using default parameters (Not optimized yet)"
+            info_text += "⚠️ Using Default Parameters (Not Optimized Yet)\n\n"
         
-        # Update status or create status label
-        if hasattr(self, 'optimization_status_label'):
-            self.optimization_status_label.config(text=status_text)
-        else:
-            self.optimization_status_label = ttk.Label(self.param_inner_frame, text=status_text, foreground="green")
-            self.optimization_status_label.grid(row=row, column=0, columnspan=3, pady=5)
+        for param, value in current_params.items():
+            info_text += f"{param}: {value}\n"
+        
+        self.strategy_info_text.insert(tk.END, info_text)
+        
+        # Update canvas scrollregion
+        self.param_inner_frame.update_idletasks()
+        self.param_canvas.configure(scrollregion=self.param_canvas.bbox("all"))
     
     def update_parameters(self, parameters):
         """Update parameter widgets based on strategy parameters"""
@@ -788,9 +650,9 @@ class SimpleStrategyGUI:
         self.run_btn.grid(row=4, column=0, columnspan=2, pady=10)
         
         # ADD THIS: Optimize Parameters Button
-        self.optimize_btn = ttk.Button(config_frame, text="🎯 Optimize Parameters", 
-                                    command=self.optimize_from_backtest_tab)
-        self.optimize_btn.grid(row=6, column=0, columnspan=2, pady=5)
+        #self.optimize_btn = ttk.Button(config_frame, text="🎯 Optimize Parameters", 
+        #                            command=self.optimize_from_backtest_tab)
+        #self.optimize_btn.grid(row=6, column=0, columnspan=2, pady=5)
     
     def create_results_tab(self):
         # Results Tab
@@ -827,47 +689,38 @@ class SimpleStrategyGUI:
                 self.status_var.set("⚠️ Please select a strategy first")
                 return
 
-            # Get current parameter values from the GUI
+            # Get current parameter values from the GUI (handles sliders, entries, and checkboxes)
             current_params = {}
-            for param_name, widget in self.param_widgets.items():
-                if isinstance(widget, ttk.Entry):
-                    value = widget.get()
-                    # Try to convert to appropriate type
-                    try:
-                        if '.' in value:
-                            current_params[param_name] = float(value)
-                        else:
-                            current_params[param_name] = int(value)
-                    except ValueError:
-                        current_params[param_name] = value
-                elif isinstance(widget, ttk.Combobox):
-                    current_params[param_name] = widget.get()
-                elif isinstance(widget, ttk.Checkbutton):
-                    current_params[param_name] = widget.var.get()
-
-            # FIXED: Use the correct method from StrategyRegistry
-            try:
-                # Option 1: Get strategy info and create instance
-                strategy_info = self.strategy_registry.get_strategy(strategy_name)
-                if strategy_info:
-                    # Use the create_func from the strategy info
-                    self.current_strategy = strategy_info['create_func'](**current_params)
+            for param_name, var in self.param_widgets.items():
+                if isinstance(var, tk.IntVar):
+                    current_params[param_name] = var.get()
+                elif isinstance(var, tk.DoubleVar):
+                    current_params[param_name] = var.get()
+                elif isinstance(var, tk.StringVar):
+                    current_params[param_name] = var.get()
+                elif isinstance(var, tk.BooleanVar):
+                    current_params[param_name] = var.get()
+                elif isinstance(var, ttk.Entry):
+                    # Handle entry widgets (for string parameters)
+                    current_params[param_name] = var.get()
                 else:
-                    # Option 2: Use create_strategy_instance directly
-                    self.current_strategy = self.strategy_registry.create_strategy_instance(
-                        strategy_name, **current_params
-                    )
-            except Exception as e:
-                # Fallback to simple strategy if registry fails
+                    # Fallback for any other widget type
+                    current_params[param_name] = var.get()
+
+            # Create strategy instance
+            strategy_info = self.strategies.get(strategy_name)
+            if strategy_info and 'create_func' in strategy_info:
+                self.current_strategy = strategy_info['create_func'](**current_params)
+            else:
+                # Fallback strategy
                 class SimpleStrategy:
                     def __init__(self, name, parameters):
                         self.name = name
                         self.parameters = parameters
                         self.symbols = []
-                        self.timeframes = ['1m']  # Add default timeframes
+                        self.timeframes = ['1m']
                         
                     def generate_signals(self, data):
-                        # Simple implementation
                         signals = {}
                         for symbol in data:
                             for timeframe in data[symbol]:
@@ -878,7 +731,7 @@ class SimpleStrategyGUI:
                                     df.loc[df['close'] < df['sma20'], 'signal'] = 1
                                     df.loc[df['close'] > df['sma20'], 'signal'] = -1
                                     signals[symbol] = {timeframe: df[['signal']].copy()}
-                        return signals
+                            return signals
                 
                 self.current_strategy = SimpleStrategy(strategy_name, current_params)
 
@@ -888,11 +741,11 @@ class SimpleStrategyGUI:
             info_text += f"📊 Parameters:\n"
             for param, value in current_params.items():
                 info_text += f" • {param}: {value}\n"
-            info_text += f"\n💡 Switch to the 'Backtest' tab to run the backtest."
+            info_text += f"\n💡 Now you can run optimization to improve these parameters!"
             self.strategy_info_text.insert(1.0, info_text)
             
             # Switch to backtest tab
-            self.notebook.select(1)
+            #self.notebook.select(1)
             self.status_var.set(f"✅ Strategy '{strategy_name}' created and configured")
             
         except Exception as e:

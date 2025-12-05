@@ -87,13 +87,38 @@ class BacktesterEngine:
         logger.info(f"BacktesterEngine initialized with strategy: {strategy.name}")
         logger.info(f"Risk management {'enabled'if self.risk_manager else'disabled'}")
 
-    def run_backtest(self, strategy=None, data=None, start_date=None, end_date=None, 
-                 initial_balance=10000, symbols=None, timeframes=None, config=None):
+    def run_backtest(self, symbols, timeframes, start_date, end_date, config=None):
         """
-        Run backtest with enhanced progress reporting
-        Compatible with GUI calling convention
+        Run backtest with optimized parameters loading
         """
+        # Load optimized parameters if available
         try:
+            from simple_strategy.trading.parameter_manager import ParameterManager
+            pm = ParameterManager()
+            strategy_name = self.strategy.name if hasattr(self.strategy, 'name') else self.strategy.__class__.__name__
+            optimized_params = pm.get_parameters(strategy_name)
+            
+            if optimized_params and 'last_optimized' in optimized_params:
+                # Remove the last_optimized field as it's not a strategy parameter
+                strategy_params = {k: v for k, v in optimized_params.items() if k != 'last_optimized'}
+                
+                # Update strategy parameters by directly setting attributes
+                for param, value in strategy_params.items():
+                    if hasattr(self.strategy, param):
+                        setattr(self.strategy, param, value)
+                    elif hasattr(self.strategy, 'params'):
+                        self.strategy.params[param] = value
+                
+                print(f"✅ Using optimized parameters for {strategy_name} (optimized on {optimized_params['last_optimized']})")
+        except Exception as e:
+            print(f"⚠️ Could not load optimized parameters: {e}")
+        
+        try:
+            # Get initial balance from config or use default
+            initial_balance = 10000.0  # Default initial balance
+            if config and 'initial_balance' in config:
+                initial_balance = config['initial_balance']
+            
             # If strategy is None, use self.strategy
             if strategy is None:
                 strategy = self.strategy
@@ -108,9 +133,9 @@ class BacktesterEngine:
                 )
             
             # Initialize variables
-            self.trades= []
-            self.balance=initial_balance
-            self.initial_balance=initial_balance
+            self.trades = []
+            self.balance = initial_balance
+            self.initial_balance = initial_balance
 
             # Initialize performance tracker with initial balance
             self.performance_tracker = PerformanceTracker(initial_balance=initial_balance)
@@ -269,50 +294,57 @@ class BacktesterEngine:
                             logger.info(f"🔧 Backtest progress: 100.0%")
                             logger.info(f"🔧 Completed {symbol}{timeframe}")
 
-                            # Close any remaining positions at the end of backtest
-                            for symbol, position in self.positions.items():
-                                current_price = data[symbol][timeframe].iloc[-1]['close']  # Use last known price
-                                entry_price = position['entry_price']
-                                entry_timestamp = position['entry_timestamp']
-                                quantity = position['quantity']
-                                is_short = position.get('is_short', False)
-                                
-                                # Calculate final PnL based on position type
-                                if is_short:
-                                    # For short positions, we profit when price goes down
-                                    pnl = (entry_price - current_price) * quantity
-                                    direction = 'BUY'  # We use a BUY to close a short position
-                                else:
-                                    # For long positions, we profit when price goes up
-                                    pnl = (current_price - entry_price) * quantity
-                                    direction = 'SELL'  # We use a SELL to close a long position
-                                
-                                # Record the completed trade
-                                logger.info(f"DEBUG: Closing final {'SHORT' if is_short else 'LONG'} position for {symbol}: entry={entry_price}, exit={current_price}, qty={quantity}, pnl={pnl}")
-                                
-                                self.performance_tracker.record_trade({
-                                    'symbol': symbol,
-                                    'direction': direction,
-                                    'entry_price': entry_price,
-                                    'exit_price': current_price,
-                                    'size': quantity,
-                                    'entry_timestamp': entry_timestamp,
-                                    'exit_timestamp': timestamp,
-                                    'pnl': pnl
-                                })
+            # Close any remaining positions at the end of backtest
+            for symbol, position in self.positions.items():
+                # Get the last timestamp and price for this symbol
+                last_symbol_data = None
+                for timeframe in data[symbol]:
+                    if last_symbol_data is None or data[symbol][timeframe].index[-1] > last_symbol_data.index[-1]:
+                        last_symbol_data = data[symbol][timeframe]
+                
+                if last_symbol_data is not None:
+                    current_price = last_symbol_data.iloc[-1]['close']
+                    entry_price = position['entry_price']
+                    entry_timestamp = position['entry_timestamp']
+                    quantity = position['quantity']
+                    is_short = position.get('is_short', False)
+                    
+                    # Calculate final PnL based on position type
+                    if is_short:
+                        # For short positions, we profit when price goes down
+                        pnl = (entry_price - current_price) * quantity
+                        direction = 'BUY'  # We use a BUY to close a short position
+                    else:
+                        # For long positions, we profit when price goes up
+                        pnl = (current_price - entry_price) * quantity
+                        direction = 'SELL'  # We use a SELL to close a long position
+                    
+                    # Record the completed trade
+                    logger.info(f"DEBUG: Closing final {'SHORT' if is_short else 'LONG'} position for {symbol}: entry={entry_price}, exit={current_price}, qty={quantity}, pnl={pnl}")
+                    
+                    self.performance_tracker.record_trade({
+                        'symbol': symbol,
+                        'direction': direction,
+                        'entry_price': entry_price,
+                        'exit_price': current_price,
+                        'size': quantity,
+                        'entry_timestamp': entry_timestamp,
+                        'exit_timestamp': last_symbol_data.index[-1],
+                        'pnl': pnl
+                    })
 
-                            # Calculate and display performance metrics
-                            metrics = self._calculate_performance_metrics()
-                            self._display_results(metrics)
+            # Calculate and display performance metrics
+            metrics = self._calculate_performance_metrics()
+            self._display_results(metrics)
 
-                            # Return metrics for GUI
-                            return {
-                                'win_rate': metrics['win_rate_pct'],
-                                'sharpe_ratio': metrics['sharpe_ratio'],
-                                'max_drawdown': metrics['max_drawdown_pct'],
-                                'total_return': metrics['total_return_pct'],
-                                'total_trades': metrics['total_trades']
-                            }
+            # Return metrics for GUI
+            return {
+                'win_rate': metrics['win_rate_pct'],
+                'sharpe_ratio': metrics['sharpe_ratio'],
+                'max_drawdown': metrics['max_drawdown_pct'],
+                'total_return': metrics['total_return_pct'],
+                'total_trades': metrics['total_trades']
+            }
 
         except Exception as e:
             logger.error(f"Error in backtest: {e}")
