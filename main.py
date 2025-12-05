@@ -334,16 +334,24 @@ class TradingBotDashboard:
         messagebox.showinfo("Settings", "Data collection settings would open here")
     
     def start_simple_strategy(self):
+        """Start the simple strategy backtester with optimized parameters"""
         try:
-            # FIXED: Start simple strategy backtester without tracking process
-            launcher_path = os.path.join(os.path.dirname(__file__), 
-                                      "simple_strategy", "gui_monitor.py")
+            # Import the correct GUI class
+            from simple_strategy.gui_monitor import SimpleStrategyGUI
             
-            # FIXED: Use subprocess.Popen without tracking - allows multiple instances
-            subprocess.Popen([sys.executable, launcher_path])
+            # Create a new window for the backtester
+            backtester_window = tk.Toplevel(self.root)
+            backtester_window.title("Strategy Backtester")
+            backtester_window.geometry("1000x700")
+            
+            # Create the backtester GUI
+            backtester_gui = SimpleStrategyGUI(backtester_window)
+            
+            # Let the GUI handle its own initialization
+            # Don't try to set parameters here, let the GUI do it
             
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to start simple strategy backtester: {e}")
+            messagebox.showerror("Error", f"Failed to start backtester: {e}")
     
     def open_simple_strategy_settings(self):
         # Open simple strategy settings (could open config file or settings GUI)
