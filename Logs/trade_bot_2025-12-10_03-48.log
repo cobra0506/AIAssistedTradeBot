@@ -1,0 +1,5 @@
+2025-12-10 03:48:51 - root - INFO - Logging system initialized
+2025-12-10 03:48:51 - root - INFO - Logging system initialized
+2025-12-10 03:48:51 - shared_modules.data_collection.websocket_handler - INFO - All subscription batches sent
+2025-12-10 03:48:51 - root - INFO - Logging system initialized
+2025-12-10 03:49:02 - asyncio - DEBUG - Using proactor: IocpProactor

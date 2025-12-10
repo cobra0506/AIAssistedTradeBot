@@ -44,6 +44,11 @@ class PaperTradingEngine:
         # NEW: Use shared data access instead of creating new data collection
         # Initialize this later to avoid recursion issues
         self.shared_data_access = None
+
+         # Add these missing attributes
+        self.data_system_initialized = False
+        self.is_running = False
+        self.trading_loop_active = False
         
         # Use symbols from data collection config
         #from shared_modules.data_collection.config import DataCollectionConfig
@@ -67,7 +72,7 @@ class PaperTradingEngine:
 
     def log_message(self, message):
         """Log message to both console and GUI if available"""
-        self.log_message(message)  # Keep console logging for debugging
+        print(message)  # Use print instead of self.log_message()
         if self.log_callback:
             self.log_callback(message)
 
@@ -727,3 +732,9 @@ class PaperTradingEngine:
                 'error': str(e),
                 'status': 'Error'
             }
+        
+    def stop_trading(self):
+        """Stop paper trading"""
+        self.is_running = False
+        self.trading_loop_active = False
+        self.log_message("🛑 Paper trading stopped by user")
