@@ -87,10 +87,16 @@ class BacktesterEngine:
         logger.info(f"BacktesterEngine initialized with strategy: {strategy.name}")
         logger.info(f"Risk management {'enabled'if self.risk_manager else'disabled'}")
 
-    def run_backtest(self, symbols, timeframes, start_date, end_date, config=None):
+    def run_backtest(self, symbols, timeframes, start_date, end_date, config=None, strategy=None, data=None, initial_balance=None):
         """
         Run backtest with optimized parameters loading
         """
+        import time
+        
+        # Add timing at the very beginning
+        start_time = time.time()
+        print(f"🔧 DEBUG: Backtest started at {time.strftime('%Y-%m-%d %H:%M:%S')}")
+        
         # Load optimized parameters if available
         try:
             from simple_strategy.trading.parameter_manager import ParameterManager
@@ -114,23 +120,61 @@ class BacktesterEngine:
             print(f"⚠️ Could not load optimized parameters: {e}")
         
         try:
-            # Get initial balance from config or use default
-            initial_balance = 10000.0  # Default initial balance
-            if config and 'initial_balance' in config:
-                initial_balance = config['initial_balance']
+            # Get initial balance from parameter, config, or use default
+            initial_balance = initial_balance or (config['initial_balance'] if config and 'initial_balance' in config else 10000.0)
             
-            # If strategy is None, use self.strategy
+            # Use provided strategy or fall back to self.strategy
             if strategy is None:
                 strategy = self.strategy
+                # Add timing right after strategy is determined
+                print(f"🔧 DEBUG: Using strategy: {strategy.__class__.__name__}")
+
+                # Debug strategy parameters
+                print(f"🔧 DEBUG: Strategy attributes:")
+                for attr in dir(strategy):
+                    if not attr.startswith('_') and not callable(getattr(strategy, attr)):
+                        try:
+                            value = getattr(strategy, attr)
+                            if not isinstance(value, (type, type(lambda: None), type(print))):
+                                print(f"  - {attr}: {value}")
+                        except:
+                            pass
+
+                # Check if strategy has params attribute
+                if hasattr(strategy, 'params'):
+                    print(f"🔧 DEBUG: Strategy params: {strategy.params}")
+                else:
+                    print(f"🔧 DEBUG: Strategy has no params attribute")
+                print(f"🔧 DEBUG: Using self.strategy: {strategy.__class__.__name__}")
+            else:
+                print(f"🔧 DEBUG: Using provided strategy: {strategy.__class__.__name__}")
             
-            # If data is None, load it using data_feeder
+            # Add timing before data loading
+            data_load_start = time.time()
+            
+            # Use provided data or load it using data_feeder
             if data is None:
                 data = self.data_feeder.get_data_for_symbols(
-                    symbols or self.strategy.symbols, 
-                    timeframes or self.strategy.timeframes,
+                    symbols or strategy.symbols, 
+                    timeframes or strategy.timeframes,
                     start_date or datetime.now() - timedelta(days=30),
                     end_date or datetime.now()
                 )
+            
+            # Add timing after data loading
+            data_load_time = time.time() - data_load_start
+            print(f"🔧 DEBUG: Data loading took {data_load_time:.2f} seconds")
+            
+            # Print data info
+            total_data_points = 0
+            for symbol in data:
+                for timeframe in data[symbol]:
+                    df = data[symbol][timeframe]
+                    total_data_points += len(df)
+            print(f"🔧 DEBUG: Total data points to process: {total_data_points}")
+            
+            # Add timing before processing
+            processing_start = time.time()
             
             # Initialize variables
             self.trades = []
@@ -152,6 +196,15 @@ class BacktesterEngine:
             
             logger.info(f"🔧 Starting backtest with {total_steps} total data points")
             
+            # Add timing before the main processing loop
+            loop_start = time.time()
+
+            # Calculate total rows for progress tracking
+            total_rows = sum(len(data[symbol][timeframe]) for symbol in data for timeframe in data[symbol])
+            processed_rows = 0
+            last_progress_update = 0
+            print(f"🔧 DEBUG: Total rows to process: {total_rows}")
+
             # Process each symbol and timeframe
             for symbol in data:
                 for timeframe in data[symbol]:
@@ -161,11 +214,51 @@ class BacktesterEngine:
                     
                     # Process each row
                     for i, (timestamp, row) in enumerate(df.iterrows()):
+
+                        # Update progress
+                        processed_rows += 1
+                        progress_percent = (processed_rows / total_rows) * 100
+
+                        # Update progress every 5% or for the last update
+                        if progress_percent - last_progress_update >= 5 or progress_percent == 100:
+                            print(f"🔧 DEBUG: Overall progress: {progress_percent:.1f}% ({processed_rows}/{total_rows} rows)")
+                            last_progress_update = progress_percent
+                            
                         # Create the proper data structure for signal generation
                         current_data = {symbol: {timeframe: df.loc[:timestamp]}}
                         
+                        # Add timing for signal generation
+                        signal_start = time.time()
+                        
+                        # Cache for signal generation to avoid recalculating
+                        signal_cache_key = f"{symbol}_{timeframe}_{timestamp}"
+                        if not hasattr(self, '_signal_cache'):
+                            self._signal_cache = {}
+
+                        if signal_cache_key in self._signal_cache:
+                            signals = self._signal_cache[signal_cache_key]
+                        else:
+                            # Add timing for signal generation
+                            signal_start = time.time()
+                            
+                            # Generate signals
+                            signals = strategy.generate_signals(current_data)
+                            
+                            # Cache the result
+                            self._signal_cache[signal_cache_key] = signals
+                            
+                            # Add timing after signal generation
+                            signal_time = time.time() - signal_start
+                            if signal_time > 0.01:  # Only log if it takes more than 10ms
+                                print(f"🔧 DEBUG: Signal generation took {signal_time:.4f} seconds for {symbol} {timeframe}")
+
                         # Generate signals
                         signals = strategy.generate_signals(current_data)
+                        
+                        # Add timing after signal generation
+                        signal_time = time.time() - signal_start
+                        if signal_time > 0.01:  # Only log if it takes more than 10ms
+                            print(f"🔧 DEBUG: Signal generation took {signal_time:.4f} seconds for {symbol} {timeframe}")
 
                         # Execute trades based on signals
                         signal = signals[symbol][timeframe]
@@ -294,6 +387,13 @@ class BacktesterEngine:
                             logger.info(f"🔧 Backtest progress: 100.0%")
                             logger.info(f"🔧 Completed {symbol}{timeframe}")
 
+            # Add timing after the main processing loop
+            loop_time = time.time() - loop_start
+            print(f"🔧 DEBUG: Main processing loop took {loop_time:.2f} seconds")
+            
+            # Add timing before closing positions
+            close_positions_start = time.time()
+            
             # Close any remaining positions at the end of backtest
             for symbol, position in self.positions.items():
                 # Get the last timestamp and price for this symbol
@@ -333,9 +433,24 @@ class BacktesterEngine:
                         'pnl': pnl
                     })
 
+            # Add timing after closing positions
+            close_positions_time = time.time() - close_positions_start
+            print(f"🔧 DEBUG: Closing positions took {close_positions_time:.2f} seconds")
+            
+            # Add timing before calculating metrics
+            metrics_start = time.time()
+            
             # Calculate and display performance metrics
             metrics = self._calculate_performance_metrics()
             self._display_results(metrics)
+
+            # Add timing after calculating metrics
+            metrics_time = time.time() - metrics_start
+            print(f"🔧 DEBUG: Calculating metrics took {metrics_time:.2f} seconds")
+            
+            # Add total timing
+            total_time = time.time() - start_time
+            print(f"🔧 DEBUG: Total backtest time: {total_time:.2f} seconds")
 
             # Return metrics for GUI
             return {

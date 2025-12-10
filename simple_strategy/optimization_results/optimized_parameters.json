@@ -1,9 +1,9 @@
 {
     "Strategy_2_mean_reversion": {
-        "rsi_period": 19,
-        "rsi_overbought": 88,
-        "rsi_oversold": 40,
-        "last_optimized": "2025-12-05"
+        "rsi_period": 33,
+        "rsi_overbought": 80,
+        "rsi_oversold": 24,
+        "last_optimized": "2025-12-10"
     },
     "Strategy_1_Trend_Following": {
         "fast_period": 22,
