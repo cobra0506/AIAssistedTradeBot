@@ -1,0 +1,6 @@
+2025-12-10 04:54:50 - shared_modules.data_collection.optimized_data_fetcher - WARNING - [FAIL] Rate limited for MORPHOUSDT_60 (attempt 1/5)
+2025-12-10 04:54:50 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for MORPHOUSDT_60: local variable 'retry_delay' referenced before assignment (attempt 2/5)
+2025-12-10 04:54:50 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for MORPHOUSDT_60: local variable 'retry_delay' referenced before assignment (attempt 3/5)
+2025-12-10 04:54:50 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for MORPHOUSDT_60: local variable 'retry_delay' referenced before assignment (attempt 4/5)
+2025-12-10 04:54:50 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Exception for MORPHOUSDT_60: local variable 'retry_delay' referenced before assignment (attempt 5/5)
+2025-12-10 04:54:50 - shared_modules.data_collection.optimized_data_fetcher - ERROR - [FAIL] Failed to fetch MORPHOUSDT_60
