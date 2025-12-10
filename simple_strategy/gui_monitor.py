@@ -710,7 +710,31 @@ class SimpleStrategyGUI:
             # Create strategy instance
             strategy_info = self.strategies.get(strategy_name)
             if strategy_info and 'create_func' in strategy_info:
-                self.current_strategy = strategy_info['create_func'](**current_params)
+                # Get symbols and timeframes from GUI
+                symbols = [s.strip() for s in self.symbols_var.get().split(',') if s.strip()]
+                timeframes = [t.strip() for t in self.timeframes_var.get().split(',') if t.strip()]
+                
+                # Create strategy with symbols and timeframes
+                self.current_strategy = strategy_info['create_func'](
+                    symbols=symbols,
+                    timeframes=timeframes,
+                    **current_params
+                )
+                
+                print(f"🔧 GUI DEBUG: Created strategy with symbols: {symbols}")
+                print(f"🔧 GUI DEBUG: Created strategy with timeframes: {timeframes}")
+
+                # Ensure parameters are set as attributes on the strategy object
+                if strategy_info and 'create_func' in strategy_info:
+                    # Set parameters as attributes for easy access
+                    for param_name, param_value in current_params.items():
+                        setattr(self.current_strategy, param_name, param_value)
+                    
+                    # Also set as a params dictionary for compatibility
+                    self.current_strategy.params = current_params
+                    
+                    print(f"🔧 GUI DEBUG: Set strategy parameters: {current_params}")
+
             else:
                 # Fallback strategy
                 class SimpleStrategy:
@@ -990,9 +1014,13 @@ class SimpleStrategyGUI:
                 self.results_text.insert(tk.END, f"Strategy Type: {type(self.current_strategy).__name__}\n")
                 self.results_text.insert(tk.END, f"Strategy Name: {self.current_strategy.name}\n")
                 self.results_text.insert(tk.END, f"Strategy has generate_signals: {hasattr(self.current_strategy, 'generate_signals')}\n")
-                self.results_text.insert(tk.END, f"Strategy Parameters: {getattr(self.current_strategy, 'parameters', 'N/A')}\n")
-                self.results_text.insert(tk.END, f"Strategy Symbols: {getattr(self.current_strategy, 'symbols', 'N/A')}\n")
-                self.results_text.insert(tk.END, f"Strategy Timeframes: {getattr(self.current_strategy, 'timeframes', 'N/A')}\n")
+                self.results_text.insert(tk.END, f"Strategy Parameters: {getattr(self.current_strategy, 'params', 'N/A')}\n")
+                # Get the actual symbols and timeframes the strategy is using for signal generation
+                actual_symbols = getattr(self.current_strategy, '_symbols', getattr(self.current_strategy, 'symbols', 'N/A'))
+                actual_timeframes = getattr(self.current_strategy, '_timeframes', getattr(self.current_strategy, 'timeframes', 'N/A'))
+
+                self.results_text.insert(tk.END, f"Strategy Symbols: {actual_symbols}\n")
+                self.results_text.insert(tk.END, f"Strategy Timeframes: {actual_timeframes}\n")
 
                 # Check if strategy is properly initialized
                 if hasattr(self.current_strategy, 'generate_signals'):
@@ -1001,10 +1029,19 @@ class SimpleStrategyGUI:
                     self.results_text.insert(tk.END, f"❌ Strategy missing generate_signals method\n")
                     
                 self.results_text.insert(tk.END, f"-" * 30 + "\n\n")
-                
-                # Set strategy symbols and timeframes
-                self.current_strategy.symbols = symbols
-                self.current_strategy.timeframes = timeframes
+
+                # Also try to update any internal strategy state
+                if hasattr(self.current_strategy, 'strategy_state'):
+                    if isinstance(self.current_strategy.strategy_state, dict):
+                        self.current_strategy.strategy_state['symbols'] = symbols
+                        self.current_strategy.strategy_state['timeframes'] = timeframes
+
+                print(f"🔧 GUI DEBUG: Updated strategy internal symbols to: {symbols}")
+                print(f"🔧 GUI DEBUG: Updated strategy internal timeframes to: {timeframes}")
+
+                # Verify the strategy was updated correctly
+                print(f"🔧 GUI DEBUG: After setting strategy symbols: {self.current_strategy.symbols}")
+                print(f"🔧 GUI DEBUG: After setting strategy timeframes: {self.current_strategy.timeframes}")       
                 
                 # Try to run backtest with error handling
                 try:
@@ -1015,7 +1052,24 @@ class SimpleStrategyGUI:
                         start_date=start_date,
                         end_date=end_date
                     )
-                    
+                    # Debug the strategy object before passing to backtester
+                    print(f"🔧 GUI DEBUG: Current strategy type: {type(self.current_strategy)}")
+                    print(f"🔧 GUI DEBUG: Current strategy name: {self.current_strategy.name if hasattr(self.current_strategy, 'name') else 'N/A'}")
+                    print(f"🔧 GUI DEBUG: Current strategy symbols: {self.current_strategy.symbols if hasattr(self.current_strategy, 'symbols') else 'N/A'}")
+                    print(f"🔧 GUI DEBUG: Current strategy timeframes: {self.current_strategy.timeframes if hasattr(self.current_strategy, 'timeframes') else 'N/A'}")
+
+                    # Debug strategy parameters
+                    if hasattr(self.current_strategy, 'params'):
+                        print(f"🔧 GUI DEBUG: Strategy params: {self.current_strategy.params}")
+                    else:
+                        print(f"🔧 GUI DEBUG: Strategy has no params attribute")
+
+                    # Check for RSI parameters specifically
+                    for attr in ['rsi_period', 'rsi_overbought', 'rsi_oversold']:
+                        if hasattr(self.current_strategy, attr):
+                            print(f"🔧 GUI DEBUG: {attr}: {getattr(self.current_strategy, attr)}")
+                        else:
+                            print(f"🔧 GUI DEBUG: {attr}: NOT FOUND")
                     # Run the backtest
                     results = backtester.run_backtest(
                         strategy=self.current_strategy,  # Pass the strategy instance
@@ -1077,7 +1131,7 @@ class SimpleStrategyGUI:
                         self.results_text.insert(tk.END, f"-" * 30 + "\n")
                         self.results_text.insert(tk.END, f"Strategy Type: {type(self.current_strategy).__name__}\n")
                         self.results_text.insert(tk.END, f"Strategy Name: {self.current_strategy.name}\n")
-                        self.results_text.insert(tk.END, f"Strategy Parameters: {getattr(self.current_strategy, 'parameters', 'N/A')}\n")
+                        self.results_text.insert(tk.END, f"Strategy Parameters: {getattr(self.current_strategy, 'params', 'N/A')}\n")
                         
                     else:
                         self.results_text.insert(tk.END, "❌ No results returned\n")
