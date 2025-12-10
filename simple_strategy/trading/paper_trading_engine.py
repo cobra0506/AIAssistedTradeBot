@@ -4,8 +4,12 @@ import time
 import requests
 import hmac
 import hashlib
+import numpy as np
+import pandas as pd
+import time
 from urllib.parse import urlencode
 from datetime import datetime
+from datetime import timedelta
 from simple_strategy.shared.data_feeder import DataFeeder
 # Removed unused imports to avoid circular dependencies
 import asyncio
@@ -268,6 +272,22 @@ class PaperTradingEngine:
         except Exception as e:
             self.log_message(f"❌ Error getting symbols: {e}")
             return []
+        
+    def filter_tradable_symbols(self, all_symbols):
+        """Filter symbols to only include tradable ones"""
+        tradable_symbols = []
+        
+        for symbol in all_symbols:
+            # Filter out obvious non-tradable symbols
+            if any(skip in symbol.upper() for skip in ['1000', '10000', '1000000', 'BABY', 'CHEEMS', 'MOG', 'ELON', 'QUBIC', 'SATS', 'BONK', 'BTT', 'CAT']):
+                continue
+            
+            # Only include major symbols with good liquidity
+            if symbol.endswith('USDT') and len(symbol) <= 10:  # Reasonable symbol length
+                tradable_symbols.append(symbol)
+        
+        self.log_message(f"📊 Filtered {len(all_symbols)} symbols down to {len(tradable_symbols)} tradable symbols")
+        return tradable_symbols
     
     def execute_buy(self, symbol, quantity=None):
         """Execute a buy order"""
@@ -372,46 +392,6 @@ class PaperTradingEngine:
         except Exception as e:
             self.log_message(f"❌ Error executing sell order: {e}")
             return None
-        
-    def get_performance_summary(self):
-        """Get a summary of trading performance"""
-        try:
-            # Calculate win rate
-            winning_trades = 0
-            for trade in self.trades:
-                # Simple check: if it's a sell trade and balance increased, count as win
-                if trade['type'] == 'SELL' and trade.get('balance_after') and trade.get('balance_before'):
-                    if trade['balance_after'] > trade['balance_before']:
-                        winning_trades += 1
-            
-            total_sell_trades = sum(1 for trade in self.trades if trade['type'] == 'SELL')
-            win_rate = (winning_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
-            
-            summary = {
-                'initial_balance': self.initial_balance,
-                'current_balance': self.simulated_balance,
-                'total_pnl': self.simulated_balance - self.initial_balance,
-                'trades': self.trades,
-                'total_trades': len(self.trades),
-                'win_rate': win_rate,
-                'open_positions': len(self.current_positions),
-                'status': 'Running' if self.is_running else 'Stopped'
-            }
-            
-            return summary
-        except Exception as e:
-            self.log_message(f"Error generating performance summary: {e}")
-            return {
-                'error': str(e),
-                'status': 'Error',
-                'initial_balance': self.initial_balance,
-                'current_balance': self.simulated_balance,
-                'total_pnl': 0,
-                'trades': [],
-                'total_trades': 0,
-                'win_rate': 0,
-                'open_positions': 0
-            }
     
     def calculate_position_size(self, symbol):
         """Calculate position size based on available simulated balance"""
@@ -452,43 +432,191 @@ class PaperTradingEngine:
             self.log_message(f"Error loading strategy: {e}")
             return False
     
-    def generate_trading_signal(self, symbol, current_price=None):
-        """Generate trading signal using data from collection system"""
-        # Get current price from data system if not provided
-        if current_price is None:
-            current_price = self.get_current_price_from_data_system(symbol)
-            self.log_message(f"💰 Current price for {symbol}: ${current_price}")
-        """Generate trading signal - simple test strategy"""
+    def generate_trading_signal(self, symbol, current_price):
+        """Generate trading signal using the loaded strategy"""
         try:
-            # Simple test strategy: 
-            # - Buy if price is below $50,000 (for BTC-like symbols)
-            # - Sell if we have a position and price is above $60,000
-            # - For other symbols, use scaled thresholds
+            # First try to use the loaded strategy
+            if self.strategy and hasattr(self.strategy, 'generate_signals'):
+                return self.generate_strategy_signal(symbol)
             
-            # Determine price threshold based on symbol
-            if symbol == 'BTCUSDT':
-                buy_threshold = 50000
-                sell_threshold = 60000
-            elif symbol == 'ETHUSDT':
-                buy_threshold = 3000
-                sell_threshold = 3500
-            else:
-                # For other symbols, use a simple percentage-based approach
-                buy_threshold = current_price * 0.99  # Buy if 1% below current
-                sell_threshold = current_price * 1.01  # Sell if 1% above current
-            
-            # Generate signals
-            if symbol not in self.current_positions:
-                if current_price < buy_threshold:
-                    return 'BUY'
-            else:
-                if current_price > sell_threshold:
-                    return 'SELL'
-            
-            return 'HOLD'  # Hold current position
+            # Fallback to RSI strategy
+            return self.generate_rsi_signal(symbol, current_price)
             
         except Exception as e:
-            self.log_message(f"Error generating signal for {symbol}: {e}")
+            self.log_message(f"❌ Error generating signal for {symbol}: {e}")
+            return 'HOLD'
+
+    def generate_strategy_signal(self, symbol):
+        """Generate signal using the loaded strategy"""
+        try:
+            # Get historical data for the symbol
+            historical_data = self.get_historical_data_for_symbol(symbol)
+            
+            if not historical_data or len(historical_data) < 50:
+                self.log_message(f"⚠️ Not enough historical data for {symbol}")
+                return 'HOLD'
+            
+            # Generate signals using the strategy
+            signals = self.strategy.generate_signals(historical_data)
+            
+            # Get the latest signal
+            if signals is not None and len(signals) > 0:
+                if isinstance(signals, pd.DataFrame):
+                    latest_signal = signals.iloc[-1]['signal']
+                elif isinstance(signals, dict) and 'signal' in signals:
+                    latest_signal = signals['signal']
+                else:
+                    latest_signal = signals[-1] if isinstance(signals, (list, np.ndarray)) else 0
+                
+                # Convert signal to string
+                if latest_signal == 1:
+                    return 'BUY'
+                elif latest_signal == -1:
+                    return 'SELL'
+                else:
+                    return 'HOLD'
+            
+            return 'HOLD'
+            
+        except Exception as e:
+            self.log_message(f"❌ Error generating strategy signal for {symbol}: {e}")
+            return 'HOLD'
+
+    def generate_rsi_signal(self, symbol, current_price):
+        """Generate trading signal using RSI strategy with optimized parameters"""
+        try:
+            # Get historical data for RSI calculation
+            historical_data = self.get_historical_data_for_symbol(symbol)
+            
+            if not historical_data or len(historical_data) < 50:
+                return 'HOLD'
+            
+            # Use your optimized parameters
+            rsi_period = 33
+            rsi_overbought = 80
+            rsi_oversold = 24
+            
+            # Calculate RSI
+            closes = historical_data['close'].values
+            rsi_values = self.calculate_rsi(closes, period=rsi_period)
+            
+            if len(rsi_values) == 0:
+                return 'HOLD'
+            
+            current_rsi = rsi_values[-1]
+            
+            # Generate signals based on your optimized RSI parameters
+            if symbol not in self.current_positions:
+                if current_rsi < rsi_oversold:  # Oversold - buy signal
+                    self.log_message(f"📈 RSI BUY signal for {symbol}: RSI={current_rsi:.1f} < {rsi_oversold}")
+                    return 'BUY'
+            else:
+                if current_rsi > rsi_overbought:  # Overbought - sell signal
+                    self.log_message(f"📉 RSI SELL signal for {symbol}: RSI={current_rsi:.1f} > {rsi_overbought}")
+                    return 'SELL'
+            
+            self.log_message(f"📊 RSI HOLD for {symbol}: RSI={current_rsi:.1f}")
+            return 'HOLD'
+            
+        except Exception as e:
+            self.log_message(f"❌ Error generating RSI signal for {symbol}: {e}")
+            return 'HOLD'
+
+    def calculate_rsi(self, prices, period=14):
+        """Calculate RSI properly"""
+        try:
+            if len(prices) < period + 1:
+                return np.array([50.0] * len(prices))  # Default to neutral
+            
+            # Calculate price changes
+            deltas = np.diff(prices)
+            seed = deltas[:period+1]
+            up = seed[seed >= 0].sum()/period
+            down = -seed[seed < 0].sum()/period
+            rs = up/down
+            rsi = np.zeros_like(prices)
+            rsi[:period] = 100. - (100./(1.+rs))
+            
+            # Calculate the rest of RSI values
+            for i in range(period, len(prices)):
+                delta = deltas[i-1]
+                if delta > 0:
+                    upval = delta
+                    downval = 0.
+                else:
+                    upval = 0.
+                    downval = -delta
+                
+                up = (up*(period-1) + upval)/period
+                down = (down*(period-1) + downval)/period
+                rs = up/down
+                rsi[i] = 100. - (100./(1.+rs))
+            
+            return rsi
+        except Exception as e:
+            self.log_message(f"❌ Error calculating RSI: {e}")
+            return np.array([50.0] * len(prices))  # Default to neutral
+
+    def get_historical_data_for_symbol(self, symbol):
+        """Get historical data for a symbol"""
+        try:
+            # Calculate date range (last 7 days for RSI calculation)
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=7)
+            
+            # Format dates for data feeder
+            start_date_str = start_date.strftime('%Y-%m-%d')
+            end_date_str = end_date.strftime('%Y-%m-%d')
+            
+            # Try to get data from data feeder with required parameters
+            data = self.data_feeder.get_data_for_symbols(
+                symbols=[symbol], 
+                timeframes=['5m'],
+                start_date=start_date_str,
+                end_date=end_date_str
+            )
+            
+            if data and symbol in data:
+                return data[symbol]
+            
+            # Fallback: try to load CSV file directly
+            return self.load_csv_data(symbol)
+            
+        except Exception as e:
+            self.log_message(f"❌ Error getting historical data for {symbol}: {e}")
+            return None
+
+    def load_csv_data(self, symbol):
+        """Load data directly from CSV file as fallback"""
+        try:
+            import pandas as pd
+            
+            # Construct file path
+            csv_file = os.path.join('data', f'{symbol}_1.csv')
+            
+            if not os.path.exists(csv_file):
+                self.log_message(f"⚠️ CSV file not found for {symbol}: {csv_file}")
+                return None
+            
+            # Load CSV file
+            df = pd.read_csv(csv_file)
+            
+            # Convert timestamp to datetime if needed
+            if 'timestamp' in df.columns and 'datetime' not in df.columns:
+                df['datetime'] = pd.to_datetime(df['timestamp'], unit='ms')
+            
+            # Sort by datetime
+            df = df.sort_values('datetime')
+            
+            # Get last 1000 rows for RSI calculation
+            if len(df) > 1000:
+                df = df.tail(1000)
+            
+            self.log_message(f"✅ Loaded {len(df)} rows from CSV for {symbol}")
+            return df
+            
+        except Exception as e:
+            self.log_message(f"❌ Error loading CSV for {symbol}: {e}")
             return None
         
     def update_balance_after_trade(self, pnl_amount):
@@ -515,88 +643,47 @@ class PaperTradingEngine:
             self.log_message("Error: API credentials not loaded")
             return False
         
+        # Initialize shared data access
+        self.initialize_shared_data_access()
+        
         self.is_running = True
         self.log_message(f"Paper trading started for {self.strategy_name}")
         
         # Get all perpetual symbols
-        symbols = self.get_all_perpetual_symbols()
-        self.log_message(f"Monitoring {len(symbols)} symbols")
+        all_symbols = self.get_all_perpetual_symbols()
         
-        # For testing, start with a smaller subset
-        test_symbols = symbols[:10]  # Start with 10 symbols for testing
-        self.log_message(f"Testing with first {len(test_symbols)} symbols: {test_symbols}")
+        # Filter to only tradable symbols
+        tradable_symbols = self.filter_tradable_symbols(all_symbols)
+        
+        # Limit to first 50 for performance
+        symbols_to_monitor = tradable_symbols[:50]
+        self.log_message(f"📈 Monitoring {len(symbols_to_monitor)} symbols")
         
         # Main trading loop
         loop_count = 0
-        while self.is_running:
+        max_loops = 1000  # Run indefinitely until stopped
+        
+        while self.is_running and loop_count < max_loops:
             loop_count += 1
             self.log_message(f"\n=== Trading Loop #{loop_count} ===")
             
-            try:
-                # Get real-time data for all test symbols
-                for symbol in test_symbols:
-                    try:
-                        # Fetch latest ticker data
-                        result, error = self.make_request("GET", "/v5/market/tickers", params={"category": "linear", "symbol": symbol})
-                        
-                        if error:
-                            self.log_message(f"Error fetching ticker for {symbol}: {error}")
-                            continue
-                        
-                        # Extract current price from result
-                        ticker_data = result['list'][0] if result['list'] else None
-                        if not ticker_data:
-                            continue
-                        
-                        current_price = float(ticker_data.get('lastPrice', 0))
-                        if current_price == 0:
-                            continue
-                        
-                        self.log_message(f"{symbol}: ${current_price}")
-                        
-                        # Generate trading signal (let data system get the price)
-                        signal = self.generate_trading_signal(symbol)  # Don't pass current_price
-                        
-                        # Execute trade if signal is strong enough
-                        if signal == 'BUY' and symbol not in self.current_positions:
-                            self.log_message(f"📈 BUY signal for {symbol} at ${current_price}")
-                            self.execute_buy(symbol)
-                        elif signal == 'SELL' and symbol in self.current_positions:
-                            self.log_message(f"📉 SELL signal for {symbol} at ${current_price}")
-                            self.execute_sell(symbol)
-                        elif signal:
-                            self.log_message(f"📊 Signal for {symbol}: {signal}")
-                        
-                    except Exception as e:
-                        self.log_message(f"Error processing {symbol}: {e}")
-                        continue
-                
-                # Update balance and performance
-                self.update_performance()
-                
-                # self.log_message current status
-                self.log_message(f"Open positions: {len(self.current_positions)}")
-                self.log_message(f"Total trades: {len(self.trades)}")
-                
-                # Check if we should stop (for testing)
-                if loop_count >= 3:  # Stop after 3 loops for testing
-                    self.log_message("🛑 Stopping after 3 test loops")
-                    self.is_running = False
-                    break
-                
-                # Sleep to avoid rate limits
+            # Process each symbol
+            for symbol in symbols_to_monitor:
+                try:
+                    self.process_symbol(symbol)
+                except Exception as e:
+                    self.log_message(f"❌ Error processing {symbol}: {e}")
+                    continue
+            
+            # Update performance
+            self.update_performance_display()
+            
+            # Wait before next loop
+            if self.is_running:
                 self.log_message("⏳ Waiting 30 seconds before next loop...")
                 time.sleep(30)
-                
-            except Exception as e:
-                self.log_message(f"Error in trading loop: {e}")
-                time.sleep(5)
         
-        self.log_message("Paper trading stopped")
-        self.log_message(f"Final stats:")
-        self.log_message(f"  Total loops: {loop_count}")
-        self.log_message(f"  Total trades: {len(self.trades)}")
-        self.log_message(f"  Open positions: {len(self.current_positions)}")
+        self.log_message("🛑 Trading loop ended")
     
     def update_performance(self):
         """Update performance metrics with real data from Bybit"""
@@ -621,71 +708,6 @@ class PaperTradingEngine:
         except Exception as e:
             self.log_message(f"Error updating performance: {e}")
             return None
-        
-    def initialize_data_system(self):
-        """Initialize the data collection system"""
-        try:
-            self.log_message("📊 Initializing data collection system...")
-            # Create a simple event loop for initialization
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            
-            # Initialize shared WebSocket if not already initialized
-            if not self.shared_ws_manager.get_websocket_handler():
-                loop.run_until_complete(self.shared_ws_manager.initialize(self.data_config))
-            
-            # Get the shared WebSocket handler
-            self.data_system.websocket_handler = self.shared_ws_manager.get_websocket_handler()
-            
-            # Initialize the data system
-            loop.run_until_complete(self.data_system.initialize())
-            
-            # Start data collection - get BOTH historical and real-time
-            if self.data_config.FETCH_ALL_SYMBOLS:
-                self.log_message(f"📊 Collecting data for ALL available symbols...")
-            else:
-                self.log_message(f"📊 Collecting data for {len(self.symbols_to_collect)} symbols...")
-                
-            loop.run_until_complete(self.data_system.fetch_data_hybrid(
-                symbols=self.symbols_to_collect,  # None if FETCH_ALL_SYMBOLS is True
-                mode="full"  # Get both historical and real-time data
-            ))
-            
-            self.data_system_initialized = True
-            self.log_message("✅ Data collection system initialized with shared WebSocket!")
-            loop.close()
-            
-        except Exception as e:
-            self.log_message(f"❌ Error initializing data system: {e}")
-            #self.data_system_initialized = False
-
-    def get_current_price_from_data_system(self, symbol):
-        """Get current price from data collection system"""
-        if not self.data_system_initialized:
-            self.log_message("⚠️ Data system not initialized, using API fallback")
-            return self.get_current_price_from_api(symbol)
-        
-        try:
-            # Get the latest data from WebSocket (real-time)
-            data = self.data_system.get_data(symbol, "1", source="websocket")
-            
-            if data and len(data) > 0:
-                # Get the most recent candle's close price
-                latest_candle = data[-1]
-                return float(latest_candle['close'])
-            else:
-                # Fallback to memory data if no real-time data
-                data = self.data_system.get_data(symbol, "1", source="memory")
-                if data and len(data) > 0:
-                    latest_candle = data[-1]
-                    return float(latest_candle['close'])
-                else:
-                    self.log_message(f"⚠️ No data found for {symbol}, using API fallback")
-                    return self.get_current_price_from_api(symbol)
-                    
-        except Exception as e:
-            self.log_message(f"❌ Error getting price from data system: {e}")
-            return self.get_current_price_from_api(symbol)
 
     def get_current_price_from_api(self, symbol):
         """Fallback method to get price from API"""
@@ -738,3 +760,134 @@ class PaperTradingEngine:
         self.is_running = False
         self.trading_loop_active = False
         self.log_message("🛑 Paper trading stopped by user")
+
+    def process_symbol(self, symbol):
+        """Process a single symbol for trading signals"""
+        try:
+            # Get current price
+            current_price = self.get_current_price_from_api(symbol)
+            if not current_price or current_price == 0:
+                return
+            
+            self.log_message(f"💰 {symbol}: ${current_price}")
+            
+            # Get strategy signal
+            signal = self.generate_trading_signal(symbol, current_price)
+            
+            if signal == 'BUY':
+                self.execute_buy_signal(symbol, current_price)
+            elif signal == 'SELL':
+                self.execute_sell_signal(symbol, current_price)
+            else:
+                self.log_message(f"📊 Signal for {symbol}: HOLD")
+                
+        except Exception as e:
+            self.log_message(f"❌ Error processing {symbol}: {e}")
+
+    def execute_buy_signal(self, symbol, current_price):
+        """Execute a buy signal if conditions are met"""
+        # Check if we already have a position in this symbol
+        if symbol in self.current_positions:
+            self.log_message(f"⚠️ Already have position in {symbol}, skipping buy")
+            return
+        
+        # Check max positions limit
+        if len(self.current_positions) >= 3:  # Your max positions
+            self.log_message(f"⚠️ Max positions reached, skipping buy for {symbol}")
+            return
+        
+        # Calculate position size (2% risk per trade)
+        position_size = self.simulated_balance * 0.02
+        quantity = position_size / current_price
+        
+        # Execute the trade
+        self.log_message(f"🚀 BUY {symbol}: {quantity:.6f} units at ${current_price}")
+        
+        # Record the position
+        self.current_positions[symbol] = {
+            'quantity': quantity,
+            'entry_price': current_price,
+            'timestamp': datetime.now()
+        }
+        
+        # Update balance
+        self.simulated_balance -= position_size
+        
+        # Record the trade
+        self.trades.append({
+            'symbol': symbol,
+            'type': 'BUY',
+            'quantity': quantity,
+            'price': current_price,
+            'timestamp': datetime.now()
+        })
+
+    def execute_sell_signal(self, symbol, current_price):
+        """Execute a sell signal if we have a position"""
+        if symbol not in self.current_positions:
+            self.log_message(f"⚠️ No position in {symbol}, skipping sell")
+            return
+        
+        position = self.current_positions[symbol]
+        quantity = position['quantity']
+        entry_price = position['entry_price']
+        
+        # Calculate P&L
+        pnl = (current_price - entry_price) * quantity
+        pnl_percent = ((current_price - entry_price) / entry_price) * 100
+        
+        # Execute the sell
+        self.log_message(f"💰 SELL {symbol}: {quantity:.6f} units at ${current_price} (P&L: ${pnl:.2f}, {pnl_percent:+.2f}%)")
+        
+        # Remove position
+        del self.current_positions[symbol]
+        
+        # Update balance
+        self.simulated_balance += quantity * current_price
+        
+        # Record the trade
+        self.trades.append({
+            'symbol': symbol,
+            'type': 'SELL',
+            'quantity': quantity,
+            'price': current_price,
+            'pnl': pnl,
+            'timestamp': datetime.now()
+        })
+
+    def update_performance_display(self):
+        """Update performance display"""
+        try:
+            # Calculate total P&L
+            total_pnl = self.simulated_balance - self.initial_balance
+            
+            # Calculate win rate
+            winning_trades = 0
+            total_sell_trades = 0
+            
+            for trade in self.trades:
+                if trade['type'] == 'SELL' and 'pnl' in trade:
+                    total_sell_trades += 1
+                    if trade['pnl'] > 0:
+                        winning_trades += 1
+            
+            win_rate = (winning_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
+            
+            # Log performance
+            self.log_message(f"Performance: Balance=${self.simulated_balance:.2f}, PNL=${total_pnl:.2f}")
+            self.log_message(f"Open positions: {len(self.current_positions)}")
+            self.log_message(f"Total trades: {len(self.trades)}")
+            
+            # Update GUI if available
+            if self.performance_callback:
+                performance_data = {
+                    'balance': self.simulated_balance,
+                    'pnl': total_pnl,
+                    'win_rate': win_rate,
+                    'open_positions': len(self.current_positions),
+                    'total_trades': len(self.trades)
+                }
+                self.performance_callback(performance_data)
+                
+        except Exception as e:
+            self.log_message(f"❌ Error updating performance: {e}")
