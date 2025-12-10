@@ -1,8 +1,8 @@
 {
     "demo_accounts": {
-        "demo test": {
-            "api_key": "X7uL1XexvKB3ivL13W",
-            "api_secret": "gqVLFDHy9yLRavKyxe16t6yZAAeo5VposuIE",
+        "bybit_demo": {
+            "api_key": "D2OuDMLlSSZA2OkXSS",
+            "api_secret": "UUj7IbstSUJBOton9MM6S50jdxPPihaKZlFv",
             "description": "demo test",
             "testnet": true
         }
