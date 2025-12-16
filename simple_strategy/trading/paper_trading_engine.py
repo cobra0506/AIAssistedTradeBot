@@ -38,7 +38,10 @@ class PaperTradingEngine:
         self.strategy = None
         
         # Data feeder for strategy integration (keep for compatibility)
-        self.data_feeder = DataFeeder(data_dir='data')
+        # Get the absolute path to the project's root 'data' folder
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        data_dir = os.path.join(project_root, 'data')
+        self.data_feeder = DataFeeder(data_dir=data_dir)
         
         # GUI callback functions
         self.log_callback = log_callback
@@ -591,8 +594,9 @@ class PaperTradingEngine:
         try:
             import pandas as pd
             
-            # Construct file path
-            csv_file = os.path.join('data', f'{symbol}_1.csv')
+            # Construct the correct file path to the project's root 'data' folder
+            project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            csv_file = os.path.join(project_root, 'data', f'{symbol}_1.csv')
             
             if not os.path.exists(csv_file):
                 self.log_message(f"⚠️ CSV file not found for {symbol}: {csv_file}")
