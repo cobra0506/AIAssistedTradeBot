@@ -17,11 +17,11 @@ import asyncio
 #from shared_modules.data_collection.config import DataCollectionConfig
 
 class PaperTradingEngine:
-    def __init__(self, api_account, strategy_name, simulated_balance=1000, log_callback=None, status_callback=None, performance_callback=None):
+    def __init__(self, api_account, strategy_name, initial_balance=1000, log_callback=None, status_callback=None, performance_callback=None):
         self.api_account = api_account
         self.strategy_name = strategy_name
-        self.simulated_balance = float(simulated_balance)
-        self.initial_balance = self.simulated_balance
+        self.initial_balance = float(initial_balance)  # This is your working capital
+        self.working_capital = self.initial_balance  # Track working capital separately
         self.real_balance = 0.0
         self.balance_offset = 0.0
         
@@ -39,7 +39,7 @@ class PaperTradingEngine:
         
         # Data feeder for strategy integration (keep for compatibility)
         # Get the absolute path to the project's root 'data' folder
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         data_dir = os.path.join(project_root, 'data')
         self.data_feeder = DataFeeder(data_dir=data_dir)
         
@@ -52,7 +52,7 @@ class PaperTradingEngine:
         # Initialize this later to avoid recursion issues
         self.shared_data_access = None
 
-         # Add these missing attributes
+        # Add these missing attributes
         self.data_system_initialized = False
         self.is_running = False
         self.trading_loop_active = False
@@ -65,7 +65,7 @@ class PaperTradingEngine:
         self.log_message(f"Paper Trading Engine initialized:")
         self.log_message(f"  Account: {api_account}")
         self.log_message(f"  Strategy: {strategy_name}")
-        self.log_message(f"  Simulated Balance: ${simulated_balance}")
+        self.log_message(f"  Initial Balance: ${self.initial_balance}")
         
         # Load credentials and test connection
         self.load_credentials()
@@ -73,9 +73,28 @@ class PaperTradingEngine:
         
         # Get real balance and calculate offset
         self.real_balance = self.get_real_balance()
-        self.balance_offset = self.real_balance - self.simulated_balance
+        self.balance_offset = self.real_balance - self.initial_balance
         self.log_message(f"  Real Balance: ${self.real_balance}")
         self.log_message(f"  Balance Offset: ${self.balance_offset}")
+
+    def get_working_capital(self):
+        """Get current working capital for position sizing"""
+        # Calculate realized P&L
+        realized_pnl = 0.0
+        for trade in self.trades:
+            if trade['type'] == 'SELL':
+                # For simplicity, assume P&L is stored in the trade record
+                if 'pnl' in trade:
+                    realized_pnl += trade['pnl']
+        
+        # Working capital = initial - realized P&L
+        working_capital = self.initial_balance - realized_pnl
+        return working_capital
+
+    def update_working_capital_after_trade(self, trade_pnl):
+        """Update working capital after a trade"""
+        # Adjust working capital by the P&L of the trade
+        self.working_capital += trade_pnl
 
     def log_message(self, message):
         """Log message to both console and GUI if available"""
@@ -298,16 +317,38 @@ class PaperTradingEngine:
             quantity = self.calculate_position_size(symbol)
         
         try:
+            # Get current price to calculate minimum order value
+            current_price = self.get_current_price_from_api(symbol)
+            if current_price <= 0:
+                self.log_message(f"❌ Could not get current price for {symbol}")
+                return None
+            
+            # Calculate minimum order value (typically $1 minimum on Bybit)
+            min_order_value = 1.0
+            min_quantity = min_order_value / current_price
+            
+            # Use 5% of working capital for position sizing
+            working_capital = self.get_working_capital()
+            position_value = working_capital * 0.05
+            calculated_quantity = position_value / current_price
+            
+            # Use the larger of our calculated quantity or the minimum required
+            final_quantity = max(calculated_quantity, min_quantity)
+            
+            # Log what we're doing
+            self.log_message(f"📊 Position sizing: 5% of working capital = ${position_value:.2f}, calculated qty = {calculated_quantity:.6f}, min required = {min_quantity:.6f}")
+            
+            # Create order data with properly formatted quantity
             order_data = {
                 "category": "linear",
                 "symbol": symbol,
                 "side": "Buy",
                 "orderType": "Market",
-                "qty": str(quantity),
+                "qty": f"{final_quantity:.6f}",  # Format to 6 decimal places
                 "timeInForce": "GTC"
             }
             
-            self.log_message(f"📈 Placing BUY order for {quantity} {symbol}...")
+            self.log_message(f"📈 Placing BUY order for {final_quantity} {symbol}...")
             result, error = self.make_request("POST", "/v5/order/create", data=order_data)
             
             if error:
@@ -315,29 +356,28 @@ class PaperTradingEngine:
                 return None
             
             # Record the trade
-            balance_before = self.get_display_balance()
             trade = {
                 'timestamp': datetime.now().isoformat(),
                 'type': 'BUY',
                 'symbol': symbol,
-                'quantity': quantity,
+                'quantity': final_quantity,
                 'order_id': result.get('orderId'),
-                'status': result.get('orderStatus', 'Unknown'),
-                'balance_before': balance_before,
-                'balance_after': None
+                'status': result.get('orderStatus', 'Unknown')
             }
             
             self.trades.append(trade)
             self.current_positions[symbol] = {
-                'quantity': quantity,
+                'quantity': final_quantity,
                 'order_id': result.get('orderId'),
                 'entry_time': datetime.now().isoformat()
             }
             
+            # Update working capital after the trade
+            # For a buy order, we'll assume a small negative P&L for fees
+            estimated_cost = final_quantity * current_price * 1.001  # Rough estimate for fees
+            self.update_working_capital_after_trade(-estimated_cost)
+            
             self.log_message(f"✅ Buy order successful! Order ID: {result.get('orderId')}")
-            # Update balance (simple simulation - deduct estimated cost)
-            estimated_cost = quantity * 50000  # Simple estimate for testing
-            self.update_balance_after_trade(-estimated_cost)
             return trade
             
         except Exception as e:
@@ -354,16 +394,35 @@ class PaperTradingEngine:
             quantity = self.current_positions[symbol]['quantity']
         
         try:
+            # Get current price to calculate minimum order value
+            current_price = self.get_current_price_from_api(symbol)
+            if current_price <= 0:
+                self.log_message(f"❌ Could not get current price for {symbol}")
+                return None
+            
+            # Calculate minimum order value (typically $1 minimum on Bybit)
+            min_order_value = 1.0
+            min_quantity = min_order_value / current_price
+            
+            # Use 5% of working capital for position sizing
+            working_capital = self.get_working_capital()
+            position_value = working_capital * 0.05
+            calculated_quantity = position_value / current_price
+            
+            # Use the larger of our calculated quantity or the minimum required
+            final_quantity = max(calculated_quantity, min_quantity)
+            
+            # Create order data with properly formatted quantity
             order_data = {
                 "category": "linear",
                 "symbol": symbol,
                 "side": "Sell",
                 "orderType": "Market",
-                "qty": str(quantity),
+                "qty": f"{final_quantity:.6f}",  # Format to 6 decimal places
                 "timeInForce": "GTC"
             }
             
-            self.log_message(f"📉 Placing SELL order for {quantity} {symbol}...")
+            self.log_message(f"📉 Placing SELL order for {final_quantity} {symbol}...")
             result, error = self.make_request("POST", "/v5/order/create", data=order_data)
             
             if error:
@@ -371,25 +430,24 @@ class PaperTradingEngine:
                 return None
             
             # Record the trade
-            balance_before = self.get_display_balance()
             trade = {
                 'timestamp': datetime.now().isoformat(),
                 'type': 'SELL',
                 'symbol': symbol,
-                'quantity': quantity,
+                'quantity': final_quantity,
                 'order_id': result.get('orderId'),
-                'status': result.get('orderStatus', 'Unknown'),
-                'balance_before': balance_before,
-                'balance_after': None
+                'status': result.get('orderStatus', 'Unknown')
             }
             
             self.trades.append(trade)
             del self.current_positions[symbol]
             
+            # Update working capital after the trade
+            # For a sell order, we'll assume a small positive P&L after fees
+            estimated_revenue = final_quantity * current_price * 0.999  # Rough estimate after fees
+            self.update_working_capital_after_trade(estimated_revenue)
+            
             self.log_message(f"✅ Sell order successful! Order ID: {result.get('orderId')}")
-            # Update balance (simple simulation - add estimated revenue)
-            estimated_revenue = quantity * 55000  # Simple estimate for testing
-            self.update_balance_after_trade(estimated_revenue)
             return trade
             
         except Exception as e:
@@ -397,11 +455,25 @@ class PaperTradingEngine:
             return None
     
     def calculate_position_size(self, symbol):
-        """Calculate position size based on available simulated balance"""
-        # Use 1% of simulated balance for position sizing
-        position_value = self.get_display_balance() * 0.01
-        # Return a reasonable position size (0.001 is good for testing)
-        return 0.001
+        """Calculate position size based on working capital"""
+        try:
+            # Get current price
+            current_price = self.get_current_price_from_api(symbol)
+            if current_price <= 0:
+                return 0.001  # Default fallback
+            
+            # Use 5% of WORKING capital for position sizing
+            position_value = self.get_working_capital() * 0.05
+            calculated_quantity = position_value / current_price
+            
+            # Log what we're doing
+            self.log_message(f"📊 Position sizing: 5% of working capital = ${position_value:.2f}, calculated qty = {calculated_quantity:.6f}")
+            
+            return calculated_quantity
+            
+        except Exception as e:
+            self.log_message(f"❌ Error calculating position size: {e}")
+            return 0.001  # Default fallback
     
     def load_strategy(self):
         """Load the selected strategy with optimized parameters"""
@@ -411,28 +483,56 @@ class PaperTradingEngine:
             pm = ParameterManager()
             optimized_params = pm.get_parameters(self.strategy_name)
             
-            # Import the strategy file
-            strategy_module = __import__(f'simple_strategy.strategies.{self.strategy_name}', fromlist=[''])
+            # Import the strategy registry to get available strategies
+            from simple_strategy.strategies.strategy_registry import StrategyRegistry
+            registry = StrategyRegistry()
+            available_strategies = registry.get_all_strategies()
             
-            # Get the strategy function
-            if hasattr(strategy_module, 'create_strategy'):
+            # Check if the selected strategy exists
+            if self.strategy_name not in available_strategies:
+                self.log_message(f"Error: Unknown strategy '{self.strategy_name}'")
+                self.log_message(f"Available strategies: {list(available_strategies.keys())}")
+                return False
+            
+            # Get strategy info
+            strategy_info = available_strategies[self.strategy_name]
+            
+            # Get default parameters from strategy info
+            parameters_def = strategy_info.get('parameters', {})
+            default_params = {}
+            for param_name, param_info in parameters_def.items():
+                default_params[param_name] = param_info.get('default', 0)
+            
+            # Use optimized parameters if available, otherwise use defaults
+            current_params = optimized_params if optimized_params else default_params
+            
+            # Create the strategy using the create_func from the registry
+            if 'create_func' in strategy_info:
+                # Get symbols and timeframes - we'll use 1-minute data for paper trading
+                symbols = ['BTCUSDT']  # We'll update this per symbol in generate_strategy_signal
+                timeframes = ['1m']     # We're using 1-minute data
+                
+                # Create the strategy
+                self.strategy = strategy_info['create_func'](
+                    symbols=symbols,
+                    timeframes=timeframes,
+                    **current_params
+                )
+                
+                self.log_message(f"Strategy '{self.strategy_name}' loaded successfully")
                 if optimized_params:
-                    # Use optimized parameters
-                    self.strategy = strategy_module.create_strategy(**optimized_params)
-                    self.log_message(f"Strategy '{self.strategy_name}' loaded with optimized parameters")
-                    self.log_message(f"Last optimized: {optimized_params.get('last_optimized', 'Unknown')}")
+                    self.log_message(f"Using optimized parameters (last optimized: {optimized_params.get('last_optimized', 'Unknown')})")
                 else:
-                    # Use default parameters
-                    self.strategy = strategy_module.create_strategy()
-                    self.log_message(f"Strategy '{self.strategy_name}' loaded with default parameters")
-                    self.log_message("⚠️ Warning: No optimized parameters found")
+                    self.log_message("Using default parameters")
                 return True
             else:
-                self.log_message(f"Error: Strategy '{self.strategy_name}' missing create_strategy function")
+                self.log_message(f"Error: Strategy '{self.strategy_name}' missing create_func")
                 return False
-                
+                    
         except Exception as e:
             self.log_message(f"Error loading strategy: {e}")
+            import traceback
+            self.log_message(f"Traceback: {traceback.format_exc()}")
             return False
     
     def generate_trading_signal(self, symbol, current_price):
@@ -455,31 +555,43 @@ class PaperTradingEngine:
             # Get historical data for the symbol
             historical_data = self.get_historical_data_for_symbol(symbol)
             
-            if not historical_data or len(historical_data) < 50:
-                self.log_message(f"⚠️ Not enough historical data for {symbol}")
+            # Explicitly check for None or empty DataFrame
+            if historical_data is None:
+                self.log_message(f"⚠️ No historical data available for {symbol}")
                 return 'HOLD'
             
+            if isinstance(historical_data, pd.DataFrame) and historical_data.empty:
+                self.log_message(f"⚠️ Empty historical data for {symbol}")
+                return 'HOLD'
+            
+            if len(historical_data) < 50:
+                self.log_message(f"⚠️ Not enough historical data for {symbol} (only {len(historical_data)} rows)")
+                return 'HOLD'
+            
+            # Prepare data in the format expected by the strategy
+            # The strategy expects: Dict[str, Dict[str, pd.DataFrame]]
+            # where the first key is the symbol and the second key is the timeframe
+            strategy_data = {
+                symbol: {
+                    "1m": historical_data  # We're using 1-minute data
+                }
+            }
+            
             # Generate signals using the strategy
-            signals = self.strategy.generate_signals(historical_data)
-            
-            # Get the latest signal
-            if signals is not None and len(signals) > 0:
-                if isinstance(signals, pd.DataFrame):
-                    latest_signal = signals.iloc[-1]['signal']
-                elif isinstance(signals, dict) and 'signal' in signals:
-                    latest_signal = signals['signal']
-                else:
-                    latest_signal = signals[-1] if isinstance(signals, (list, np.ndarray)) else 0
+            try:
+                signals = self.strategy.generate_signals(strategy_data)
                 
-                # Convert signal to string
-                if latest_signal == 1:
-                    return 'BUY'
-                elif latest_signal == -1:
-                    return 'SELL'
+                # Extract the signal for our symbol and timeframe
+                if signals and symbol in signals and "1m" in signals[symbol]:
+                    signal = signals[symbol]["1m"]
+                    return signal
                 else:
+                    self.log_message(f"⚠️ No signal returned for {symbol}")
                     return 'HOLD'
-            
-            return 'HOLD'
+                    
+            except Exception as e:
+                self.log_message(f"❌ Error generating signals: {e}")
+                return 'HOLD'
             
         except Exception as e:
             self.log_message(f"❌ Error generating strategy signal for {symbol}: {e}")
@@ -491,7 +603,17 @@ class PaperTradingEngine:
             # Get historical data for RSI calculation
             historical_data = self.get_historical_data_for_symbol(symbol)
             
-            if not historical_data or len(historical_data) < 50:
+            # Explicitly check for None or empty DataFrame
+            if historical_data is None:
+                self.log_message(f"⚠️ No historical data available for {symbol}")
+                return 'HOLD'
+            
+            if isinstance(historical_data, pd.DataFrame) and historical_data.empty:
+                self.log_message(f"⚠️ Empty historical data for {symbol}")
+                return 'HOLD'
+            
+            if len(historical_data) < 50:
+                self.log_message(f"⚠️ Not enough historical data for {symbol} (only {len(historical_data)} rows)")
                 return 'HOLD'
             
             # Use your optimized parameters
@@ -561,33 +683,8 @@ class PaperTradingEngine:
             return np.array([50.0] * len(prices))  # Default to neutral
 
     def get_historical_data_for_symbol(self, symbol):
-        """Get historical data for a symbol"""
-        try:
-            # Calculate date range (last 7 days for RSI calculation)
-            end_date = datetime.now()
-            start_date = end_date - timedelta(days=7)
-            
-            # Format dates for data feeder
-            start_date_str = start_date.strftime('%Y-%m-%d')
-            end_date_str = end_date.strftime('%Y-%m-%d')
-            
-            # Try to get data from data feeder with required parameters
-            data = self.data_feeder.get_data_for_symbols(
-                symbols=[symbol], 
-                timeframes=['5m'],
-                start_date=start_date_str,
-                end_date=end_date_str
-            )
-            
-            if data and symbol in data:
-                return data[symbol]
-            
-            # Fallback: try to load CSV file directly
-            return self.load_csv_data(symbol)
-            
-        except Exception as e:
-            self.log_message(f"❌ Error getting historical data for {symbol}: {e}")
-            return None
+        """Get historical data for a symbol by loading directly from CSV."""
+        return self.load_csv_data(symbol)
 
     def load_csv_data(self, symbol):
         """Load data directly from CSV file as fallback"""
@@ -595,7 +692,7 @@ class PaperTradingEngine:
             import pandas as pd
             
             # Construct the correct file path to the project's root 'data' folder
-            project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
             csv_file = os.path.join(project_root, 'data', f'{symbol}_1.csv')
             
             if not os.path.exists(csv_file):
@@ -604,6 +701,16 @@ class PaperTradingEngine:
             
             # Load CSV file
             df = pd.read_csv(csv_file)
+            
+            # Ensure we have a DataFrame
+            if not isinstance(df, pd.DataFrame):
+                self.log_message(f"❌ Loaded data is not a DataFrame for {symbol}")
+                return None
+            
+            # Check if DataFrame is empty
+            if df.empty:
+                self.log_message(f"⚠️ Empty DataFrame for {symbol}")
+                return pd.DataFrame()  # Return empty DataFrame instead of None
             
             # Convert timestamp to datetime if needed
             if 'timestamp' in df.columns and 'datetime' not in df.columns:
@@ -653,40 +760,56 @@ class PaperTradingEngine:
         self.is_running = True
         self.log_message(f"Paper trading started for {self.strategy_name}")
         
-        # Get all perpetual symbols
-        all_symbols = self.get_all_perpetual_symbols()
+        # --- NEW: Get symbols and intervals directly from our local data files ---
+        symbols_to_monitor, available_intervals = self.get_symbols_and_intervals_from_data_dir()
         
-        # Filter to only tradable symbols
-        tradable_symbols = self.filter_tradable_symbols(all_symbols)
+        # For now, let's just use the 1-minute interval
+        if '1' not in available_intervals:
+            self.log_message("❌ No 1-minute interval data found. Cannot start.")
+            return
+            
+        # You can limit the number of symbols for testing if you want
+        # For example, to only test the first 50 symbols:
+        # symbols_to_monitor = symbols_to_monitor[:50]
+        self.log_message(f"📈 Monitoring {len(symbols_to_monitor)} symbols on the 1m interval.")
         
-        # Limit to first 50 for performance
-        symbols_to_monitor = tradable_symbols[:50]
-        self.log_message(f"📈 Monitoring {len(symbols_to_monitor)} symbols")
-        
-        # Main trading loop
+        # --- NEW: Main CSV-based trading loop ---
         loop_count = 0
-        max_loops = 1000  # Run indefinitely until stopped
-        
-        while self.is_running and loop_count < max_loops:
+
+        while self.is_running:
             loop_count += 1
             self.log_message(f"\n=== Trading Loop #{loop_count} ===")
             
-            # Process each symbol
+            # Process each symbol by reading from the latest CSV data
             for symbol in symbols_to_monitor:
                 try:
-                    self.process_symbol(symbol)
+                    # Get the latest data for the symbol from the CSV file
+                    historical_data = self.get_historical_data_for_symbol(symbol)
+                    
+                    if historical_data is not None and not historical_data.empty:
+                        # Generate a trading signal based on this fresh data
+                        signal = self.generate_trading_signal(symbol, historical_data.iloc[-1]['close'])
+                        
+                        if signal == 'BUY':
+                            self.execute_buy(symbol)
+                            # Add a small delay to avoid rate limiting
+                            time.sleep(0.1)
+                        elif signal == 'SELL':
+                            self.execute_sell(symbol)
+                            # Add a small delay to avoid rate limiting
+                            time.sleep(0.1)
+                        # No need to log 'HOLD' to keep the log cleaner
+
                 except Exception as e:
                     self.log_message(f"❌ Error processing {symbol}: {e}")
                     continue
             
-            # Update performance
+            # Update performance and wait for the next minute
             self.update_performance_display()
-            
-            # Wait before next loop
             if self.is_running:
-                self.log_message("⏳ Waiting 30 seconds before next loop...")
-                time.sleep(30)
-        
+                self.log_message("✅ Cycle complete. Waiting for the next minute...")
+                time.sleep(60) # Wait 60 seconds before the next cycle
+
         self.log_message("🛑 Trading loop ended")
     
     def update_performance(self):
@@ -788,104 +911,37 @@ class PaperTradingEngine:
         except Exception as e:
             self.log_message(f"❌ Error processing {symbol}: {e}")
 
-    def execute_buy_signal(self, symbol, current_price):
-        """Execute a buy signal if conditions are met"""
-        # Check if we already have a position in this symbol
-        if symbol in self.current_positions:
-            self.log_message(f"⚠️ Already have position in {symbol}, skipping buy")
-            return
-        
-        # Check max positions limit
-        if len(self.current_positions) >= 3:  # Your max positions
-            self.log_message(f"⚠️ Max positions reached, skipping buy for {symbol}")
-            return
-        
-        # Calculate position size (2% risk per trade)
-        position_size = self.simulated_balance * 0.02
-        quantity = position_size / current_price
-        
-        # Execute the trade
-        self.log_message(f"🚀 BUY {symbol}: {quantity:.6f} units at ${current_price}")
-        
-        # Record the position
-        self.current_positions[symbol] = {
-            'quantity': quantity,
-            'entry_price': current_price,
-            'timestamp': datetime.now()
-        }
-        
-        # Update balance
-        self.simulated_balance -= position_size
-        
-        # Record the trade
-        self.trades.append({
-            'symbol': symbol,
-            'type': 'BUY',
-            'quantity': quantity,
-            'price': current_price,
-            'timestamp': datetime.now()
-        })
-
-    def execute_sell_signal(self, symbol, current_price):
-        """Execute a sell signal if we have a position"""
-        if symbol not in self.current_positions:
-            self.log_message(f"⚠️ No position in {symbol}, skipping sell")
-            return
-        
-        position = self.current_positions[symbol]
-        quantity = position['quantity']
-        entry_price = position['entry_price']
-        
-        # Calculate P&L
-        pnl = (current_price - entry_price) * quantity
-        pnl_percent = ((current_price - entry_price) / entry_price) * 100
-        
-        # Execute the sell
-        self.log_message(f"💰 SELL {symbol}: {quantity:.6f} units at ${current_price} (P&L: ${pnl:.2f}, {pnl_percent:+.2f}%)")
-        
-        # Remove position
-        del self.current_positions[symbol]
-        
-        # Update balance
-        self.simulated_balance += quantity * current_price
-        
-        # Record the trade
-        self.trades.append({
-            'symbol': symbol,
-            'type': 'SELL',
-            'quantity': quantity,
-            'price': current_price,
-            'pnl': pnl,
-            'timestamp': datetime.now()
-        })
-
     def update_performance_display(self):
         """Update performance display"""
         try:
+            # Get working capital
+            working_capital = self.get_working_capital()
+            
             # Calculate total P&L
-            total_pnl = self.simulated_balance - self.initial_balance
+            initial_capital = self.initial_balance
+            total_pnl = working_capital - initial_capital
             
             # Calculate win rate
             winning_trades = 0
             total_sell_trades = 0
             
             for trade in self.trades:
-                if trade['type'] == 'SELL' and 'pnl' in trade:
+                if trade['type'] == 'SELL':
                     total_sell_trades += 1
-                    if trade['pnl'] > 0:
+                    if 'pnl' in trade and trade['pnl'] > 0:
                         winning_trades += 1
             
             win_rate = (winning_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
             
             # Log performance
-            self.log_message(f"Performance: Balance=${self.simulated_balance:.2f}, PNL=${total_pnl:.2f}")
+            self.log_message(f"Performance: Working Capital=${working_capital:.2f}, PNL=${total_pnl:.2f}")
             self.log_message(f"Open positions: {len(self.current_positions)}")
             self.log_message(f"Total trades: {len(self.trades)}")
             
             # Update GUI if available
             if self.performance_callback:
                 performance_data = {
-                    'balance': self.simulated_balance,
+                    'balance': working_capital,  # Use working capital
                     'pnl': total_pnl,
                     'win_rate': win_rate,
                     'open_positions': len(self.current_positions),
@@ -895,3 +951,46 @@ class PaperTradingEngine:
                 
         except Exception as e:
             self.log_message(f"❌ Error updating performance: {e}")
+
+    def get_symbols_and_intervals_from_data_dir(self):
+        """
+        Scans the data directory to find all available symbols and intervals.
+        This is a fast, reliable way to know what data we have locally.
+        """
+        start_time = time.time()
+        
+        # Get the absolute path to the project's root 'data' folder
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        data_dir = os.path.join(project_root, 'data')
+
+        symbols = set()
+        intervals = set()
+        file_count = 0
+
+        self.log_message(f"🔍 Scanning for symbols in {data_dir}...")
+
+        try:
+            for filename in os.listdir(data_dir):
+                if filename.endswith('.csv'):
+                    # Expected format: SYMBOL_INTERVAL.csv (e.g., BTCUSDT_1.csv)
+                    parts = filename[:-4].split('_') # Remove .csv and split by _
+                    if len(parts) == 2:
+                        symbol = parts[0]
+                        interval = parts[1]
+                        symbols.add(symbol)
+                        intervals.add(interval)
+                        file_count += 1
+        except FileNotFoundError:
+            self.log_message(f"❌ Error: Data directory not found at {data_dir}")
+            return [], []
+
+        end_time = time.time()
+        duration = end_time - start_time
+
+        # Log the statistics
+        self.log_message(f"✅ Scan complete in {duration:.2f} seconds.")
+        self.log_message(f"📊 Found {file_count} data files.")
+        self.log_message(f"📈 Found {len(symbols)} unique symbols: {', '.join(list(symbols)[:10])}...")
+        self.log_message(f"⏱️ Found {len(intervals)} unique intervals: {', '.join(sorted(list(intervals)))}")
+
+        return sorted(list(symbols)), sorted(list(intervals))
