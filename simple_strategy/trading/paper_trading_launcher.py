@@ -246,14 +246,79 @@ class PaperTradingLauncher:
         """Run the paper trading window"""
         self.root.mainloop()
 
+    def get_real_time_performance(self):
+        """Get real-time performance data from trading engine"""
+        try:
+            if hasattr(self, 'trading_engine') and self.trading_engine:
+                # Get working capital directly from engine
+                working_capital = self.trading_engine.get_working_capital()
+                
+                # Calculate P&L
+                initial_capital = self.simulated_balance
+                total_pnl = working_capital - initial_capital
+                
+                # Get open positions count
+                open_positions = len(self.trading_engine.current_positions) if hasattr(self.trading_engine, 'current_positions') else 0
+                
+                # Calculate completed trades (sells)
+                completed_trades = sum(1 for trade in self.trading_engine.trades if trade['type'] == 'SELL') if hasattr(self.trading_engine, 'trades') else 0
+                
+                # Calculate win rate
+                winning_trades = sum(1 for trade in self.trading_engine.trades if trade['type'] == 'SELL' and trade.get('pnl', 0) > 0) if hasattr(self.trading_engine, 'trades') else 0
+                win_rate = (winning_trades / completed_trades * 100) if completed_trades > 0 else 0
+                
+                return {
+                    'initial_balance': initial_capital,
+                    'current_balance': working_capital,
+                    'open_positions': open_positions,
+                    'closed_trades': completed_trades,
+                    'total_trades': len(self.trading_engine.trades) if hasattr(self.trading_engine, 'trades') else 0,
+                    'win_rate': win_rate,
+                    'total_pnl': total_pnl
+                }
+            else:
+                return None
+        except Exception as e:
+            print(f"Error getting real-time performance: {e}")
+            return None
+
     def update_performance_timer(self):
         """Update performance display every 5 seconds"""
         try:
-            self.update_performance()
+            # Try to get real-time performance data
+            real_time_data = self.get_real_time_performance()
+            
+            if real_time_data:
+                # Use real-time data
+                initial_balance = real_time_data['initial_balance']
+                current_balance = real_time_data['current_balance']
+                open_positions = real_time_data['open_positions']
+                closed_trades = real_time_data['closed_trades']
+                total_trades = real_time_data['total_trades']
+                win_rate = real_time_data['win_rate']
+                pnl = real_time_data['total_pnl']
+                
+                perf_text = f"""Initial Balance: ${initial_balance:.2f}
+                Current Balance: ${current_balance:.2f}
+                Open Positions: {open_positions}
+                Closed Trades: {closed_trades}
+                Total Trades: {total_trades}
+                Win Rate: {win_rate:.1f}%
+                Profit/Loss: ${pnl:.2f}"""
+            else:
+                # Fallback to the original method
+                self.update_performance()
+                return
+            
+            self.perf_text.delete(1.0, "end")
+            self.perf_text.insert(1.0, perf_text)
+            
             # Schedule next update
             self.root.after(5000, self.update_performance_timer)
         except Exception as e:
             print(f"Error in performance timer: {e}")
+            # Schedule next update even if there's an error
+            self.root.after(5000, self.update_performance_timer)
 
 if __name__ == "__main__":
     # Get parameters from command line or use defaults

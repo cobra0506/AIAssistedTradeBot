@@ -22,6 +22,7 @@ class PaperTradingEngine:
         self.strategy_name = strategy_name
         self.initial_balance = float(initial_balance)  # This is your working capital
         self.working_capital = self.initial_balance  # Track working capital separately
+        self.simulated_balance = float(initial_balance)
         self.real_balance = 0.0
         self.balance_offset = 0.0
         
@@ -56,6 +57,16 @@ class PaperTradingEngine:
         self.data_system_initialized = False
         self.is_running = False
         self.trading_loop_active = False
+
+        # Initialize symbol information cache
+        self.symbol_info_cache = {}
+        
+        # Load credentials and test connection
+        self.load_credentials()
+        self.test_connection()
+        
+        # Get all symbols information
+        self.get_all_symbols_info()
         
         # Use symbols from data collection config
         #from shared_modules.data_collection.config import DataCollectionConfig
@@ -77,6 +88,150 @@ class PaperTradingEngine:
         self.log_message(f"  Real Balance: ${self.real_balance}")
         self.log_message(f"  Balance Offset: ${self.balance_offset}")
 
+    def get_all_symbols_info(self):
+        """Get information for all symbols at once and cache it"""
+        try:
+            result, error = self.make_request("GET", "/v5/market/instruments-info", 
+                                            params={"category": "linear", "limit": 1000})
+            
+            if error:
+                self.log_message(f"❌ Error getting symbols info: {error}")
+                return False
+            
+            if result and 'list' in result and result['list']:
+                # Cache all symbol information
+                self.symbol_info_cache = {}
+                for symbol_info in result['list']:
+                    symbol = symbol_info.get('symbol', '')
+                    if symbol:
+                        self.symbol_info_cache[symbol] = symbol_info
+                
+                self.log_message(f"✅ Cached information for {len(self.symbol_info_cache)} symbols")
+                return True
+            else:
+                self.log_message("❌ No symbol information found")
+                return False
+                
+        except Exception as e:
+            self.log_message(f"❌ Error getting symbols info: {e}")
+            return False
+
+    def get_trading_rules(self, symbol):
+        """Get trading rules for a specific symbol"""
+        if symbol not in self.symbol_info_cache:
+            self.log_message(f"❌ Symbol {symbol} not found in cache")
+            return None
+        
+        symbol_info = self.symbol_info_cache[symbol]
+        
+        # Extract trading rules from lotSizeFilter and priceFilter
+        lot_size_filter = symbol_info.get('lotSizeFilter', {})
+        price_filter = symbol_info.get('priceFilter', {})
+        
+        rules = {
+            'min_order_qty': float(lot_size_filter.get('minOrderQty', '0')),
+            'max_order_qty': float(lot_size_filter.get('maxOrderQty', '0')),
+            'qty_step': float(lot_size_filter.get('qtyStep', '0')),
+            'min_notional_value': float(lot_size_filter.get('minNotionalValue', '0')),
+            'max_mkt_order_qty': float(lot_size_filter.get('maxMktOrderQty', '0')),
+            'price_tick': float(price_filter.get('tickSize', '0'))
+        }
+        
+        return rules
+
+    def format_quantity(self, quantity, qty_step):
+        """Format quantity according to the symbol's requirements"""
+        if qty_step <= 0:
+            return quantity
+        
+        # Calculate the number of decimal places needed
+        decimal_places = 0
+        step_str = f"{qty_step:.10f}".rstrip('0').rstrip('.')
+        if '.' in step_str:
+            decimal_places = len(step_str.split('.')[1])
+        
+        # Round to the correct number of decimal places
+        return round(quantity, decimal_places)
+
+    def calculate_valid_quantity(self, symbol, current_price, position_value):
+        """Calculate a valid quantity for a symbol based on trading rules"""
+        # Get trading rules for the symbol
+        rules = self.get_trading_rules(symbol)
+        if not rules:
+            self.log_message(f"❌ No trading rules found for {symbol}")
+            return None
+        
+        # Calculate the raw quantity
+        raw_quantity = position_value / current_price
+        
+        # Ensure the quantity meets the minimum notional value
+        min_qty_for_value = rules['min_notional_value'] / current_price
+        if raw_quantity < min_qty_for_value:
+            raw_quantity = min_qty_for_value
+        
+        # Round to the correct quantity step
+        steps = raw_quantity / rules['qty_step']
+        rounded_quantity = round(steps) * rules['qty_step']
+        
+        # Ensure the quantity is within the valid range
+        if rounded_quantity < rules['min_order_qty']:
+            rounded_quantity = rules['min_order_qty']
+        
+        if rounded_quantity > rules['max_order_qty']:
+            rounded_quantity = rules['max_order_qty']
+        
+        # Format the quantity correctly
+        formatted_quantity = self.format_quantity(rounded_quantity, rules['qty_step'])
+        
+        self.log_message(f"📊 Position sizing for {symbol}:")
+        self.log_message(f"   Desired value: ${position_value:.2f}")
+        self.log_message(f"   Current price: ${current_price:.6f}")
+        self.log_message(f"   Raw quantity: {raw_quantity:.6f}")
+        self.log_message(f"   Min qty for value: {min_qty_for_value:.6f}")
+        self.log_message(f"   Qty step: {rules['qty_step']}")
+        self.log_message(f"   Rounded quantity: {rounded_quantity:.6f}")
+        self.log_message(f"   Formatted quantity: {formatted_quantity:.6f}")
+        self.log_message(f"   Final order value: ${formatted_quantity * current_price:.2f}")
+        
+        return formatted_quantity
+
+    def set_leverage(self, symbol):
+        """Set appropriate leverage for a symbol"""
+        try:
+            # Get trading rules for the symbol
+            rules = self.get_trading_rules(symbol)
+            if not rules:
+                return False
+            
+            # Get max leverage from leverage filter
+            symbol_info = self.symbol_info_cache.get(symbol, {})
+            leverage_filter = symbol_info.get('leverageFilter', {})
+            max_leverage = float(leverage_filter.get('maxLeverage', 20))
+            
+            # Use a reasonable leverage (e.g., 5x or max allowed, whichever is lower)
+            leverage = min(5.0, max_leverage)
+            
+            # Set leverage
+            leverage_data = {
+                "category": "linear",
+                "symbol": symbol,
+                "buyLeverage": str(leverage),
+                "sellLeverage": str(leverage)
+            }
+            
+            result, error = self.make_request("POST", "/v5/position/set-leverage", data=leverage_data)
+            
+            if error:
+                self.log_message(f"⚠️ Could not set leverage for {symbol}: {error}")
+                return False
+            
+            self.log_message(f"✅ Leverage set to {leverage}x for {symbol}")
+            return True
+            
+        except Exception as e:
+            self.log_message(f"❌ Error setting leverage for {symbol}: {e}")
+            return False
+
     def get_working_capital(self):
         """Get current working capital for position sizing"""
         # Calculate realized P&L
@@ -90,6 +245,29 @@ class PaperTradingEngine:
         # Working capital = initial - realized P&L
         working_capital = self.initial_balance - realized_pnl
         return working_capital
+    
+    def check_position_timeouts(self):
+        """Check for positions that have been open too long and close them"""
+        if not self.current_positions:
+            return
+        
+        # Set timeout duration (e.g., 4 hours in seconds)
+        timeout_duration = 4 * 60 * 60  # 4 hours
+        
+        current_time = datetime.now()
+        positions_to_close = []
+        
+        for symbol, position in self.current_positions.items():
+            entry_time = datetime.fromisoformat(position['entry_time'])
+            time_open = (current_time - entry_time).total_seconds()
+            
+            if time_open > timeout_duration:
+                positions_to_close.append(symbol)
+                self.log_message(f"⏰ Position {symbol} timed out after {time_open/3600:.1f} hours")
+        
+        # Close timed out positions
+        for symbol in positions_to_close:
+            self.execute_sell(symbol)
 
     def update_working_capital_after_trade(self, trade_pnl):
         """Update working capital after a trade"""
@@ -312,31 +490,26 @@ class PaperTradingEngine:
         return tradable_symbols
     
     def execute_buy(self, symbol, quantity=None):
-        """Execute a buy order"""
-        if quantity is None:
-            quantity = self.calculate_position_size(symbol)
-        
+        """Execute a buy order with proper quantity formatting"""
         try:
-            # Get current price to calculate minimum order value
+            # Set leverage before placing the order
+            self.set_leverage(symbol)
+
+            # Get current price
             current_price = self.get_current_price_from_api(symbol)
             if current_price <= 0:
                 self.log_message(f"❌ Could not get current price for {symbol}")
                 return None
             
-            # Calculate minimum order value (typically $1 minimum on Bybit)
-            min_order_value = 1.0
-            min_quantity = min_order_value / current_price
-            
             # Use 5% of working capital for position sizing
             working_capital = self.get_working_capital()
             position_value = working_capital * 0.05
-            calculated_quantity = position_value / current_price
             
-            # Use the larger of our calculated quantity or the minimum required
-            final_quantity = max(calculated_quantity, min_quantity)
-            
-            # Log what we're doing
-            self.log_message(f"📊 Position sizing: 5% of working capital = ${position_value:.2f}, calculated qty = {calculated_quantity:.6f}, min required = {min_quantity:.6f}")
+            # Calculate a valid quantity based on trading rules
+            final_quantity = self.calculate_valid_quantity(symbol, current_price, position_value)
+            if final_quantity is None:
+                self.log_message(f"❌ Could not calculate valid quantity for {symbol}")
+                return None
             
             # Create order data with properly formatted quantity
             order_data = {
@@ -344,7 +517,7 @@ class PaperTradingEngine:
                 "symbol": symbol,
                 "side": "Buy",
                 "orderType": "Market",
-                "qty": f"{final_quantity:.6f}",  # Format to 6 decimal places
+                "qty": str(final_quantity),  # Use the formatted quantity
                 "timeInForce": "GTC"
             }
             
@@ -373,7 +546,6 @@ class PaperTradingEngine:
             }
             
             # Update working capital after the trade
-            # For a buy order, we'll assume a small negative P&L for fees
             estimated_cost = final_quantity * current_price * 1.001  # Rough estimate for fees
             self.update_working_capital_after_trade(-estimated_cost)
             
@@ -383,9 +555,9 @@ class PaperTradingEngine:
         except Exception as e:
             self.log_message(f"❌ Error executing buy order: {e}")
             return None
-    
+
     def execute_sell(self, symbol, quantity=None):
-        """Execute a sell order"""
+        """Execute a sell order with proper quantity formatting"""
         if symbol not in self.current_positions:
             self.log_message(f"❌ No position found for {symbol}")
             return None
@@ -394,23 +566,20 @@ class PaperTradingEngine:
             quantity = self.current_positions[symbol]['quantity']
         
         try:
-            # Get current price to calculate minimum order value
+            # Get current price
             current_price = self.get_current_price_from_api(symbol)
             if current_price <= 0:
                 self.log_message(f"❌ Could not get current price for {symbol}")
                 return None
             
-            # Calculate minimum order value (typically $1 minimum on Bybit)
-            min_order_value = 1.0
-            min_quantity = min_order_value / current_price
+            # Get trading rules for the symbol
+            rules = self.get_trading_rules(symbol)
+            if not rules:
+                self.log_message(f"❌ No trading rules found for {symbol}")
+                return None
             
-            # Use 5% of working capital for position sizing
-            working_capital = self.get_working_capital()
-            position_value = working_capital * 0.05
-            calculated_quantity = position_value / current_price
-            
-            # Use the larger of our calculated quantity or the minimum required
-            final_quantity = max(calculated_quantity, min_quantity)
+            # Format the quantity according to the symbol's requirements
+            final_quantity = self.format_quantity(quantity, rules['qty_step'])
             
             # Create order data with properly formatted quantity
             order_data = {
@@ -418,7 +587,7 @@ class PaperTradingEngine:
                 "symbol": symbol,
                 "side": "Sell",
                 "orderType": "Market",
-                "qty": f"{final_quantity:.6f}",  # Format to 6 decimal places
+                "qty": str(final_quantity),  # Use the formatted quantity
                 "timeInForce": "GTC"
             }
             
@@ -443,7 +612,6 @@ class PaperTradingEngine:
             del self.current_positions[symbol]
             
             # Update working capital after the trade
-            # For a sell order, we'll assume a small positive P&L after fees
             estimated_revenue = final_quantity * current_price * 0.999  # Rough estimate after fees
             self.update_working_capital_after_trade(estimated_revenue)
             
@@ -540,7 +708,14 @@ class PaperTradingEngine:
         try:
             # First try to use the loaded strategy
             if self.strategy and hasattr(self.strategy, 'generate_signals'):
-                return self.generate_strategy_signal(symbol)
+                signal = self.generate_strategy_signal(symbol)
+                
+                # If we get a SELL signal but don't have a position, change to HOLD
+                if signal == 'SELL' and symbol not in self.current_positions:
+                    self.log_message(f"⚠️ SELL signal for {symbol} but no position open, changing to HOLD")
+                    return 'HOLD'
+                
+                return signal
             
             # Fallback to RSI strategy
             return self.generate_rsi_signal(symbol, current_price)
@@ -779,7 +954,10 @@ class PaperTradingEngine:
         while self.is_running:
             loop_count += 1
             self.log_message(f"\n=== Trading Loop #{loop_count} ===")
-            
+           
+            # Add this line - check for position timeouts first
+            self.check_position_timeouts()
+
             # Process each symbol by reading from the latest CSV data
             for symbol in symbols_to_monitor:
                 try:
@@ -812,7 +990,7 @@ class PaperTradingEngine:
 
         self.log_message("🛑 Trading loop ended")
     
-    def update_performance(self):
+    '''def update_performance(self):
         """Update performance metrics with real data from Bybit"""
         try:
             # Get real balance from Bybit
@@ -834,7 +1012,64 @@ class PaperTradingEngine:
             
         except Exception as e:
             self.log_message(f"Error updating performance: {e}")
-            return None
+            return None'''
+    
+    def update_performance(self):
+        """Update performance display"""
+        try:
+            if hasattr(self, 'trading_engine') and self.trading_engine:
+                # Get real performance data from trading engine
+                performance = self.trading_engine.get_performance_summary()
+                
+                # Check if performance data is valid
+                if performance and 'error' not in performance:
+                    initial_balance = performance.get('initial_balance', self.simulated_balance)
+                    current_balance = performance.get('current_balance', self.simulated_balance)
+                    total_trades = performance.get('total_trades', 0)
+                    open_positions = performance.get('open_positions', 0)
+                    win_rate = performance.get('win_rate', 0.0)
+                    pnl = performance.get('total_pnl', 0.0)
+                    
+                    # Calculate closed trades (total trades / 2, assuming each complete trade has a buy and sell)
+                    closed_trades = total_trades // 2 if total_trades > 0 else 0
+                    
+                    perf_text = f"""Initial Balance: ${initial_balance:.2f}
+                    Current Balance: ${current_balance:.2f}
+                    Open Positions: {open_positions}
+                    Closed Trades: {closed_trades}
+                    Total Trades: {total_trades}
+                    Win Rate: {win_rate:.1f}%
+                    Profit/Loss: ${pnl:.2f}"""
+                else:
+                    # Fallback to dummy data if engine not available or error
+                    perf_text = f"""Initial Balance: ${self.simulated_balance:.2f}
+                    Current Balance: ${self.simulated_balance:.2f}
+                    Open Positions: 0
+                    Closed Trades: 0
+                    Total Trades: 0
+                    Win Rate: 0.0%
+                    Profit/Loss: $0.00"""
+            else:
+                # Fallback to dummy data if engine not available
+                perf_text = f"""Initial Balance: ${self.simulated_balance:.2f}
+                Current Balance: ${self.simulated_balance:.2f}
+                Open Positions: 0
+                Closed Trades: 0
+                Total Trades: 0
+                Win Rate: 0.0%
+                Profit/Loss: $0.00"""
+            
+            self.perf_text.delete(1.0, "end")
+            self.perf_text.insert(1.0, perf_text)
+            
+        except Exception as e:
+            print(f"Error updating performance: {e}")
+            # Show error in performance display
+            error_text = f"""Error updating performance: {str(e)}
+    Please check the trading log for details."""
+            
+            self.perf_text.delete(1.0, "end")
+            self.perf_text.insert(1.0, error_text)
 
     def get_current_price_from_api(self, symbol):
         """Fallback method to get price from API"""
@@ -945,7 +1180,8 @@ class PaperTradingEngine:
                     'pnl': total_pnl,
                     'win_rate': win_rate,
                     'open_positions': len(self.current_positions),
-                    'total_trades': len(self.trades)
+                    'total_trades': len(self.trades),
+                    'closed_trades': total_sell_trades  # Number of completed trades
                 }
                 self.performance_callback(performance_data)
                 
