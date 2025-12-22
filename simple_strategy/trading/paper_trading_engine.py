@@ -1,3 +1,5 @@
+#paper_trading_engine.py
+
 import os
 import json
 import time
@@ -17,7 +19,7 @@ import asyncio
 #from shared_modules.data_collection.config import DataCollectionConfig
 
 class PaperTradingEngine:
-    def __init__(self, api_account, strategy_name, initial_balance=1000, log_callback=None, status_callback=None, performance_callback=None):
+    def __init__(self, api_account, strategy_name, initial_balance=1000, log_callback=None, status_callback=None, performance_callback=None, max_positions=2000, stop_trading_at_percentage=None):
         self.api_account = api_account
         self.strategy_name = strategy_name
         self.initial_balance = float(initial_balance)  # This is your working capital
@@ -25,6 +27,10 @@ class PaperTradingEngine:
         self.simulated_balance = float(initial_balance)
         self.real_balance = 0.0
         self.balance_offset = 0.0
+        
+        # Optional trading controls
+        self.max_positions = max_positions
+        self.stop_trading_at_percentage = stop_trading_at_percentage  # None or percentage (e.g., 10 for 10%)
         
         # API configuration - using the EXACT working configuration
         self.api_key = None
@@ -68,26 +74,21 @@ class PaperTradingEngine:
         # Get all symbols information
         self.get_all_symbols_info()
         
-        # Use symbols from data collection config
-        #from shared_modules.data_collection.config import DataCollectionConfig
-        #self.data_config = DataCollectionConfig()
-        #self.symbols_to_collect = self.data_config.SYMBOLS if not self.data_config.FETCH_ALL_SYMBOLS else None
+        # Get real balance and calculate offset AFTER connecting
+        balance_info = self.get_real_balance() # This now returns a dictionary
+        self.real_balance = balance_info['available_balance'] # Use the available balance for the offset
+        self.balance_offset = self.real_balance - self.simulated_balance
         
         self.log_message(f"Paper Trading Engine initialized:")
         self.log_message(f"  Account: {api_account}")
         self.log_message(f"  Strategy: {strategy_name}")
-        self.log_message(f"  Initial Balance: ${self.initial_balance}")
-        
-        # Load credentials and test connection
-        self.load_credentials()
-        self.test_connection()
-        
-        # Get real balance and calculate offset
-        self.real_balance = self.get_real_balance()
-        self.balance_offset = self.real_balance - self.initial_balance
-        self.log_message(f"  Real Balance: ${self.real_balance}")
+        self.log_message(f"  Initial Simulated Balance: ${self.initial_balance}")
+        self.log_message(f"  Real Bybit Available Balance: ${self.real_balance}")
         self.log_message(f"  Balance Offset: ${self.balance_offset}")
-
+        self.log_message(f"  Max Positions: {self.max_positions}")
+        if self.stop_trading_at_percentage:
+            self.log_message(f"  Stop Trading At: {self.stop_trading_at_percentage}% of initial balance")
+            
     def get_all_symbols_info(self):
         """Get information for all symbols at once and cache it"""
         try:
@@ -234,17 +235,26 @@ class PaperTradingEngine:
 
     def get_working_capital(self):
         """Get current working capital for position sizing"""
-        # Calculate realized P&L
-        realized_pnl = 0.0
-        for trade in self.trades:
-            if trade['type'] == 'SELL':
-                # For simplicity, assume P&L is stored in the trade record
-                if 'pnl' in trade:
-                    realized_pnl += trade['pnl']
+        # Calculate the value of all open positions
+        open_positions_value = 0.0
+        for symbol, position in self.current_positions.items():
+            try:
+                current_price = self.get_current_price_from_api(symbol)
+                if current_price > 0:
+                    position_value = position['quantity'] * current_price
+                    open_positions_value += position_value
+            except Exception as e:
+                self.log_message(f"❌ Error calculating position value for {symbol}: {e}")
         
-        # Working capital = initial - realized P&L
-        working_capital = self.initial_balance - realized_pnl
-        return working_capital
+        # Available capital = simulated balance - value of open positions
+        available_capital = self.simulated_balance - open_positions_value
+        
+        self.log_message(f"💰 Capital Analysis:")
+        self.log_message(f"   Simulated Balance: ${self.simulated_balance:.2f}")
+        self.log_message(f"   Open Positions Value: ${open_positions_value:.2f}")
+        self.log_message(f"   Available Capital: ${available_capital:.2f}")
+        
+        return available_capital
     
     def check_position_timeouts(self):
         """Check for positions that have been open too long and close them"""
@@ -425,21 +435,29 @@ class PaperTradingEngine:
         return self.get_display_balance()
 
     def get_real_balance(self):
-        """Get actual balance from Bybit"""
+        """Get actual available and margin balances from Bybit"""
         try:
             result, error = self.make_request("GET", "/v5/account/wallet-balance", params={"accountType": "UNIFIED"})
             if error:
                 self.log_message(f"❌ Error getting real balance: {error}")
-                return 0
+                return {'available_balance': 0.0, 'margin_balance': 0.0}
+            
             if result and 'list' in result and result['list']:
                 wallet_data = result['list'][0]
-                balance = float(wallet_data.get('totalAvailableBalance', '0'))
-                return balance
+                # Bybit API provides these fields
+                available_balance = float(wallet_data.get('totalAvailableBalance', '0'))
+                margin_balance = float(wallet_data.get('totalMarginBalance', '0'))
+                
+                return {
+                    'available_balance': available_balance,
+                    'margin_balance': margin_balance
+                }
             else:
-                return 0
+                return {'available_balance': 0.0, 'margin_balance': 0.0}
+                
         except Exception as e:
             self.log_message(f"❌ Error getting real balance: {e}")
-            return 0
+            return {'available_balance': 0.0, 'margin_balance': 0.0}
 
     def get_display_balance(self):
         """Get the simulated balance for display"""
@@ -489,7 +507,7 @@ class PaperTradingEngine:
         self.log_message(f"📊 Filtered {len(all_symbols)} symbols down to {len(tradable_symbols)} tradable symbols")
         return tradable_symbols
     
-    def execute_buy(self, symbol, quantity=None):
+    '''def execute_buy(self, symbol, quantity=None):
         """Execute a buy order with proper quantity formatting"""
         try:
             # Set leverage before placing the order
@@ -501,14 +519,37 @@ class PaperTradingEngine:
                 self.log_message(f"❌ Could not get current price for {symbol}")
                 return None
             
-            # Use 5% of working capital for position sizing
-            working_capital = self.get_working_capital()
-            position_value = working_capital * 0.05
+            # Calculate the minimum position value based on trading rules
+            rules = self.get_trading_rules(symbol)
+            if not rules:
+                self.log_message(f"❌ No trading rules found for {symbol}")
+                return None
+            
+            # Calculate minimum required capital for this symbol
+            min_qty = rules['min_order_qty']
+            min_position_value = min_qty * current_price
+            
+            # Check if we have enough simulated balance for this position
+            if self.simulated_balance < min_position_value:
+                self.log_message(f"❌ Insufficient balance for {symbol}: Need ${min_position_value:.2f}, Have ${self.simulated_balance:.2f}")
+                return None
+            
+            # Use 5% of simulated balance for position sizing
+            position_value = self.simulated_balance * 0.05
+            
+            # Ensure we meet minimum position requirements
+            position_value = max(position_value, min_position_value)
             
             # Calculate a valid quantity based on trading rules
             final_quantity = self.calculate_valid_quantity(symbol, current_price, position_value)
             if final_quantity is None:
                 self.log_message(f"❌ Could not calculate valid quantity for {symbol}")
+                return None
+            
+            # Final check: ensure we can afford this position
+            actual_position_cost = final_quantity * current_price
+            if actual_position_cost > self.simulated_balance:
+                self.log_message(f"❌ Position too expensive: ${actual_position_cost:.2f} > ${self.simulated_balance:.2f}")
                 return None
             
             # Create order data with properly formatted quantity
@@ -521,12 +562,16 @@ class PaperTradingEngine:
                 "timeInForce": "GTC"
             }
             
-            self.log_message(f"📈 Placing BUY order for {final_quantity} {symbol}...")
+            self.log_message(f"📈 Placing BUY order for {final_quantity} {symbol} (cost: ${actual_position_cost:.2f})...")
             result, error = self.make_request("POST", "/v5/order/create", data=order_data)
             
             if error:
                 self.log_message(f"❌ Buy order failed: {error}")
                 return None
+            
+            # Update simulated balance (deduct the cost)
+            self.simulated_balance -= actual_position_cost
+            self.log_message(f"💰 Simulated balance after buy: ${self.simulated_balance:.2f} (deducted ${actual_position_cost:.2f})")
             
             # Record the trade
             trade = {
@@ -535,19 +580,27 @@ class PaperTradingEngine:
                 'symbol': symbol,
                 'quantity': final_quantity,
                 'order_id': result.get('orderId'),
-                'status': result.get('orderStatus', 'Unknown')
+                'status': result.get('orderStatus', 'Unknown'),
+                'balance_after': self.simulated_balance,
+                'position_cost': actual_position_cost
             }
             
             self.trades.append(trade)
             self.current_positions[symbol] = {
                 'quantity': final_quantity,
                 'order_id': result.get('orderId'),
-                'entry_time': datetime.now().isoformat()
+                'entry_time': datetime.now().isoformat(),
+                'entry_price': current_price,
+                'cost': actual_position_cost
             }
             
             # Update working capital after the trade
-            estimated_cost = final_quantity * current_price * 1.001  # Rough estimate for fees
+            estimated_cost = actual_position_cost * 1.001  # Rough estimate for fees
             self.update_working_capital_after_trade(-estimated_cost)
+            
+            # Update GUI if available
+            if self.performance_callback:
+                self.update_performance_display()
             
             self.log_message(f"✅ Buy order successful! Order ID: {result.get('orderId')}")
             return trade
@@ -556,7 +609,145 @@ class PaperTradingEngine:
             self.log_message(f"❌ Error executing buy order: {e}")
             return None
 
-    def execute_sell(self, symbol, quantity=None):
+    def should_continue_trading(self):
+        """Check if trading should continue based on balance and optional settings"""
+        # Check if we've reached the maximum number of open positions
+        max_positions = getattr(self, 'max_positions', 20)  # Default to 20 if not set
+        if len(self.current_positions) >= max_positions:
+            self.log_message(f"🛑 Max positions reached: {len(self.current_positions)} >= {max_positions}")
+            return False
+        
+        # Optional: Check if balance is below a percentage threshold (if enabled)
+        if hasattr(self, 'stop_trading_at_percentage') and self.stop_trading_at_percentage:
+            min_balance = self.initial_balance * (self.stop_trading_at_percentage / 100)
+            if self.simulated_balance < min_balance:
+                self.log_message(f"🛑 Balance below threshold: ${self.simulated_balance:.2f} < ${min_balance:.2f} ({self.stop_trading_at_percentage}%)")
+                return False
+        
+        return True'''
+    
+    # In simple_strategy/trading/paper_trading_engine.py
+
+def execute_buy(self, symbol, quantity=None):
+    """Execute a buy order with proper quantity formatting"""
+    try:
+        # Set leverage before placing the order
+        self.set_leverage(symbol)
+
+        # Get current price
+        current_price = self.get_current_price_from_api(symbol)
+        if current_price <= 0:
+            self.log_message(f"❌ Could not get current price for {symbol}")
+            return None
+        
+        # Calculate the minimum position value based on trading rules
+        rules = self.get_trading_rules(symbol)
+        if not rules:
+            self.log_message(f"❌ No trading rules found for {symbol}")
+            return None
+        
+        # Calculate minimum required capital for this symbol
+        min_qty = rules['min_order_qty']
+        min_position_value = min_qty * current_price
+        
+        # Check if we have enough simulated balance for this position
+        if self.simulated_balance < min_position_value:
+            self.log_message(f"❌ Insufficient balance for {symbol}: Need ${min_position_value:.2f}, Have ${self.simulated_balance:.2f}")
+            return None
+        
+        # Use 5% of simulated balance for position sizing
+        position_value = self.simulated_balance * 0.05
+        
+        # Ensure we meet minimum position requirements
+        position_value = max(position_value, min_position_value)
+        
+        # Calculate a valid quantity based on trading rules
+        final_quantity = self.calculate_valid_quantity(symbol, current_price, position_value)
+        if final_quantity is None:
+            self.log_message(f"❌ Could not calculate valid quantity for {symbol}")
+            return None
+        
+        # Final check: ensure we can afford this position
+        actual_position_cost = final_quantity * current_price
+        if actual_position_cost > self.simulated_balance:
+            self.log_message(f"❌ Position too expensive: ${actual_position_cost:.2f} > ${self.simulated_balance:.2f}")
+            return None
+        
+        # Create order data with properly formatted quantity
+        order_data = {
+            "category": "linear",
+            "symbol": symbol,
+            "side": "Buy",
+            "orderType": "Market",
+            "qty": str(final_quantity),
+            "timeInForce": "GTC"
+        }
+        
+        self.log_message(f"📈 Placing BUY order for {final_quantity} {symbol} (cost: ${actual_position_cost:.2f})...")
+        result, error = self.make_request("POST", "/v5/order/create", data=order_data)
+        
+        if error:
+            self.log_message(f"❌ Buy order failed: {error}")
+            return None
+        
+        # Wait a moment for the trade to settle
+        time.sleep(1)
+        
+        # Get current real balance after the trade
+        current_real_balance = self.get_real_balance()
+        
+        # FIX: Extract the available balance from the dictionary
+        real_available_balance = current_real_balance['available_balance']
+        
+        # Calculate new simulated balance based on real balance
+        new_simulated_balance = real_available_balance - self.balance_offset
+        
+        # Calculate P&L for this trade
+        old_simulated_balance = self.simulated_balance
+        trade_pnl = new_simulated_balance - old_simulated_balance
+        
+        # Update simulated balance
+        self.simulated_balance = new_simulated_balance
+        self.log_message(f"💰 Simulated balance after buy: ${self.simulated_balance:.2f} (P&L: ${trade_pnl:.2f})")
+        self.log_message(f"📊 Real balance: ${real_available_balance:.2f}, Offset: ${self.balance_offset:.2f}")
+        
+        # Record the trade
+        trade = {
+            'timestamp': datetime.now().isoformat(),
+            'type': 'BUY',
+            'symbol': symbol,
+            'quantity': final_quantity,
+            'order_id': result.get('orderId'),
+            'status': result.get('orderStatus', 'Unknown'),
+            'balance_before': old_simulated_balance,
+            'balance_after': self.simulated_balance,
+            'pnl': trade_pnl
+        }
+        
+        self.trades.append(trade)
+        self.current_positions[symbol] = {
+            'quantity': final_quantity,
+            'order_id': result.get('orderId'),
+            'entry_time': datetime.now().isoformat(),
+            'entry_price': current_price,
+            'cost': actual_position_cost
+        }
+        
+        # Update working capital after the trade
+        self.update_working_capital_after_trade(trade_pnl)
+        
+        # Update GUI if available
+        if self.performance_callback:
+            self.update_performance_display()
+        
+        self.log_message(f"✅ Buy order successful! Order ID: {result.get('orderId')}")
+        return trade
+        
+    except Exception as e:
+        self.log_message(f"❌ Error executing buy order: {e}")
+        return None
+
+    '''def execute_sell(self, symbol, quantity=None):
         """Execute a sell order with proper quantity formatting"""
         if symbol not in self.current_positions:
             self.log_message(f"❌ No position found for {symbol}")
@@ -598,14 +789,31 @@ class PaperTradingEngine:
                 self.log_message(f"❌ Sell order failed: {error}")
                 return None
             
-            # Record the trade
+            # Get current real balance after the trade
+            current_real_balance = self.get_real_balance()
+            
+            # Calculate new simulated balance based on real balance
+            new_simulated_balance = current_real_balance - self.balance_offset
+            
+            # Calculate P&L for this trade
+            old_simulated_balance = self.simulated_balance
+            trade_pnl = new_simulated_balance - old_simulated_balance
+            
+            # Update simulated balance
+            self.simulated_balance = new_simulated_balance
+            self.log_message(f"💰 Simulated balance after sell: ${self.simulated_balance:.2f} (P&L: ${trade_pnl:.2f})")
+            
+            # Record the trade with P&L
             trade = {
                 'timestamp': datetime.now().isoformat(),
                 'type': 'SELL',
                 'symbol': symbol,
                 'quantity': final_quantity,
                 'order_id': result.get('orderId'),
-                'status': result.get('orderStatus', 'Unknown')
+                'status': result.get('orderStatus', 'Unknown'),
+                'balance_before': old_simulated_balance,
+                'balance_after': self.simulated_balance,
+                'pnl': trade_pnl
             }
             
             self.trades.append(trade)
@@ -614,6 +822,111 @@ class PaperTradingEngine:
             # Update working capital after the trade
             estimated_revenue = final_quantity * current_price * 0.999  # Rough estimate after fees
             self.update_working_capital_after_trade(estimated_revenue)
+            
+            # Update GUI if available
+            if self.performance_callback:
+                self.update_performance_display()
+            
+            self.log_message(f"✅ Sell order successful! Order ID: {result.get('orderId')}")
+            return trade
+            
+        except Exception as e:
+            self.log_message(f"❌ Error executing sell order: {e}")
+            return None'''
+    
+    # In simple_strategy/trading/paper_trading_engine.py
+
+    def execute_sell(self, symbol, quantity=None):
+        """Execute a sell order with proper quantity formatting"""
+        if symbol not in self.current_positions:
+            self.log_message(f"❌ No position found for {symbol}")
+            return None
+        
+        if quantity is None:
+            quantity = self.current_positions[symbol]['quantity']
+        
+        try:
+            # Get current price
+            current_price = self.get_current_price_from_api(symbol)
+            if current_price <= 0:
+                self.log_message(f"❌ Could not get current price for {symbol}")
+                return None
+            
+            # Get trading rules for the symbol
+            rules = self.get_trading_rules(symbol)
+            if not rules:
+                self.log_message(f"❌ No trading rules found for {symbol}")
+                return None
+            
+            # Format the quantity according to the symbol's requirements
+            final_quantity = self.format_quantity(quantity, rules['qty_step'])
+            
+            # Create order data with properly formatted quantity
+            order_data = {
+                "category": "linear",
+                "symbol": symbol,
+                "side": "Sell",
+                "orderType": "Market",
+                "qty": str(final_quantity),
+                "timeInForce": "GTC"
+            }
+            
+            self.log_message(f"📉 Placing SELL order for {final_quantity} {symbol}...")
+            result, error = self.make_request("POST", "/v5/order/create", data=order_data)
+            
+            if error:
+                self.log_message(f"❌ Sell order failed: {error}")
+                return None
+            
+            # Wait a moment for the trade to settle
+            time.sleep(1)
+            
+            # Get current real balance after the trade
+            current_real_balance = self.get_real_balance()
+            
+            # FIX: Extract the available balance from the dictionary
+            real_available_balance = current_real_balance['available_balance']
+            
+            # Calculate new simulated balance based on real balance
+            new_simulated_balance = real_available_balance - self.balance_offset
+            
+            # Calculate P&L for this trade
+            old_simulated_balance = self.simulated_balance
+            trade_pnl = new_simulated_balance - old_simulated_balance
+            
+            # Update simulated balance
+            self.simulated_balance = new_simulated_balance
+            self.log_message(f"💰 Simulated balance after sell: ${self.simulated_balance:.2f} (P&L: ${trade_pnl:.2f})")
+            self.log_message(f"📊 Real balance: ${real_available_balance:.2f}, Offset: ${self.balance_offset:.2f}")
+            
+            # Calculate position duration in minutes
+            entry_time = datetime.fromisoformat(self.current_positions[symbol]['entry_time'])
+            exit_time = datetime.now()
+            position_duration = (exit_time - entry_time).total_seconds() / 60  # Convert to minutes
+            
+            # Record the trade with P&L and position duration
+            trade = {
+                'timestamp': datetime.now().isoformat(),
+                'type': 'SELL',
+                'symbol': symbol,
+                'quantity': final_quantity,
+                'order_id': result.get('orderId'),
+                'status': result.get('orderStatus', 'Unknown'),
+                'balance_before': old_simulated_balance,
+                'balance_after': self.simulated_balance,
+                'pnl': trade_pnl,
+                'position_duration': position_duration  # New field
+            }
+            
+            self.trades.append(trade)
+            del self.current_positions[symbol]
+            
+            # Update working capital after the trade
+            self.update_working_capital_after_trade(trade_pnl)
+            
+            # Update GUI if available
+            if self.performance_callback:
+                self.update_performance_display()
             
             self.log_message(f"✅ Sell order successful! Order ID: {result.get('orderId')}")
             return trade
@@ -643,7 +956,7 @@ class PaperTradingEngine:
             self.log_message(f"❌ Error calculating position size: {e}")
             return 0.001  # Default fallback
     
-    def load_strategy(self):
+    '''def load_strategy(self):
         """Load the selected strategy with optimized parameters"""
         try:
             # First, check for optimized parameters
@@ -697,6 +1010,70 @@ class PaperTradingEngine:
                 self.log_message(f"Error: Strategy '{self.strategy_name}' missing create_func")
                 return False
                     
+        except Exception as e:
+            self.log_message(f"Error loading strategy: {e}")
+            import traceback
+            self.log_message(f"Traceback: {traceback.format_exc()}")
+            return False'''
+    
+    def load_strategy(self):
+        """Load the selected strategy with optimized parameters"""
+        try:
+            # First, check for optimized parameters
+            from simple_strategy.trading.parameter_manager import ParameterManager
+            pm = ParameterManager()
+            optimized_params = pm.get_parameters(self.strategy_name)
+            
+            # Import the strategy registry to get available strategies
+            from simple_strategy.strategies.strategy_registry import StrategyRegistry
+            registry = StrategyRegistry()
+            available_strategies = registry.get_all_strategies()
+            
+            # Check if the selected strategy exists
+            if self.strategy_name not in available_strategies:
+                self.log_message(f"Error: Unknown strategy '{self.strategy_name}'")
+                self.log_message(f"Available strategies: {list(available_strategies.keys())}")
+                return False
+            
+            # Get strategy info
+            strategy_info = available_strategies[self.strategy_name]
+            
+            # Get default parameters from strategy info
+            parameters_def = strategy_info.get('parameters', {})
+            default_params = {}
+            for param_name, param_info in parameters_def.items():
+                default_params[param_name] = param_info.get('default', 0)
+            
+            # Use optimized parameters if available, otherwise use defaults
+            current_params = optimized_params if optimized_params else default_params
+            
+            # Log which parameters are being used
+            if optimized_params:
+                self.log_message(f"✅ Using optimized parameters:")
+                for param, value in optimized_params.items():
+                    if param != 'last_optimized':  # Skip the metadata
+                        self.log_message(f"  {param}: {value}")
+            else:
+                self.log_message("⚠️ Using default parameters (no optimized parameters found)")
+            
+            # Create the strategy using the create_func from the registry
+            if 'create_func' in strategy_info:
+                # Get symbols and timeframes - we'll use 1-minute data for paper trading
+                symbols = ['BTCUSDT']  # We'll update this per symbol in generate_strategy_signal
+                timeframes = ['1m']     # We're using 1-minute data
+                
+                # Create the strategy
+                self.strategy = strategy_info['create_func'](
+                    symbols=symbols,
+                    timeframes=timeframes,
+                    **current_params
+                )
+                
+                return True
+            else:
+                self.log_message(f"Error: Strategy '{self.strategy_name}' missing create_func")
+                return False
+                        
         except Exception as e:
             self.log_message(f"Error loading strategy: {e}")
             import traceback
@@ -935,7 +1312,7 @@ class PaperTradingEngine:
         self.is_running = True
         self.log_message(f"Paper trading started for {self.strategy_name}")
         
-        # --- NEW: Get symbols and intervals directly from our local data files ---
+        # Get symbols and intervals directly from our local data files
         symbols_to_monitor, available_intervals = self.get_symbols_and_intervals_from_data_dir()
         
         # For now, let's just use the 1-minute interval
@@ -943,19 +1320,16 @@ class PaperTradingEngine:
             self.log_message("❌ No 1-minute interval data found. Cannot start.")
             return
             
-        # You can limit the number of symbols for testing if you want
-        # For example, to only test the first 50 symbols:
-        # symbols_to_monitor = symbols_to_monitor[:50]
         self.log_message(f"📈 Monitoring {len(symbols_to_monitor)} symbols on the 1m interval.")
         
-        # --- NEW: Main CSV-based trading loop ---
+        # Main CSV-based trading loop
         loop_count = 0
 
         while self.is_running:
             loop_count += 1
             self.log_message(f"\n=== Trading Loop #{loop_count} ===")
-           
-            # Add this line - check for position timeouts first
+        
+            # Check for position timeouts
             self.check_position_timeouts()
 
             # Process each symbol by reading from the latest CSV data
@@ -969,9 +1343,19 @@ class PaperTradingEngine:
                         signal = self.generate_trading_signal(symbol, historical_data.iloc[-1]['close'])
                         
                         if signal == 'BUY':
-                            self.execute_buy(symbol)
-                            # Add a small delay to avoid rate limiting
-                            time.sleep(0.1)
+                            # Check if we can open a new position
+                            if self.should_continue_trading():
+                                self.execute_buy(symbol)
+                                # Add a small delay to avoid rate limiting
+                                time.sleep(0.1)
+                            else:
+                                # Log why we're not opening a position
+                                if len(self.current_positions) >= self.max_positions:
+                                    self.log_message(f"⚠️ Max positions reached ({len(self.current_positions)} >= {self.max_positions}), skipping {symbol}")
+                                elif hasattr(self, 'stop_trading_at_percentage') and self.stop_trading_at_percentage:
+                                    min_balance = self.initial_balance * (self.stop_trading_at_percentage / 100)
+                                    if self.simulated_balance < min_balance:
+                                        self.log_message(f"⚠️ Balance below threshold ({self.simulated_balance:.2f} < {min_balance:.2f}), skipping {symbol}")
                         elif signal == 'SELL':
                             self.execute_sell(symbol)
                             # Add a small delay to avoid rate limiting
@@ -989,30 +1373,6 @@ class PaperTradingEngine:
                 time.sleep(60) # Wait 60 seconds before the next cycle
 
         self.log_message("🛑 Trading loop ended")
-    
-    '''def update_performance(self):
-        """Update performance metrics with real data from Bybit"""
-        try:
-            # Get real balance from Bybit
-            real_balance = self.get_balance()
-            
-            # Calculate P&L
-            total_pnl = real_balance - self.initial_balance
-            
-            # Update performance metrics
-            performance = {
-                'real_balance': real_balance,
-                'total_pnl': total_pnl,
-                'total_trades': len(self.trades),
-                'open_positions': len(self.current_positions)
-            }
-            
-            self.log_message(f"Performance: Balance=${real_balance:.2f}, PNL=${total_pnl:.2f}")
-            return performance
-            
-        except Exception as e:
-            self.log_message(f"Error updating performance: {e}")
-            return None'''
     
     def update_performance(self):
         """Update performance display"""
@@ -1086,27 +1446,30 @@ class PaperTradingEngine:
     def get_performance_summary(self):
         """Get a summary of trading performance"""
         try:
-            balance_info = self.get_balance_info()
-            
-            # Calculate win rate
-            winning_trades = 0
-            for trade in self.trades:
-                # Simple check: if it's a sell trade and balance increased, count as win
-                if trade['type'] == 'SELL' and trade.get('balance_after') and trade.get('balance_before'):
-                    if trade['balance_after'] > trade['balance_before']:
-                        winning_trades += 1
-            
-            total_sell_trades = sum(1 for trade in self.trades if trade['type'] == 'SELL')
-            win_rate = (winning_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
+            # 1. Get current real-time balances from Bybit
+            real_balances = self.get_real_balance()
+            real_margin_balance = real_balances['margin_balance']
+
+            # 2. Calculate the simulated metrics
+            simulated_account_value = real_margin_balance - self.balance_offset
+            simulated_available_balance = self.simulated_balance
+            pnl = simulated_account_value - self.initial_balance
+
+            # 3. Calculate Total Trades and Win Rate
+            total_trades = sum(1 for trade in self.trades if trade['type'] == 'SELL')
+            winning_trades = sum(1 for trade in self.trades if trade['type'] == 'SELL' and trade.get('pnl', 0) > 0)
+            win_rate = (winning_trades / total_trades * 100) if total_trades > 0 else 0
             
             summary = {
-                'initial_balance': balance_info['initial_balance'],
-                'current_balance': balance_info['simulated_balance'],
-                'total_pnl': balance_info['total_pnl'],
-                'total_trades': len(self.trades),
+                'initial_balance': self.initial_balance,
+                'current_balance': simulated_available_balance, # Represents available cash
+                'account_value': simulated_account_value, # Total worth
+                'total_pnl': pnl,
+                'total_trades': total_trades,
                 'win_rate': win_rate,
                 'open_positions': len(self.current_positions),
-                'status': 'Running' if self.is_running else 'Stopped'
+                'status': 'Running' if self.is_running else 'Stopped',
+                'trades': self.trades
             }
             
             return summary
@@ -1147,47 +1510,50 @@ class PaperTradingEngine:
             self.log_message(f"❌ Error processing {symbol}: {e}")
 
     def update_performance_display(self):
-        """Update performance display"""
+        """Update performance display with new metrics"""
         try:
-            # Get working capital
-            working_capital = self.get_working_capital()
+            # 1. Get current real-time balances from Bybit
+            real_balances = self.get_real_balance()
+            real_available_balance = real_balances['available_balance']
+            real_margin_balance = real_balances['margin_balance']
+
+            # 2. Calculate the simulated metrics
+            # Available Balance is the spendable cash
+            simulated_available_balance = self.simulated_balance
             
-            # Calculate total P&L
-            initial_capital = self.initial_balance
-            total_pnl = working_capital - initial_capital
+            # Account Value is the total worth (cash + unrealized P&L)
+            simulated_account_value = real_margin_balance - self.balance_offset
+
+            # Total Trades is the number of completed trades (each SELL is a completed trade)
+            total_trades = sum(1 for trade in self.trades if trade['type'] == 'SELL')
+
+            # 3. Calculate Win Rate (based on completed trades)
+            winning_trades = sum(1 for trade in self.trades if trade['type'] == 'SELL' and trade.get('pnl', 0) > 0)
+            win_rate = (winning_trades / total_trades * 100) if total_trades > 0 else 0.0
             
-            # Calculate win rate
-            winning_trades = 0
-            total_sell_trades = 0
+            # 4. Calculate Profit/Loss based on the new Account Value
+            pnl = simulated_account_value - self.initial_balance
+
+            # Log performance for debugging
+            self.log_message(f"Performance Update: Account Value=${simulated_account_value:.2f}, Available Balance=${simulated_available_balance:.2f}, P&L=${pnl:.2f}")
+            self.log_message(f"Open positions: {len(self.current_positions)}, Total Trades: {total_trades}")
             
-            for trade in self.trades:
-                if trade['type'] == 'SELL':
-                    total_sell_trades += 1
-                    if 'pnl' in trade and trade['pnl'] > 0:
-                        winning_trades += 1
-            
-            win_rate = (winning_trades / total_sell_trades * 100) if total_sell_trades > 0 else 0
-            
-            # Log performance
-            self.log_message(f"Performance: Working Capital=${working_capital:.2f}, PNL=${total_pnl:.2f}")
-            self.log_message(f"Open positions: {len(self.current_positions)}")
-            self.log_message(f"Total trades: {len(self.trades)}")
-            
-            # Update GUI if available
+            # 5. Update GUI if available
             if self.performance_callback:
                 performance_data = {
-                    'balance': working_capital,  # Use working capital
-                    'pnl': total_pnl,
+                    'account_value': simulated_account_value,  # New metric
+                    'available_balance': simulated_available_balance, # Renamed from 'balance'
+                    'pnl': pnl, # P&L calculated from the new account value
                     'win_rate': win_rate,
                     'open_positions': len(self.current_positions),
-                    'total_trades': len(self.trades),
-                    'closed_trades': total_sell_trades  # Number of completed trades
+                    'total_trades': total_trades, # Renamed from 'closed_trades'
+                    'closed_trades': total_trades # Keep for compatibility for now
                 }
                 self.performance_callback(performance_data)
                 
         except Exception as e:
             self.log_message(f"❌ Error updating performance: {e}")
-
+            
     def get_symbols_and_intervals_from_data_dir(self):
         """
         Scans the data directory to find all available symbols and intervals.
@@ -1230,3 +1596,5 @@ class PaperTradingEngine:
         self.log_message(f"⏱️ Found {len(intervals)} unique intervals: {', '.join(sorted(list(intervals)))}")
 
         return sorted(list(symbols)), sorted(list(intervals))
+    
+    

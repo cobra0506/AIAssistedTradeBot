@@ -410,7 +410,7 @@ class TradingBotDashboard:
         except Exception as e:
             messagebox.showerror("Error", f"Failed to start paper trading: {str(e)}")
     
-    def stop_paper_trading(self):
+    def stop_paper_trading(self): 
         """Stop paper trading"""
         try:
             if not self.trading_running or not self.paper_trading_engine:
