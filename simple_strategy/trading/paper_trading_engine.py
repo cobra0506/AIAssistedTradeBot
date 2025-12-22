@@ -1596,5 +1596,3 @@ def execute_buy(self, symbol, quantity=None):
         self.log_message(f"⏱️ Found {len(intervals)} unique intervals: {', '.join(sorted(list(intervals)))}")
 
         return sorted(list(symbols)), sorted(list(intervals))
-    
-    
