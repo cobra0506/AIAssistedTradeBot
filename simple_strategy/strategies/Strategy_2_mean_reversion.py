@@ -19,6 +19,34 @@ from .signals_library import overbought_oversold
 # Configure logging
 logger = logging.getLogger(__name__)
 
+def rsi_mean_reversion_with_trend(indicator_rsi, indicator_sma, overbought=70, oversold=30):
+    """
+    Generate mean reversion signals with trend filter
+    Args:
+        indicator_rsi: RSI indicator series
+        indicator_sma: SMA indicator series for trend
+        overbought: Overbought threshold
+        oversold: Oversold threshold
+    Returns:
+        Series with 'BUY', 'SELL', or 'HOLD' signals
+    """
+    # Create a series with default HOLD values
+    signals = pd.Series('HOLD', index=indicator_rsi.index)
+    
+    # Get current values
+    current_rsi = indicator_rsi
+    current_close = indicator_sma  # Using SMA as price reference
+    
+    # Generate BUY signals when: RSI oversold AND price above SMA (uptrend)
+    buy_condition = (current_rsi < oversold) & (current_close > current_close.shift(1))
+    signals[buy_condition] = 'BUY'
+    
+    # Generate SELL signals when: RSI overbought AND price below SMA (downtrend)
+    sell_condition = (current_rsi > overbought) & (current_close < current_close.shift(1))
+    signals[sell_condition] = 'SELL'
+    
+    return signals
+
 # STRATEGY_PARAMETERS - GUI Configuration (AT TOP)
 # This defines what parameters appear in the GUI for users to configure
 STRATEGY_PARAMETERS = {
@@ -109,8 +137,12 @@ def create_strategy(symbols=None, timeframes=None, **params):
             strategy_builder.add_indicator(f'trend_sma_{timeframe}', sma, period=trend_sma_period)
         
         # Add signal rule for RSI overbought/oversold with trend filter
-        # Note: Using custom signal logic with trend filter
-        strategy_builder.add_custom_signal_rule('rsi_signal', self._generate_rsi_signal_with_trend)
+        # Note: Using custom signal function with trend filter
+        strategy_builder.add_signal_rule('rsi_signal', rsi_mean_reversion_with_trend,
+                                        indicator_rsi='rsi',
+                                        indicator_sma='trend_sma_5m',
+                                        overbought=rsi_overbought,
+                                        oversold=rsi_oversold)
         
         # Set signal combination method
         strategy_builder.set_signal_combination('majority_vote')

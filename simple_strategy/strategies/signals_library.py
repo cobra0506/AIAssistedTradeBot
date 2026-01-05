@@ -40,6 +40,38 @@ def overbought_oversold(indicator, overbought=70, oversold=30):
     
     return signals
 
+def overbought_oversold_with_trend(indicator_rsi, indicator_sma, overbought=70, oversold=30):
+    """
+    Generate overbought/oversold signals with trend filter
+    Args:
+        indicator_rsi: RSI indicator series
+        indicator_sma: SMA indicator series for trend
+        overbought: Overbought threshold
+        oversold: Oversold threshold
+    Returns:
+        Series with 'BUY', 'SELL', or 'HOLD' signals
+    """
+    # Create a series with default HOLD values
+    signals = pd.Series('HOLD', index=indicator_rsi.index)
+    
+    # Get current values
+    current_rsi = indicator_rsi
+    current_sma = indicator_sma
+    previous_sma = current_sma.shift(1)  # Previous SMA value
+    
+    # Determine trend direction: price going up if current SMA > previous SMA
+    uptrend = current_sma > previous_sma
+    
+    # Generate BUY signals when: RSI oversold AND trend is up
+    buy_condition = (current_rsi < oversold) & uptrend
+    signals[buy_condition] = 'BUY'
+    
+    # Generate SELL signals when: RSI overbought AND trend is down
+    sell_condition = (current_rsi > overbought) & (~uptrend)
+    signals[sell_condition] = 'SELL'
+    
+    return signals
+
 def ma_crossover(fast_ma, slow_ma):
     """
     Generate MA crossover signals
