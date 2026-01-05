@@ -45,6 +45,14 @@ STRATEGY_PARAMETERS = {
         'max': 50,
         'description': 'RSI oversold level (buy signal)',
         'gui_hint': 'Lower values = more conservative buy signals'
+    },
+    'trend_sma_period': {
+        'type': 'int',
+        'default': 200,
+        'min': 50,
+        'max': 300,
+        'description': 'SMA period for trend filter',
+        'gui_hint': 'Higher = longer term trend. 200 is standard for daily charts'
     }
 }
 
@@ -79,6 +87,7 @@ def create_strategy(symbols=None, timeframes=None, **params):
     rsi_period = params.get('rsi_period', 14)
     rsi_overbought = params.get('rsi_overbought', 70)
     rsi_oversold = params.get('rsi_oversold', 30)
+    trend_sma_period = params.get('trend_sma_period', 200)
     
     logger.info(f"🎯 Creating Mean Reversion strategy with parameters:")
     logger.info(f"  - Symbols: {symbols}")
@@ -86,6 +95,7 @@ def create_strategy(symbols=None, timeframes=None, **params):
     logger.info(f"  - RSI Period: {rsi_period}")
     logger.info(f"  - RSI Overbought: {rsi_overbought}")
     logger.info(f"  - RSI Oversold: {rsi_oversold}")
+    logger.info(f"  - Trend SMA Period: {trend_sma_period}")
     
     try:
         # Create strategy using StrategyBuilder
@@ -94,11 +104,13 @@ def create_strategy(symbols=None, timeframes=None, **params):
         # Add RSI indicator
         strategy_builder.add_indicator('rsi', rsi, period=rsi_period)
         
-        # Add signal rule for RSI overbought/oversold
-        strategy_builder.add_signal_rule('rsi_signal', overbought_oversold,
-                                       indicator='rsi',
-                                       overbought=rsi_overbought,
-                                       oversold=rsi_oversold)
+        # Add SMA indicator for trend filter
+        for timeframe in timeframes:
+            strategy_builder.add_indicator(f'trend_sma_{timeframe}', sma, period=trend_sma_period)
+        
+        # Add signal rule for RSI overbought/oversold with trend filter
+        # Note: Using custom signal logic with trend filter
+        strategy_builder.add_custom_signal_rule('rsi_signal', self._generate_rsi_signal_with_trend)
         
         # Set signal combination method
         strategy_builder.set_signal_combination('majority_vote')
